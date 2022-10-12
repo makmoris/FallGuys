@@ -1,12 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
 public class CarDriverAI : MonoBehaviour
 {
     [Header("“очки »нтереса")]
-    public Transform[] pointsOnMapArray;
-    //public Transform[] rivalsArray;
+    public List<Transform> targets;
 
     [Space]
     [SerializeField] private Transform targetPositionTransform;
@@ -25,14 +25,6 @@ public class CarDriverAI : MonoBehaviour
     private void Awake()
     {
         wheelVehicle = GetComponent<WheelVehicle>();
-    }
-
-    private void Start()
-    {
-        int rand = Random.Range(0, pointsOnMapArray.Length);
-
-        targetPositionTransform = pointsOnMapArray[rand];
-        isTargetReachedFirst = true;
     }
 
     private void Update()
@@ -140,29 +132,22 @@ public class CarDriverAI : MonoBehaviour
     {
         if (targetReached)// если цель достигнута, то выбираем новую
         {
-            int rand = Random.Range(0, pointsOnMapArray.Length);
+            int rand = Random.Range(0, targets.Count);
 
-            if (targetPositionTransform != pointsOnMapArray[rand])
+            if (targetPositionTransform != targets[rand])
             {
-                targetPositionTransform = pointsOnMapArray[rand];
+                targetPositionTransform = targets[rand];
             }
             else
             {
                 if (rand == 0)
                 {
-                    targetPositionTransform = pointsOnMapArray[rand + 1];
+                    targetPositionTransform = targets[rand + 1];
                 }
-                else if (rand == pointsOnMapArray.Length)
+                else if (rand == targets.Count)
                 {
-                    targetPositionTransform = pointsOnMapArray[rand - 1];
+                    targetPositionTransform = targets[rand - 1];
                 }
-            }
-
-            //чтобы почаще выбирали игрока
-            int randPlayer = Random.Range(1, 5);
-            if (randPlayer == 3)
-            {
-                targetPositionTransform = pointsOnMapArray[pointsOnMapArray.Length - 1];
             }
 
             targetReached = false;
@@ -173,6 +158,24 @@ public class CarDriverAI : MonoBehaviour
         {
             this.targetPosition = targetPosition;
         }
+    }
+
+    public void SetTargets(List<Transform> targets)
+    {
+        this.targets = targets;
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i].gameObject == gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
+            {
+                this.targets.RemoveAt(i);
+            }
+        }
+
+        int rand = Random.Range(0, targets.Count);
+
+        targetPositionTransform = targets[rand];
+        isTargetReachedFirst = true;
     }
 
     private void OnCollisionEnter(Collision collision)

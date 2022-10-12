@@ -32,9 +32,13 @@ public class EnemyPlayer : MonoBehaviour, IEnemyPlayer
     }
 
 
-    public EnemyPlayer(GameObject obj)
+    public EnemyPlayer(PlayerDefaultData data, GameObject obj)
     {
         EnemyObject = obj;
+
+        _health = data.DefaultHP;
+        _speed = data.DefaultSpeed;
+        _damage = data.DefautDamage;
     }
 
 

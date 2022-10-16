@@ -217,7 +217,7 @@ namespace VehicleBehaviour {
         [SerializeField] AudioSource boostSource = default;
         
         // Private variables set at the start
-        Rigidbody rb = default;
+        [SerializeField ] Rigidbody rb = default;
         internal WheelCollider[] wheels = new WheelCollider[0];
 
         // Init rigidbody, center of mass, wheels and more

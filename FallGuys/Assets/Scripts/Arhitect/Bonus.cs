@@ -9,9 +9,10 @@ public enum BonusType
 public abstract class Bonus : MonoBehaviour
 {
     public BonusType Type;
-    public float Value;
+    //public float value;
+    public abstract float Value { get; set; }
 
-    public void Got()
+    public virtual void Got()
     {
         Destroy(gameObject);
     }

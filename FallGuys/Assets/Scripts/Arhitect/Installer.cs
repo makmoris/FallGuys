@@ -24,6 +24,9 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
     [SerializeField] private PlayerLimitsData _playerLimitsData;
     private Bumper _playerBumper;
 
+    private AttackController _playerAttackController;
+    [SerializeField] private GameObject _playerWeaponPrefab;
+
     [SerializeField] private List<EnemiesSettings> _enemiesSettings;
 
     //private readonly GameController _gameController;
@@ -35,6 +38,10 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         IPlayer _player = new Player(_playerDefaultData);
         var _playerObj = Instantiate(_playerPrefab);
         _playerBumper = _playerObj.GetComponent<Bumper>();
+
+        var _weaponObj = Instantiate(_playerWeaponPrefab);
+        _playerAttackController = _playerObj.GetComponent<AttackController>();
+        _playerAttackController.SetWeapon(_playerWeaponPrefab.GetComponent<Weapon>());
 
         PointerManager.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);

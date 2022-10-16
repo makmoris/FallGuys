@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class AttackTargetDetector : MonoBehaviour
 {
-    [SerializeField] private GameObject currentTargetObject;// текущая цель. Если есть, то есть. Если нету, то null
+    private GameObject currentTargetObject;// текущая цель. Если есть, то есть. Если нету, то null
+    [SerializeField] private Cannon cannon;// ссылка на пушку, внутри которой находится детектор
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,7 +25,9 @@ public class AttackTargetDetector : MonoBehaviour
         if (other.gameObject == currentTargetObject)// если замеченный объект совпадает с выбранным объектом целью, то можем атаковать
         {
             PointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
-            // атакуем
+            // разрешаем атаковать
+            cannon.SetObjectForAttack(currentTargetObject.transform);
+
         }// если триггер охватывает больше одного объекта и текущая цель уходит, то нужно переключится на другую цель в триггере
         else if (currentTargetObject == null)
         {
@@ -31,6 +35,11 @@ public class AttackTargetDetector : MonoBehaviour
             {
                 currentTargetObject = other.gameObject;
                 PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+            }
+            else
+            {
+                //Debug.Log(other.name);
+                //Debug.Log("Destoyed");
             }
         }
     }
@@ -41,6 +50,7 @@ public class AttackTargetDetector : MonoBehaviour
         {
             PointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
             currentTargetObject = null;
+            cannon.ReturnWeaponToPosition();
         }
     }
 }

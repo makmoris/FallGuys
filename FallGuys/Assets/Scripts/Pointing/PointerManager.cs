@@ -45,6 +45,10 @@ public class PointerManager : MonoBehaviour
     public void RemoveFromList(EnemyPointer enemyPointer)
     {
         //Destroy(_dictionary[enemyPointer].gameObject);
+
+        PointerIcon _pointerIcon = _dictionary[enemyPointer];
+        _pointerIcon.Hide();
+
         _dictionary.Remove(enemyPointer);
     }
 
@@ -110,6 +114,10 @@ public class PointerManager : MonoBehaviour
     {
         _attackPointerPrefab.Hide();
         _attackPointerPrefab.SetIconPosition(GetAttackTargetPosition(transformToAttack), Quaternion.identity);
+    }
+    public void ObjectWithAttackPointerWasDestroyed()
+    {
+        _attackPointerPrefab.Hide();
     }
 
     private Vector3 GetAttackTargetPosition(Transform transform)

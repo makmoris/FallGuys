@@ -73,6 +73,11 @@ public class Explosion : MonoBehaviour
 
         collidersWithoutAttackPointers.RemoveRange(0, collidersWithoutAttackPointers.Count);
         collidersWithAttackPointers.RemoveRange(0, collidersWithAttackPointers.Count);
+
+        Instantiate(explosionEffect, transform.position, Quaternion.identity);
+
+        Destroy(gameObject);
+        //gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()

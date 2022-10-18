@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerEffector
@@ -14,15 +15,14 @@ public class PlayerEffector
         bumper.OnBonusGot += ApplyBonus;
     }
 
-    //private void ActionTransition(float time)
-    //{
-    //    CoroutineRunner.Run(Timer(time));
-    //    // в течении этого времени действует тот или иной эффект
-    //}
+    private void ActionTransition(float time)
+    {
+        CoroutineRunner.Run(Timer(time));
+        // в течении этого времени действует тот или иной эффект
+    }
 
     private void ApplyBonus(Bonus bonus)
     {
-        Debug.Log(bonus.Type + " PlayerEffector");
         // switch luchshe
         if (bonus.Type == BonusType.AddHealth)
         {
@@ -34,8 +34,8 @@ public class PlayerEffector
         }
     }
 
-    //private IEnumerator Timer(float time)
-    //{
-    //    // ...
-    //}
+    private IEnumerator Timer(float time)
+    {
+        yield return new WaitForSeconds(time);
+    }
 }

@@ -29,7 +29,7 @@ public class ObstacleDetectionAI : MonoBehaviour
 		wheelVehicle = GetComponent<WheelVehicle>();
 		carDriverAI = GetComponent<CarDriverAI>();
 	}
-
+	 
 	private void Update()
 	{
 		CheckObstacles();
@@ -56,7 +56,7 @@ public class ObstacleDetectionAI : MonoBehaviour
 
 			angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //угол между автомобилем и целевой траекторией
 				new Vector2(DirCenter.x, DirCenter.z));
-			
+
 			if (angleObstacle < 0)
 			{
 				Obstacles = "Left_1";

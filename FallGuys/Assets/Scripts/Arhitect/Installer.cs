@@ -22,6 +22,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private PlayerDefaultData _playerDefaultData;
     [SerializeField] private PlayerLimitsData _playerLimitsData;
+    [SerializeField] private Weapon _playerWeaon;// потом добавить и противникам
     private Bumper _playerBumper;
 
     [SerializeField] private List<EnemiesSettings> _enemiesSettings;
@@ -39,6 +40,10 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         PointerManager.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
 
+        // ставим пушку
+        Transform weaponPlace = _playerObj.transform.Find("WeaponPlace");
+        Weapon weapon = Instantiate(_playerWeaon, weaponPlace);
+        weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
 
         //Install enemies
         List<IEnemyPlayer> enemies = new List<IEnemyPlayer>(_enemiesSettings.Count);

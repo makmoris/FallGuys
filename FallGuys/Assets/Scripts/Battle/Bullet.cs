@@ -33,11 +33,16 @@ public class Bullet : Bonus
                 Debug.Log("Бочка");
                 explosion.ExplodeWithDelay();
             }
-            else // если нет, значит попали в игрока. Выпихиваем его в направлении пули
+            else // если нет, значит попали в игрока или что-то другое. 
             {
-                Debug.Log("Игрок");
-                forceDirection = (other.transform.position - transform.position).normalized;
-                other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 6f, forceDirection.z * force), forceMode);
+                Bumper bumper = other.GetComponent<Bumper>();
+                if (bumper != null)// если это игрок - Выпихиваем его в направлении пули
+                {
+                    Debug.Log("Игрок");
+                    forceDirection = (other.transform.position - transform.position).normalized;
+                    other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 6f, 
+                        forceDirection.z * force), forceMode);
+                }
             }
 
             gameObject.SetActive(false);

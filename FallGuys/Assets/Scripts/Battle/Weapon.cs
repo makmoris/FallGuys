@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cannon : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
     [Header("Pool")]
     [SerializeField] private int poolCount = 5;
@@ -13,23 +13,38 @@ public class Cannon : MonoBehaviour
     private Bullet bulletExample;
 
     [Header("Characteristics")]
-    public float damage;
-    public float rechargeTime;
-    public float attackRange;
-    
+    [SerializeField] private WeaponCharacteristicsData characteristicsData;
+    [SerializeField] private float damage;
+    [SerializeField] private float rechargeTime;
+    [SerializeField] private float attackRange;
+
     [Header("Weapon parts")]
     [SerializeField] private Collider parentBodyCollider;// у каждой машинки свой
     [SerializeField] private Transform weaponTransform;
     [SerializeField] private Transform detectorTransform;
     [SerializeField] private Transform startBulletPosition;
 
-    private Transform target;// понадобится, если делать полет пули не по премой, а в цель (автонаведение)
+    [Header("AI")]
+    [SerializeField] private bool isAI;
+
+
+    private Transform target;// понадобится, если делать полет пули не по прямой, а в цель (автонаведение)
 
 
     private Quaternion defaultWeaponRotation;
     private bool canAttack = true;
-    private bool nextShot = true;
+    private bool canAIAttack;
+    [SerializeField]private bool nextShot = true;
 
+
+    private void Awake()
+    {
+        damage = characteristicsData.damage;
+        rechargeTime = characteristicsData.rechargeTime;
+        attackRange = characteristicsData.attackRange;
+
+        detectorTransform.GetComponent<AttackTargetDetector>().IsAI(isAI);
+    }
 
     private void Start()
     {
@@ -40,6 +55,7 @@ public class Cannon : MonoBehaviour
 
         bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, Quaternion.identity, startBulletPosition);
         bulletExample.GetComponent<Bullet>().enabled = false;
+        bulletExample.GetComponent<Collider>().enabled = false;
 
         defaultWeaponRotation = weaponTransform.localRotation;
     }
@@ -48,12 +64,18 @@ public class Cannon : MonoBehaviour
     {
         if (canAttack)
         {
-            if (SimpleInput.GetButtonDown("CarAttack") && nextShot)
+            if (SimpleInput.GetButtonDown("CarAttack") && nextShot && !isAI)
             {
                 // спавним пулю из дула пушки. /// Она уже есть(без спавна). Выстреливаем ею 
                 StartCoroutine(Shot());
                 nextShot = false;
             }
+        }
+
+        if (isAI && canAIAttack && nextShot)
+        {
+            StartCoroutine(Shot());
+            nextShot = false;
         }
     }
 
@@ -63,12 +85,14 @@ public class Cannon : MonoBehaviour
         weaponTransform.LookAt(objForAttackTransform);
         target = objForAttackTransform;
         //canAttack = true;
+        canAIAttack = true;
     }
 
     public void ReturnWeaponToPosition()
     {
         weaponTransform.localRotation = defaultWeaponRotation;
         //canAttack = false;
+        canAIAttack = false;
     }
 
     private void SetDetectorScale()
@@ -86,6 +110,11 @@ public class Cannon : MonoBehaviour
         bulletExample.gameObject.SetActive(false);
     }
 
+    public void SetParentBodyCollider(Collider bodyCollider)
+    {
+        parentBodyCollider = bodyCollider;
+    }
+
     IEnumerator Shot()
     {
         HideBulletExample();
@@ -98,6 +127,12 @@ public class Cannon : MonoBehaviour
         bullet.transform.position = startBulletPosition.position;
         bullet.transform.rotation = startBulletPosition.rotation;
         yield return new WaitForSeconds(rechargeTime);
+        nextShot = true;
+        ShowBulletExample();
+    }
+
+    private void OnDisable()
+    {
         nextShot = true;
         ShowBulletExample();
     }

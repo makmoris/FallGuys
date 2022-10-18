@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class PointerManager : MonoBehaviour
 {
-    [SerializeField] PointerIcon _positionPointerPrefab;
+    
     private Dictionary<EnemyPointer, PointerIcon> _dictionary = new Dictionary<EnemyPointer, PointerIcon>();
-    [SerializeField] Transform _playerTransform;// сделать передачу из Installer-a
+    [SerializeField] private Transform _playerTransform;// сделать передачу из Installer-a
     [SerializeField] Camera _camera;
     [SerializeField] Transform _canvasTransform;
 
     //[SerializeField] AttackPointer _attackPointer;
+    [Header("Prefabs")]
+    [SerializeField] PointerIcon _positionPointerPrefab;
     [SerializeField] PointerIcon _attackPointerPrefab;
 
     public static PointerManager Instance;

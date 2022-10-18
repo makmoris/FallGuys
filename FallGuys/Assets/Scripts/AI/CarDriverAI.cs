@@ -178,6 +178,17 @@ public class CarDriverAI : MonoBehaviour
         isTargetReachedFirst = true;
     }
 
+    public void SetNewPlayerTargetFromDetector(Transform transform)
+    {
+        targetPositionTransform = transform;
+    }
+
+    public void DetectorLostTarget()
+    {
+        targetReached = true;
+        ChooseTargetPosition(targetPositionTransform.position);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform == targetPositionTransform)

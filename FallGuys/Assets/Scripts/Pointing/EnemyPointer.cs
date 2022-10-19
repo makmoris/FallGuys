@@ -4,33 +4,27 @@ public class EnemyPointer : MonoBehaviour // кидаем на врагов
 {
     private bool onStart = true;
 
-    private void Start()
+    private void Awake()
     {
-        PointerManager.Instance.AddToList(this);
+        PointerManager.Instance.AddToPositionList(this);
     }
 
-    //private void Awake()
+    //private void Start()
     //{
-    //    PointerManager.Instance.AddToList(this);
-    //    addedToList = true;
-    //}
-
-    //private void OnDestroy()
-    //{
-    //    PointerManager.Instance.RemoveFromList(this);
+    //    PointerManager.Instance.AddToPositionList(this);
     //}
 
     private void OnEnable()
     {
         if (!onStart)
         {
-            PointerManager.Instance.AddToList(this);
+            PointerManager.Instance.AddToPositionList(this);
         }
     }
 
     private void OnDisable()
     {
-        PointerManager.Instance.RemoveFromList(this);
+        PointerManager.Instance.RemoveFromPositionList(this);
         onStart = false;
     }
 }

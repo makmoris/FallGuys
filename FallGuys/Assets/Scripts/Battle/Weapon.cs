@@ -34,7 +34,7 @@ public class Weapon : MonoBehaviour
     private Quaternion defaultWeaponRotation;
     private bool canAttack = true;
     private bool canAIAttack;
-    [SerializeField]private bool nextShot = true;
+    private bool nextShot = true;
 
 
     private void Awake()
@@ -48,7 +48,7 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        bulletPool = new PoolMono<Bullet>(bulletPrefab, 5);
+        bulletPool = new PoolMono<Bullet>(bulletPrefab, poolCount);
         bulletPool.autoExpand = autoExpand;
 
         SetDetectorScale();
@@ -113,6 +113,12 @@ public class Weapon : MonoBehaviour
     public void SetParentBodyCollider(Collider bodyCollider)
     {
         parentBodyCollider = bodyCollider;
+    }
+
+    public void IsAI(bool value)// вызывается в installer при создании бота
+    {
+        isAI = value;
+        detectorTransform.GetComponent<AttackTargetDetector>().IsAI(isAI);
     }
 
     IEnumerator Shot()

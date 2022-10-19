@@ -10,7 +10,9 @@ public class EnemiesSettings
     public GameObject _enemyPrefab;
     public PlayerDefaultData _enemyDefaultData;
     public PlayerLimitsData _enemyLimitsData;
+    public Weapon _enemyWeapon;
     internal Bumper _enemyBumper;
+    internal UIIntermediary _enemyUIIntermediary;
 }
 
 
@@ -24,6 +26,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
     [SerializeField] private PlayerLimitsData _playerLimitsData;
     [SerializeField] private Weapon _playerWeaon;// потом добавить и противникам
     private Bumper _playerBumper;
+    private UIIntermediary _playerUIIntermediary;
 
     [SerializeField] private List<EnemiesSettings> _enemiesSettings;
 
@@ -36,6 +39,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         IPlayer _player = new Player(_playerDefaultData);
         var _playerObj = Instantiate(_playerPrefab);
         _playerBumper = _playerObj.GetComponent<Bumper>();
+        _playerUIIntermediary = _playerObj.GetComponent<UIIntermediary>();
 
         PointerManager.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
@@ -45,6 +49,8 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         Weapon weapon = Instantiate(_playerWeaon, weaponPlace);
         weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
 
+        var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerUIIntermediary);
+
         //Install enemies
         List<IEnemyPlayer> enemies = new List<IEnemyPlayer>(_enemiesSettings.Count);
         for (int i = 0; i < _enemiesSettings.Count; i++)
@@ -53,16 +59,24 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
 
             var _enemyObj = Instantiate(enemySet._enemyPrefab);
             enemySet._enemyBumper = _enemyObj.GetComponent<Bumper>();
+            enemySet._enemyUIIntermediary = _enemyObj.GetComponent<UIIntermediary>();
 
             IEnemyPlayer _enemy = new EnemyPlayer(enemySet._enemyDefaultData, _enemyObj);
             enemies.Add(_enemy);
 
             targetsController.AddPlayerToTargets(_enemyObj);
 
-            var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData);
-        }
+            // ставим пушку боту
+            Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
+            Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
+            weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
+            weaponAI.IsAI(true);
 
-        var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData);
+            
+
+            var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyUIIntermediary);
+        }
+        
         _gameController = new GameController(_player, enemies);
 
         targetsController.SetTargetsForPlayers();

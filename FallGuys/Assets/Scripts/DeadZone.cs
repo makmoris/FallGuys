@@ -18,7 +18,8 @@ public class DeadZone : MonoBehaviour
     IEnumerator WaitAndResp(GameObject gameObject)
     {
         yield return new WaitForSeconds(2f);
-        gameObject.transform.position = targetsController.GetRandomRespawnPosition();
+        Vector3 pos = targetsController.GetRandomRespawnPosition();
+        gameObject.transform.position = new Vector3(pos.x, 5f, pos.z);
         gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         gameObject.SetActive(true);
     }

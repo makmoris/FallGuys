@@ -38,7 +38,8 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
     {
         // Install player
         IPlayer _player = new Player(_playerDefaultData);
-        var _playerObj = Instantiate(_playerPrefab, targetsController.GetStartSpawnPosition(0), Quaternion.identity);
+        Vector3 pos = targetsController.GetStartSpawnPosition(0);
+        var _playerObj = Instantiate(_playerPrefab, new Vector3(pos.x, 5f, pos.z), Quaternion.identity);
         _playerBumper = _playerObj.GetComponent<Bumper>();
         _playerUIIntermediary = _playerObj.GetComponent<UIIntermediary>();
 
@@ -60,7 +61,8 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         {
             var enemySet = _enemiesSettings[i];
 
-            var _enemyObj = Instantiate(enemySet._enemyPrefab, targetsController.GetStartSpawnPosition(i + 1), Quaternion.identity);
+            Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1);
+            var _enemyObj = Instantiate(enemySet._enemyPrefab, new Vector3(posEnemy.x, 5f, posEnemy.z), Quaternion.identity);
             enemySet._enemyBumper = _enemyObj.GetComponent<Bumper>();
             enemySet._enemyUIIntermediary = _enemyObj.GetComponent<UIIntermediary>();
 

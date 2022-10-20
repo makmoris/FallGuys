@@ -6,13 +6,17 @@ public class PlayerEffector
     private readonly IPlayer _player;
     private readonly PlayerLimitsData _limitsData;
 
+    private readonly UIIntermediary _intermediary;
     // IPowerUp powerUp;
 
-    public PlayerEffector(IPlayer player, Bumper bumper, PlayerLimitsData limitsData)
+    public PlayerEffector(IPlayer player, Bumper bumper, PlayerLimitsData limitsData, UIIntermediary intermediary)
     {
         _player = player;
         _limitsData = limitsData;
         bumper.OnBonusGot += ApplyBonus;
+
+        _intermediary = intermediary;
+        _intermediary.UpdateHealthInUI(_player.Health);
     }
 
     private void ActionTransition(float time)
@@ -23,14 +27,33 @@ public class PlayerEffector
 
     private void ApplyBonus(Bonus bonus)
     {
-        // switch luchshe
-        if (bonus.Type == BonusType.AddHealth)
+        switch (bonus.Type)
         {
-            var resultHealth = _player.Health + bonus.Value;
-            if (resultHealth < _limitsData.MinHP)
-                resultHealth = _limitsData.MinHP;
-            else if (resultHealth > _limitsData.MaxHP)
-                resultHealth = _limitsData.MaxHP;
+            case BonusType.AddHealth:
+
+                var resultHealth = _player.Health + bonus.Value;
+
+                if (resultHealth > _limitsData.MaxHP)
+                {
+                    resultHealth = _limitsData.MaxHP;
+                }
+                else if (resultHealth <= 0)
+                {
+                    resultHealth = 0;
+                }
+
+                _player.SetHealth(resultHealth);
+                _intermediary.UpdateHealthInUI(_player.Health);
+
+                break;
+
+            case BonusType.AddSpeed:
+
+                break;
+
+            case BonusType.AddDamage:
+
+                break;
         }
     }
 

@@ -160,15 +160,15 @@ public class CarDriverAI : MonoBehaviour
         }
     }
 
-    public void SetTargets(List<Transform> targets)
+    public void SetTargets(List<Transform> _targets)
     {
-        this.targets = targets;
+        targets = _targets.GetRange(0, _targets.Count);
 
         for (int i = 0; i < targets.Count; i++)
         {
             if (targets[i].gameObject == gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
             {
-                this.targets.RemoveAt(i);
+                targets.RemoveAt(i);
             }
         }
 
@@ -176,6 +176,17 @@ public class CarDriverAI : MonoBehaviour
 
         targetPositionTransform = targets[rand];
         isTargetReachedFirst = true;
+    }
+
+    public void SetNewPlayerTargetFromDetector(Transform transform)
+    {
+        targetPositionTransform = transform;
+    }
+
+    public void DetectorLostTarget()
+    {
+        targetReached = true;
+        ChooseTargetPosition(targetPositionTransform.position);
     }
 
     private void OnCollisionEnter(Collision collision)

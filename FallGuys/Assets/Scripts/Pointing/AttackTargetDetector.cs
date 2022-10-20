@@ -3,8 +3,15 @@ using UnityEngine;
 public class AttackTargetDetector : MonoBehaviour
 {
     [SerializeField]private GameObject currentTargetObject;// текущая цель. Если есть, то есть. Если нету, то null
-    [SerializeField] private Cannon cannon;// ссылка на пушку, внутри которой находится детектор
+    [SerializeField] private Weapon weapon;// ссылка на пушку, внутри которой находится детектор
 
+    private bool isAI;
+    private CarDriverAI driverAI;
+
+    private void Start()
+    {
+        driverAI = transform.GetComponentInParent<CarDriverAI>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,7 +21,9 @@ public class AttackTargetDetector : MonoBehaviour
             if (other.GetComponent<AttackPointer>() != null)
             {
                 currentTargetObject = other.gameObject;
-                PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+
+                if (!isAI) PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform);
             }
         }
     }
@@ -23,9 +32,11 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (other.gameObject == currentTargetObject && currentTargetObject != null)// если замеченный объект совпадает с выбранным объектом целью, то можем атаковать
         {
-            PointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
+             if (!isAI) PointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
+            else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform);
+
             // разрешаем атаковать
-            cannon.SetObjectForAttack(currentTargetObject.transform);
+            weapon.SetObjectForAttack(currentTargetObject.transform);
 
         }// если триггер охватывает больше одного объекта и текущая цель уходит, то нужно переключится на другую цель в триггере
         else if (currentTargetObject == null)
@@ -33,7 +44,9 @@ public class AttackTargetDetector : MonoBehaviour
             if (other.GetComponent<AttackPointer>() != null)
             {
                 currentTargetObject = other.gameObject;
-                PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+
+                if (!isAI) PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform);
             }
         }
         
@@ -43,28 +56,38 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (other.gameObject == currentTargetObject)
         {
-            PointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
+            if (!isAI) PointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
+            else driverAI.DetectorLostTarget();
+
             currentTargetObject = null;
-            cannon.ReturnWeaponToPosition();
+            weapon.ReturnWeaponToPosition();
         }
     }
 
-    private void CurrentTargetObjectWasDestroyed(GameObject objWithAttackPointer)
+    private void CurrentTargetObjectWasDeactivated(GameObject objWithAttackPointer)
     {
         if (objWithAttackPointer == currentTargetObject)
         {
-            PointerManager.Instance.ObjectWithAttackPointerWasDestroyed();
-            cannon.ReturnWeaponToPosition();
+            if (!isAI) PointerManager.Instance.ObjectWithAttackPointerWasDestroyed();
+            else driverAI.DetectorLostTarget();
+
+            weapon.ReturnWeaponToPosition();
+            currentTargetObject = null;
         }
+    }
+
+    public void IsAI(bool value)
+    {
+        isAI = value;
     }
 
     private void OnEnable()
     {
-        AttackPointer.attackPointerWasDestroyedEvent += CurrentTargetObjectWasDestroyed;
+        AttackPointer.attackPointerWasDeactivatedEvent += CurrentTargetObjectWasDeactivated;
     }
 
     private void OnDisable()
     {
-        AttackPointer.attackPointerWasDestroyedEvent -= CurrentTargetObjectWasDestroyed;
+        AttackPointer.attackPointerWasDeactivatedEvent -= CurrentTargetObjectWasDeactivated;
     }
 }

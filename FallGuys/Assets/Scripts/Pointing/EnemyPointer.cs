@@ -2,14 +2,29 @@ using UnityEngine;
 
 public class EnemyPointer : MonoBehaviour // кидаем на врагов
 {
+    private bool onStart = true;
 
-    private void Start()
+    private void Awake()
     {
-        PointerManager.Instance.AddToList(this);
+        PointerManager.Instance.AddToPositionList(this);
     }
 
-    private void OnDestroy()
+    //private void Start()
+    //{
+    //    PointerManager.Instance.AddToPositionList(this);
+    //}
+
+    private void OnEnable()
     {
-        PointerManager.Instance.RemoveFromList(this);
+        if (!onStart)
+        {
+            PointerManager.Instance.AddToPositionList(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        PointerManager.Instance.RemoveFromPositionList(this);
+        onStart = false;
     }
 }

@@ -113,5 +113,10 @@ namespace VehicleBehaviour.Utils {
 			}
 			
 		}
+
+		public void SetTarget(Transform transform)
+        {
+			target = transform;
+        }
 	}
 }

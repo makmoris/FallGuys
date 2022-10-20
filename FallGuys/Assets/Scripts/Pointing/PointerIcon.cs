@@ -8,6 +8,9 @@ public class PointerIcon : MonoBehaviour
     [SerializeField] Image _image;
     bool _isShown = true;
 
+    [SerializeField]private float startHealthValue;
+    [SerializeField]private bool isFirstColorUpdate = true;
+
     private void Awake()
     {
         _image.enabled = false;
@@ -35,6 +38,34 @@ public class PointerIcon : MonoBehaviour
 
         StopAllCoroutines();
         StartCoroutine(HideProcess());
+    }
+
+    public void UpdateHealthColor(float healthValue)
+    {
+        if (isFirstColorUpdate)
+        {
+            startHealthValue = healthValue;
+            _image.color = Color.green;
+
+            isFirstColorUpdate = false;
+        }
+        else
+        {
+            float healthPercent = (healthValue / startHealthValue) * 100f;
+
+            if (healthPercent > 65)
+            {
+                _image.color = Color.green;
+            }
+            else if (healthPercent <= 65 && healthPercent > 35)
+            {
+                _image.color = Color.yellow;
+            }
+            else
+            {
+                _image.color = Color.red;
+            }
+        }
     }
 
     IEnumerator ShowProcess()

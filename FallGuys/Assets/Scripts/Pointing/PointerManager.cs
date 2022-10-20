@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class PointerManager : MonoBehaviour
 {
-    [SerializeField] PointerIcon _positionPointerPrefab;
-    private Dictionary<EnemyPointer, PointerIcon> _dictionary = new Dictionary<EnemyPointer, PointerIcon>();
-    [SerializeField] Transform _playerTransform;// сделать передачу из Installer-a
+
+    // Pool
+    private int poolCount = 3;
+    private bool autoExpand = true;
+
+    private PoolMono<PointerIcon> _positionPointersPool;
+    //
+    
+    private Dictionary<EnemyPointer, PointerIcon> _positionDictionary = new Dictionary<EnemyPointer, PointerIcon>();
+    [SerializeField] private Transform _playerTransform;// сделать передачу из Installer-a
     [SerializeField] Camera _camera;
     [SerializeField] Transform _canvasTransform;
 
     //[SerializeField] AttackPointer _attackPointer;
+    [Header("Prefabs")]
+    [SerializeField] PointerIcon _positionPointerPrefab;
     [SerializeField] PointerIcon _attackPointerPrefab;
 
     public static PointerManager Instance;
@@ -24,32 +33,48 @@ public class PointerManager : MonoBehaviour
         {
             Destroy(this);
         }
+
+
+        _attackPointerPrefab = Instantiate(_attackPointerPrefab, _canvasTransform);
+
+        _positionPointersPool = new PoolMono<PointerIcon>(_positionPointerPrefab, poolCount, _canvasTransform);
+        _positionPointersPool.autoExpand = autoExpand;
     }
 
-    private void Start()
-    {
-        _attackPointerPrefab = Instantiate(_attackPointerPrefab, _canvasTransform);
-    }
 
     public void SetPlayerTransform(Transform transform)
     {
         _playerTransform = transform;
     }
 
-    public void AddToList(EnemyPointer enemyPointer)
+    public void AddToPositionList(EnemyPointer enemyPointer)
     {
-        PointerIcon newPointer = Instantiate(_positionPointerPrefab, _canvasTransform);
-        _dictionary.Add(enemyPointer, newPointer);
+        //PointerIcon newPointer = Instantiate(_positionPointerPrefab, _canvasTransform);
+        PointerIcon newPointer = _positionPointersPool.GetFreeElement();
+        _positionDictionary.Add(enemyPointer, newPointer);
+        newPointer.Show();
     }
 
-    public void RemoveFromList(EnemyPointer enemyPointer)
+    public void RemoveFromPositionList(EnemyPointer enemyPointer)
     {
         //Destroy(_dictionary[enemyPointer].gameObject);
 
-        PointerIcon _pointerIcon = _dictionary[enemyPointer];
-        _pointerIcon.Hide();
+        PointerIcon pointerIcon = _positionDictionary[enemyPointer];
+        pointerIcon.Hide();
+        pointerIcon.gameObject.SetActive(false);
 
-        _dictionary.Remove(enemyPointer);
+        _positionDictionary.Remove(enemyPointer);
+    }
+
+    public void UpdateHealthInUI(EnemyPointer enemyPointer, float healthValue)
+    {
+        PointerIcon pointerIcon = _positionDictionary[enemyPointer];
+        pointerIcon.UpdateHealthColor(healthValue);
+    }
+
+    public void UpdatePlayerHealthInUI(float healthValue)
+    {
+        // здесь ставим ui hp для игрока и обновляем
     }
 
     void LateUpdate()
@@ -57,7 +82,7 @@ public class PointerManager : MonoBehaviour
         // Left, Right, Down, Up
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_camera);
 
-        foreach (var kvp in _dictionary)
+        foreach (var kvp in _positionDictionary)
         {
             EnemyPointer enemyPointer = kvp.Key;
             PointerIcon pointerIcon = kvp.Value;
@@ -89,11 +114,12 @@ public class PointerManager : MonoBehaviour
 
             if (toEnemy.magnitude > rayMinDistance)
             {
-                pointerIcon.Show();
+                //pointerIcon.Show();
             }
             else
             {
-                pointerIcon.Hide();
+                //pointerIcon.Hide();
+                rotation = Quaternion.Euler(0f, 0f, 180f);
             }
 
             pointerIcon.SetIconPosition(position, rotation);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using VehicleBehaviour.Utils;
 
 [Serializable]
 public class EnemiesSettings
@@ -37,7 +38,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
     {
         // Install player
         IPlayer _player = new Player(_playerDefaultData);
-        var _playerObj = Instantiate(_playerPrefab);
+        var _playerObj = Instantiate(_playerPrefab, targetsController.GetStartSpawnPosition(0), Quaternion.identity);
         _playerBumper = _playerObj.GetComponent<Bumper>();
         _playerUIIntermediary = _playerObj.GetComponent<UIIntermediary>();
 
@@ -49,6 +50,8 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         Weapon weapon = Instantiate(_playerWeaon, weaponPlace);
         weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
 
+        Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
+
         var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerUIIntermediary);
 
         //Install enemies
@@ -57,7 +60,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         {
             var enemySet = _enemiesSettings[i];
 
-            var _enemyObj = Instantiate(enemySet._enemyPrefab);
+            var _enemyObj = Instantiate(enemySet._enemyPrefab, targetsController.GetStartSpawnPosition(i + 1), Quaternion.identity);
             enemySet._enemyBumper = _enemyObj.GetComponent<Bumper>();
             enemySet._enemyUIIntermediary = _enemyObj.GetComponent<UIIntermediary>();
 

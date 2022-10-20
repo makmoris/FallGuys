@@ -13,11 +13,6 @@ public class UIIntermediary : MonoBehaviour
         if (enemyPointerTransform != null) enemyPointer = enemyPointerTransform.GetComponent<EnemyPointer>();
     }
 
-    private void Start()
-    {
-        UpdateHealthInUI(70);
-    }
-
     public void UpdateHealthInUI(float healthValue)
     {
         if (enemyPointer != null) PointerManager.Instance.UpdateHealthInUI(enemyPointer, healthValue);

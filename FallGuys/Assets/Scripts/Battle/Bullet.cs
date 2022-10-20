@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Bullet : Bonus
 {
@@ -18,6 +20,18 @@ public class Bullet : Bonus
     private Vector3 forceDirection;
     private Collider parentCollider;// при создании пули получаем родителя, т.е. того, кто будет пулей пользоваться, чтобы проверять столкновения и не наносить урон самому себе
 
+    [SerializeField] private float effectTime;
+    [SerializeField] private GameObject shotEffect;
+    private Collider bulletCollider;
+    private MeshRenderer bulletMeshRenderer;
+
+    private void Start()
+    {
+        shotEffect.SetActive(false);
+        bulletCollider = gameObject.GetComponent<Collider>();
+        bulletMeshRenderer = gameObject.GetComponent<MeshRenderer>();
+    }
+
     private void Update()
     {
         transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
@@ -32,6 +46,8 @@ public class Bullet : Bonus
             {
                 Debug.Log("Бочка");
                 explosion.ExplodeWithDelay();
+
+                gameObject.SetActive(false);
             }
             else // если нет, значит попали в игрока или что-то другое. 
             {
@@ -43,9 +59,11 @@ public class Bullet : Bonus
                     other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 6f, 
                         forceDirection.z * force), forceMode);
                 }
-            }
 
-            gameObject.SetActive(false);
+                StartCoroutine(ShowShotEffect(effectTime));
+            }
+            
+            //gameObject.SetActive(false);
         }
     }
 
@@ -69,5 +87,22 @@ public class Bullet : Bonus
     public override void Got()
     {
         // заглушка, чтобы не удалять пулю
+    }
+
+    IEnumerator ShowShotEffect(float time)
+    {
+        shotEffect.SetActive(true);
+        bulletCollider.enabled = false;
+        float oldSpeed = bulletSpeed;
+        bulletSpeed = 0f;
+        bulletMeshRenderer.enabled = false;
+
+        yield return new WaitForSeconds(time);
+
+        gameObject.SetActive(false);
+        bulletCollider.enabled = true;
+        bulletSpeed = oldSpeed;
+        bulletMeshRenderer.enabled = true;
+        shotEffect.SetActive(false);
     }
 }

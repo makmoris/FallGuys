@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DeadZone : MonoBehaviour
 {
+    public TargetsController targetsController;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Bumper>() != null)
@@ -16,7 +18,8 @@ public class DeadZone : MonoBehaviour
     IEnumerator WaitAndResp(GameObject gameObject)
     {
         yield return new WaitForSeconds(2f);
-        gameObject.transform.position = new Vector3(0f, 3f, 0f);
+        gameObject.transform.position = targetsController.GetRandomRespawnPosition();
+        gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         gameObject.SetActive(true);
     }
 }

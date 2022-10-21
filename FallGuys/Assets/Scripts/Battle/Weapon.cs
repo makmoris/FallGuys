@@ -56,6 +56,7 @@ public class Weapon : MonoBehaviour
         bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, Quaternion.identity, startBulletPosition);
         bulletExample.GetComponent<Bullet>().enabled = false;
         bulletExample.GetComponent<Collider>().enabled = false;
+        bulletExample.transform.Find("Jet02Red").gameObject.SetActive(false);
 
         defaultWeaponRotation = weaponTransform.localRotation;
     }

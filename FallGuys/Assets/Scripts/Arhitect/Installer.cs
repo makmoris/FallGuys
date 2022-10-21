@@ -34,12 +34,11 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
     //private readonly GameController _gameController;
     private GameController _gameController;
 
-    void Awake()
+    void Start()
     {
         // Install player
         IPlayer _player = new Player(_playerDefaultData);
-        Vector3 pos = targetsController.GetStartSpawnPosition(0);
-        var _playerObj = Instantiate(_playerPrefab, new Vector3(pos.x, 5f, pos.z), Quaternion.identity);
+        var _playerObj = Instantiate(_playerPrefab);
         _playerBumper = _playerObj.GetComponent<Bumper>();
         _playerUIIntermediary = _playerObj.GetComponent<UIIntermediary>();
 
@@ -53,6 +52,9 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
 
         Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
 
+        Vector3 pos = targetsController.GetStartSpawnPosition(0);
+        _playerObj.transform.position = new Vector3(pos.x, 25f, pos.z);
+
         var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerUIIntermediary);
 
         //Install enemies
@@ -61,8 +63,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         {
             var enemySet = _enemiesSettings[i];
 
-            Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1);
-            var _enemyObj = Instantiate(enemySet._enemyPrefab, new Vector3(posEnemy.x, 5f, posEnemy.z), Quaternion.identity);
+            var _enemyObj = Instantiate(enemySet._enemyPrefab);
             enemySet._enemyBumper = _enemyObj.GetComponent<Bumper>();
             enemySet._enemyUIIntermediary = _enemyObj.GetComponent<UIIntermediary>();
 
@@ -77,7 +78,8 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
             weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
             weaponAI.IsAI(true);
 
-            
+            Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1);
+            _enemyObj.transform.position = new Vector3(posEnemy.x, 25f, posEnemy.z);
 
             var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyUIIntermediary);
         }
@@ -87,8 +89,8 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         targetsController.SetTargetsForPlayers();
     }
 
-    void Start()
-    {
-        _gameController.LaunchGame();
-    }
+    //void Start()
+    //{
+    //    _gameController.LaunchGame();
+    //}
 }

@@ -22,6 +22,7 @@ public class Bullet : Bonus
 
     [SerializeField] private float effectTime;
     [SerializeField] private GameObject shotEffect;
+    [SerializeField] private GameObject tail;
     private Collider bulletCollider;
     private MeshRenderer bulletMeshRenderer;
 
@@ -47,7 +48,8 @@ public class Bullet : Bonus
                 Debug.Log("Бочка");
                 explosion.ExplodeWithDelay();
 
-                gameObject.SetActive(false);
+                //gameObject.SetActive(false);
+                //tail.SetActive(false);
             }
             else // если нет, значит попали в игрока или что-то другое. 
             {
@@ -56,13 +58,13 @@ public class Bullet : Bonus
                 {
                     Debug.Log("Игрок");
                     forceDirection = (other.transform.position - transform.position).normalized;
-                    other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 6f, 
+                    other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 3f, 
                         forceDirection.z * force), forceMode);
                 }
 
-                StartCoroutine(ShowShotEffect(effectTime));
+                //StartCoroutine(ShowShotEffect(effectTime));
             }
-            
+            StartCoroutine(ShowShotEffect(effectTime));
             //gameObject.SetActive(false);
         }
     }
@@ -92,6 +94,7 @@ public class Bullet : Bonus
     IEnumerator ShowShotEffect(float time)
     {
         shotEffect.SetActive(true);
+        tail.SetActive(false);
         bulletCollider.enabled = false;
         float oldSpeed = bulletSpeed;
         bulletSpeed = 0f;
@@ -100,6 +103,7 @@ public class Bullet : Bonus
         yield return new WaitForSeconds(time);
 
         gameObject.SetActive(false);
+        tail.SetActive(true);
         bulletCollider.enabled = true;
         bulletSpeed = oldSpeed;
         bulletMeshRenderer.enabled = true;

@@ -2,8 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosion : MonoBehaviour
+public class Explosion : Bonus
 {
+    [SerializeField] float value;
+    public override float Value
+    {
+        get => value;
+        set => this.value = value;
+    }
+
+    [Space]
     public LayerMask ignoreLayer;
     public bool isBullet;
     [SerializeField] private float radius;
@@ -14,9 +22,11 @@ public class Explosion : MonoBehaviour
 
     [SerializeField] private GameObject explosionEffect;
 
-    private bool explosionDone;
-
     public ForceMode forceMode = ForceMode.VelocityChange;
+
+    private bool explosionDone;
+    
+
 
     private void Update()
     {
@@ -63,7 +73,14 @@ public class Explosion : MonoBehaviour
         foreach (var collider in collidersWithoutAttackPointers)
         {
             Rigidbody rigidbody = collider.GetComponent<Rigidbody>();
-            if (rigidbody != null) rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
+            if (rigidbody != null)
+            {
+                rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
+
+                Bumper bumper = collider.GetComponent<Bumper>();
+                if (bumper != null) bumper.GetBonus(this);
+            }
+                
         }
 
         foreach (var collider in collidersWithAttackPointers)
@@ -78,6 +95,11 @@ public class Explosion : MonoBehaviour
 
         Destroy(gameObject);
         //gameObject.SetActive(false);
+    }
+
+    public override void Got()
+    {
+        // заглушка, чтобы не удалять объект
     }
 
     private void OnDrawGizmosSelected()

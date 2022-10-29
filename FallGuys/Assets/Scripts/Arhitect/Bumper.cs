@@ -22,9 +22,17 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
             }
             else
             {
+                Debug.Log("Event GetBonus");
                 OnBonusGot?.Invoke(bonus);
                 bonus.Got();
             }
         }
+    }
+
+    public void GetBonus(Bonus bonus)// вызывается взрывом без коллайдера
+    {
+        Debug.Log("Public GetBonus");
+        OnBonusGot?.Invoke(bonus);
+        bonus.Got();
     }
 }

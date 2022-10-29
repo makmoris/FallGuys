@@ -6,10 +6,10 @@ public class PlayerEffector
     private readonly IPlayer _player;
     private readonly PlayerLimitsData _limitsData;
 
-    private readonly UIIntermediary _intermediary;
+    private readonly VisualIntermediary _intermediary;
     // IPowerUp powerUp;
 
-    public PlayerEffector(IPlayer player, Bumper bumper, PlayerLimitsData limitsData, UIIntermediary intermediary)
+    public PlayerEffector(IPlayer player, Bumper bumper, PlayerLimitsData limitsData, VisualIntermediary intermediary)
     {
         _player = player;
         _limitsData = limitsData;
@@ -32,7 +32,7 @@ public class PlayerEffector
             case BonusType.AddHealth:
 
                 var resultHealth = _player.Health + bonus.Value;
-
+                Debug.Log(resultHealth + " = " + _player.Health + " + " + bonus.Value);
                 if (resultHealth > _limitsData.MaxHP)
                 {
                     resultHealth = _limitsData.MaxHP;
@@ -40,10 +40,20 @@ public class PlayerEffector
                 else if (resultHealth <= 0)
                 {
                     resultHealth = 0;
+
+                    //_intermediary.DestroyCar();
+                    //Debug.Log("Destroy in effector");
+                    //return;
                 }
 
                 _player.SetHealth(resultHealth);
                 _intermediary.UpdateHealthInUI(_player.Health);
+
+                if (_player.Health == 0)
+                {
+                    _intermediary.DestroyCar();
+                    Debug.Log("Destroy in effector");
+                }
 
                 break;
 

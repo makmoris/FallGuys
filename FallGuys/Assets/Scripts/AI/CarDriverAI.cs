@@ -39,7 +39,7 @@ public class CarDriverAI : MonoBehaviour
         float forwardAmount = 0f;
         float turnAmount = 0f;
 
-        float reachedTargetDistance = 7f;
+        float reachedTargetDistance = 4f;
         float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
         if (distanceToTarget > reachedTargetDistance)

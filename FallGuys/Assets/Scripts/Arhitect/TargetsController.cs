@@ -6,6 +6,7 @@ public class TargetsController : MonoBehaviour
 {
     [SerializeField] private Transform targetsContainer;
     [SerializeField] private Transform spawnPointsContainer;
+    [SerializeField] private float respawnCheckRadius;
 
     [SerializeField] private List<Transform> targets;
     [SerializeField] private List<GameObject> players;
@@ -63,9 +64,42 @@ public class TargetsController : MonoBehaviour
         return spawnPoints[index].position;
     }
 
-    public Vector3 GetRandomRespawnPosition()
+    public Vector3 GetRespawnPosition()
     {
-        int rand = Random.Range(0, spawnPoints.Count);
-        return spawnPoints[rand].position;
+        int minVal = spawnPoints.Count;
+        int respIndex = 0;
+
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            Collider[] overLappedColliders = Physics.OverlapSphere(spawnPoints[i].position, respawnCheckRadius);
+
+            int carCount = 0;
+
+            foreach (var val in overLappedColliders)
+            {
+                if (val.CompareTag("Car"))
+                {
+                    carCount++;
+                }
+            }
+
+            if(carCount == 0)// если в радиусе точки респа нету противников, значит в этой точке можем респать.
+            {
+                respIndex = i;
+                //Debug.Log($"Позиция {i} Кол-во авто = {carCount} Прерываем цикл");
+                break;
+            }
+            else
+            {
+                if (carCount < minVal)
+                {
+                    minVal = carCount;
+                    respIndex = i;
+                }
+            }
+            //Debug.Log($"Позиция {i} Кол-во авто = {carCount}");
+        }
+        //Debug.Log($"Респавн в позиции {respIndex}. Количество авто в ней = {minVal}");
+        return spawnPoints[respIndex].position;
     }
 }

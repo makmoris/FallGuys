@@ -192,4 +192,19 @@ public class PointerManager : MonoBehaviour
         }
         return Quaternion.identity;
     }
+
+    private void GameOwer(GameObject gameObject)
+    {
+        if(gameObject.transform == _playerTransform) this.enabled = false;
+    }
+
+    private void OnEnable()
+    {
+        VisualIntermediary.PlayerWasDeadEvent += GameOwer;
+    }
+
+    private void OnDisable()
+    {
+        VisualIntermediary.PlayerWasDeadEvent -= GameOwer;
+    }
 }

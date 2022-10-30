@@ -19,6 +19,7 @@ public class Bullet : Bonus
 
     private Vector3 forceDirection;
     private Collider parentCollider;// при создании пули получаем родителя, т.е. того, кто будет пулей пользоваться, чтобы проверять столкновения и не наносить урон самому себе
+    private GameObject parentShield;
 
     [SerializeField] private float effectTime;
     [SerializeField] private GameObject shotEffect;
@@ -40,7 +41,7 @@ public class Bullet : Bonus
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other != parentCollider)
+        if (other != parentCollider && other.gameObject != parentShield)
         {
             Explosion explosion = other.GetComponent<Explosion>();
             if (explosion != null)// значит это бочка
@@ -61,17 +62,19 @@ public class Bullet : Bonus
                     other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 3f, 
                         forceDirection.z * force), forceMode);
                 }
-
                 //StartCoroutine(ShowShotEffect(effectTime));
             }
+            Debug.Log($"пуля попала в {other.name}");
             StartCoroutine(ShowShotEffect(effectTime));
+
             //gameObject.SetActive(false);
         }
     }
 
-    public void SetParent(Collider parentCollider)
+    public void SetParent(Collider parentCollider, GameObject parentShield)
     {
         this.parentCollider = parentCollider;
+        this.parentShield = parentShield;
     }
 
     public void SetDamageValue(float damageValue)

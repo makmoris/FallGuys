@@ -18,11 +18,12 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                 {
                     OnBonusGot?.Invoke(bonus);
                     bonus.Got();
+                    Debug.Log("Прилетела пуля в бампер");
                 }
             }
             else
             {
-                Debug.Log("Event GetBonus");
+                Debug.Log("Event GetBonus" + other.name);
                 OnBonusGot?.Invoke(bonus);
                 bonus.Got();
             }

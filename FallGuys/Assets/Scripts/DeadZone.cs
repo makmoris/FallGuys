@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class DeadZone : Bonus
 {
@@ -11,11 +13,15 @@ public class DeadZone : Bonus
         set => this.value = value;
     }
 
+    [Header("Add Shield Bonus")]
+    [SerializeField] private AddShield shieldBonus;
+
     [Space]
     public float respawnTime;
     public TargetsController targetsController;
 
     [SerializeField]private List<GameObject> destroyedObjects;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,7 +29,7 @@ public class DeadZone : Bonus
         if (bumper != null)
         {
             bumper.gameObject.SetActive(false);
-            StartCoroutine(WaitAndResp(bumper.gameObject));
+            StartCoroutine(WaitAndResp(bumper));
             Debug.Log("DeadZone");
         }
     }
@@ -48,16 +54,19 @@ public class DeadZone : Bonus
         return false;
     }
 
-    IEnumerator WaitAndResp(GameObject gameObject)
+    IEnumerator WaitAndResp(Bumper bumper)
     {
         yield return new WaitForSeconds(respawnTime);
-        
-        if (!IsPlayerDead(gameObject))
+
+        GameObject car = bumper.gameObject;
+
+        if (!IsPlayerDead(car))
         {
-            Vector3 pos = targetsController.GetRandomRespawnPosition();
-            gameObject.transform.position = new Vector3(pos.x, 5f, pos.z);
-            gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-            gameObject.SetActive(true);
+            Vector3 pos = targetsController.GetRespawnPosition();
+            car.transform.position = new Vector3(pos.x, 5f, pos.z);
+            car.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            car.SetActive(true);
+            bumper.GetBonus(shieldBonus);
         }
             
     }

@@ -14,6 +14,11 @@ public class CoroutineRunner : MonoBehaviour // на пустой объект на сцене
             Destroy(this);
     }
 
-    public static void Run(IEnumerator enumerator)
+    //public static void Run(IEnumerator enumerator)
+    //    => _instance.StartCoroutine(enumerator);
+    public static Coroutine Run(IEnumerator enumerator)
         => _instance.StartCoroutine(enumerator);
+
+    public static void Stop(Coroutine coroutine)
+        => _instance.StopCoroutine(coroutine);
 }

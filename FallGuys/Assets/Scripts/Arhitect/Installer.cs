@@ -53,7 +53,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
 
         Vector3 pos = targetsController.GetStartSpawnPosition(0);
-        _playerObj.transform.position = new Vector3(pos.x, 25f, pos.z);
+        _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
 
         var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerVisualIntermediary);
 
@@ -79,7 +79,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
             weaponAI.IsAI(true);
 
             Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1);
-            _enemyObj.transform.position = new Vector3(posEnemy.x, 25f, posEnemy.z);
+            _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
 
             var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyVisualIntermediary);
         }

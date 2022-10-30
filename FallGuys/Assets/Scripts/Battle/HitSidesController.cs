@@ -18,8 +18,8 @@ public class HitSidesController : Bonus
 
     private Rigidbody _rbParent;
 
-    private bool isForwardMovement;
-    private bool isBackwardMovement;
+   [SerializeField] private bool isForwardMovement;
+    [SerializeField] private bool isBackwardMovement;
 
     [SerializeField] private bool canNewHit = true;
 
@@ -62,7 +62,7 @@ public class HitSidesController : Bonus
 
                     if (val >= minDamageSpeedValue && val <= maxDamageSpeedValue)
                     {
-                        value = val;
+                        value = val * -1f;
 
                         enemyBumper.GetBonus(this);
                     }
@@ -80,7 +80,7 @@ public class HitSidesController : Bonus
 
                     if (val >= minDamageSpeedValue && val <= maxDamageSpeedValue)
                     {
-                        value = val;
+                        value = val * -1f;
 
                         enemyBumper.GetBonus(this);
                     }

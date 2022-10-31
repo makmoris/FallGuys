@@ -392,11 +392,9 @@ namespace VehicleBehaviour {
             // Downforce
             rb.AddForce(-transform.up * speed * downforce);
 
-            Debug.Log(Vector3.Dot(Vector3.up, transform.up));
             // Проверка, что игрок не упал на бок или крышу
             if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
             {
-                Debug.Log("Prohodit");
                 immobilityValue++;
 
                 if (immobilityValue >= 100)

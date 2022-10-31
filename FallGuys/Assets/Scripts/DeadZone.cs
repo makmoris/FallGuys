@@ -14,7 +14,7 @@ public class DeadZone : Bonus
     }
 
     [Header("Add Shield Bonus")]
-    [SerializeField] private AddShield shieldBonus;
+    [SerializeField] private ShieldDeadZone shieldBonus;
 
     [Space]
     public float respawnTime;

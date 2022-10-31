@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AddShield : Bonus
+public class ShieldDeadZone : Bonus
 {
     [SerializeField] float value;
     public override float Value
@@ -11,6 +11,6 @@ public class AddShield : Bonus
 
     public override void Got()
     {
-        // заглушка, чтобы не удалять объект
+        
     }
 }

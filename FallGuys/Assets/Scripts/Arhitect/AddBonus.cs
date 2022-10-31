@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AddHealth : Bonus
+public class AddBonus : Bonus
 {
     [SerializeField] float value;
     public override float Value

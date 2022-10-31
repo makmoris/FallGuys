@@ -57,8 +57,9 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         //gameObject.SetActive(false);
         Destroy(gameObject);
     }
-    
-    // shield
+
+
+    #region Shield
     public void ShowShield(float time)
     {
         Color color = shieldMaterial.color;
@@ -116,4 +117,5 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
             yield return null;
         }
     }
+    #endregion
 }

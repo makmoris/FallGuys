@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Explosion : Bonus
 {
+    
+
     [SerializeField] float value;
     public override float Value
     {
@@ -13,7 +15,7 @@ public class Explosion : Bonus
 
     [Space]
     public LayerMask ignoreLayer;
-    public bool isBullet;
+    //public bool isBullet;
     [SerializeField] private float radius;
     [SerializeField] private float upwards;
     [SerializeField] private float force;
@@ -25,8 +27,9 @@ public class Explosion : Bonus
     public ForceMode forceMode = ForceMode.VelocityChange;
 
     private bool explosionDone;
-    
 
+    [Header("Mine or Bomb")]
+    [SerializeField] private bool isMine;
 
     private void Update()
     {
@@ -105,5 +108,10 @@ public class Explosion : Bonus
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, radius);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (isMine) ExplodeWithDelay();
     }
 }

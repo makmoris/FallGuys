@@ -13,7 +13,7 @@ public class EnemiesSettings
     public PlayerLimitsData _enemyLimitsData;
     public Weapon _enemyWeapon;
     internal Bumper _enemyBumper;
-    internal UIIntermediary _enemyUIIntermediary;
+    internal VisualIntermediary _enemyVisualIntermediary;
 }
 
 
@@ -27,7 +27,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
     [SerializeField] private PlayerLimitsData _playerLimitsData;
     [SerializeField] private Weapon _playerWeaon;// потом добавить и противникам
     private Bumper _playerBumper;
-    private UIIntermediary _playerUIIntermediary;
+    private VisualIntermediary _playerVisualIntermediary;
 
     [SerializeField] private List<EnemiesSettings> _enemiesSettings;
 
@@ -40,7 +40,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         IPlayer _player = new Player(_playerDefaultData);
         var _playerObj = Instantiate(_playerPrefab);
         _playerBumper = _playerObj.GetComponent<Bumper>();
-        _playerUIIntermediary = _playerObj.GetComponent<UIIntermediary>();
+        _playerVisualIntermediary = _playerObj.GetComponent<VisualIntermediary>();
 
         PointerManager.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
@@ -53,9 +53,9 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
 
         Vector3 pos = targetsController.GetStartSpawnPosition(0);
-        _playerObj.transform.position = new Vector3(pos.x, 25f, pos.z);
+        _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
 
-        var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerUIIntermediary);
+        var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerVisualIntermediary);
 
         //Install enemies
         List<IEnemyPlayer> enemies = new List<IEnemyPlayer>(_enemiesSettings.Count);
@@ -65,7 +65,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
 
             var _enemyObj = Instantiate(enemySet._enemyPrefab);
             enemySet._enemyBumper = _enemyObj.GetComponent<Bumper>();
-            enemySet._enemyUIIntermediary = _enemyObj.GetComponent<UIIntermediary>();
+            enemySet._enemyVisualIntermediary = _enemyObj.GetComponent<VisualIntermediary>();
 
             IEnemyPlayer _enemy = new EnemyPlayer(enemySet._enemyDefaultData, _enemyObj);
             enemies.Add(_enemy);
@@ -79,9 +79,9 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
             weaponAI.IsAI(true);
 
             Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1);
-            _enemyObj.transform.position = new Vector3(posEnemy.x, 25f, posEnemy.z);
+            _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
 
-            var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyUIIntermediary);
+            var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyVisualIntermediary);
         }
         
         _gameController = new GameController(_player, enemies);

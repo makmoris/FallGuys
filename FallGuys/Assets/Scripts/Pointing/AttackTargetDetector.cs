@@ -23,7 +23,7 @@ public class AttackTargetDetector : MonoBehaviour
                 currentTargetObject = other.gameObject;
 
                 if (!isAI) PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform);
+                else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
         }
     }
@@ -33,7 +33,7 @@ public class AttackTargetDetector : MonoBehaviour
         if (other.gameObject == currentTargetObject && currentTargetObject != null)// если замеченный объект совпадает с выбранным объектом целью, то можем атаковать
         {
              if (!isAI) PointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
-            else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform);
+            else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
 
             // разрешаем атаковать
             weapon.SetObjectForAttack(currentTargetObject.transform);
@@ -46,7 +46,7 @@ public class AttackTargetDetector : MonoBehaviour
                 currentTargetObject = other.gameObject;
 
                 if (!isAI) PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform);
+                else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
         }
         

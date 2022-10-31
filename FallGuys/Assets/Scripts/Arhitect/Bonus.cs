@@ -4,7 +4,8 @@ public enum BonusType
 {
     AddHealth = 0,
     AddSpeed = 1,
-    AddDamage = 2
+    AddDamage = 2,
+    AddShield = 3
 }
 public abstract class Bonus : MonoBehaviour
 {

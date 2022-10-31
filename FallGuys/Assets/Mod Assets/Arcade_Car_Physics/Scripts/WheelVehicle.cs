@@ -222,6 +222,10 @@ namespace VehicleBehaviour {
 
         // Init rigidbody, center of mass, wheels and more
 
+        // Для проверки, что игрок не перевернулся
+        private int immobilityValue;// сколько игрок провел в неподвижном состоянии
+        private Vector3 previousPosition;
+
         void Start() {
 #if MULTIOSCONTROLS
             Debug.Log("[ACP] Using MultiOSControls");
@@ -387,6 +391,23 @@ namespace VehicleBehaviour {
             
             // Downforce
             rb.AddForce(-transform.up * speed * downforce);
+
+            Debug.Log(Vector3.Dot(Vector3.up, transform.up));
+            // Проверка, что игрок не упал на бок или крышу
+            if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
+            {
+                Debug.Log("Prohodit");
+                immobilityValue++;
+
+                if (immobilityValue >= 100)
+                {
+                    immobilityValue = 0;
+                    transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                    transform.position = new Vector3(transform.position.x, 5f, transform.position.z);
+                }
+            }
+            else immobilityValue = 0;
+
         }
 
         // Reposition the car to the start position

@@ -18,6 +18,7 @@ public class PointerManager : MonoBehaviour
     [SerializeField] Transform _canvasTransform;
 
     //[SerializeField] AttackPointer _attackPointer;
+    [SerializeField] PlayerHealthUI _playerHealthUI;
     [Header("Prefabs")]
     [SerializeField] PointerIcon _positionPointerPrefab;
     [SerializeField] PointerIcon _attackPointerPrefab;
@@ -66,6 +67,18 @@ public class PointerManager : MonoBehaviour
         _positionDictionary.Remove(enemyPointer);
     }
 
+    public void ShowPositionPointer(EnemyPointer enemyPointer)
+    {
+        PointerIcon newPointer = _positionDictionary[enemyPointer];
+        newPointer.Show();
+    }
+
+    public void HidePositionPointer(EnemyPointer enemyPointer)
+    {
+        PointerIcon newPointer = _positionDictionary[enemyPointer];
+        newPointer.Hide();
+    }
+
     public void UpdateHealthInUI(EnemyPointer enemyPointer, float healthValue)
     {
         PointerIcon pointerIcon = _positionDictionary[enemyPointer];
@@ -74,7 +87,7 @@ public class PointerManager : MonoBehaviour
 
     public void UpdatePlayerHealthInUI(float healthValue)
     {
-        // здесь ставим ui hp для игрока и обновляем
+        _playerHealthUI.UpdatePlayerHealthUI(healthValue);
     }
 
     void LateUpdate()
@@ -178,5 +191,20 @@ public class PointerManager : MonoBehaviour
             return Quaternion.Euler(0f, 0f, 0f);
         }
         return Quaternion.identity;
+    }
+
+    private void GameOwer(GameObject gameObject)
+    {
+        if(gameObject.transform == _playerTransform) this.enabled = false;
+    }
+
+    private void OnEnable()
+    {
+        VisualIntermediary.PlayerWasDeadEvent += GameOwer;
+    }
+
+    private void OnDisable()
+    {
+        VisualIntermediary.PlayerWasDeadEvent -= GameOwer;
     }
 }

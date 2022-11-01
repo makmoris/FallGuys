@@ -34,7 +34,11 @@ public class PlayerEffector
         {
             case BonusType.AddHealth:
 
-                if (!isShieldActive)
+                if (bonus.Value < 0 && isShieldActive)
+                {
+
+                }
+                else
                 {
                     var resultHealth = _player.Health + bonus.Value;
                     Debug.Log(resultHealth + " = " + _player.Health + " + " + bonus.Value);
@@ -45,10 +49,6 @@ public class PlayerEffector
                     else if (resultHealth <= 0)
                     {
                         resultHealth = 0;
-
-                        //_intermediary.DestroyCar();
-                        //Debug.Log("Destroy in effector");
-                        //return;
                     }
 
                     _player.SetHealth(resultHealth);
@@ -63,13 +63,13 @@ public class PlayerEffector
 
                 break;
 
-            case BonusType.AddSpeed:
+            //case BonusType.AddSpeed:
 
-                break;
+            //    break;
 
-            case BonusType.AddDamage:
+            //case BonusType.AddDamage:
 
-                break;
+            //    break;
 
             case BonusType.AddShield:
                                                 // сейчас мерцает в зависмости от времени действия. 5 раз в течении 1/3 от времени действия

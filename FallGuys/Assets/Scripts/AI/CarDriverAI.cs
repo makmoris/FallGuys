@@ -39,7 +39,7 @@ public class CarDriverAI : MonoBehaviour
         float forwardAmount = 0f;
         float turnAmount = 0f;
 
-        float reachedTargetDistance = 7f;
+        float reachedTargetDistance = 4f;
         float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
         if (distanceToTarget > reachedTargetDistance)
@@ -189,6 +189,17 @@ public class CarDriverAI : MonoBehaviour
         ChooseTargetPosition(targetPositionTransform.position);
     }
 
+    private void RemoveFromTargetsList(GameObject removedObj)
+    {
+        if(removedObj.transform == targetPositionTransform)
+        {
+            targetReached = true;
+            ChooseTargetPosition(targetPositionTransform.position);
+        }
+
+        targets.Remove(removedObj.transform);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform == targetPositionTransform)
@@ -205,5 +216,15 @@ public class CarDriverAI : MonoBehaviour
             //print("Защита");
             targetReached = true;
         }
+    }
+
+    private void OnEnable()
+    {
+        VisualIntermediary.PlayerWasDeadEvent += RemoveFromTargetsList;
+    }
+
+    private void OnDisable()
+    {
+        VisualIntermediary.PlayerWasDeadEvent -= RemoveFromTargetsList;
     }
 }

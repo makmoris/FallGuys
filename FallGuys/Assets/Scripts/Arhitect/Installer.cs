@@ -14,7 +14,7 @@ public class EnemiesSettings
     public PlayerLimitsData _enemyLimitsData;
     public Weapon _enemyWeapon;
     internal Bumper _enemyBumper;
-    internal UIIntermediary _enemyUIIntermediary;
+    internal VisualIntermediary _enemyVisualIntermediary;
 }
 
 
@@ -29,21 +29,20 @@ public class Installer : MonoBehaviour // �� ������ ����
     [SerializeField] private Weapon _playerWeaon;// ����� �������� � �����������
     [SerializeField] private CinemachineVirtualCamera camCinema;
     private Bumper _playerBumper;
-    private UIIntermediary _playerUIIntermediary;
+    private VisualIntermediary _playerVisualIntermediary;
 
     [SerializeField] private List<EnemiesSettings> _enemiesSettings;
 
     //private readonly GameController _gameController;
     private GameController _gameController;
 
-    void Awake()
+    void Start()
     {
         // Install player
         IPlayer _player = new Player(_playerDefaultData);
-        Vector3 pos = targetsController.GetStartSpawnPosition(0);
-        var _playerObj = Instantiate(_playerPrefab, new Vector3(pos.x, 5f, pos.z), Quaternion.identity);
+        var _playerObj = Instantiate(_playerPrefab);
         _playerBumper = _playerObj.GetComponent<Bumper>();
-        _playerUIIntermediary = _playerObj.GetComponent<UIIntermediary>();
+        _playerVisualIntermediary = _playerObj.GetComponent<VisualIntermediary>();
 
         PointerManager.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
@@ -57,7 +56,10 @@ public class Installer : MonoBehaviour // �� ������ ����
         camCinema.m_Follow = _playerObj.transform;
         camCinema.m_LookAt = _playerObj.transform;
 
-        var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerUIIntermediary);
+        Vector3 pos = targetsController.GetStartSpawnPosition(0);
+        _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
+
+        var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerVisualIntermediary);
 
         //Install enemies
         List<IEnemyPlayer> enemies = new List<IEnemyPlayer>(_enemiesSettings.Count);
@@ -65,10 +67,9 @@ public class Installer : MonoBehaviour // �� ������ ����
         {
             var enemySet = _enemiesSettings[i];
 
-            Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1);
-            var _enemyObj = Instantiate(enemySet._enemyPrefab, new Vector3(posEnemy.x, 5f, posEnemy.z), Quaternion.identity);
+            var _enemyObj = Instantiate(enemySet._enemyPrefab);
             enemySet._enemyBumper = _enemyObj.GetComponent<Bumper>();
-            enemySet._enemyUIIntermediary = _enemyObj.GetComponent<UIIntermediary>();
+            enemySet._enemyVisualIntermediary = _enemyObj.GetComponent<VisualIntermediary>();
 
             IEnemyPlayer _enemy = new EnemyPlayer(enemySet._enemyDefaultData, _enemyObj);
             enemies.Add(_enemy);
@@ -81,9 +82,10 @@ public class Installer : MonoBehaviour // �� ������ ����
             weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
             weaponAI.IsAI(true);
 
-            
+            Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1);
+            _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
 
-            var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyUIIntermediary);
+            var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyVisualIntermediary);
         }
         
         _gameController = new GameController(_player, enemies);
@@ -91,8 +93,8 @@ public class Installer : MonoBehaviour // �� ������ ����
         targetsController.SetTargetsForPlayers();
     }
 
-    void Start()
-    {
-        _gameController.LaunchGame();
-    }
+    //void Start()
+    //{
+    //    _gameController.LaunchGame();
+    //}
 }

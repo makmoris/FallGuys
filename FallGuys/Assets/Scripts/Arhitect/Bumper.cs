@@ -18,13 +18,26 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                 {
                     OnBonusGot?.Invoke(bonus);
                     bonus.Got();
+                    Debug.Log("Прилетела пуля в бампер");
                 }
             }
             else
             {
-                OnBonusGot?.Invoke(bonus);
-                bonus.Got();
+                Explosion explosion = bonus.GetComponent<Explosion>();
+                if (explosion == null)// взрыв вызывается через public GetBonus. Самим бампером ловим только баффы. + Взрыв не сразу после наезда
+                {
+                    Debug.Log("Event GetBonus" + other.name);
+                    OnBonusGot?.Invoke(bonus);
+                    bonus.Got();
+                }
             }
         }
+    }
+
+    public void GetBonus(Bonus bonus)// вызывается взрывом без коллайдера
+    {
+        Debug.Log("Public GetBonus");
+        OnBonusGot?.Invoke(bonus);
+        bonus.Got();
     }
 }

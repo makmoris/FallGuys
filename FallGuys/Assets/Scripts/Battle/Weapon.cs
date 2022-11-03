@@ -19,7 +19,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float attackRange;
 
     [Header("Weapon parts")]
-    [SerializeField] private Collider parentBodyCollider;// у каждой машинки свой
+    [SerializeField] private Collider parentBodyCollider;// у каждой машинки свой // убрать —ерриализацию
+    [SerializeField] private GameObject parentShield;// щит этой машинки, чтобы игнорировать его при выстреле. „тобы пул€ пролетала через него // убрать
     [SerializeField] private Transform weaponTransform;
     [SerializeField] private Transform detectorTransform;
     [SerializeField] private Transform startBulletPosition;
@@ -56,6 +57,7 @@ public class Weapon : MonoBehaviour
         bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, Quaternion.identity, startBulletPosition);
         bulletExample.GetComponent<Bullet>().enabled = false;
         bulletExample.GetComponent<Collider>().enabled = false;
+        bulletExample.transform.Find("Jet02Red").gameObject.SetActive(false);
 
         defaultWeaponRotation = weaponTransform.localRotation;
     }
@@ -113,6 +115,7 @@ public class Weapon : MonoBehaviour
     public void SetParentBodyCollider(Collider bodyCollider)
     {
         parentBodyCollider = bodyCollider;
+        parentShield = parentBodyCollider.transform.GetComponentInChildren<Shield>(true).gameObject;
     }
 
     public void IsAI(bool value)// вызываетс€ в installer при создании бота
@@ -127,7 +130,7 @@ public class Weapon : MonoBehaviour
 
         var bullet = bulletPool.GetFreeElement();
 
-        bullet.SetParent(parentBodyCollider);
+        bullet.SetParent(parentBodyCollider, parentShield);
         bullet.SetDamageValue(damage);
 
         bullet.transform.position = startBulletPosition.position;

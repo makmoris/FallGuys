@@ -1,26 +1,83 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class DeadZone : MonoBehaviour
+
+public class DeadZone : Bonus
 {
+    [SerializeField] float value;
+    public override float Value
+    {
+        get => value;
+        set => this.value = value;
+    }
+
+    [Header("Add Shield Bonus")]
+    [SerializeField] private ShieldDeadZone shieldBonus;
+
+    [Space]
+    public float respawnTime;
     public TargetsController targetsController;
+
+    [SerializeField]private List<GameObject> destroyedObjects;
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Bumper>() != null)
+        Bumper bumper = other.GetComponent<Bumper>();
+        if (bumper != null)
         {
-            other.gameObject.SetActive(false);
-            StartCoroutine(WaitAndResp(other.gameObject));
+            bumper.gameObject.SetActive(false);
+            StartCoroutine(WaitAndResp(bumper));
+            Debug.Log("DeadZone");
         }
     }
 
-    IEnumerator WaitAndResp(GameObject gameObject)
+    public override void Got()
     {
-        yield return new WaitForSeconds(2f);
-        Vector3 pos = targetsController.GetRandomRespawnPosition();
-        gameObject.transform.position = new Vector3(pos.x, 5f, pos.z);
-        gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-        gameObject.SetActive(true);
+        // заглушка, чтобы не удалять объект
+    }
+
+    private void PlayerWasDestroy(GameObject playerGO)
+    {
+        destroyedObjects.Add(playerGO);
+    }
+
+    private bool IsPlayerDead(GameObject playerGO)
+    {
+        foreach (var obj in destroyedObjects)
+        {
+            if (obj == playerGO) return true;
+        }
+
+        return false;
+    }
+
+    IEnumerator WaitAndResp(Bumper bumper)
+    {
+        yield return new WaitForSeconds(respawnTime);
+
+        GameObject car = bumper.gameObject;
+
+        if (!IsPlayerDead(car))
+        {
+            Vector3 pos = targetsController.GetRespawnPosition();
+            car.transform.position = new Vector3(pos.x, 5f, pos.z);
+            car.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            car.SetActive(true);
+            bumper.GetBonus(shieldBonus);
+        }
+            
+    }
+
+    private void OnEnable()
+    {
+        VisualIntermediary.PlayerWasDeadEvent += PlayerWasDestroy;
+    }
+
+    private void OnDisable()
+    {
+        VisualIntermediary.PlayerWasDeadEvent -= PlayerWasDestroy;
     }
 }

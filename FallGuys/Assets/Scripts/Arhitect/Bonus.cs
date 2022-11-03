@@ -3,8 +3,9 @@ using UnityEngine;
 public enum BonusType
 {
     AddHealth = 0,
-    AddSpeed = 1,
-    AddDamage = 2
+    AddShield = 1
+    //AddSpeed = 2,
+    //AddDamage = 3
 }
 public abstract class Bonus : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public abstract class Bonus : MonoBehaviour
 
     public virtual void Got()
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

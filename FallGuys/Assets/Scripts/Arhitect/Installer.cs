@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using VehicleBehaviour.Utils;
+using Cinemachine;
 
 [Serializable]
 public class EnemiesSettings
@@ -17,7 +18,7 @@ public class EnemiesSettings
 }
 
 
-public class Installer : MonoBehaviour // на пустой объект на сцене
+public class Installer : MonoBehaviour // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 {
     public TargetsController targetsController;
 
@@ -25,7 +26,8 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private PlayerDefaultData _playerDefaultData;
     [SerializeField] private PlayerLimitsData _playerLimitsData;
-    [SerializeField] private Weapon _playerWeaon;// потом добавить и противникам
+    [SerializeField] private Weapon _playerWeaon;// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    [SerializeField] private CinemachineVirtualCamera camCinema;
     private Bumper _playerBumper;
     private UIIntermediary _playerUIIntermediary;
 
@@ -46,12 +48,14 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
         PointerManager.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
 
-        // ставим пушку
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         Transform weaponPlace = _playerObj.transform.Find("WeaponPlace");
         Weapon weapon = Instantiate(_playerWeaon, weaponPlace);
         weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
 
-        Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
+        //Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
+        camCinema.m_Follow = _playerObj.transform;
+        camCinema.m_LookAt = _playerObj.transform;
 
         var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerUIIntermediary);
 
@@ -71,7 +75,7 @@ public class Installer : MonoBehaviour // на пустой объект на сцене
 
             targetsController.AddPlayerToTargets(_enemyObj);
 
-            // ставим пушку боту
+            // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
             Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
             weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());

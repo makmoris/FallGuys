@@ -18,10 +18,10 @@ public class HitSidesController : Bonus
 
     private Rigidbody _rbParent;
 
-   [SerializeField] private bool isForwardMovement;
-    [SerializeField] private bool isBackwardMovement;
+    private bool isForwardMovement;
+    private bool isBackwardMovement;
 
-    [SerializeField] private bool canNewHit = true;
+    private bool canNewHit = true;
 
     private void Awake()
     {

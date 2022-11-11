@@ -14,20 +14,22 @@ public class Weapon : MonoBehaviour
 
     [Header("Characteristics")]
     [SerializeField] private WeaponCharacteristicsData characteristicsData;
-    [SerializeField] private float damage;
-    [SerializeField] private float rechargeTime;
-    [SerializeField] private float attackRange;
+    private float damage;
+    private float rechargeTime;
+    private float attackRange;
 
     [Header("Weapon parts")]
-    [SerializeField] private Collider parentBodyCollider;// у каждой машинки свой // убрать —ерриализацию
-    [SerializeField] private GameObject parentShield;// щит этой машинки, чтобы игнорировать его при выстреле. „тобы пул€ пролетала через него // убрать
     [SerializeField] private Transform weaponTransform;
     [SerializeField] private Transform detectorTransform;
     [SerializeField] private Transform startBulletPosition;
+    private Collider parentBodyCollider;// у каждой машинки свой // убрать —ерриализацию
+    private GameObject parentShield;// щит этой машинки, чтобы игнорировать его при выстреле. „тобы пул€ пролетала через него // убрать
 
-    [Header("AI")]
-    [SerializeField] private bool isAI;
+    //[Header("AI")]
+    private bool isAI;
 
+    //[Header("Is lobby scene?")]
+    //[SerializeField] private bool isLobby;
 
     private Transform target;// понадобитс€, если делать полет пули не по пр€мой, а в цель (автонаведение)
 
@@ -40,6 +42,12 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
+        //if (isLobby)// потом можно сделать на проверку сцены. ≈сли активна лобби сцена, то true
+        //{
+        //    CreateExampleBullet();
+        //    this.enabled = false;
+        //}
+
         damage = characteristicsData.damage;
         rechargeTime = characteristicsData.rechargeTime;
         attackRange = characteristicsData.attackRange;
@@ -54,12 +62,17 @@ public class Weapon : MonoBehaviour
 
         SetDetectorScale();
 
-        bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, Quaternion.identity, startBulletPosition);
+        CreateExampleBullet();
+
+        defaultWeaponRotation = weaponTransform.localRotation;
+    }
+
+    private void CreateExampleBullet()
+    {
+        bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, startBulletPosition.rotation, startBulletPosition);
         bulletExample.GetComponent<Bullet>().enabled = false;
         bulletExample.GetComponent<Collider>().enabled = false;
         bulletExample.transform.Find("Jet02Red").gameObject.SetActive(false);
-
-        defaultWeaponRotation = weaponTransform.localRotation;
     }
 
     private void Update()

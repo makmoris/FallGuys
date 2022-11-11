@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5528954116696143429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5528954116696143451}
+  - component: {fileID: 5528954116696143450}
+  m_Layer: 0
+  m_Name: CharacterManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5528954116696143451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5528954116696143429}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5528954116696143450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5528954116696143429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bbd0e7e614eb7e4980a1e107d0ff34b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleIndex: 0
+  weaponIndex: 0
+  vehicles:
+  - name: Test Car
+    vehiclePrefab: {fileID: 7434162804505329504, guid: ae2fbac953aaaf44c8ca9c224139eefe, type: 3}
+    defaultData: {fileID: 11400000, guid: 5b42e11ed02c3224e8b5ace27041ffa4, type: 2}
+    limitsData: {fileID: 11400000, guid: aa050a70c8b4fc74488bf20cfcfbfe06, type: 2}
+  - name: Test Car 2
+    vehiclePrefab: {fileID: 129297121802666009, guid: e4180f4f5aa40f545b33206bd6305e98, type: 3}
+    defaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
+    limitsData: {fileID: 11400000, guid: 6f58f00d08feda041a74d7bf564022d7, type: 2}
+  weapons:
+  - name: Test Weapon 1
+    weaponPrefab: {fileID: 5974358611791307304, guid: 6a3b0bab3080b7f49b210d1b8f972cb4, type: 3}
+    weaponData: {fileID: 11400000, guid: 8dab26c05ba1a99408cb7e8151f81106, type: 2}
+  - name: Test Weapon 2
+    weaponPrefab: {fileID: 5974358611791307304, guid: 92cf8e7362181024d918ea7018352777, type: 3}
+    weaponData: {fileID: 11400000, guid: 8dab26c05ba1a99408cb7e8151f81106, type: 2}

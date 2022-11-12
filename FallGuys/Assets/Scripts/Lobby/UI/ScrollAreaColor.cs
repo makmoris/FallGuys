@@ -22,7 +22,7 @@ public class ScrollAreaColor : MonoBehaviour
     {
         activeVehicle = lobbyManager.GetActiveVehicle();
 
-        CheckInactivity(colorContents);
+        //CheckInactivity(colorContents);
 
         ShowContentForActiveVehicle();
     }
@@ -36,15 +36,21 @@ public class ScrollAreaColor : MonoBehaviour
                 cont.gameObject.SetActive(true);
 
                 scrollRect.content = cont.GetComponent<RectTransform>();
+
+                //break;
+            }
+            else
+            {
+                cont.gameObject.SetActive(false);
             }
         }
     }
 
-    private void CheckInactivity(List<ColorContent> list)
-    {
-        foreach (var value in list)
-        {
-            if (value.gameObject.activeSelf) value.gameObject.SetActive(false);
-        }
-    }
+    //private void CheckInactivity(List<ColorContent> list)
+    //{
+    //    foreach (var value in list)
+    //    {
+    //        if (value.gameObject.activeSelf) value.gameObject.SetActive(false);
+    //    }
+    //}
 }

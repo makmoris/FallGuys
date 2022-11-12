@@ -18,9 +18,14 @@ public class VehicleCustomizer : MonoBehaviour // кидаем на префаб LobbyVehicle 
     [SerializeField] private int _activeMaterialIndex;
     [SerializeField] private List<Material> _materials;
 
-    private void Start()
+    private void Awake()
     {
         GetDataOfMaterial();
+    }
+
+    private void Start()
+    {
+        //GetDataOfMaterial();
 
         ShowActiveMaterial();
     }
@@ -54,7 +59,39 @@ public class VehicleCustomizer : MonoBehaviour // кидаем на префаб LobbyVehicle 
         }
     }
     #region Material - Color
-    
+
+    public Material GetActiveMaterial()
+    {
+        return _materials[_activeMaterialIndex];
+    }
+
+    public void ShowColor(Material newMaterial)
+    {
+        int index = 0;
+
+        foreach (var mat in _materials)
+        {
+            if (newMaterial == mat) break;
+
+            index++;
+        }
+
+        ShowPreMaterial(index);
+    }
+
+    public void BackToActiveColor()
+    {
+        ShowActiveMaterial();
+    }
+
+    private void ShowPreMaterial(int indexMat)
+    {
+        foreach (var mR in meshRenderers)
+        {
+            mR.material = _materials[indexMat];
+        }
+    }
+
     public void ChangeColor(Material newMaterial)
     {
         int index = 0;
@@ -78,7 +115,7 @@ public class VehicleCustomizer : MonoBehaviour // кидаем на префаб LobbyVehicle 
     {
         foreach (var mR in meshRenderers)
         {
-            mR.material = _materials[_activeMaterialIndex];
+            if(mR != null) mR.material = _materials[_activeMaterialIndex];
         }
     }
 

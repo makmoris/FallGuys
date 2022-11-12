@@ -9,4 +9,33 @@ public class VehicleColorData : ScriptableObject
     [SerializeField] private int colorCost;
     [SerializeField] private int colorCupsToUnlock;
     [SerializeField] private bool isColorAvailable;// если false - то оно заблочено, нужно его купить/открыть 
+
+    public string ColorName
+    {
+        get
+        {
+            return colorName;
+        }
+    }
+    public int ColorCost
+    {
+        get
+        {
+            return colorCost;
+        }
+    }
+    public int ColorCupsToUnlock
+    {
+        get
+        {
+            return colorCupsToUnlock;
+        }
+    }
+    public bool IsColorAvailable
+    {
+        get
+        {
+            return isColorAvailable;
+        }
+    }
 }

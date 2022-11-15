@@ -2,11 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ColorContent : MonoBehaviour
 {
     [SerializeField] private LobbyVehicle vehicleForContent;
     [SerializeField] private TextMeshProUGUI nameText;
+
+    [Header("Apply Button")]
+    [SerializeField] private Button applyButton;
+    [SerializeField] private TextMeshProUGUI applyText;
+    [Header("Buy Button")]
+    [SerializeField] private Button buyButton;
+    [SerializeField] private TextMeshProUGUI costText;
+    [SerializeField] private TextMeshProUGUI cupsText;
 
 
     private List<ColorButton> colorButtons = new List<ColorButton>();
@@ -23,8 +32,11 @@ public class ColorContent : MonoBehaviour
 
     private void Start()
     {
-        UpdateAllButtonInfo();
-        notFirstActive = true;
+        if (!notFirstActive)
+        {
+            UpdateAllButtonInfo();
+            notFirstActive = true;
+        }
     }
 
 
@@ -41,6 +53,27 @@ public class ColorContent : MonoBehaviour
     public TextMeshProUGUI GetNameText()
     {
         return nameText;
+    }
+
+    public Button GetApplyButton()
+    {
+        return applyButton;
+    }
+    public TextMeshProUGUI GetApplyText()
+    {
+        return applyText;
+    }
+    public Button GetBuyButton()
+    {
+        return buyButton;
+    }
+    public TextMeshProUGUI GetCostText()
+    {
+        return costText;
+    }
+    public TextMeshProUGUI GetCupsText()
+    {
+        return cupsText;
     }
 
     public void ShowColorWasChanged()

@@ -9,9 +9,12 @@ public class ScrollAreaColor : MonoBehaviour
 
     [SerializeField] private List<ColorContent> colorContents;
 
-    private GameObject activeVehicle;
+    [SerializeField] private GameObject activeVehicle;
+    [SerializeField]private GameObject previousActiveVehicle;
 
     private ScrollRect scrollRect;
+
+    private bool notFirstActive;
 
     private void Awake()
     {
@@ -20,15 +23,39 @@ public class ScrollAreaColor : MonoBehaviour
 
     private void OnEnable()
     {
-        activeVehicle = lobbyManager.GetActiveVehicle();
+        //activeVehicle = lobbyManager.GetActiveVehicle();
 
         //CheckInactivity(colorContents);
 
-        ShowContentForActiveVehicle();
+        //ShowContentForActiveVehicle();
+
+        if (notFirstActive)
+        {
+            //if (activeVehicle == null) SetActiveVehicle();
+
+            ShowContentForActiveVehicle();
+
+            
+        }
+    }
+
+    private void Start()
+    {
+        //if (activeVehicle == null) SetActiveVehicle();
+
+        if (!notFirstActive)
+        {
+            ShowContentForActiveVehicle();
+            notFirstActive = true;
+        }
+        //ShowContentForActiveVehicle();
+        //notFirstActive = true;
     }
 
     private void ShowContentForActiveVehicle()
     {
+        SetActiveVehicle();
+
         foreach (var cont in colorContents)
         {
             if (activeVehicle == cont.GetContentVehicle())
@@ -43,7 +70,14 @@ public class ScrollAreaColor : MonoBehaviour
             {
                 cont.gameObject.SetActive(false);
             }
+            
         }
+    }
+
+    private void SetActiveVehicle()
+    {
+        
+        activeVehicle = lobbyManager.GetActiveVehicle();
     }
 
     //private void CheckInactivity(List<ColorContent> list)
@@ -53,4 +87,12 @@ public class ScrollAreaColor : MonoBehaviour
     //        if (value.gameObject.activeSelf) value.gameObject.SetActive(false);
     //    }
     //}
+
+    private void OnDisable()
+    {
+        foreach (var value in colorContents)
+        {
+            value.gameObject.SetActive(false);
+        }
+    }
 }

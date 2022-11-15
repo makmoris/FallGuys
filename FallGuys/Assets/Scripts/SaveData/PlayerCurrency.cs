@@ -6,5 +6,6 @@ namespace SaveData
     public class PlayerCurrency
     {
         public int gold;
+        public int cups;
     }
 }

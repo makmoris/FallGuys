@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ColorButton : MonoBehaviour
 {
@@ -11,13 +12,24 @@ public class ColorButton : MonoBehaviour
     [Header("Button Components")]
     [SerializeField] private GameObject choiseImage;
     [SerializeField] private GameObject borderImage;
+    [SerializeField] private GameObject lockImage;
+    
+    private TextMeshProUGUI nameText;
+
+    private Button applyButton;
+    private TextMeshProUGUI applyText;
+    private Button buyButton;
+    private TextMeshProUGUI costText;
+    private TextMeshProUGUI cupsText;
+
+    private Vector2 oldCupsTextPosition;
 
     [Space]
     [SerializeField] private bool isActiveColor;
 
     private ColorContent parentColorContent;
     [SerializeField]private VehicleCustomizer thisLobbyVehicleCustomizer;
-    private TextMeshProUGUI nameText;
+    
 
     [Header("Data values")]
     [SerializeField] private string _colorName;
@@ -25,6 +37,7 @@ public class ColorButton : MonoBehaviour
     [SerializeField] private int _colorCupsToUnlock;
     [SerializeField] private bool _isColorAvailable;// если false - то оно заблочено, нужно его купить/открыть 
 
+    private bool dataWasLoaded;
     private void Start()
     {
         SetLobbyVehicleData();
@@ -32,9 +45,9 @@ public class ColorButton : MonoBehaviour
 
     public void SetColor()// должен устанавливаться одной кнопкой (кнопа выбора), чтобы сохранить и подтвердить цвет
     {
-        parentColorContent.InfoWasUpdate();
-
         thisLobbyVehicleCustomizer.ChangeColor(colorMaterial);
+
+        parentColorContent.InfoWasUpdate();
     }
 
     public void ShowColor()// вызывается кнопой при выборе цвета, чтобы посмотреть. Смотреть можно все кнопы
@@ -44,10 +57,14 @@ public class ColorButton : MonoBehaviour
         thisLobbyVehicleCustomizer.ShowColor(colorMaterial);
 
         parentColorContent.ShowColorWasChanged();
+
+        CheckBuyAndApplyButtonStatus();
     }
 
     private void LoadColorData()
     {
+        colorData.LoadData();
+
         _colorName = colorData.ColorName;
         _colorCost = colorData.ColorCost;
         _colorCupsToUnlock = colorData.ColorCupsToUnlock;
@@ -59,16 +76,31 @@ public class ColorButton : MonoBehaviour
 
     private void SetLobbyVehicleData()
     {
-        LoadColorData();
+        if (!dataWasLoaded)
+        {
+            LoadColorData();
 
-        parentColorContent = transform.GetComponentInParent<ColorContent>();
-        thisLobbyVehicleCustomizer = parentColorContent.GetVehicleCustomizer();
+            parentColorContent = transform.GetComponentInParent<ColorContent>();
+            thisLobbyVehicleCustomizer = parentColorContent.GetVehicleCustomizer();
 
-        nameText = parentColorContent.GetNameText();
+            nameText = parentColorContent.GetNameText();
+
+            applyButton = parentColorContent.GetApplyButton();
+            applyText = parentColorContent.GetApplyText();
+            buyButton = parentColorContent.GetBuyButton();
+            costText = parentColorContent.GetCostText();
+            cupsText = parentColorContent.GetCupsText();
+
+            dataWasLoaded = true;
+
+            oldCupsTextPosition = cupsText.rectTransform.anchoredPosition;
+        }
     }
 
     public void ChangeShowSelectColor()
     {
+        if (nameText == null) SetLobbyVehicleData();
+
         if (nameText.text == _colorName)
         {
             borderImage.SetActive(true);
@@ -87,15 +119,107 @@ public class ColorButton : MonoBehaviour
         {
             nameText.text = _colorName;
             isActiveColor = true;
+
+            CheckBuyAndApplyButtonStatus();
+
+            parentColorContent.ShowColorWasChanged();
         }
         else
         {
             isActiveColor = false;
         }
 
-        choiseImage.SetActive(isActiveColor);
+        if (_isColorAvailable) lockImage.SetActive(false);
+        else lockImage.SetActive(true);
 
-        ChangeShowSelectColor();
+        choiseImage.SetActive(isActiveColor);
+    }
+
+    private void CheckBuyAndApplyButtonStatus()
+    {
+        if (_isColorAvailable)// если цвет открыт 
+        {
+            if (!applyButton.gameObject.activeSelf) applyButton.gameObject.SetActive(true);
+            if (buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(false);
+
+            if (isActiveColor)// если этот цвет уже выбран 
+            {
+                // то блочим enabled кнопку и в текст статуса - APPLIED
+                applyButton.interactable = false;
+                applyText.text = "APPLIED";
+            }
+            else// если этот цвет не выбран
+            {
+                // то предлагаем его выбрать. Кнопка активна, текст на кнопке - APPLY. В статусе ничего не пишем
+                // если по ней нажать, то вызывается SetColor(); чтобы сохранить изменения 
+                applyButton.interactable = true;
+                applyText.text = "APPLY";
+
+                CallApplyButton();
+            }
+        }
+        else // если цвет закрыт
+        {
+            if (!buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(true);
+            if (applyButton.gameObject.activeSelf) applyButton.gameObject.SetActive(false);
+
+            if (_colorCupsToUnlock <= CurrencyManager.Instance.Cups)// Смотрим, Если у игрока кубков достаточно для этого цвета, то
+            {
+                // то разрешаем ему посмотреть стоимость кнопки + кнопка для покупки активна
+                buyButton.interactable = true;
+                costText.text = _colorCost.ToString();
+                cupsText.text = "PURCHASE";
+                cupsText.rectTransform.anchoredPosition = new Vector2(0, oldCupsTextPosition.y);
+                
+
+                for (int i = 0; i < cupsText.transform.childCount; i++)// отключаем картинку и текст внутри
+                {
+                    cupsText.transform.GetChild(i).gameObject.SetActive(false);
+                }
+
+                CallBuyButton();
+            }
+            else// если кубков недостаточно
+            {
+                // цена показывается, но кнопка заблочена (неактивна). В статусе - NEED X КУБКОВ, ГДЕ Х - КОЛИЧЕСТВО КУБКОВ
+                buyButton.interactable = false;
+                cupsText.text = _colorCupsToUnlock.ToString();
+                costText.text = _colorCost.ToString();
+                cupsText.rectTransform.anchoredPosition = oldCupsTextPosition;
+
+                for (int i = 0; i < cupsText.transform.childCount; i++)// включаем картинку и текст внутри
+                {
+                    cupsText.transform.GetChild(i).gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
+    private void CallApplyButton()
+    {
+        applyButton.onClick.RemoveAllListeners();
+        applyButton.onClick.AddListener(SetColor);
+    }
+
+    private void CallBuyButton()
+    {
+        buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.AddListener(BuyColor);
+    }
+    private void BuyColor() // игрок нажимает по кнопке покупки, в этот момент:
+    {
+        if (CurrencyManager.Instance.SpendGold(_colorCost))// Смотрим, если у игрока достаточно денег, чтобы купить, то 
+        {
+            // то продаем ему эту кнопку. Ставим _isColorAvailable этого цвета в true и сохраняем файл ScriptableObject
+            _isColorAvailable = true;
+            SetColor();
+            colorData.SaveNewAwailableStatus(_isColorAvailable);
+        }
+        else
+        {
+            // если денег недостаточно, то блочим кнопку (неактивная)
+            
+        }
     }
 
     private Material GetActiveMaterial()

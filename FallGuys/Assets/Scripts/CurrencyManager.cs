@@ -21,6 +21,9 @@ public class CurrencyManager : MonoBehaviour
 
     private const string saveKey = "currencySave";
 
+    //
+
+    #region Gold
     [SerializeField]private int _gold;
     public int Gold
     {
@@ -52,13 +55,53 @@ public class CurrencyManager : MonoBehaviour
             return false;
         }
     }
+    #endregion
 
-    
+    //
+
+    #region Cups
+    [SerializeField] private int _cups;
+    public int Cups
+    {
+        get { return _cups; }
+        private set
+        {
+            _cups = value;
+            Save();
+        }
+    }
+
+    public void AddCup(int value)
+    {
+        Cups = _cups + value;
+    }
+
+    //public bool SpendCup(int value)// true - если можем потратить столько денег
+    //{
+    //    int result = _cups - value;
+
+    //    if (result >= 0)
+    //    {
+    //        Cups = result;
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Недостаточно кубков");
+    //        return false;
+    //    }
+    //}
+    #endregion
+
+    //
+
+    #region SaveLoad
     private void Load()
     {
         var data = SaveManager.Load<SaveData.PlayerCurrency>(saveKey);
 
         Gold = data.gold;
+        Cups = data.cups;
     }
 
     private void Save()
@@ -70,9 +113,11 @@ public class CurrencyManager : MonoBehaviour
     {
         var data = new SaveData.PlayerCurrency()
         {
-            gold = Gold
+            gold = Gold,
+            cups = Cups
         };
 
         return data;
     }
+    #endregion
 }

@@ -25,7 +25,6 @@ public class VehicleColorData : ScriptableObject
         }
         else
         {
-            Debug.Log("Pizda");
             isColorAvailable = ElementsAvailableData.Instance.GetAvailableStatus(saveName);
             //ElementsAvailableData.Instance.GetAvailableStatus(saveName);
 
@@ -35,11 +34,14 @@ public class VehicleColorData : ScriptableObject
 
     public void SaveNewAwailableStatus(bool availableStatus)// вызывается из ColorButton в момент покупки цвета
     {
-        isColorAvailable = availableStatus;
+        if (saveName != "")
+        {
+            isColorAvailable = availableStatus;
 
-        ElementsAvailableData.Instance.SaveElevemtAvailableStatus(saveName, isColorAvailable);
+            ElementsAvailableData.Instance.SaveElevemtAvailableStatus(saveName, isColorAvailable);
 
-        Debug.Log(name + " сохранил isAvailable");
+            Debug.Log(name + " сохранил isAvailable");
+        }
     }
 
     public string ColorName

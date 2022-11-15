@@ -13,4 +13,9 @@ public class TestSceneLoader : MonoBehaviour
             SceneManager.LoadScene(ind);
         }
     }
+
+    public void NewScene()
+    {
+        SceneManager.LoadScene(1);
+    }
 }

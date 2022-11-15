@@ -39,8 +39,7 @@ public class ElementsAvailableData : MonoBehaviour
         }
         else // åñëè íåòó, òî ñîçäàåì 
         {
-            _allAvailableElementsList.Add(saveName, isAvailable);
-            Debug.Log("Dobavily   " + _allAvailableElementsList.Count);
+            _allAvailableElementsList.Add(saveName, isAvailable);       // ÍÀÏÈÑÀÒÜ ÏĞÎÂÅĞÊÓ ÍÀ ÓÍÈÊÀËÜÍÎÑÒÜ ÈÌÅÍÈ. ÅÑËÈ ÒÀÊÎÅ ÓÆÅ ÅÑÒÜ, ÒÎ ÄÎÁ. ÖÈÔĞÛ
             
             Save();
         }
@@ -60,16 +59,8 @@ public class ElementsAvailableData : MonoBehaviour
     {
         var data = SaveManager.Load<SaveData.ElementsAvailable>(saveKey);
 
-        if (data.allAvailableElementsList == null)
-        {
-            Debug.Log("data pystaya");
-            data.allAvailableElementsList = _allAvailableElementsList;
-        }
-        else
-        {
-            Debug.Log("data ne pystaya");
-        }
-        
+        if (data.allAvailableElementsList == null) data.allAvailableElementsList = _allAvailableElementsList;
+
         _allAvailableElementsList = data.allAvailableElementsList;
     }
 

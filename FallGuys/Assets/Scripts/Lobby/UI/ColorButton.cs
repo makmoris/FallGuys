@@ -213,6 +213,7 @@ public class ColorButton : MonoBehaviour
             // то продаем ему эту кнопку. Ставим _isColorAvailable этого цвета в true и сохраняем файл ScriptableObject
             _isColorAvailable = true;
             SetColor();
+
             colorData.SaveNewAwailableStatus(_isColorAvailable);
         }
         else

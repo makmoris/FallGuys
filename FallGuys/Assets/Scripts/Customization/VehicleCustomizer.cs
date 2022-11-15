@@ -18,6 +18,8 @@ public class VehicleCustomizer : MonoBehaviour // кидаем на префаб LobbyVehicle 
     [SerializeField] private int _activeMaterialIndex;
     [SerializeField] private List<Material> _materials;
 
+
+
     private void Awake()
     {
         GetDataOfMaterial();
@@ -30,34 +32,7 @@ public class VehicleCustomizer : MonoBehaviour // кидаем на префаб LobbyVehicle 
         ShowActiveMaterial();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            _activeMaterialIndex++;
 
-            if (_activeMaterialIndex > _materials.Count - 1)
-            {
-                _activeMaterialIndex = 0;
-            }
-
-            ShowActiveMaterial();
-            SetNewDataOfMaterial();
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            _activeMaterialIndex--;
-
-            if (_activeMaterialIndex < 0)
-            {
-                _activeMaterialIndex = _materials.Count - 1;
-            }
-
-            ShowActiveMaterial();
-            SetNewDataOfMaterial();
-        }
-    }
     #region Material - Color
 
     public Material GetActiveMaterial()
@@ -121,7 +96,9 @@ public class VehicleCustomizer : MonoBehaviour // кидаем на префаб LobbyVehicle 
 
     private void SetNewDataOfMaterial()
     {
-        vehicleCustomization_Material.materialActiveIndex = _activeMaterialIndex;
+        //vehicleCustomization_Material.materialActiveIndex = _activeMaterialIndex;
+        
+        vehicleCustomizationData.SaveNewSelectedActiveIndex(_activeMaterialIndex);
     }
 
     private void GetDataOfMaterial()

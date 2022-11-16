@@ -13,35 +13,22 @@ public class VehicleColorData : ScriptableObject
     [Space]
     [SerializeField] private bool alwaysAvailable;// если true, значит игнорируем то, что в памяти. Объект всегда доступен
 
-    [Header("Назначить один раз и не трогать")]
-    [SerializeField] private string saveName;
-
+                // name каждого объекта всегда уникальный, т.к. юнити не позволяет создавать два объекта с одинаковым именем. люблю ее
 
     public void LoadData()
     {
-        if (saveName == "")
-        {
-            Debug.Log("Введите saveName для VehicleColorData");
-        }
-        else
-        {
-            isColorAvailable = ElementsAvailableData.Instance.GetAvailableStatus(saveName);
-            //ElementsAvailableData.Instance.GetAvailableStatus(saveName);
+        isColorAvailable = ElementsAvailableData.Instance.GetAvailableStatus(name);
 
-            if (alwaysAvailable) isColorAvailable = true;
-        }
+        if (alwaysAvailable) isColorAvailable = true;
     }
 
     public void SaveNewAwailableStatus(bool availableStatus)// вызывается из ColorButton в момент покупки цвета
     {
-        if (saveName != "")
-        {
-            isColorAvailable = availableStatus;
+        isColorAvailable = availableStatus;
 
-            ElementsAvailableData.Instance.SaveElevemtAvailableStatus(saveName, isColorAvailable);
+        ElementsAvailableData.Instance.SaveElevemtAvailableStatus(name, isColorAvailable);
 
-            Debug.Log(name + " сохранил isAvailable");
-        }
+        Debug.Log(name + " сохранил isAvailable");
     }
 
     public string ColorName

@@ -34,8 +34,6 @@ public class ScrollAreaColor : MonoBehaviour
             //if (activeVehicle == null) SetActiveVehicle();
 
             ShowContentForActiveVehicle();
-
-            
         }
     }
 
@@ -70,7 +68,6 @@ public class ScrollAreaColor : MonoBehaviour
             {
                 cont.gameObject.SetActive(false);
             }
-            
         }
     }
 

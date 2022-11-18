@@ -37,11 +37,8 @@ public class ColorButton : MonoBehaviour
     [SerializeField] private int _colorCupsToUnlock;
     [SerializeField] private bool _isColorAvailable;// если false - то оно заблочено, нужно его купить/открыть 
 
-    private bool dataWasLoaded;
-    private void Start()
-    {
-        SetLobbyVehicleData();
-    }
+    [SerializeField]private bool dataWasLoaded;
+
 
     public void SetColor()// должен устанавливаться одной кнопкой (кнопа выбора), чтобы сохранить и подтвердить цвет
     {
@@ -64,7 +61,7 @@ public class ColorButton : MonoBehaviour
     private void LoadColorData()
     {
         colorData.LoadData();
-
+        
         _colorName = colorData.ColorName;
         _colorCost = colorData.ColorCost;
         _colorCupsToUnlock = colorData.ColorCupsToUnlock;
@@ -95,6 +92,12 @@ public class ColorButton : MonoBehaviour
 
             oldCupsTextPosition = cupsText.rectTransform.anchoredPosition;
         }
+    }
+
+    public void UpdateLoadedData()
+    {
+        colorData.LoadData();
+        _isColorAvailable = colorData.IsColorAvailable;
     }
 
     public void ChangeShowSelectColor()
@@ -131,7 +134,7 @@ public class ColorButton : MonoBehaviour
 
         if (_isColorAvailable) lockImage.SetActive(false);
         else lockImage.SetActive(true);
-
+        
         choiseImage.SetActive(isActiveColor);
     }
 
@@ -212,9 +215,10 @@ public class ColorButton : MonoBehaviour
         {
             // то продаем ему эту кнопку. Ставим _isColorAvailable этого цвета в true и сохраняем файл ScriptableObject
             _isColorAvailable = true;
-            SetColor();
 
             colorData.SaveNewAwailableStatus(_isColorAvailable);
+
+            SetColor();
         }
         else
         {

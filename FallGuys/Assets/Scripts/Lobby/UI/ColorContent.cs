@@ -95,6 +95,7 @@ public class ColorContent : MonoBehaviour
 
         foreach (var but in colorButtons)
         {
+            if (notFirstActive) but.UpdateLoadedData();
             but.UpdateInfo();
         }
     }

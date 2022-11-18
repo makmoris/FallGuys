@@ -48,9 +48,9 @@ public class Weapon : MonoBehaviour
         //    this.enabled = false;
         //}
 
-        damage = characteristicsData.damage;
-        rechargeTime = characteristicsData.rechargeTime;
-        attackRange = characteristicsData.attackRange;
+        damage = characteristicsData.Damage;
+        rechargeTime = characteristicsData.RechargeTime;
+        attackRange = characteristicsData.AttackRange;
 
         detectorTransform.GetComponent<AttackTargetDetector>().IsAI(isAI);
     }

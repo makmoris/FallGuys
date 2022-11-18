@@ -49,6 +49,8 @@ public class LobbyManager : MonoBehaviour
         activeVehicle = GetActiveVehicle();
         ShowActiveVehicle();
         ShowActiveWeapon();// т.к. могут быть разные точки расположения пушки
+
+        // сейвить выбранный индекс авто
     }
 
     public void ChangeActiveWeapon(GameObject _lobbyWeapon)// вызывается lobbyWeapon
@@ -56,6 +58,30 @@ public class LobbyManager : MonoBehaviour
         int newActiveIndex = FindLobbyWeaponIndex(_lobbyWeapon);
         activeLobbyWeaponIndex = newActiveIndex;
 
+        activeWeapon.SetActive(false);
+        activeWeapon = GetActiveWeapon();
+        ShowActiveWeapon();
+
+        // сейвить выбранный индекс пушки
+    }
+
+    public void ShowActiveWeaponInLobby(GameObject _lobbyWeapon)
+    {
+        int showingActiveIndex = FindLobbyWeaponIndex(_lobbyWeapon);
+
+        activeWeapon.SetActive(false);
+        activeWeapon = lobbyWeapons[showingActiveIndex].gameObject;
+
+        Transform weaponPlace = lobbyVehicles[activeLobbyVehicleIndex].GetWeaponPlace();
+
+        activeWeapon.transform.position = weaponPlace.position;
+        activeWeapon.transform.rotation = weaponPlace.rotation;
+
+        activeWeapon.SetActive(true);
+    }
+
+    public void BackToShowActiveWeapon()
+    {
         activeWeapon.SetActive(false);
         activeWeapon = GetActiveWeapon();
         ShowActiveWeapon();

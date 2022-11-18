@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class ColorContent : MonoBehaviour
+public class WeaponContent : MonoBehaviour
 {
-    [SerializeField] private LobbyVehicle vehicleForContent;
     [SerializeField] private TextMeshProUGUI nameText;
 
     [Header("Apply Button")]
@@ -17,8 +16,7 @@ public class ColorContent : MonoBehaviour
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI cupsText;
 
-
-    private List<ColorButton> colorButtons = new List<ColorButton>();
+    private List<WeaponButton> weaponButtons = new List<WeaponButton>();
 
     private bool notFirstActive;
 
@@ -40,16 +38,6 @@ public class ColorContent : MonoBehaviour
     }
 
     #region GET
-    public GameObject GetContentVehicle()
-    {
-        return vehicleForContent.gameObject;
-    }
-
-    public VehicleCustomizer GetVehicleCustomizer()
-    {
-        return vehicleForContent.GetComponent<VehicleCustomizer>();
-    }
-
     public TextMeshProUGUI GetNameText()
     {
         return nameText;
@@ -77,11 +65,11 @@ public class ColorContent : MonoBehaviour
     }
     #endregion
 
-    public void ShowColorWasChanged()
+    public void ShowWeaponWasChanged()
     {
-        foreach (var but in colorButtons)
+        foreach (var but in weaponButtons)
         {
-            but.ChangeShowSelectColor();
+            but.ChangeShowSelectWeapon();
         }
     }
 
@@ -92,21 +80,20 @@ public class ColorContent : MonoBehaviour
 
     private void UpdateAllButtonInfo()
     {
-        if (colorButtons.Count == 0) SetColorButtonsList();
+        if (weaponButtons.Count == 0) SetWeaponButtonsList();
 
-        foreach (var but in colorButtons)
+        foreach (var but in weaponButtons)
         {
             if (notFirstActive) but.UpdateLoadedData();
             but.UpdateInfo();
         }
     }
 
-    private void SetColorButtonsList()
+    private void SetWeaponButtonsList()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-
-            colorButtons.Add(transform.GetChild(i).gameObject.GetComponent<ColorButton>());
+            weaponButtons.Add(transform.GetChild(i).gameObject.GetComponent<WeaponButton>());
         }
     }
 }

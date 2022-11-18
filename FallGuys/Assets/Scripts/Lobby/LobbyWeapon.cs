@@ -13,4 +13,23 @@ public class LobbyWeapon : MonoBehaviour
         lobbyManager.ChangeActiveWeapon(this.gameObject);
     }
 
+    public void ShowThisWeapon()
+    {
+        lobbyManager.ShowActiveWeaponInLobby(this.gameObject);
+    }
+
+    public void BackToActiveWeapon()
+    {
+        lobbyManager.BackToShowActiveWeapon();
+    }
+
+    public LobbyWeaponData GetLobbyWeaponData()
+    {
+        return weaponData;
+    }
+
+    public LobbyManager GetLobbyManager()
+    {
+        return lobbyManager;
+    }
 }

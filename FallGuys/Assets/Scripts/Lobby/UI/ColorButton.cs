@@ -7,9 +7,9 @@ public class ColorButton : MonoBehaviour
     [SerializeField] private VehicleColorData colorData;
     [SerializeField] private Sprite vehicleColorImage;
     [SerializeField] private Material colorMaterial;
-    [SerializeField] private TextMeshProUGUI colorNameOnButton;
 
     [Header("Button Components")]
+    [SerializeField] private TextMeshProUGUI colorNameOnButton;
     [SerializeField] private GameObject choiseImage;
     [SerializeField] private GameObject borderImage;
     [SerializeField] private GameObject lockImage;
@@ -37,7 +37,7 @@ public class ColorButton : MonoBehaviour
     [SerializeField] private int _colorCupsToUnlock;
     [SerializeField] private bool _isColorAvailable;// если false - то оно заблочено, нужно его купить/открыть 
 
-    [SerializeField]private bool dataWasLoaded;
+    private bool dataWasLoaded;
 
 
     public void SetColor()// должен устанавливаться одной кнопкой (кнопа выбора), чтобы сохранить и подтвердить цвет
@@ -71,7 +71,7 @@ public class ColorButton : MonoBehaviour
         colorNameOnButton.text = _colorName;
     }
 
-    private void SetLobbyVehicleData()
+    private void SetLobbyVehicleColorData()
     {
         if (!dataWasLoaded)
         {
@@ -102,7 +102,7 @@ public class ColorButton : MonoBehaviour
 
     public void ChangeShowSelectColor()
     {
-        if (nameText == null) SetLobbyVehicleData();
+        if (nameText == null) SetLobbyVehicleColorData();
 
         if (nameText.text == _colorName)
         {
@@ -229,7 +229,7 @@ public class ColorButton : MonoBehaviour
 
     private Material GetActiveMaterial()
     {
-        if (thisLobbyVehicleCustomizer == null) SetLobbyVehicleData();
+        if (thisLobbyVehicleCustomizer == null) SetLobbyVehicleColorData();
 
         Material activeMaterial = thisLobbyVehicleCustomizer.GetActiveMaterial();
 

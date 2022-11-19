@@ -140,61 +140,70 @@ public class ColorButton : MonoBehaviour
 
     private void CheckBuyAndApplyButtonStatus()
     {
-        if (_isColorAvailable)// если цвет открыт 
+        // если выбранное авто куплено, значит можно давать доступ к кнопкам
+        if (LobbyManager.Instance.CurrentVehicleIsAvailable())
         {
-            if (!applyButton.gameObject.activeSelf) applyButton.gameObject.SetActive(true);
-            if (buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(false);
-
-            if (isActiveColor)// если этот цвет уже выбран 
+            if (_isColorAvailable)// если цвет открыт 
             {
-                // то блочим enabled кнопку и в текст статуса - APPLIED
-                applyButton.interactable = false;
-                applyText.text = "APPLIED";
+                if (!applyButton.gameObject.activeSelf) applyButton.gameObject.SetActive(true);
+                if (buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(false);
+
+                if (isActiveColor)// если этот цвет уже выбран 
+                {
+                    // то блочим enabled кнопку и в текст статуса - APPLIED
+                    applyButton.interactable = false;
+                    applyText.text = "APPLIED";
+                }
+                else// если этот цвет не выбран
+                {
+                    // то предлагаем его выбрать. Кнопка активна, текст на кнопке - APPLY. В статусе ничего не пишем
+                    // если по ней нажать, то вызывается SetColor(); чтобы сохранить изменения 
+                    applyButton.interactable = true;
+                    applyText.text = "APPLY";
+
+                    CallApplyButton();
+                }
             }
-            else// если этот цвет не выбран
+            else // если цвет закрыт
             {
-                // то предлагаем его выбрать. Кнопка активна, текст на кнопке - APPLY. В статусе ничего не пишем
-                // если по ней нажать, то вызывается SetColor(); чтобы сохранить изменения 
-                applyButton.interactable = true;
-                applyText.text = "APPLY";
+                if (!buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(true);
+                if (applyButton.gameObject.activeSelf) applyButton.gameObject.SetActive(false);
 
-                CallApplyButton();
+                if (_colorCupsToUnlock <= CurrencyManager.Instance.Cups)// Смотрим, Если у игрока кубков достаточно для этого цвета, то
+                {
+                    // то разрешаем ему посмотреть стоимость кнопки + кнопка для покупки активна
+                    buyButton.interactable = true;
+                    costText.text = _colorCost.ToString();
+                    cupsText.text = "PURCHASE";
+                    cupsText.rectTransform.anchoredPosition = new Vector2(0, oldCupsTextPosition.y);
+
+
+                    for (int i = 0; i < cupsText.transform.childCount; i++)// отключаем картинку и текст внутри
+                    {
+                        cupsText.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+
+                    CallBuyButton();
+                }
+                else// если кубков недостаточно
+                {
+                    // цена показывается, но кнопка заблочена (неактивна). В статусе - NEED X КУБКОВ, ГДЕ Х - КОЛИЧЕСТВО КУБКОВ
+                    buyButton.interactable = false;
+                    cupsText.text = _colorCupsToUnlock.ToString();
+                    costText.text = _colorCost.ToString();
+                    cupsText.rectTransform.anchoredPosition = oldCupsTextPosition;
+
+                    for (int i = 0; i < cupsText.transform.childCount; i++)// включаем картинку и текст внутри
+                    {
+                        cupsText.transform.GetChild(i).gameObject.SetActive(true);
+                    }
+                }
             }
         }
-        else // если цвет закрыт
+        else // если выбранное авто не куплено, значит блочим кнопки
         {
-            if (!buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(true);
             if (applyButton.gameObject.activeSelf) applyButton.gameObject.SetActive(false);
-
-            if (_colorCupsToUnlock <= CurrencyManager.Instance.Cups)// Смотрим, Если у игрока кубков достаточно для этого цвета, то
-            {
-                // то разрешаем ему посмотреть стоимость кнопки + кнопка для покупки активна
-                buyButton.interactable = true;
-                costText.text = _colorCost.ToString();
-                cupsText.text = "PURCHASE";
-                cupsText.rectTransform.anchoredPosition = new Vector2(0, oldCupsTextPosition.y);
-                
-
-                for (int i = 0; i < cupsText.transform.childCount; i++)// отключаем картинку и текст внутри
-                {
-                    cupsText.transform.GetChild(i).gameObject.SetActive(false);
-                }
-
-                CallBuyButton();
-            }
-            else// если кубков недостаточно
-            {
-                // цена показывается, но кнопка заблочена (неактивна). В статусе - NEED X КУБКОВ, ГДЕ Х - КОЛИЧЕСТВО КУБКОВ
-                buyButton.interactable = false;
-                cupsText.text = _colorCupsToUnlock.ToString();
-                costText.text = _colorCost.ToString();
-                cupsText.rectTransform.anchoredPosition = oldCupsTextPosition;
-
-                for (int i = 0; i < cupsText.transform.childCount; i++)// включаем картинку и текст внутри
-                {
-                    cupsText.transform.GetChild(i).gameObject.SetActive(true);
-                }
-            }
+            if (buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(false);
         }
     }
 

@@ -1,19 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LobbyVehicle : MonoBehaviour
 {
-    [SerializeField] private LobbyManager lobbyManager;
     [SerializeField] private GameObject vehiclePrefab;
     [SerializeField] private Transform weaponPlace;
     [SerializeField] private LobbyVehicleData vehicleData;
 
-
-
     public void MakeThisVehicleActive()// вызывается кнопкой
     {
-        lobbyManager.ChangeActiveVehicle(this.gameObject);
+        LobbyManager.Instance.ChangeActiveVehicle(this.gameObject);
     }
 
     public Transform GetWeaponPlace()
@@ -21,7 +16,17 @@ public class LobbyVehicle : MonoBehaviour
         return weaponPlace;
     }
 
-    public LobbyVehicleData GetVehicleData()
+    public void ShowThisVehicle()
+    {
+        LobbyManager.Instance.ShowActiveVehicleInLobby(this.gameObject);
+    }
+
+    public void BackToActiveVehicle()
+    {
+        LobbyManager.Instance.BackToShowActiveVehicle();
+    }
+
+    public LobbyVehicleData GetLobbyVehicleData()
     {
         return vehicleData;
     }

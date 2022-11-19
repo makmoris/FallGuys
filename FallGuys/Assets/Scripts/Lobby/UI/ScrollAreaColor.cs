@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class ScrollAreaColor : MonoBehaviour
 {
-    [SerializeField] private LobbyManager lobbyManager;
-
     [SerializeField] private List<ColorContent> colorContents;
 
     [SerializeField] private GameObject activeVehicle;
@@ -73,8 +71,7 @@ public class ScrollAreaColor : MonoBehaviour
 
     private void SetActiveVehicle()
     {
-        
-        activeVehicle = lobbyManager.GetActiveVehicle();
+        activeVehicle = LobbyManager.Instance.GetActiveLobbyVehicle();
     }
 
     //private void CheckInactivity(List<ColorContent> list)

@@ -8,6 +8,8 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private int activeLobbyVehicleIndex;// индексы активной тачки и оружия - то, что отображается на подиуме
     [SerializeField] private int activeLobbyWeaponIndex;
 
+    [SerializeField] private int saveActiveVehicleIndex;// индекс выбранной тачки, которая пойдет в игру
+
     [Space]
     [SerializeField] private Transform vehiclePlace;
 
@@ -20,9 +22,24 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject activeVehicle;
     [SerializeField] private GameObject activeWeapon;
 
+    private string vehicleSaveName = "vehicleIndex";
+    private string weaponSaveName = "weaponIndex";
+
+    public static LobbyManager Instance { get; private set; }
+
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
         GetLobbyObjects();
+        LoadData();
     }
 
     private void Start()
@@ -30,15 +47,30 @@ public class LobbyManager : MonoBehaviour
         CheckInactivity(lobbyVehicles);
         CheckInactivity(lobbyWeapons);
 
-        activeVehicle = GetActiveVehicle();
+        activeVehicle = GetActiveLobbyVehicle();
+        activeWeapon = GetActiveWeapon();
+
+        ShowActiveVehicle();
+        ShowActiveWeapon();
+
+        saveActiveVehicleIndex = activeLobbyVehicleIndex;
+    }
+                                        /// КОГДА ВЫБОР ЗАКОНЧИТСЯ, НУЖНО БУДЕТ ОБРАТИТЬСЯ К ВЫБРАННОМУ LOBBYVEHICLE И LOBBYWEAPON
+                                        /// ЧТОБЫ ВЫТАЩИТЬ ИЗ НИХ ССЫЛКИ НА ИГРОВЫЕ ПРЕФАБЫ И ПЕРЕДАТЬ ЭТИ ПРЕФАБЫ В CHARACTERMANAGER
+                                        /// ЭТО ПЕРЕД СТАРТОМ УРОВНЯ, ЧТОБЫ ГРУЗИТЬ НУЖНЫЕ
+    
+    public void LoadActiveSaveCharacter()// вызывается LobbyWindow при активации
+    {
+        CheckInactivity(lobbyVehicles);
+        CheckInactivity(lobbyWeapons);
+
+        activeLobbyVehicleIndex = saveActiveVehicleIndex;
+        activeVehicle = GetActiveSaveVehicle();
         activeWeapon = GetActiveWeapon();
 
         ShowActiveVehicle();
         ShowActiveWeapon();
     }
-                                        /// КОГДА ВЫБОР ЗАКОНЧИТСЯ, НУЖНО БУДЕТ ОБРАТИТЬСЯ К ВЫБРАННОМУ LOBBYVEHICLE И LOBBYWEAPON
-                                        /// ЧТОБЫ ВЫТАЩИТЬ ИЗ НИХ ССЫЛКИ НА ИГРОВЫЕ ПРЕФАБЫ И ПЕРЕДАТЬ ЭТИ ПРЕФАБЫ В CHARACTERMANAGER
-                                        /// ЭТО ПЕРЕД СТАРТОМ УРОВНЯ, ЧТОБЫ ГРУЗИТЬ НУЖНЫЕ
 
     public void ChangeActiveVehicle(GameObject _lobbyVehicle)// вызывается lobbyvehicle
     {
@@ -46,11 +78,36 @@ public class LobbyManager : MonoBehaviour
         activeLobbyVehicleIndex = newActiveIndex;
 
         activeVehicle.SetActive(false);
-        activeVehicle = GetActiveVehicle();
+        activeVehicle = GetActiveLobbyVehicle();
         ShowActiveVehicle();
         ShowActiveWeapon();// т.к. могут быть разные точки расположения пушки
 
         // сейвить выбранный индекс авто
+        saveActiveVehicleIndex = activeLobbyVehicleIndex;
+
+        SaveNewVehicleActiveIndex(saveActiveVehicleIndex);
+    }
+
+    public void ShowActiveVehicleInLobby(GameObject _lobbyVehicle) // не сейвим
+    {
+        int newActiveIndex = FindLobbyVehicleIndex(_lobbyVehicle);
+        activeLobbyVehicleIndex = newActiveIndex;
+
+        activeVehicle.SetActive(false);
+        activeVehicle = GetActiveLobbyVehicle();
+        ShowActiveVehicle();
+        ShowActiveWeapon();// т.к. могут быть разные точки расположения пушки
+    }
+
+    public void BackToShowActiveVehicle()
+    {
+        if (activeVehicle != null)
+        {
+            activeVehicle.SetActive(false);
+            activeVehicle = GetActiveLobbyVehicle();
+            ShowActiveVehicle();
+            ShowActiveWeapon();// т.к. могут быть разные точки расположения пушки
+        }
     }
 
     public void ChangeActiveWeapon(GameObject _lobbyWeapon)// вызывается lobbyWeapon
@@ -63,6 +120,7 @@ public class LobbyManager : MonoBehaviour
         ShowActiveWeapon();
 
         // сейвить выбранный индекс пушки
+        SaveNewWeaponActiveIndex(activeLobbyWeaponIndex);
     }
 
     public void ShowActiveWeaponInLobby(GameObject _lobbyWeapon)
@@ -82,14 +140,22 @@ public class LobbyManager : MonoBehaviour
 
     public void BackToShowActiveWeapon()
     {
-        activeWeapon.SetActive(false);
-        activeWeapon = GetActiveWeapon();
-        ShowActiveWeapon();
+        if (activeWeapon != null)
+        {
+            activeWeapon.SetActive(false);
+            activeWeapon = GetActiveWeapon();
+            ShowActiveWeapon();
+        }
     }
 
-    public GameObject GetActiveVehicle()
+    public GameObject GetActiveLobbyVehicle()
     {
         GameObject activeVehicle = lobbyVehicles[activeLobbyVehicleIndex].gameObject;
+        return activeVehicle;
+    }
+    public GameObject GetActiveSaveVehicle()
+    {
+        GameObject activeVehicle = lobbyVehicles[saveActiveVehicleIndex].gameObject;
         return activeVehicle;
     }
 
@@ -99,13 +165,25 @@ public class LobbyManager : MonoBehaviour
         return activeWeapon;
     }
 
+    public bool CurrentVehicleIsAvailable()// проверяем, что авто, под которым зашли в кастомизацию, доступо - куплено. Если нет, то нельзя покупать
+    { // элементы кастомизации. Только смотреть. Кнопка покупки и активации заблочена
+
+        var lobbyVehicleData = activeVehicle.GetComponent<LobbyVehicle>().GetLobbyVehicleData();
+        bool isAvailable = lobbyVehicleData.IsVehicleAvailable;
+
+        return isAvailable;
+    }
+
     private void ShowActiveVehicle()
     {
-        activeVehicle.transform.position = new Vector3(vehiclePlace.position.x, activeVehicle.transform.position.y,
+        if (activeVehicle != null)
+        {
+            activeVehicle.transform.position = new Vector3(vehiclePlace.position.x, activeVehicle.transform.position.y,
             vehiclePlace.position.z);
-        activeVehicle.transform.rotation = vehiclePlace.rotation;// вращаем саму тачку как хотим, но когда включается новая, она по дефолтной ротации
+            activeVehicle.transform.rotation = vehiclePlace.rotation;// вращаем саму тачку как хотим, но когда включается новая, она по дефолтной ротации
 
-        activeVehicle.SetActive(true);
+            activeVehicle.SetActive(true);
+        }
     }
 
     private void ShowActiveWeapon()
@@ -173,5 +251,29 @@ public class LobbyManager : MonoBehaviour
             var veh = weaponObjects.transform.GetChild(i).gameObject;
             lobbyWeapons.Add(veh.GetComponent<LobbyWeapon>());
         }
+    }
+
+    private void LoadData()
+    {
+        activeLobbyVehicleIndex = ElementsSelectedData.Instance.GetActiveSelectedIndex(vehicleSaveName);
+        saveActiveVehicleIndex = activeLobbyVehicleIndex;
+        activeLobbyWeaponIndex = ElementsSelectedData.Instance.GetActiveSelectedIndex(weaponSaveName);
+        Debug.Log(ElementsSelectedData.Instance.GetActiveSelectedIndex(vehicleSaveName));
+    }
+
+    private void SaveNewVehicleActiveIndex(int vehicleActiveIndex)
+    {
+        ElementsSelectedData.Instance.SaveElevemtSelectedIndex(vehicleSaveName, vehicleActiveIndex);
+
+        Debug.Log(name + " сохранил vehicleActiveIndex");
+        Debug.Log(ElementsSelectedData.Instance.GetActiveSelectedIndex(vehicleSaveName));
+    }
+
+    private void SaveNewWeaponActiveIndex(int weaponActiveIndex)
+    {
+        ElementsSelectedData.Instance.SaveElevemtSelectedIndex(weaponSaveName, weaponActiveIndex);
+
+        Debug.Log(name + " сохранил weaponActiveIndex");
+        
     }
 }

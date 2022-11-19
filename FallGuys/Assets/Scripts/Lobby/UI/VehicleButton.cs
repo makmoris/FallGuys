@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,10 +6,9 @@ public class VehicleButton : MonoBehaviour
 {
     [SerializeField] private LobbyVehicle lobbyVehicleOnScene;
     private LobbyVehicleData lobbyVehicleData;
-    private LobbyManager lobbyManager;
 
     [Header("Button Components")]
-    [SerializeField] private TextMeshProUGUI weaponNameOnButton;
+    [SerializeField] private TextMeshProUGUI vehicleNameOnButton;
     [SerializeField] private GameObject choiseImage;
     [SerializeField] private GameObject borderImage;
     [SerializeField] private GameObject lockImage;
@@ -26,10 +23,10 @@ public class VehicleButton : MonoBehaviour
 
     private Vector2 oldCupsTextPosition;
 
-    private WeaponContent weaponContent;
+    private VehicleContent vehicleContent;
 
     [Space]
-    [SerializeField] private bool isActiveWeapon;
+    [SerializeField] private bool isActiveVehicle;
 
     [Header("Data values")]
     [SerializeField] private string _vehicleName;
@@ -37,7 +34,7 @@ public class VehicleButton : MonoBehaviour
     [SerializeField] private int _vehicleCost;
     [SerializeField] private int _vehicleCupsToUnlock;
     [SerializeField] private bool _isVehicleAvailable;
-    [SerializeField] private WeaponCharacteristicsData _vehicleDefaultData;
+    [SerializeField] private PlayerDefaultData _vehicleDefaultData;
 
     private bool dataWasLoaded;
 
@@ -48,10 +45,217 @@ public class VehicleButton : MonoBehaviour
         // сделать сначала проверку. Если все гуд, то делаем активной
         // в момент выбора подтягивать остальную инфу из LobbyVehicleData через эту тачу и кидать ее на нужные места (текст, иконка и т.д.)
         lobbyVehicleOnScene.MakeThisVehicleActive();
+        vehicleContent.InfoWasUpdate();
+    }
+    public void ShowVehicle()// вызывается кнопой при выборе пушки, чтобы посмотреть. Смотреть можно все кнопы
+    {
+        nameText.text = _vehicleName;
+
+        lobbyVehicleOnScene.ShowThisVehicle();
+
+        vehicleContent.ShowVehicleWasChanged();
+
+        CheckBuyAndApplyButtonStatus();
     }
 
-    private void SetVehicleData()
+    private void LoadLobbyVehicleData()
     {
-        lobbyVehicleData = lobbyVehicleOnScene.GetVehicleData();
+        lobbyVehicleData.LoadData();
+
+        _vehicleName = lobbyVehicleData.VehicleName;
+        _vehicleCost = lobbyVehicleData.VehicleCost;
+        _vehicleCupsToUnlock = lobbyVehicleData.VehicleCupsToUnlock;
+        _isVehicleAvailable = lobbyVehicleData.IsVehicleAvailable;
+        _vehicleDefaultData = lobbyVehicleData.VehicleDefaultData;
+
+
+        vehicleNameOnButton.text = _vehicleName;
+    }
+
+    private void SetLobbyVehicleData()
+    {
+        if (!dataWasLoaded)
+        {
+            lobbyVehicleData = lobbyVehicleOnScene.GetLobbyVehicleData();
+
+            LoadLobbyVehicleData();
+
+            vehicleContent = transform.GetComponentInParent<VehicleContent>();
+
+            nameText = vehicleContent.GetNameText();
+
+            applyButton = vehicleContent.GetApplyButton();
+            applyText = vehicleContent.GetApplyText();
+            buyButton = vehicleContent.GetBuyButton();
+            costText = vehicleContent.GetCostText();
+            cupsText = vehicleContent.GetCupsText();
+
+            dataWasLoaded = true;
+
+            oldCupsTextPosition = cupsText.rectTransform.anchoredPosition;
+        }
+    }
+
+    public void UpdateLoadedData()
+    {
+        lobbyVehicleData.LoadData();
+        _isVehicleAvailable = lobbyVehicleData.IsVehicleAvailable;
+    }
+
+    public void ChangeShowSelectVehicle()
+    {
+        if (nameText == null) SetLobbyVehicleData();
+
+        if (nameText.text == _vehicleName)
+        {
+            borderImage.SetActive(true);
+        }
+        else
+        {
+            borderImage.SetActive(false);
+        }
+    }
+
+    public void UpdateInfo()
+    {
+        var activeLobbyVehicle = GetActiveLobbyVehicle();
+        var saveLobbyVehicle = GetActiveSaveVehicle();
+
+        if (activeLobbyVehicle == lobbyVehicleOnScene.gameObject)// значит этот цвет - эта кнопка - выбрана. Должны показать, что она сейчас активна (цвет этот)
+        {
+            nameText.text = _vehicleName;
+
+            if (saveLobbyVehicle == lobbyVehicleOnScene.gameObject) isActiveVehicle = true;
+
+            CheckBuyAndApplyButtonStatus();
+
+            vehicleContent.ShowVehicleWasChanged();
+        }
+        else
+        {
+            if (saveLobbyVehicle != lobbyVehicleOnScene.gameObject) isActiveVehicle = false;
+        }
+
+        if (_isVehicleAvailable) lockImage.SetActive(false);
+        else lockImage.SetActive(true);
+
+
+        if (saveLobbyVehicle == lobbyVehicleOnScene.gameObject) choiseImage.SetActive(true);
+        else choiseImage.SetActive(false);
+            
+
+        //choiseImage.SetActive(isActiveVehicle);
+    }
+
+    private void CheckBuyAndApplyButtonStatus()
+    {
+        if (_isVehicleAvailable)// если тачка открыта 
+        {
+            if (!applyButton.gameObject.activeSelf) applyButton.gameObject.SetActive(true);
+            if (buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(false);
+
+            if (isActiveVehicle)// если эта тачкаа уже выбрана
+            {
+                // то блочим enabled кнопку и в текст статуса - APPLIED
+                applyButton.interactable = false;
+                applyText.text = "APPLIED";
+            }
+            else// если эта тачкаа не выбрана
+            {
+                // то предлагаем его выбрать. Кнопка активна, текст на кнопке - APPLY. В статусе ничего не пишем
+                // если по ней нажать, то вызывается SetColor(); чтобы сохранить изменения 
+                applyButton.interactable = true;
+                applyText.text = "APPLY";
+
+                CallApplyButton();
+            }
+        }
+        else // если тачка закрыта
+        {
+            if (!buyButton.gameObject.activeSelf) buyButton.gameObject.SetActive(true);
+            if (applyButton.gameObject.activeSelf) applyButton.gameObject.SetActive(false);
+
+            if (_vehicleCupsToUnlock <= CurrencyManager.Instance.Cups)// Смотрим, Если у игрока кубков достаточно для этой пушки, то
+            {
+                // то разрешаем ему посмотреть стоимость кнопки + кнопка для покупки активна
+                buyButton.interactable = true;
+                costText.text = _vehicleCost.ToString();
+                cupsText.text = "PURCHASE";
+                cupsText.rectTransform.anchoredPosition = new Vector2(0, oldCupsTextPosition.y);
+
+
+                for (int i = 0; i < cupsText.transform.childCount; i++)// отключаем картинку и текст внутри
+                {
+                    cupsText.transform.GetChild(i).gameObject.SetActive(false);
+                }
+
+                CallBuyButton();
+            }
+            else// если кубков недостаточно
+            {
+                // цена показывается, но кнопка заблочена (неактивна). В статусе - NEED X КУБКОВ, ГДЕ Х - КОЛИЧЕСТВО КУБКОВ
+                buyButton.interactable = false;
+                cupsText.text = _vehicleCupsToUnlock.ToString();
+                costText.text = _vehicleCost.ToString();
+                cupsText.rectTransform.anchoredPosition = oldCupsTextPosition;
+
+                for (int i = 0; i < cupsText.transform.childCount; i++)// включаем картинку и текст внутри
+                {
+                    cupsText.transform.GetChild(i).gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+    private void CallApplyButton()
+    {
+        applyButton.onClick.RemoveAllListeners();
+        applyButton.onClick.AddListener(SelectVehicle);
+    }
+
+    private void CallBuyButton()
+    {
+        buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.AddListener(BuyWeapon);
+    }
+    private void BuyWeapon() // игрок нажимает по кнопке покупки, в этот момент:
+    {
+        if (CurrencyManager.Instance.SpendGold(_vehicleCost))// Смотрим, если у игрока достаточно денег, чтобы купить, то 
+        {
+            // то продаем ему эту кнопку. Ставим _isColorAvailable этого цвета в true и сохраняем файл ScriptableObject
+            _isVehicleAvailable = true;
+
+            lobbyVehicleData.SaveNewAwailableStatus(_isVehicleAvailable);
+
+            SelectVehicle();
+        }
+        else
+        {
+            // если денег недостаточно, то блочим кнопку (неактивная)
+
+        }
+    }
+
+    private GameObject GetActiveLobbyVehicle()// та, которая в лобби выбрана (может быть не куплена)
+    {
+        if (lobbyVehicleData == null) SetLobbyVehicleData();
+
+        return LobbyManager.Instance.GetActiveLobbyVehicle();
+    }
+
+    private GameObject GetActiveSaveVehicle()// та, которая выбранна полностью и которая пойдет в игру
+    {
+        if (lobbyVehicleData == null) SetLobbyVehicleData();
+
+        return LobbyManager.Instance.GetActiveSaveVehicle();
+    }
+
+    private void ResetInfo()
+    {
+        lobbyVehicleOnScene.BackToActiveVehicle();
+    }
+
+    private void OnDisable()
+    {
+        ResetInfo();
     }
 }

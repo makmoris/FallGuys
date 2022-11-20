@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class CustomizationUI : MonoBehaviour
 {
-    [SerializeField] private Color activeButtonColor;
-    [SerializeField] private Color deactiveButtonColor;
+    [SerializeField] private Sprite activeButtonImage;
+    [SerializeField] private Sprite deactiveButtonImage;
     [SerializeField] private Image colorButton;
     [SerializeField] private Image weaponButton;
 
@@ -38,13 +38,13 @@ public class CustomizationUI : MonoBehaviour
 
     public void SetColorButtonActive()
     {
-        colorButton.color = activeButtonColor;
-        weaponButton.color = deactiveButtonColor;
+        colorButton.sprite = activeButtonImage;
+        weaponButton.sprite = deactiveButtonImage;
     }
 
     public void SetWeaponButtonActive()
     {
-        colorButton.color = deactiveButtonColor;
-        weaponButton.color = activeButtonColor;
+        colorButton.sprite = deactiveButtonImage;
+        weaponButton.sprite = activeButtonImage;
     }
 }

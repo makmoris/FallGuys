@@ -10,8 +10,8 @@ public class ColorButton : MonoBehaviour
 
     [Header("Button Components")]
     [SerializeField] private TextMeshProUGUI colorNameOnButton;
-    [SerializeField] private GameObject choiseImage;
-    [SerializeField] private GameObject borderImage;
+    [SerializeField] private GameObject activeImage;
+    [SerializeField] private GameObject selectImage;
     [SerializeField] private GameObject lockImage;
     
     private TextMeshProUGUI nameText;
@@ -106,11 +106,11 @@ public class ColorButton : MonoBehaviour
 
         if (nameText.text == _colorName)
         {
-            borderImage.SetActive(true);
+            selectImage.SetActive(true);
         }
         else
         {
-            borderImage.SetActive(false);
+            selectImage.SetActive(false);
         }
     }
 
@@ -135,7 +135,7 @@ public class ColorButton : MonoBehaviour
         if (_isColorAvailable) lockImage.SetActive(false);
         else lockImage.SetActive(true);
         
-        choiseImage.SetActive(isActiveColor);
+        activeImage.SetActive(isActiveColor);
     }
 
     private void CheckBuyAndApplyButtonStatus()

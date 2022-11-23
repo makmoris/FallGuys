@@ -1,7 +1,11 @@
 using UnityEngine;
+using System;
 
 public class CurrencyManager : MonoBehaviour
 {
+    public static event Action<int> GoldUpdateEvent;
+    public static event Action<int> CupsUpdateEvent;
+
     public static CurrencyManager Instance { get; private set; }
 
     private void Awake()
@@ -31,6 +35,9 @@ public class CurrencyManager : MonoBehaviour
         private set 
         { 
             _gold = value;
+
+            GoldUpdateEvent?.Invoke(_gold);
+
             Save();
         }
     }
@@ -67,6 +74,9 @@ public class CurrencyManager : MonoBehaviour
         private set
         {
             _cups = value;
+
+            CupsUpdateEvent?.Invoke(_cups);
+
             Save();
         }
     }

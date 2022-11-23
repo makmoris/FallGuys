@@ -11,8 +11,8 @@ public class WeaponButton : MonoBehaviour
 
     [Header("Button Components")]
     [SerializeField] private TextMeshProUGUI weaponNameOnButton;
-    [SerializeField] private GameObject choiseImage;
-    [SerializeField] private GameObject borderImage;
+    [SerializeField] private GameObject activeImage;
+    [SerializeField] private GameObject selectImage;
     [SerializeField] private GameObject lockImage;
 
     private TextMeshProUGUI nameText;
@@ -109,11 +109,11 @@ public class WeaponButton : MonoBehaviour
 
         if (nameText.text == _weaponName)
         {
-            borderImage.SetActive(true);
+            selectImage.SetActive(true);
         }
         else
         {
-            borderImage.SetActive(false);
+            selectImage.SetActive(false);
         }
     }
 
@@ -138,7 +138,7 @@ public class WeaponButton : MonoBehaviour
         if (_isWeaponAvailable) lockImage.SetActive(false);
         else lockImage.SetActive(true);
 
-        choiseImage.SetActive(isActiveWeapon);
+        activeImage.SetActive(isActiveWeapon);
     }
 
     private void CheckBuyAndApplyButtonStatus()

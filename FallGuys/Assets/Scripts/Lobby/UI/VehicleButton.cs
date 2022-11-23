@@ -9,8 +9,8 @@ public class VehicleButton : MonoBehaviour
 
     [Header("Button Components")]
     [SerializeField] private TextMeshProUGUI vehicleNameOnButton;
-    [SerializeField] private GameObject choiseImage;
-    [SerializeField] private GameObject borderImage;
+    [SerializeField] private GameObject activeImage;
+    [SerializeField] private GameObject selectImage;
     [SerializeField] private GameObject lockImage;
 
     private TextMeshProUGUI nameText;
@@ -108,11 +108,11 @@ public class VehicleButton : MonoBehaviour
 
         if (nameText.text == _vehicleName)
         {
-            borderImage.SetActive(true);
+            selectImage.SetActive(true);
         }
         else
         {
-            borderImage.SetActive(false);
+            selectImage.SetActive(false);
         }
     }
 
@@ -140,8 +140,8 @@ public class VehicleButton : MonoBehaviour
         else lockImage.SetActive(true);
 
 
-        if (saveLobbyVehicle == lobbyVehicleOnScene.gameObject) choiseImage.SetActive(true);
-        else choiseImage.SetActive(false);
+        if (saveLobbyVehicle == lobbyVehicleOnScene.gameObject) activeImage.SetActive(true);
+        else activeImage.SetActive(false);
             
 
         //choiseImage.SetActive(isActiveVehicle);

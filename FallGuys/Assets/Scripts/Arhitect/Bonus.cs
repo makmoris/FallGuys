@@ -3,7 +3,8 @@ using UnityEngine;
 public enum BonusType
 {
     AddHealth = 0,
-    AddShield = 1
+    AddShield = 1,
+    AddGold = 2
     //AddSpeed = 2,
     //AddDamage = 3
 }

@@ -12,6 +12,8 @@ public class PlayerEffector
     private bool isShieldActive;// когда щит активен, игрок не может получать урон
     private Coroutine shieldCoroutine = null;
 
+    private bool isBot;
+
     public PlayerEffector(IPlayer player, Bumper bumper, PlayerLimitsData limitsData, VisualIntermediary intermediary)
     {
         _player = player;
@@ -20,6 +22,8 @@ public class PlayerEffector
 
         _intermediary = intermediary;
         _intermediary.UpdateHealthInUI(_player.Health);
+
+        if (bumper.GetComponent<CarDriverAI>() != null) isBot = true;
     }
 
     private void ActionTransition(float time)
@@ -51,6 +55,7 @@ public class PlayerEffector
                         resultHealth = 0;
                     }
 
+                    
                     _player.SetHealth(resultHealth);
                     _intermediary.UpdateHealthInUI(_player.Health);
 
@@ -80,6 +85,12 @@ public class PlayerEffector
                     _intermediary.HideShield();
                 }
                 shieldCoroutine = CoroutineRunner.Run(ShieldActive(bonus.Value));
+
+                break;
+
+            case BonusType.AddGold:
+
+                if(!isBot) CurrencyManager.Instance.AddGold((int)bonus.Value);
 
                 break;
         }

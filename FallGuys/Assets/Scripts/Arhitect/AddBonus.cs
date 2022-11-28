@@ -25,6 +25,10 @@ public class AddBonus : Bonus
     [SerializeField] int minShieldBonusValue;
     [SerializeField] int maxShieldBonusValue;
 
+    [Header("Gold")]
+    [SerializeField] int minGoldBonusValue;
+    [SerializeField] int maxGoldBonusValue;
+
     private void Awake()
     {
         enumLength = Enum.GetNames(typeof(BonusType)).Length;
@@ -61,6 +65,13 @@ public class AddBonus : Bonus
 
                 int randS = Random.Range(minShieldBonusValue, maxShieldBonusValue + 1);
                 value = randS;
+
+                break;
+
+            case BonusType.AddGold:
+
+                int randG = Random.Range(minGoldBonusValue, maxGoldBonusValue + 1);
+                value = randG;
 
                 break;
         }

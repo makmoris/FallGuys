@@ -58,7 +58,17 @@ public class LobbyManager : MonoBehaviour
                                         /// йнцдю бшанп гюйнмвхряъ, мсфмн асдер напюрхрэяъ й бшапюммнлс LOBBYVEHICLE х LOBBYWEAPON
                                         /// врнаш бшрюыхрэ хг мху яяшкйх мю хцпнбше опетюаш х оепедюрэ щрх опетюаш б CHARACTERMANAGER
                                         /// щрн оепед ярюпрнл спнбмъ, врнаш цпсгхрэ мсфмше
-    
+    public void SetCharacter()// БШГШБЮЕРЯЪ Б ЛНЛЕМР ГЮОСЯЙЮ ХЦПНБНЦН СПНБМЪ
+    {
+        GameObject _activeVehicle = GetActiveSaveVehicle();
+        GameObject _activeWeapon = GetActiveWeapon();
+
+        GameObject selectedVehicle = _activeVehicle.GetComponent<LobbyVehicle>().GetVehiclePrefab();
+        GameObject selectedWeapon = _activeWeapon.GetComponent<LobbyWeapon>().GetWeaponPrefab();
+
+        CharacterManager.Instance.SetCharacter(selectedVehicle, selectedWeapon);
+    }
+
     public void LoadActiveSaveCharacter()// БШГШБЮЕРЯЪ LobbyWindow ОПХ ЮЙРХБЮЖХХ
     {
         CheckInactivity(lobbyVehicles);

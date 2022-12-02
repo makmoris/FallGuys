@@ -30,4 +30,9 @@ public class LobbyVehicle : MonoBehaviour
     {
         return vehicleData;
     }
+
+    public GameObject GetVehiclePrefab()
+    {
+        return vehiclePrefab;
+    }
 }

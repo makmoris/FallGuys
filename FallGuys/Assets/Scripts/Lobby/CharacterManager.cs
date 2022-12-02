@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -9,16 +8,16 @@ public class VehicleCharacter
 {
     [SerializeField] private string name;
     [SerializeField] internal GameObject vehiclePrefab;
-    [SerializeField] private PlayerDefaultData defaultData;
-    [SerializeField] private PlayerLimitsData limitsData;
+    [SerializeField] internal PlayerDefaultData defaultData;
+    [SerializeField] internal PlayerLimitsData limitsData;
 }
 
 [Serializable]
 public class WeaponCharacter
 {
     [SerializeField] private string name;
-    [SerializeField] private GameObject weaponPrefab;
-    [SerializeField] private WeaponCharacteristicsData weaponData;
+    [SerializeField] internal GameObject weaponPrefab;
+    [SerializeField] internal WeaponCharacteristicsData weaponData;
 }
 
 
@@ -47,7 +46,13 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    public void FindVehicleIndex(GameObject _vehiclePrefab)
+    public void SetCharacter(GameObject selectedVehicle, GameObject selectedWeapon)// вызывается из лобби менеджера
+    {
+        FindVehicleIndex(selectedVehicle);
+        FindWeaponIndex(selectedWeapon);
+    }
+
+    private void FindVehicleIndex(GameObject _vehiclePrefab)
     {
         int index = 0;
 
@@ -62,4 +67,44 @@ public class CharacterManager : MonoBehaviour
             index++;
         }
     }
+
+    private void FindWeaponIndex(GameObject _weaponPrefab)
+    {
+        int index = 0;
+
+        foreach (var weapon in weapons)
+        {
+            if (weapon.weaponPrefab == _weaponPrefab)
+            {
+                weaponIndex = index;
+                break;
+            }
+
+            index++;
+        }
+    }
+
+    #region forInstaller
+
+    public GameObject GetPlayerPrefab()
+    {
+        return vehicles[vehicleIndex].vehiclePrefab;
+    }
+
+    public PlayerDefaultData GetPlayerDefaultData()
+    {
+        return vehicles[vehicleIndex].defaultData;
+    }
+
+    public PlayerLimitsData GetPlayerLimitsData()
+    {
+        return vehicles[vehicleIndex].limitsData;
+    }
+
+    public Weapon GetPlayerWeapon()
+    {
+        return weapons[weaponIndex].weaponPrefab.GetComponent<Weapon>();
+    }
+
+    #endregion
 }

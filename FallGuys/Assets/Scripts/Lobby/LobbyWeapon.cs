@@ -24,4 +24,9 @@ public class LobbyWeapon : MonoBehaviour
     {
         return weaponData;
     }
+
+    public GameObject GetWeaponPrefab()
+    {
+        return weaponPrefab;
+    }
 }

@@ -2909,7 +2909,7 @@ GameObject:
   - component: {fileID: 359190860}
   - component: {fileID: 359190859}
   m_Layer: 5
-  m_Name: ColorButton_Blue
+  m_Name: ColorButton_Cobra
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2954,7 +2954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorData: {fileID: 11400000, guid: 74eee55adb9369343b7f07f390aea422, type: 2}
   vehicleColorImage: {fileID: 21300004, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  colorMaterial: {fileID: 2957785193907452134, guid: 7d7281a8c11c94c85884ade27f9e608a, type: 3}
+  colorMaterial: {fileID: 2100000, guid: 9354b33aa50945a4f8bc949c05e10d57, type: 2}
   colorNameOnButton: {fileID: 682483853}
   activeImage: {fileID: 1760060186}
   selectImage: {fileID: 1153719543}
@@ -8355,6 +8355,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 159518536}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: SetCharacter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 862299132}
         m_TargetAssemblyTypeName: TestSceneLoader, Assembly-CSharp
         m_MethodName: NewScene
@@ -17915,7 +17927,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2032537540
 GameObject:
@@ -18008,7 +18020,7 @@ GameObject:
   - component: {fileID: 2044402032}
   - component: {fileID: 2044402031}
   m_Layer: 5
-  m_Name: ColorButton_Blue
+  m_Name: ColorButton_Cobra
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18053,7 +18065,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorData: {fileID: 11400000, guid: 74eee55adb9369343b7f07f390aea422, type: 2}
   vehicleColorImage: {fileID: 21300004, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  colorMaterial: {fileID: 2957785193907452134, guid: 7d7281a8c11c94c85884ade27f9e608a, type: 3}
+  colorMaterial: {fileID: 2100000, guid: 9354b33aa50945a4f8bc949c05e10d57, type: 2}
   colorNameOnButton: {fileID: 862650150}
   activeImage: {fileID: 1666667193}
   selectImage: {fileID: 1191470204}
@@ -19417,7 +19429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5528954116696143451, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5528954116696143451, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
       propertyPath: m_LocalPosition.x

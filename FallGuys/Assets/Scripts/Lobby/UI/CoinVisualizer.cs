@@ -11,6 +11,11 @@ public class CoinVisualizer : MonoBehaviour
         coinText = GetComponent<TextMeshProUGUI>();
     }
 
+    private void Start()
+    {
+        UpdateCoinsValue(CurrencyManager.Instance.Gold);
+    }
+
     private void UpdateCoinsValue(int value)
     {
         coinText.text = value.ToString();

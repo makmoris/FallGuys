@@ -11,6 +11,11 @@ public class CupsVisualizer : MonoBehaviour
         cupsText = GetComponent<TextMeshProUGUI>();
     }
 
+    private void Start()
+    {
+        UpdateCupsValue(CurrencyManager.Instance.Cups);
+    }
+
     private void UpdateCupsValue(int value)
     {
         cupsText.text = value.ToString();

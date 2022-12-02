@@ -31,7 +31,7 @@ public class CurrencyManager : MonoBehaviour
     [SerializeField]private int _gold;
     public int Gold
     {
-        get { return _gold; }
+        get {   return _gold; }
         private set 
         { 
             _gold = value;
@@ -70,13 +70,16 @@ public class CurrencyManager : MonoBehaviour
     [SerializeField] private int _cups;
     public int Cups
     {
-        get { return _cups; }
+        get 
+        {
+            return _cups; 
+        }
         private set
         {
             _cups = value;
 
             CupsUpdateEvent?.Invoke(_cups);
-
+            
             Save();
         }
     }

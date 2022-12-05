@@ -5,27 +5,72 @@ using UnityEngine.UI;
 
 public class PointerIcon : MonoBehaviour
 {
-    [SerializeField] Image _image;
+    [SerializeField] private Image _image;
+
+    [Header("Prefabs")]
+    [SerializeField] private Sprite greenPointerWithinScreen;
+    [SerializeField] private Sprite yellowPointerWithinScreen;
+    [SerializeField] private Sprite redPointerWithinScreen;
+
+    [SerializeField] private Sprite greenPointerOffScreen;
+    [SerializeField] private Sprite yellowPointerOffScreen;
+    [SerializeField] private Sprite redPointerOffScreen;
+
     bool _isShown = true;
 
+    [Space]
     [SerializeField]private float startHealthValue;
-    [SerializeField]private bool isFirstColorUpdate = true;
+    [SerializeField] private float _healthValue;
+    private bool isFirstColorUpdate = true;
+
+    private bool pointerIsOffScreen;
+
+    private Vector2 nativePosition;
+    private Vector2 nativeImagePosition;
 
     private void Awake()
     {
+        nativePosition = GetComponent<RectTransform>().anchoredPosition;
+        nativeImagePosition = _image.GetComponent<RectTransform>().anchoredPosition;
+
         _image.enabled = false;
         _isShown = false;
+    }
+
+    public void OffScreenPointer()
+    {
+        pointerIsOffScreen = true;
+
+        UpdateHealthColor(_healthValue);
+        _image.SetNativeSize();
+    }
+    public void WithinScreenPointer()
+    {
+        pointerIsOffScreen = false;
+
+        UpdateHealthColor(_healthValue);
+        _image.SetNativeSize();
     }
 
     public void SetIconPosition(Vector3 position, Quaternion rotation)
     {
         transform.position = position;
         transform.rotation = rotation;
+
+        _image.transform.localPosition = Vector2.zero;
+    }
+    public void SetIconPosition(Quaternion rotation)
+    {
+        transform.localPosition = nativePosition;
+        transform.rotation = rotation;
+
+        _image.transform.localPosition = nativeImagePosition;
     }
 
     public void Show()
     {
         if (_isShown) return;
+        Debug.Log("Show");
         _isShown = true;
         StopAllCoroutines();
         StartCoroutine(ShowProcess());
@@ -34,6 +79,7 @@ public class PointerIcon : MonoBehaviour
     public void Hide()
     {
         if (!_isShown) return;
+        Debug.Log("Hide");
         _isShown = false;
 
         StopAllCoroutines();
@@ -45,9 +91,13 @@ public class PointerIcon : MonoBehaviour
         if (isFirstColorUpdate)
         {
             startHealthValue = healthValue;
-            _image.color = Color.green;
+
+            if (!pointerIsOffScreen) _image.sprite = greenPointerWithinScreen;
+            else _image.sprite = greenPointerOffScreen;
 
             isFirstColorUpdate = false;
+
+            _healthValue = startHealthValue;
         }
         else
         {
@@ -55,16 +105,21 @@ public class PointerIcon : MonoBehaviour
 
             if (healthPercent > 65)
             {
-                _image.color = Color.green;
+                if (!pointerIsOffScreen) _image.sprite = greenPointerWithinScreen;
+                else _image.sprite = greenPointerOffScreen;
             }
             else if (healthPercent <= 65 && healthPercent > 35)
             {
-                _image.color = Color.yellow;
+                if (!pointerIsOffScreen) _image.sprite = yellowPointerWithinScreen;
+                else _image.sprite = yellowPointerOffScreen;
             }
             else
             {
-                _image.color = Color.red;
+                if (!pointerIsOffScreen) _image.sprite = redPointerWithinScreen;
+                else _image.sprite = redPointerOffScreen;
             }
+
+            _healthValue = healthPercent;
         }
     }
 
@@ -82,7 +137,6 @@ public class PointerIcon : MonoBehaviour
 
     IEnumerator HideProcess()
     {
-
         for (float t = 0; t < 1f; t += Time.deltaTime * 4f)
         {
             transform.localScale = Vector3.one * (1f - t);

@@ -22,10 +22,10 @@ public class Installer : MonoBehaviour
 {
     public TargetsController targetsController;
 
-    private GameObject _playerPrefab;
-    private PlayerDefaultData _playerDefaultData;
-    private PlayerLimitsData _playerLimitsData;
-    private Weapon _playerWeaon;
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private PlayerDefaultData _playerDefaultData;
+    [SerializeField] private PlayerLimitsData _playerLimitsData;
+    [SerializeField] private Weapon _playerWeaon;
     private Bumper _playerBumper;
     private VisualIntermediary _playerVisualIntermediary;
 
@@ -39,7 +39,7 @@ public class Installer : MonoBehaviour
 
     void Start()
     {
-        LoadDataFromCharacterManager();// подгружаем инфу по игроку
+        //LoadDataFromCharacterManager();// подгружаем инфу по игроку
 
         // Install player
         IPlayer _player = new Player(_playerDefaultData);

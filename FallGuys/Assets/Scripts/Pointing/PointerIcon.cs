@@ -30,6 +30,8 @@ public class PointerIcon : MonoBehaviour
 
     private void Awake()
     {
+        GetComponent<RectTransform>().SetAsFirstSibling();
+
         nativePosition = GetComponent<RectTransform>().anchoredPosition;
         nativeImagePosition = _image.GetComponent<RectTransform>().anchoredPosition;
 

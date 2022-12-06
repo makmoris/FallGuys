@@ -18,9 +18,12 @@ public class ColorButton : MonoBehaviour
 
     private Button applyButton;
     private TextMeshProUGUI applyText;
+    private Image applyTextPanel;
     private Button buyButton;
     private TextMeshProUGUI costText;
     private TextMeshProUGUI cupsText;
+    private Image messagePanel;
+    private TextMeshProUGUI messageText;
 
     private Vector2 oldCupsTextPosition;
 
@@ -84,9 +87,12 @@ public class ColorButton : MonoBehaviour
 
             applyButton = parentColorContent.GetApplyButton();
             applyText = parentColorContent.GetApplyText();
+            applyTextPanel = parentColorContent.GetApplyTextPanel();
             buyButton = parentColorContent.GetBuyButton();
             costText = parentColorContent.GetCostText();
             cupsText = parentColorContent.GetCupsText();
+            messagePanel = parentColorContent.GetMessagePanel();
+            messageText = parentColorContent.GetMessageText();
 
             dataWasLoaded = true;
 
@@ -153,13 +159,15 @@ public class ColorButton : MonoBehaviour
                     // то блочим enabled кнопку и в текст статуса - APPLIED
                     applyButton.interactable = false;
                     applyText.text = "APPLIED";
+                    applyTextPanel.gameObject.SetActive(true);
                 }
                 else// если этот цвет не выбран
                 {
                     // то предлагаем его выбрать. Кнопка активна, текст на кнопке - APPLY. В статусе ничего не пишем
                     // если по ней нажать, то вызывается SetColor(); чтобы сохранить изменения 
                     applyButton.interactable = true;
-                    applyText.text = "APPLY";
+                    applyText.text = "";
+                    applyTextPanel.gameObject.SetActive(false);
 
                     CallApplyButton();
                 }
@@ -183,12 +191,25 @@ public class ColorButton : MonoBehaviour
                         cupsText.transform.GetChild(i).gameObject.SetActive(false);
                     }
 
-                    CallBuyButton();
+                    // если денег недостаточно, то блочим кнопку (неактивная)
+                    if (CurrencyManager.Instance.Gold < _colorCost)
+                    {
+                        buyButton.targetGraphic.color = buyButton.colors.disabledColor;
+                        MoneyNotEnough();
+                    }
+                    else
+                    {
+                        buyButton.targetGraphic.color = buyButton.colors.normalColor;
+                        CallBuyButton();
+                    }
                 }
                 else// если кубков недостаточно
                 {
                     // цена показывается, но кнопка заблочена (неактивна). В статусе - NEED X КУБКОВ, ГДЕ Х - КОЛИЧЕСТВО КУБКОВ
-                    buyButton.interactable = false;
+                    //buyButton.interactable = false;
+                    buyButton.targetGraphic.color = buyButton.colors.disabledColor;
+                    CupsNotEnough();
+
                     cupsText.text = _colorCupsToUnlock.ToString();
                     costText.text = _colorCost.ToString();
                     cupsText.rectTransform.anchoredPosition = oldCupsTextPosition;
@@ -229,11 +250,34 @@ public class ColorButton : MonoBehaviour
 
             SetColor();
         }
-        else
-        {
-            // если денег недостаточно, то блочим кнопку (неактивная)
-            
-        }
+    }
+
+    private void CupsNotEnough()
+    {
+        buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.AddListener(ShowMessageCupsNotEnough);
+    }
+
+    private void ShowMessageCupsNotEnough()
+    {
+        messageText.text = "not enough cups to unlock";
+
+        messagePanel.gameObject.SetActive(false);
+        messagePanel.gameObject.SetActive(true);
+    }
+
+    private void MoneyNotEnough()
+    {
+        buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.AddListener(ShowMessageMoneyNotEnough);
+    }
+
+    private void ShowMessageMoneyNotEnough()
+    {
+        messageText.text = "not enough money to unlock";
+
+        messagePanel.gameObject.SetActive(false);
+        messagePanel.gameObject.SetActive(true);
     }
 
     private Material GetActiveMaterial()

@@ -11,10 +11,14 @@ public class VehicleContent : MonoBehaviour
     [Header("Apply Button")]
     [SerializeField] private Button applyButton;
     [SerializeField] private TextMeshProUGUI applyText;
+    [SerializeField] private Image applyTextPanel;
     [Header("Buy Button")]
     [SerializeField] private Button buyButton;
     [SerializeField] private TextMeshProUGUI costText;
     [SerializeField] private TextMeshProUGUI cupsText;
+    [Header("Message Panel")]
+    [SerializeField] private Image messagePanel;
+    [SerializeField] private TextMeshProUGUI messageText;
 
     private List<VehicleButton> vehicleButtons = new List<VehicleButton>();
 
@@ -43,6 +47,18 @@ public class VehicleContent : MonoBehaviour
         return nameText;
     }
 
+    public Image GetMessagePanel()
+    {
+        return messagePanel;
+    }
+    public TextMeshProUGUI GetMessageText()
+    {
+        return messageText;
+    }
+    public Image GetApplyTextPanel()
+    {
+        return applyTextPanel;
+    }
     public Button GetApplyButton()
     {
         return applyButton;

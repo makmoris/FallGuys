@@ -18,18 +18,19 @@ public class EnemiesSettings
 }
 
 
-public class Installer : MonoBehaviour // �� ������ ������ �� �����
+public class Installer : MonoBehaviour 
 {
     public TargetsController targetsController;
 
-    [Space]
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private PlayerDefaultData _playerDefaultData;
     [SerializeField] private PlayerLimitsData _playerLimitsData;
-    [SerializeField] private Weapon _playerWeaon;// ����� �������� � �����������
-    [SerializeField] private CinemachineVirtualCamera camCinema;
+    [SerializeField] private Weapon _playerWeaon;
     private Bumper _playerBumper;
     private VisualIntermediary _playerVisualIntermediary;
+
+    [Space]
+    [SerializeField] private CinemachineVirtualCamera camCinema;
 
     [SerializeField] private List<EnemiesSettings> _enemiesSettings;
 
@@ -38,6 +39,8 @@ public class Installer : MonoBehaviour // �� ������ ����
 
     void Start()
     {
+        LoadDataFromCharacterManager();// подгружаем инфу по игроку
+
         // Install player
         IPlayer _player = new Player(_playerDefaultData);
         var _playerObj = Instantiate(_playerPrefab);
@@ -91,6 +94,16 @@ public class Installer : MonoBehaviour // �� ������ ����
         _gameController = new GameController(_player, enemies);
 
         targetsController.SetTargetsForPlayers();
+    }
+
+    private void LoadDataFromCharacterManager()
+    {
+        var characterManager = CharacterManager.Instance;
+
+        _playerPrefab = characterManager.GetPlayerPrefab();
+        _playerDefaultData = characterManager.GetPlayerDefaultData();
+        _playerLimitsData = characterManager.GetPlayerLimitsData();
+        _playerWeaon = characterManager.GetPlayerWeapon();
     }
 
     //void Start()

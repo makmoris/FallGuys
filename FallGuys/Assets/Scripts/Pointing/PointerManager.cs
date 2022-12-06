@@ -21,7 +21,9 @@ public class PointerManager : MonoBehaviour
     [SerializeField] PlayerHealthUI _playerHealthUI;
     [Header("Prefabs")]
     [SerializeField] PointerIcon _positionPointerPrefab;
+    PointerIcon _pointerIcon;
     [SerializeField] PointerIcon _attackPointerPrefab;
+
 
     public static PointerManager Instance;
     private void Awake()
@@ -106,7 +108,6 @@ public class PointerManager : MonoBehaviour
 
 
             float rayMinDistance = Mathf.Infinity;
-            int index = 0;
 
             for (int p = 0; p < 4; p++)
             {
@@ -115,7 +116,6 @@ public class PointerManager : MonoBehaviour
                     if (distance < rayMinDistance)
                     {
                         rayMinDistance = distance;
-                        index = p;
                     }
                 }
             }
@@ -123,21 +123,34 @@ public class PointerManager : MonoBehaviour
             rayMinDistance = Mathf.Clamp(rayMinDistance, 0, toEnemy.magnitude);
             Vector3 worldPosition = ray.GetPoint(rayMinDistance);
             Vector3 position = _camera.WorldToScreenPoint(worldPosition);
-            Quaternion rotation = GetIconRotation(index);
+            Quaternion rotation;
 
             if (toEnemy.magnitude > rayMinDistance)
             {
-                //pointerIcon.Show();
+                pointerIcon.OffScreenPointer();
+
+                float angle = Vector3.Angle((enemyPointer.transform.position - _playerTransform.position), _playerTransform.forward);
+                float angle2 = Vector3.Angle((enemyPointer.transform.position - _playerTransform.position), _playerTransform.right);
+
+                if (angle2 > 90)
+                {
+                    angle = 360 - angle;
+                }
+
+                rotation = Quaternion.Euler(0f, 0f, -angle);
+
+                pointerIcon.SetIconPosition(rotation);
             }
             else
             {
-                //pointerIcon.Hide();
+                pointerIcon.Show();
+                pointerIcon.WithinScreenPointer();
+
                 rotation = Quaternion.Euler(0f, 0f, 180f);
+
+                pointerIcon.SetIconPosition(position, rotation);
             }
-
-            pointerIcon.SetIconPosition(position, rotation);
         }
-
     }
 
     public void StartShowingAttackPointer(Transform transformToAttack)
@@ -170,27 +183,6 @@ public class PointerManager : MonoBehaviour
         Vector3 position = _camera.WorldToScreenPoint(worldPosition);
 
         return position;
-    }
-
-    Quaternion GetIconRotation(int planeIndex)
-    {
-        if (planeIndex == 0)
-        {
-            return Quaternion.Euler(0f, 0f, 90f);
-        }
-        else if (planeIndex == 1)
-        {
-            return Quaternion.Euler(0f, 0f, -90f);
-        }
-        else if (planeIndex == 2)
-        {
-            return Quaternion.Euler(0f, 0f, 180);
-        }
-        else if (planeIndex == 3)
-        {
-            return Quaternion.Euler(0f, 0f, 0f);
-        }
-        return Quaternion.identity;
     }
 
     private void GameOwer(GameObject gameObject)

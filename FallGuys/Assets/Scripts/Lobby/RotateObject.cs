@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class RotateObject : MonoBehaviour
 {
@@ -33,63 +34,53 @@ public class RotateObject : MonoBehaviour
             {
                 touch = Input.GetTouch(0);
 
-                if (touch.phase == TouchPhase.Began && !canRotate)
+                if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
                 {
-                    RaycastHit hit;
-                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
-
-                    if (Physics.Raycast(ray, out hit))
+                    if (touch.phase == TouchPhase.Began && !canRotate)
                     {
-                        Transform objectHit = hit.transform;
-
-                        if (objectHit.GetComponent<LobbyVehicle>() != null) canRotate = true;
+                        canRotate = true;
                     }
-                }
 
-                if (touch.phase == TouchPhase.Moved)
-                {
-                    if (canRotate)
+                    if (touch.phase == TouchPhase.Moved)
                     {
-                        rotationY = Quaternion.Euler(0f, -touch.deltaPosition.x * rotateSpeedModifier, 0f);
+                        if (canRotate)
+                        {
+                            rotationY = Quaternion.Euler(0f, -touch.deltaPosition.x * rotateSpeedModifier, 0f);
 
-                        _transform.rotation = rotationY * _transform.rotation;
+                            _transform.rotation = rotationY * _transform.rotation;
+                        }
                     }
-                }
 
-                if (touch.phase == TouchPhase.Ended && canRotate)
-                {
-                    canRotate = false;
+                    if (touch.phase == TouchPhase.Ended && canRotate)
+                    {
+                        canRotate = false;
+                    }
                 }
             }
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && !canRotate)
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                RaycastHit hit;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray, out hit))
+                if (Input.GetMouseButtonDown(0) && !canRotate)
                 {
-                    Transform objectHit = hit.transform;
-                    
-                    if (objectHit.GetComponent<LobbyVehicle>() != null) canRotate = true;
+                    canRotate = true;
                 }
-            }
 
-            if (Input.GetMouseButton(0))
-            {
-                if (canRotate)
+                if (Input.GetMouseButton(0))
                 {
-                    float rotX = Input.GetAxis("Mouse X") * pc_rotateSpeedModifier;
+                    if (canRotate)
+                    {
+                        float rotX = Input.GetAxis("Mouse X") * pc_rotateSpeedModifier;
 
-                    _transform.rotation = Quaternion.AngleAxis(-rotX, new Vector3(0f, 1f, 0f)) * _transform.rotation;
+                        _transform.rotation = Quaternion.AngleAxis(-rotX, new Vector3(0f, 1f, 0f)) * _transform.rotation;
+                    }
                 }
-            }
-            
-            if (Input.GetMouseButtonUp(0) && canRotate)
-            {
-                canRotate = false;
+
+                if (Input.GetMouseButtonUp(0) && canRotate)
+                {
+                    canRotate = false;
+                }
             }
         }
     }

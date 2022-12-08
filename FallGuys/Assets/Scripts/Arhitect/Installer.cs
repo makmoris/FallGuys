@@ -20,6 +20,8 @@ public class EnemiesSettings
 
 public class Installer : MonoBehaviour 
 {
+    public static event Action<GameObject> IsCurrentPlayer;
+
     public TargetsController targetsController;
 
     [SerializeField] private GameObject _playerPrefab;
@@ -37,9 +39,11 @@ public class Installer : MonoBehaviour
     //private readonly GameController _gameController;
     private GameController _gameController;
 
+    private int numberOfPlayers;
+
     void Start()
     {
-        LoadDataFromCharacterManager();// подгружаем инфу по игроку
+        //LoadDataFromCharacterManager();// подгружаем инфу по игроку
 
         // Install player
         IPlayer _player = new Player(_playerDefaultData);
@@ -94,6 +98,12 @@ public class Installer : MonoBehaviour
         _gameController = new GameController(_player, enemies);
 
         targetsController.SetTargetsForPlayers();
+
+        IsCurrentPlayer?.Invoke(_playerObj);    // раскидываем всем подпищикам игрока, чтобы знали, какая тачка игрок, а какая нет
+        // для мультиплеера. Т.к. в мультиплеере все тачки будут тачкой Player и нужно понять, кто конкретный игрок, за которого Я играю
+
+        numberOfPlayers = enemies.Count + 1;// 1 - сам игрок
+        LevelProgressController.Instance.SetNumberOfPlayers(numberOfPlayers);
     }
 
     private void LoadDataFromCharacterManager()

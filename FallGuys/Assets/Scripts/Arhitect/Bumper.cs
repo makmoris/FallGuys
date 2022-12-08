@@ -5,6 +5,11 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
 {
     public event Action<Bonus> OnBonusGot;
 
+    private void Start()
+    {
+        // для работы enabled = true/false
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         var bonus = other.GetComponent<Bonus>();
@@ -18,7 +23,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                 {
                     OnBonusGot?.Invoke(bonus);
                     bonus.Got();
-                    Debug.Log("Прилетела пуля в бампер");
+                    Debug.Log($"Прилетела пуля в бампер");
                 }
             }
             else
@@ -26,9 +31,21 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                 Explosion explosion = bonus.GetComponent<Explosion>();
                 if (explosion == null)// взрыв вызывается через public GetBonus. Самим бампером ловим только баффы. + Взрыв не сразу после наезда
                 {
-                    Debug.Log("Event GetBonus" + other.name);
-                    OnBonusGot?.Invoke(bonus);
-                    bonus.Got();
+                    if(other.GetComponent<DeadZone>() != null && enabled) // сделано, т.к. было по несколько вызовов
+                    {
+                        OnBonusGot?.Invoke(bonus);
+                        bonus.Got();
+
+                        enabled = false; // enabled = true сделает DeadZone на респе
+                    }
+
+                    if (enabled)
+                    {
+                        OnBonusGot?.Invoke(bonus);
+                        bonus.Got();
+                    }
+
+                    Debug.Log($"{name} Event GetBonus {other.name}");
                 }
             }
         }

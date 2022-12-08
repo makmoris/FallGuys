@@ -72,7 +72,6 @@ public class PointerIcon : MonoBehaviour
     public void Show()
     {
         if (_isShown) return;
-        Debug.Log("Show");
         _isShown = true;
         StopAllCoroutines();
         StartCoroutine(ShowProcess());
@@ -81,7 +80,6 @@ public class PointerIcon : MonoBehaviour
     public void Hide()
     {
         if (!_isShown) return;
-        Debug.Log("Hide");
         _isShown = false;
 
         StopAllCoroutines();

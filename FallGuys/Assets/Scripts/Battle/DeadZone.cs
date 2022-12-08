@@ -58,17 +58,17 @@ public class DeadZone : Bonus
     {
         yield return new WaitForSeconds(respawnTime);
 
-        GameObject car = bumper.gameObject;
-
-        if (!IsPlayerDead(car))
+        if(bumper != null)
         {
+            GameObject car = bumper.gameObject;
+
             Vector3 pos = targetsController.GetRespawnPosition();
             car.transform.position = new Vector3(pos.x, 5f, pos.z);
             car.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             car.SetActive(true);
+            bumper.enabled = true;// отключился при входе в зону из Bumper
             bumper.GetBonus(shieldBonus);
         }
-            
     }
 
     private void OnEnable()

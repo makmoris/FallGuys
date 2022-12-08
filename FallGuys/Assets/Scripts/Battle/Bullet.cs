@@ -46,7 +46,7 @@ public class Bullet : Bonus
             Explosion explosion = other.GetComponent<Explosion>();
             if (explosion != null)// значит это бочка
             {
-                Debug.Log("Бочка");
+                //Debug.Log("Бочка");
                 explosion.ExplodeWithDelay();
 
                 //gameObject.SetActive(false);
@@ -57,14 +57,14 @@ public class Bullet : Bonus
                 Bumper bumper = other.GetComponent<Bumper>();
                 if (bumper != null)// если это игрок - Выпихиваем его в направлении пули
                 {
-                    Debug.Log("Игрок");
+                    //Debug.Log("Игрок");
                     forceDirection = (other.transform.position - transform.position).normalized;
                     other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 3f, 
                         forceDirection.z * force), forceMode);
                 }
                 //StartCoroutine(ShowShotEffect(effectTime));
             }
-            Debug.Log($"пуля попала в {other.name}");
+            Debug.Log($"пуля попала в {other.name}. Выстрелил {parentCollider.gameObject.name}");
             StartCoroutine(ShowShotEffect(effectTime));
 
             //gameObject.SetActive(false);

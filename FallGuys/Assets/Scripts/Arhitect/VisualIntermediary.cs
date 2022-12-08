@@ -15,7 +15,9 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
     private Coroutine shieldCoroutine = null;
 
     private EnemyPointer enemyPointer;
-    private bool isPlayer = true;
+
+    [SerializeField]private GameObject playerGO;
+    [SerializeField]private bool isPlayer;
 
     public static event Action<GameObject> PlayerWasDeadEvent; // кидаем событие всем заинтересованным
 
@@ -25,7 +27,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         if (enemyPointerTransform != null)
         {
             enemyPointer = enemyPointerTransform.GetComponent<EnemyPointer>();
-            isPlayer = false;
         }
 
         if (shield.activeSelf) shield.SetActive(false);
@@ -38,6 +39,14 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         downShieldAlpha = 20f / 255f;
     }
 
+    private void SetIsPlayer(GameObject playerObj)
+    {
+        if (playerObj == gameObject) isPlayer = true;
+        else isPlayer = false;
+
+        playerGO = playerObj;
+    }
+
     public void UpdateHealthInUI(float healthValue)
     {
         if (enemyPointer != null) PointerManager.Instance.UpdateHealthInUI(enemyPointer, healthValue);
@@ -46,6 +55,25 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     public void DestroyCar()
     {
+        Instantiate(destroyEffect, transform.position, Quaternion.identity);
+
+        if (isPlayer) PointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
+        else
+        {
+
+        }
+        PlayerWasDeadEvent?.Invoke(this.gameObject);
+        //gameObject.SetActive(false);
+        Destroy(gameObject);
+    }
+    public void DestroyCar(GameObject killer)// смотрим, если киллер игрок (есть нужный скрипт)
+    {
+        Debug.Log($"игрока {gameObject.name} убил {killer.name}");
+        if (killer == playerGO) 
+        {
+            LevelProgressController.Instance.AddFrag(); 
+        }
+
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
         if (isPlayer) PointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
@@ -118,4 +146,14 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         }
     }
     #endregion
+
+
+    private void OnEnable()
+    {
+        Installer.IsCurrentPlayer += SetIsPlayer;
+    }
+    private void OnDisable()
+    {
+        Installer.IsCurrentPlayer -= SetIsPlayer;
+    }
 }

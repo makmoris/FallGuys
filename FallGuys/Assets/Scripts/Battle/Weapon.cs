@@ -5,7 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("Pool")]
-    [SerializeField] private int poolCount = 5;
+    [SerializeField] private int poolCount = 2;
     [SerializeField] private bool autoExpand = true;
     [SerializeField] private Bullet bulletPrefab;
 

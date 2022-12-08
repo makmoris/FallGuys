@@ -13,13 +13,13 @@ public class AttackPointer : MonoBehaviour // вешается на все объекты, в которые
 
     private void OnDestroy() // или на любой другой, например, при SetActive(false)
     {
-        Debug.Log("Destroy");
+        //Debug.Log("Destroy");
         attackPointerWasDeactivatedEvent?.Invoke(gameObject);
     }
 
     private void OnDisable()
     {
-        Debug.Log("Disable");
+        //Debug.Log("Disable");
         attackPointerWasDeactivatedEvent?.Invoke(gameObject);
     }
 }

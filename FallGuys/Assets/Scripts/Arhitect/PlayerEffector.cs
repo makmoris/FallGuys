@@ -38,7 +38,7 @@ public class PlayerEffector
         {
             case BonusType.AddHealth:
 
-                if (bonus.Value < 0 && isShieldActive)
+                if (bonus.Value < 0 && isShieldActive && bonus.GetComponent<DeadZone>() == null)// последнее - чтобы получать урон в щите, если выпал со сцены
                 {
 
                 }
@@ -61,8 +61,17 @@ public class PlayerEffector
 
                     if (_player.Health == 0)
                     {
-                        _intermediary.DestroyCar();
-                        Debug.Log("Destroy in effector");
+                        Bullet bullet = bonus.GetComponent<Bullet>();
+
+                        if (bullet != null)
+                        {
+                            _intermediary.DestroyCar(bullet.GetParent());
+                        }
+                        else
+                        {
+                            _intermediary.DestroyCar();
+                        }
+                        //Debug.Log("Destroy in effector");
                     }
                 }
 
@@ -90,7 +99,7 @@ public class PlayerEffector
 
             case BonusType.AddGold:
 
-                if(!isBot) CurrencyManager.Instance.AddGold((int)bonus.Value);
+                if(!isBot) LevelProgressController.Instance.AddGold((int)bonus.Value);
 
                 break;
         }

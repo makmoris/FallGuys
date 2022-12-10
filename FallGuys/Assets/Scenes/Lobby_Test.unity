@@ -1927,7 +1927,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 12, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -89.65, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &193568072
 MonoBehaviour:
@@ -2345,6 +2345,7 @@ GameObject:
   - component: {fileID: 205813766}
   - component: {fileID: 205813765}
   - component: {fileID: 205813764}
+  - component: {fileID: 205813767}
   m_Layer: 5
   m_Name: 'TheTermsOfServiceButton '
   m_TagString: Untagged
@@ -2416,7 +2417,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 205813765}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 205813767}
+        m_TargetAssemblyTypeName: URLForSettingWindow, Assembly-CSharp
+        m_MethodName: OpenTheTermsOfService
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &205813765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2455,6 +2468,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205813762}
   m_CullTransparentMesh: 1
+--- !u!114 &205813767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205813762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740f77212c9c61145bdfe4a03963270d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &224138793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2966,7 +2991,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &280120642
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7685,7 +7710,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &725759993
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10625,7 +10650,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 29, y: 28}
-  m_SizeDelta: {x: 0, y: 40}
+  m_SizeDelta: {x: 30.37, y: 40}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &922738557
 MonoBehaviour:
@@ -12566,7 +12591,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1149617683
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13457,6 +13482,7 @@ GameObject:
   - component: {fileID: 1244896715}
   - component: {fileID: 1244896714}
   - component: {fileID: 1244896713}
+  - component: {fileID: 1244896716}
   m_Layer: 5
   m_Name: PrivacyPolicyButton
   m_TagString: Untagged
@@ -13528,7 +13554,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1244896714}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1244896716}
+        m_TargetAssemblyTypeName: URLForSettingWindow, Assembly-CSharp
+        m_MethodName: OpenPrivacyPolicy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1244896714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13567,6 +13605,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244896711}
   m_CullTransparentMesh: 1
+--- !u!114 &1244896716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244896711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740f77212c9c61145bdfe4a03963270d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1248481930
 GameObject:
   m_ObjectHideFlags: 0

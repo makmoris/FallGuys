@@ -19,6 +19,11 @@ public class WeaponContent : MonoBehaviour
     [Header("Message Panel")]
     [SerializeField] private Image messagePanel;
     [SerializeField] private TextMeshProUGUI messageText;
+    [Header("Weapon Characteristic")]
+    [SerializeField] private GameObject weaponCharacteristic;
+    [SerializeField] private CharacteristicVisualizer damageScale;
+    [SerializeField] private CharacteristicVisualizer rechargeTimeScale;
+    [SerializeField] private CharacteristicVisualizer attackRangeScale;
 
     private List<WeaponButton> weaponButtons = new List<WeaponButton>();
 
@@ -29,6 +34,8 @@ public class WeaponContent : MonoBehaviour
         if (notFirstActive)
         {
             UpdateAllButtonInfo();
+
+            weaponCharacteristic.SetActive(true);
         }
     }
 
@@ -38,6 +45,8 @@ public class WeaponContent : MonoBehaviour
         {
             UpdateAllButtonInfo();
             notFirstActive = true;
+
+            weaponCharacteristic.SetActive(true);
         }
     }
 
@@ -45,6 +54,19 @@ public class WeaponContent : MonoBehaviour
     public TextMeshProUGUI GetNameText()
     {
         return nameText;
+    }
+
+    public CharacteristicVisualizer GetDamageScale()
+    {
+        return damageScale;
+    }
+    public CharacteristicVisualizer GetRechargeTimeScale()
+    {
+        return rechargeTimeScale;
+    }
+    public CharacteristicVisualizer GetAttackRangeScale()
+    {
+        return attackRangeScale;
     }
 
     public Image GetMessagePanel()

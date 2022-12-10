@@ -19,6 +19,8 @@ public class VehicleContent : MonoBehaviour
     [Header("Message Panel")]
     [SerializeField] private Image messagePanel;
     [SerializeField] private TextMeshProUGUI messageText;
+    [Header("HP Scale")]
+    [SerializeField] private CharacteristicVisualizer hpScale;
 
     private List<VehicleButton> vehicleButtons = new List<VehicleButton>();
 
@@ -45,6 +47,11 @@ public class VehicleContent : MonoBehaviour
     public TextMeshProUGUI GetNameText()
     {
         return nameText;
+    }
+
+    public CharacteristicVisualizer GetHPScale()
+    {
+        return hpScale;
     }
 
     public Image GetMessagePanel()

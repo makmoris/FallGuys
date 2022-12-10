@@ -43,7 +43,7 @@ public class Installer : MonoBehaviour
 
     void Start()
     {
-        //LoadDataFromCharacterManager();// подгружаем инфу по игроку
+        LoadDataFromCharacterManager();// подгружаем инфу по игроку
 
         // Install player
         IPlayer _player = new Player(_playerDefaultData);

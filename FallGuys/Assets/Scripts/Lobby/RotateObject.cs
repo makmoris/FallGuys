@@ -34,53 +34,47 @@ public class RotateObject : MonoBehaviour
             {
                 touch = Input.GetTouch(0);
 
-                if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                if (touch.phase == TouchPhase.Began && !canRotate && !EventSystem.current.IsPointerOverGameObject(touch.fingerId))
                 {
-                    if (touch.phase == TouchPhase.Began && !canRotate)
-                    {
-                        canRotate = true;
-                    }
+                    canRotate = true;
+                }
 
-                    if (touch.phase == TouchPhase.Moved)
+                if (touch.phase == TouchPhase.Moved)
+                {
+                    if (canRotate)
                     {
-                        if (canRotate)
-                        {
-                            rotationY = Quaternion.Euler(0f, -touch.deltaPosition.x * rotateSpeedModifier, 0f);
+                        rotationY = Quaternion.Euler(0f, -touch.deltaPosition.x * rotateSpeedModifier, 0f);
 
-                            _transform.rotation = rotationY * _transform.rotation;
-                        }
+                        _transform.rotation = rotationY * _transform.rotation;
                     }
+                }
 
-                    if (touch.phase == TouchPhase.Ended && canRotate)
-                    {
-                        canRotate = false;
-                    }
+                if (touch.phase == TouchPhase.Ended && canRotate)
+                {
+                    canRotate = false;
                 }
             }
         }
         else
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0) && !canRotate && !EventSystem.current.IsPointerOverGameObject())
             {
-                if (Input.GetMouseButtonDown(0) && !canRotate)
-                {
-                    canRotate = true;
-                }
+                canRotate = true;
+            }
 
-                if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0))
+            {
+                if (canRotate)
                 {
-                    if (canRotate)
-                    {
-                        float rotX = Input.GetAxis("Mouse X") * pc_rotateSpeedModifier;
+                    float rotX = Input.GetAxis("Mouse X") * pc_rotateSpeedModifier;
 
-                        _transform.rotation = Quaternion.AngleAxis(-rotX, new Vector3(0f, 1f, 0f)) * _transform.rotation;
-                    }
+                    _transform.rotation = Quaternion.AngleAxis(-rotX, new Vector3(0f, 1f, 0f)) * _transform.rotation;
                 }
+            }
 
-                if (Input.GetMouseButtonUp(0) && canRotate)
-                {
-                    canRotate = false;
-                }
+            if (Input.GetMouseButtonUp(0) && canRotate)
+            {
+                canRotate = false;
             }
         }
     }

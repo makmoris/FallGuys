@@ -16,6 +16,9 @@ public class WeaponButton : MonoBehaviour
     [SerializeField] private GameObject lockImage;
 
     private TextMeshProUGUI nameText;
+    private CharacteristicVisualizer damageScale;
+    private CharacteristicVisualizer rechargeTimeScale;
+    private CharacteristicVisualizer attackRangeScale;
 
     private Button applyButton;
     private TextMeshProUGUI applyText;
@@ -54,6 +57,9 @@ public class WeaponButton : MonoBehaviour
     public void ShowWeapon()// вызывается кнопой при выборе пушки, чтобы посмотреть. Смотреть можно все кнопы
     {
         nameText.text = _weaponName;
+        damageScale.SetScaleValue(_weaponDefaultData.Damage * -1f);
+        rechargeTimeScale.SetScaleValue(_weaponDefaultData.RechargeTime);
+        attackRangeScale.SetScaleValue(_weaponDefaultData.AttackRange);
 
         lobbyWeaponOnScene.ShowThisWeapon();
 
@@ -87,6 +93,9 @@ public class WeaponButton : MonoBehaviour
             weaponContent = transform.GetComponentInParent<WeaponContent>();
 
             nameText = weaponContent.GetNameText();
+            damageScale = weaponContent.GetDamageScale();
+            rechargeTimeScale = weaponContent.GetRechargeTimeScale();
+            attackRangeScale = weaponContent.GetAttackRangeScale();
 
             applyButton = weaponContent.GetApplyButton();
             applyText = weaponContent.GetApplyText();
@@ -130,6 +139,10 @@ public class WeaponButton : MonoBehaviour
         if (activeWeapon == lobbyWeaponOnScene.gameObject)// значит этот цвет - эта кнопка - выбрана. Должны показать, что она сейчас активна (цвет этот)
         {
             nameText.text = _weaponName;
+            damageScale.SetScaleValue(_weaponDefaultData.Damage * -1f);
+            rechargeTimeScale.SetScaleValue(_weaponDefaultData.RechargeTime);
+            attackRangeScale.SetScaleValue(_weaponDefaultData.AttackRange);
+
             isActiveWeapon = true;
 
             CheckBuyAndApplyButtonStatus();

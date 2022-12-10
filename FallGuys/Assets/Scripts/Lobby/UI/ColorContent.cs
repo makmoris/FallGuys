@@ -20,6 +20,8 @@ public class ColorContent : MonoBehaviour
     [Header("Message Panel")]
     [SerializeField] private Image messagePanel;
     [SerializeField] private TextMeshProUGUI messageText;
+    [Header("Weapon Characteristic")]
+    [SerializeField] private GameObject weaponCharacteristic;
 
 
     private List<ColorButton> colorButtons = new List<ColorButton>();
@@ -31,6 +33,8 @@ public class ColorContent : MonoBehaviour
         if (notFirstActive)
         {
             UpdateAllButtonInfo();
+
+            weaponCharacteristic.SetActive(false);
         }
     }
 
@@ -40,6 +44,8 @@ public class ColorContent : MonoBehaviour
         {
             UpdateAllButtonInfo();
             notFirstActive = true;
+
+            weaponCharacteristic.SetActive(false);
         }
     }
 

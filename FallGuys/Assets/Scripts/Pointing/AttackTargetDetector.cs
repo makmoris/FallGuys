@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AttackTargetDetector : MonoBehaviour
 {
-    [SerializeField]private GameObject currentTargetObject;// текущая цель. Если есть, то есть. Если нету, то null
+    private GameObject currentTargetObject;// текущая цель. Если есть, то есть. Если нету, то null
     [SerializeField] private Weapon weapon;// ссылка на пушку, внутри которой находится детектор
 
     private bool isAI;

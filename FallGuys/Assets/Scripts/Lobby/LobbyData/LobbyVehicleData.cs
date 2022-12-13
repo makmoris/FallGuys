@@ -6,7 +6,7 @@ using UnityEngine;
 public class LobbyVehicleData : ScriptableObject
 {
     [SerializeField] private string vehicleName;
-    [SerializeField] private Sprite vehicleIcon;
+    private Sprite vehicleIcon;
     [SerializeField] private int vehicleCost;
     [SerializeField] private int vehicleCupsToUnlock;
     [SerializeField] private bool isVehicleAvailable;// если false - то оно заблочено, нужно его купить/открыть 

@@ -13,7 +13,7 @@ public class PointerManager : MonoBehaviour
     //
     
     private Dictionary<EnemyPointer, PointerIcon> _positionDictionary = new Dictionary<EnemyPointer, PointerIcon>();
-    [SerializeField] private Transform _playerTransform;// сделать передачу из Installer-a
+    private Transform _playerTransform;// сделать передачу из Installer-a
     [SerializeField] Camera _camera;
     [SerializeField] Transform _canvasTransform;
 

@@ -30,6 +30,7 @@ public class VehicleButton : MonoBehaviour
     private VehicleContent vehicleContent;
 
     [Space]
+    [Header("---------")]
     [SerializeField] private bool isActiveVehicle;
 
     [Header("Data values")]

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ColorButton : MonoBehaviour
 {
     [SerializeField] private VehicleColorData colorData;
-    [SerializeField] private Sprite vehicleColorImage;
+    private Sprite vehicleColorImage;
     [SerializeField] private Material colorMaterial;
 
     [Header("Button Components")]
@@ -28,6 +28,7 @@ public class ColorButton : MonoBehaviour
     private Vector2 oldCupsTextPosition;
 
     [Space]
+    [Header("---------")]
     [SerializeField] private bool isActiveColor;
 
     private ColorContent parentColorContent;

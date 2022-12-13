@@ -20,10 +20,15 @@ public class EnemiesSettings
 
 public class Installer : MonoBehaviour 
 {
+    [Header("Start from lobby")]
+    public bool startFromLobby;
+
     public static event Action<GameObject> IsCurrentPlayer;
 
+    [Space]
     public TargetsController targetsController;
 
+    [Space]
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private PlayerDefaultData _playerDefaultData;
     [SerializeField] private PlayerLimitsData _playerLimitsData;
@@ -43,7 +48,7 @@ public class Installer : MonoBehaviour
 
     void Start()
     {
-        LoadDataFromCharacterManager();// подгружаем инфу по игроку
+        if(startFromLobby) LoadDataFromCharacterManager();// подгружаем инфу по игроку
 
         // Install player
         IPlayer _player = new Player(_playerDefaultData);

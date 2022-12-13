@@ -34,6 +34,7 @@ public class WeaponButton : MonoBehaviour
     private WeaponContent weaponContent;
 
     [Space]
+    [Header("---------")]
     [SerializeField] private bool isActiveWeapon;
 
     [Header("Data values")]

@@ -7,6 +7,8 @@ public class ScrollAreaColor : MonoBehaviour
 {
     [SerializeField] private List<ColorContent> colorContents;
 
+    [Space]
+    [Header("---------")]
     [SerializeField] private GameObject activeVehicle;
     [SerializeField]private GameObject previousActiveVehicle;
 

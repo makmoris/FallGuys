@@ -16,8 +16,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     private EnemyPointer enemyPointer;
 
-    [SerializeField]private GameObject playerGO;
-    [SerializeField]private bool isPlayer;
+    private GameObject playerGO;
+    private bool isPlayer;
 
     public static event Action<GameObject> PlayerWasDeadEvent; // кидаем событие всем заинтересованным
 

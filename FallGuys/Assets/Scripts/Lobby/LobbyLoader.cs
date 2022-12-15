@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LobbyLoader : MonoBehaviour // вешается на канвас уровня. Подгружает лобби для быстрого выхода
 {
-    [SerializeField] private Object lobbyScene;
+    [SerializeField] private string lobbySceneName;
 
     private bool isSceneLoaded;
     private AsyncOperation asyncOperation;
@@ -16,7 +16,7 @@ public class LobbyLoader : MonoBehaviour // вешается на канвас уровня. Подгружае
     {
         if (!loadingStarted)
         {
-            StartCoroutine(LoadScene(lobbyScene.name));
+            StartCoroutine(LoadScene(lobbySceneName));
             loadingStarted = true;
         }
     }
@@ -30,7 +30,7 @@ public class LobbyLoader : MonoBehaviour // вешается на канвас уровня. Подгружае
         else
         {
             // сцена еще не успела загрузиться, но по завершению загрузки сразу переходим. Мб добавить кружок ожидания на будущее
-            Debug.Log($"Сцена {lobbyScene.name} не успела загрузиться");
+            Debug.Log($"Сцена {lobbySceneName} не успела загрузиться");
             asyncOperation.allowSceneActivation = true;
         }
     }

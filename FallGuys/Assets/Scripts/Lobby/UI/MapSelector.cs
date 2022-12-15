@@ -11,12 +11,13 @@ using Random = UnityEngine.Random;
 public class MapSettings
 {
     [SerializeField] private string name;
-    [SerializeField] internal Object mapScene; 
+    [SerializeField] internal string mapScene; 
     [SerializeField] internal Image mapImage;
 }
 
 public class MapSelector : MonoBehaviour
 {
+    [SerializeField] private UnityEngine.UI.Extensions.UI_InfiniteScroll infiniteScroll;
     [SerializeField] private List<MapSettings> maps;
 
     [SerializeField]private bool isSceneLoaded;
@@ -24,7 +25,15 @@ public class MapSelector : MonoBehaviour
 
     private void Awake()
     {
-        CreateClones();
+        
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            StartPlayGame();
+        }
     }
 
     public void StartPlayGame()// вызывается по кнопке Play
@@ -32,10 +41,17 @@ public class MapSelector : MonoBehaviour
         LoadMap();
     }
 
+    public void GoToLevel()// вызывается из UI_InfiniteScroll по завершению анимации
+    {
+        asyncOperation.allowSceneActivation = true;
+    }
+
     private void LoadMap()
     {
         int selectMapIndex = GetRandomMapIndex();
-        string sceneName = maps[selectMapIndex].mapScene.name;
+        string sceneName = maps[selectMapIndex].mapScene;
+        
+        infiniteScroll.SetTargetIndex(maps[selectMapIndex].mapImage.gameObject, this);
 
         StartCoroutine(LoadScene(sceneName));
         // параллельно проигрываем анимацию выбора карты
@@ -45,15 +61,21 @@ public class MapSelector : MonoBehaviour
     IEnumerator LoadScene(string mapName)
     {
         yield return null;
-
         asyncOperation = SceneManager.LoadSceneAsync(mapName);
         asyncOperation.allowSceneActivation = false;
+
+        bool sendCanStop = false;
 
         while (!asyncOperation.isDone)
         {
             if (asyncOperation.progress >= 0.9f)
             {
                 isSceneLoaded = true;
+                if (!sendCanStop)
+                {
+                    infiniteScroll.CanStopScrolling();
+                    sendCanStop = true;
+                }
             }
 
             yield return null;

@@ -15,6 +15,8 @@ public class RewardLevel
 {
     [SerializeField] private string leagueLevel;
     [SerializeField] internal int neededCups;
+    [Header("Available Locations")]
+    [SerializeField] internal List<string> locationNames;
     [Header("Reward For Frag")]
     [SerializeField] internal int goldRewardForFrag;
     [SerializeField] internal int cupRewardForFrag;
@@ -48,6 +50,13 @@ public class LeagueManager : MonoBehaviour
     private void Start()
     {
         UpdateLeagueLevel(CurrencyManager.Instance.Cups);
+    }
+    
+    public List<string> GetAvailableLocations()// גûחûגאועסÿ MapSelector-מל
+    {
+        int leagueLevel = currentLeagueLevel - 1;
+
+        return leagueLevels[leagueLevel].locationNames;
     }
 
     public int ReceiveGoldsAsReward(int place)
@@ -101,6 +110,10 @@ public class LeagueManager : MonoBehaviour
         LeagueLevelUpdateEvent?.Invoke(currentLeagueLevel);
     }
 
+    public int GetCurrentLeagueLevel()
+    {
+        return currentLeagueLevel;
+    }
 
     private void OnEnable()
     {

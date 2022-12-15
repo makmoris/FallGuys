@@ -47,13 +47,13 @@ namespace UnityEngine.UI.Extensions
         [SerializeField] private Canvas _canvas;
         [Space]
         [Header("Speed")]
-        [SerializeField] private float maxSpeed;
-        [SerializeField] private float searchStartSpeed;
+        [SerializeField] private float maxSpeed = 1000;
+        [SerializeField] private float searchStartSpeed = 400;
         [Space]
         [SerializeField] private float currentSpeed;
 
         [Header("Scrolling time")]
-        [SerializeField] private float scrollingTime;
+        [SerializeField] private float scrollingTime = 5;
 
         private float fullCircleValue = 0;
         private float itemWidth;
@@ -245,7 +245,6 @@ namespace UnityEngine.UI.Extensions
 
         public virtual void SetNewItems(ref List<Transform> newItems)
         {
-            Debug.Log("SetNewItems");
             if (_scrollRect != null)
             {
                 if (_scrollRect.content == null && newItems == null)
@@ -277,7 +276,6 @@ namespace UnityEngine.UI.Extensions
 
         private void SetItems()
         {
-            Debug.Log("SetItems");
             for (int i = 0; i < _scrollRect.content.childCount; i++)
             {
                 var element = _scrollRect.content.GetChild(i).GetComponent<RectTransform>();

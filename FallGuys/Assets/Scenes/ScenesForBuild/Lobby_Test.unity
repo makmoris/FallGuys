@@ -4530,7 +4530,6 @@ GameObject:
   - component: {fileID: 399098350}
   - component: {fileID: 399098349}
   - component: {fileID: 399098348}
-  - component: {fileID: 399098351}
   m_Layer: 5
   m_Name: GarageButton
   m_TagString: Untagged
@@ -4639,18 +4638,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 399098351}
-        m_TargetAssemblyTypeName: TestLog, Assembly-CSharp
-        m_MethodName: TestText
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &399098349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4689,18 +4676,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 399098346}
   m_CullTransparentMesh: 1
---- !u!114 &399098351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 399098346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d197cf6123e9cd944b9279d0154ec10d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &408017433
 GameObject:
   m_ObjectHideFlags: 0
@@ -8982,12 +8957,11 @@ MonoBehaviour:
   infiniteScroll: {fileID: 41018032}
   maps:
   - name: Map 1
-    mapScene: Test_Bilds_Art
-    mapImage: {fileID: 562920149}
+    locationName: Japan
+    levelImage: {fileID: 562920149}
   - name: Map 2
-    mapScene: Test_Bilds_Art2
-    mapImage: {fileID: 627090624}
-  isSceneLoaded: 0
+    locationName: Table
+    levelImage: {fileID: 627090624}
 --- !u!1 &725759992
 GameObject:
   m_ObjectHideFlags: 0
@@ -15354,7 +15328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1234464061
 RectTransform:
   m_ObjectHideFlags: 0

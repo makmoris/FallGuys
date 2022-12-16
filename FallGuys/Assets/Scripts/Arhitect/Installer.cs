@@ -25,8 +25,9 @@ public class Installer : MonoBehaviour
 
     public static event Action<GameObject> IsCurrentPlayer;
 
-    [Space]
+    [Header("Scene Controllers")]
     public TargetsController targetsController;
+    public EndGameController endGameController;
 
     [Space]
     [SerializeField] private GameObject _playerPrefab;
@@ -72,6 +73,9 @@ public class Installer : MonoBehaviour
         _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
 
         var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerVisualIntermediary);
+
+        GameObject playerObjectClone = Instantiate(_playerObj);
+        endGameController.SetPlayerObjectClone(playerObjectClone);
 
         //Install enemies
         List<IEnemyPlayer> enemies = new List<IEnemyPlayer>(_enemiesSettings.Count);

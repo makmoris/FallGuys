@@ -53,10 +53,8 @@ public class Weapon : MonoBehaviour
         attackRange = characteristicsData.AttackRange;
 
         detectorTransform.GetComponent<AttackTargetDetector>().IsAI(isAI);
-    }
 
-    private void Start()
-    {
+        // from Start
         bulletPool = new PoolMono<Bullet>(bulletPrefab, poolCount);
         bulletPool.autoExpand = autoExpand;
 
@@ -65,6 +63,18 @@ public class Weapon : MonoBehaviour
         CreateExampleBullet();
 
         defaultWeaponRotation = weaponTransform.localRotation;
+    }
+
+    private void Start()
+    {
+        ////bulletPool = new PoolMono<Bullet>(bulletPrefab, poolCount);
+        ////bulletPool.autoExpand = autoExpand;
+
+        ////SetDetectorScale();
+
+        ////CreateExampleBullet();
+
+        ////defaultWeaponRotation = weaponTransform.localRotation;
     }
 
     private void CreateExampleBullet()

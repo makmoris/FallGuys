@@ -74,7 +74,7 @@ public class PointerIcon : MonoBehaviour
         if (_isShown) return;
         _isShown = true;
         StopAllCoroutines();
-        StartCoroutine(ShowProcess());
+        if(gameObject.activeSelf) StartCoroutine(ShowProcess());
     }
 
     public void Hide()
@@ -83,7 +83,7 @@ public class PointerIcon : MonoBehaviour
         _isShown = false;
 
         StopAllCoroutines();
-        StartCoroutine(HideProcess());
+        if (gameObject.activeSelf) StartCoroutine(HideProcess());
     }
 
     public void UpdateHealthColor(float healthValue)

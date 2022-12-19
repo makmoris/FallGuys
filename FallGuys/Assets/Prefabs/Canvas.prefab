@@ -281,7 +281,6 @@ GameObject:
   - component: {fileID: 954293579}
   - component: {fileID: 954293578}
   - component: {fileID: 954293577}
-  - component: {fileID: 954293576}
   m_Layer: 5
   m_Name: LeaveButton
   m_TagString: Untagged
@@ -392,9 +391,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 954293576}
-        m_TargetAssemblyTypeName: TestSceneLoader, Assembly-CSharp
-        m_MethodName: NewScene
+      - m_Target: {fileID: 2758518785976059859}
+        m_TargetAssemblyTypeName: LobbyLoader, Assembly-CSharp
+        m_MethodName: ExitToLobby
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -404,19 +403,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &954293576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 954293574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c6c233cdc9a57e468b5cddf72ab3ab2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ind: 0
 --- !u!1 &975035160
 GameObject:
   m_ObjectHideFlags: 0
@@ -3644,7 +3630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e08698cb10069a4a86d55a28f76bda7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyScene: {fileID: 102900000, guid: 5a1fda2d24c3d9b4995960265b53922e, type: 3}
+  lobbySceneName: Lobby_Test
 --- !u!114 &563515094243914550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3661,6 +3647,16 @@ MonoBehaviour:
   fragText: {fileID: 7065353517719279300}
   amountOfGoldReward: 0
   amountOfCupReward: 0
+  gameCamera: {fileID: 0}
+  endGameCamera: {fileID: 0}
+  pauseBeforShowingWinWindow: 2
+  winWindow: {fileID: 0}
+  fragWWText: {fileID: 0}
+  goldWWText: {fileID: 0}
+  cupsWWText: {fileID: 0}
+  pauseBeforShowingLoseWindow: 2
+  loseWindow: {fileID: 0}
+  goldLWText: {fileID: 0}
 --- !u!223 &7065353517509365835
 Canvas:
   m_ObjectHideFlags: 0
@@ -3697,7 +3693,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 375, y: 667}
+  m_ReferenceResolution: {x: 667, y: 375}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3

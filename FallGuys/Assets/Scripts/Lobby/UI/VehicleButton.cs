@@ -14,7 +14,7 @@ public class VehicleButton : MonoBehaviour
     [SerializeField] private GameObject lockImage;
 
     private TextMeshProUGUI nameText;
-    private CharacteristicVisualizer hpScale;
+    //private CharacteristicVisualizer hpScale;
 
     private Button applyButton;
     private TextMeshProUGUI applyText;
@@ -55,7 +55,7 @@ public class VehicleButton : MonoBehaviour
     public void ShowVehicle()// вызывается кнопой при выборе пушки, чтобы посмотреть. Смотреть можно все кнопы
     {
         nameText.text = _vehicleName;
-        hpScale.SetScaleValue(_vehicleDefaultData.DefaultHP);
+        //hpScale.SetScaleValue(_vehicleDefaultData.DefaultHP);
 
         lobbyVehicleOnScene.ShowThisVehicle();
 
@@ -89,7 +89,7 @@ public class VehicleButton : MonoBehaviour
             vehicleContent = transform.GetComponentInParent<VehicleContent>();
 
             nameText = vehicleContent.GetNameText();
-            hpScale = vehicleContent.GetHPScale();
+            //hpScale = vehicleContent.GetHPScale();
 
             applyButton = vehicleContent.GetApplyButton();
             applyText = vehicleContent.GetApplyText();
@@ -134,7 +134,7 @@ public class VehicleButton : MonoBehaviour
         if (activeLobbyVehicle == lobbyVehicleOnScene.gameObject)// значит этот цвет - эта кнопка - выбрана. Должны показать, что она сейчас активна (цвет этот)
         {
             nameText.text = _vehicleName;
-            hpScale.SetScaleValue(_vehicleDefaultData.DefaultHP);
+            //hpScale.SetScaleValue(_vehicleDefaultData.DefaultHP);
 
             if (saveLobbyVehicle == lobbyVehicleOnScene.gameObject) isActiveVehicle = true;
 

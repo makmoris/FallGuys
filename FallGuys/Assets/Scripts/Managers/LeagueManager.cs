@@ -50,6 +50,8 @@ public class LeagueManager : MonoBehaviour
     private void Start()
     {
         UpdateLeagueLevel(CurrencyManager.Instance.Cups);
+
+        CurrencyManager.Instance.SetMaxCups(leagueLevels[leagueLevels.Count - 1].neededCups);
     }
     
     public List<string> GetAvailableLocations()// גûחûגאועסÿ MapSelector-מל
@@ -101,13 +103,32 @@ public class LeagueManager : MonoBehaviour
 
         for (int i = 0; i < leagueLevels.Count; i++)
         {
-            if (cupsValue >= leagueLevels[i].neededCups) _leagueLevel++;
+            if (cupsValue >= leagueLevels[i].neededCups) 
+            { 
+                if(i != leagueLevels.Count - 1)
+                {
+                    _leagueLevel++;
+                }
+            }
             else break;
         }
 
         currentLeagueLevel = _leagueLevel;
 
         LeagueLevelUpdateEvent?.Invoke(currentLeagueLevel);
+    }
+
+    public int GetNeededCupsForLeagueLevel(int leagueLevelIndex)// גûחûגאועסÿ LeagueWindowProgressVisualizer
+    {
+        if(leagueLevelIndex < leagueLevels.Count)
+        {
+            return leagueLevels[leagueLevelIndex].neededCups;
+        }
+        else
+        {
+            Debug.LogError("The number of leagues in the list of LEAGUE WINDOW does not match the number of leagues in the list of LEAGUE MANAGER");
+            return 0;
+        }
     }
 
     public int GetCurrentLeagueLevel()

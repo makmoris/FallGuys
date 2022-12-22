@@ -18,6 +18,12 @@ public class MapSettings
 public class MapSelector : MonoBehaviour
 {
     [SerializeField] private UnityEngine.UI.Extensions.UI_InfiniteScroll infiniteScroll;
+    [SerializeField] private GameObject gameTutorialWindow;
+
+    private string gameTutorialKey = "TutorialWindowWasShown";
+    [SerializeField]private bool tutorialWindowWasShown;
+
+    [Space]
     [SerializeField] private List<MapSettings> maps;
 
     //[SerializeField]private bool isSceneLoaded;
@@ -26,12 +32,23 @@ public class MapSelector : MonoBehaviour
 
     public void StartPlayGame()// вызывается по кнопке Play
     {
+        int value = PlayerPrefs.GetInt(gameTutorialKey, 0);
+        if (value == 0) tutorialWindowWasShown = false;
+        else tutorialWindowWasShown = true;
+
         LoadMap();
     }
 
-    public void GoToLevel()// вызывается из UI_InfiniteScroll по завершению анимации
+    public void GoToLevel()// вызывается из UI_InfiniteScroll по завершению анимации. Или окном gameTutorialWindow
     {
-        asyncOperation.allowSceneActivation = true;
+        if(tutorialWindowWasShown) asyncOperation.allowSceneActivation = true;
+        else
+        {
+            PlayerPrefs.SetInt(gameTutorialKey, 1);
+            tutorialWindowWasShown = true;
+
+            gameTutorialWindow.SetActive(true);
+        }
     }
 
     private void LoadMap()

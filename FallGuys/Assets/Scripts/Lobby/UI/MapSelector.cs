@@ -23,18 +23,6 @@ public class MapSelector : MonoBehaviour
     //[SerializeField]private bool isSceneLoaded;
     private AsyncOperation asyncOperation;
 
-    private void Awake()
-    {
-        
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartPlayGame();
-        }
-    }
 
     public void StartPlayGame()// вызывается по кнопке Play
     {
@@ -62,7 +50,7 @@ public class MapSelector : MonoBehaviour
 
         StartCoroutine(LoadScene(sceneName));
         // параллельно проигрываем анимацию выбора карты
-
+        
     }
 
     IEnumerator LoadScene(string mapName)

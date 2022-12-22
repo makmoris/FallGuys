@@ -16,6 +16,11 @@ public class LeagueLevelVisualizer : MonoBehaviour
         _image = GetComponent<Image>();
     }
 
+    private void Start()
+    {
+        
+    }
+
     private void UpdateLeagueLevelValue(int value)
     {
         leaguLevel = value;

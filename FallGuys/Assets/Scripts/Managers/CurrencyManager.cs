@@ -81,6 +81,8 @@ public class CurrencyManager : MonoBehaviour
         {
             _cups = value;
 
+            if (_cups <= 0) _cups = 0;
+
             if (_cups > _maxCups && _isMaxCupsValueSetted) _cups = _maxCups;
 
             CupsUpdateEvent?.Invoke(_cups);
@@ -89,7 +91,7 @@ public class CurrencyManager : MonoBehaviour
         }
     }
     
-    public void SetMaxCups(int maxValue)
+    public void SetMaxCups(int maxValue)// leagueManager
     {
         _maxCups = maxValue;
         _isMaxCupsValueSetted = true;

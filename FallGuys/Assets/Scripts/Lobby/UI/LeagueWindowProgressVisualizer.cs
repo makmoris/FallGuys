@@ -21,18 +21,27 @@ public class LeagueWindowLeagues
 public class LeagueWindowProgressVisualizer : MonoBehaviour
 {
     [Header("Scale")]
+    [SerializeField] private RectTransform leagueContent;
     [SerializeField] private RectTransform leagueProgressScale;
     [SerializeField] private TextMeshProUGUI cupsText;
+    [SerializeField] private GameObject cupsPlace;
+    [Space]
+    [SerializeField] private float scaleFillingAnimationSpeed = 2f;
 
+    [Header("Leagues")]
     [SerializeField] private List<LeagueWindowLeagues> leagues;
 
     private int currentCupsValue;
+    private int previousCupsValue;
 
     private HorizontalLayoutGroup horizontalLayoutGroup;
     
     private float elementWidth;
 
+    float valueBetweenStartAndEndScalePos;
+
     private bool notFirstActive;
+    private bool isShowingProgressAnimationAfterPlay;// показываем анимацию шкалы прогресса после игры на уровне
 
     private void Awake()
     {
@@ -48,13 +57,12 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         leagueProgressScale.anchorMax = new Vector2(0f, 0.5f);
         leagueProgressScale.pivot = new Vector2(0f, 0.5f);
         
-        //startScalePos = (elementWidth / 2f) + horizontalLayoutGroup.padding.left;
-        //endScalePos = ((leagues.Count - 1) * elementWidth) + ((leagues.Count - 1) * horizontalLayoutGroup.spacing) +
-            //horizontalLayoutGroup.padding.left + (elementWidth / 2f);
-
-        //valueBetweenStartAndEndScalePos = endScalePos - startScalePos;
-
-        //leagueProgressScale.sizeDelta = new Vector2(startScalePos, leagueProgressScale.sizeDelta.y);
+        // для позиции скролла (Content)
+        float startScalePos = (elementWidth / 2f) + horizontalLayoutGroup.padding.left;
+        float endScalePos = ((leagues.Count - 1) * elementWidth) + ((leagues.Count - 1) * horizontalLayoutGroup.spacing) +
+            horizontalLayoutGroup.padding.left + (elementWidth / 2f);
+        
+        valueBetweenStartAndEndScalePos = endScalePos - startScalePos;
 
         foreach (var _league in leagues)
         {
@@ -67,9 +75,20 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
 
     private void OnEnable()
     {
+        LobbyWindowsController.ShowLeagueProgressAnimationEvent += ShowProgressAnimationAfterPlay;
+
         if (notFirstActive)
         {
             UpdateCupsValue(CurrencyManager.Instance.Cups);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            float x = leagueContent.sizeDelta.x;
+            Debug.Log($"Это Dwidth = {x}");
         }
     }
 
@@ -83,6 +102,12 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         }
     }
 
+    private void ShowProgressAnimationAfterPlay(int _previousCupValue)
+    {
+        previousCupsValue = _previousCupValue;
+        isShowingProgressAnimationAfterPlay = true;
+    }
+
     private void UpdateScalePosition()
     {
         int currentLeagueLevel = LeagueManager.Instance.GetCurrentLeagueLevel();
@@ -91,35 +116,79 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         if (currentLeagueLevel != leagues.Count) maxTargetCupsValue = leagues[currentLeagueLevel].neededCupsValue;
         else maxTargetCupsValue = leagues[leagues.Count - 1].neededCupsValue;
 
+        float newScalePos;
+
         if (maxTargetCupsValue == 0) return;
 
+        // шкала прогресса
+        if(currentCupsValue == previousCupsValue || !isShowingProgressAnimationAfterPlay)// без анимации
+        {
+            cupsText.text = $"{currentCupsValue}";
+            newScalePos = GetNewScalePosX(currentLeagueLevel, currentCupsValue, maxTargetCupsValue);
+            isShowingProgressAnimationAfterPlay = false;
+        }
+        else
+        {
+            cupsText.text = $"{previousCupsValue}";
+            newScalePos = GetNewScalePosX(currentLeagueLevel, previousCupsValue, maxTargetCupsValue);
+            leagueProgressScale.sizeDelta = new Vector2(newScalePos, leagueProgressScale.sizeDelta.y);
+
+            newScalePos = GetNewScalePosX(currentLeagueLevel, currentCupsValue, maxTargetCupsValue);
+        }
+
+        // ставим сам скролл, чтобы не выходил за пределы экрана
+        if (currentLeagueLevel == 1)
+        {
+            leagueContent.anchoredPosition = new Vector2(0, leagueContent.anchoredPosition.y);
+        }
+        else
+        {
+            float percentForScale = newScalePos / valueBetweenStartAndEndScalePos;
+            leagueContent.anchoredPosition = new Vector2((leagueContent.sizeDelta.x * percentForScale) * -1f, leagueContent.anchoredPosition.y);
+        }
+
+        //Debug.Log($"Стартовая позиция шкалы = {leagueProgressScale.sizeDelta.x}; Финишная позиция шкалы = {newScalePos}; {maxTargetCupsValue}");
+
+        if (isShowingProgressAnimationAfterPlay)
+        {
+            //cupsPlace.SetActive(false); - если без анимации подсчета кубков
+
+            StartCoroutine(FillingAnimation(newScalePos));
+            isShowingProgressAnimationAfterPlay = false;
+        }
+        else leagueProgressScale.sizeDelta = new Vector2(newScalePos, leagueProgressScale.sizeDelta.y);
+    }
+
+    private float GetNewScalePosX(int currentLeagueLevel, int cupsValue, float maxTargetCupsValue)
+    {
         float startScalePos = ((currentLeagueLevel - 1) * elementWidth) + ((currentLeagueLevel - 1) * horizontalLayoutGroup.spacing) +
             horizontalLayoutGroup.padding.left + (elementWidth / 2f);
 
         float endScalePos = ((currentLeagueLevel) * elementWidth) + ((currentLeagueLevel) * horizontalLayoutGroup.spacing) +
             horizontalLayoutGroup.padding.left + (elementWidth / 2f);
-        
+
         float valueBetweenStartAndEndScalePos = endScalePos - startScalePos;
 
         float newScalePos;
 
         if (currentLeagueLevel == 1)
         {
-            float currentCupsInPercent = currentCupsValue / maxTargetCupsValue;
+            float currentCupsInPercent = cupsValue / maxTargetCupsValue;
             newScalePos = (valueBetweenStartAndEndScalePos * currentCupsInPercent) + startScalePos;
         }
-        else if(currentLeagueLevel != leagues.Count) // последнний
+        else if (currentLeagueLevel != leagues.Count) // последнний
         {
             float previousMaxTargetCupsValue = leagues[currentLeagueLevel - 1].neededCupsValue;
-            float currentCupsInPercent = (currentCupsValue - previousMaxTargetCupsValue) / (maxTargetCupsValue - previousMaxTargetCupsValue);
+            float currentCupsInPercent = (cupsValue - previousMaxTargetCupsValue) / (maxTargetCupsValue - previousMaxTargetCupsValue);
             newScalePos = (valueBetweenStartAndEndScalePos * currentCupsInPercent) + startScalePos;
         }
         else
         {
             newScalePos = startScalePos;
+            isShowingProgressAnimationAfterPlay = false;
         }
-        
-        leagueProgressScale.sizeDelta = new Vector2(newScalePos, leagueProgressScale.sizeDelta.y);
+
+        return newScalePos;
     }
 
     private void GetLeagueNeededCupsValue()
@@ -130,13 +199,13 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
             leagues[i].cupsValueText.text = $"{leagues[i].neededCupsValue}";
         }
 
-        UpdateScalePosition();
+        //UpdateScalePosition();
     }
 
     private void UpdateCupsValue(int value)
     {
         currentCupsValue = value;
-        cupsText.text = $"{currentCupsValue}";
+        //cupsText.text = $"{currentCupsValue}";
 
         UpdateScalePosition();
         UpdateElementsVisual();
@@ -173,5 +242,49 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
                 _leagueNameText.color = textColor;
             }
         }
+    }
+
+    IEnumerator FillingAnimation(float targetXPos)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        //1) находим дистанцию, которую нужно пройти
+        float distance = Mathf.Abs(targetXPos - leagueProgressScale.sizeDelta.x);
+        //2) находим время, за которое будет пройдена эта дистанция с учетом, что ОДИН шаг проходим за 0.02
+        float fixedFrameTime = Time.fixedDeltaTime;
+        float time = distance * fixedFrameTime;
+        //3) находим количество кубков, на которое изменится текущее значение кубков
+        float cupsValue = Mathf.Abs(previousCupsValue - currentCupsValue);
+        //4) находим скорость, с которой нужно изменять текст, чтобы он закончил изменение в момент остановки шкалы
+        float textSpeed = cupsValue / time;
+        float textStep = textSpeed * fixedFrameTime;
+        //5) задаем шаг шкалы
+        float scaleStep = scaleFillingAnimationSpeed;
+        //6) домножаем значение текстового шага на значение шага шкалы. Получаем шаг, с которым нужно "двигать" текст
+        textStep *= scaleStep;
+        Debug.Log(textStep);
+
+        Vector2 target = new Vector2(targetXPos, leagueProgressScale.sizeDelta.y);
+
+        float _cupsValue = previousCupsValue;
+
+        while (Vector2.Distance(leagueProgressScale.sizeDelta, target) > 0.001f)
+        {
+            leagueProgressScale.sizeDelta = Vector2.MoveTowards(leagueProgressScale.sizeDelta, target, scaleStep);
+
+            _cupsValue = Mathf.MoveTowards(_cupsValue, currentCupsValue, textStep);
+            cupsText.text = $"{(int)_cupsValue}";
+
+            //yield return null;
+            yield return new WaitForFixedUpdate();
+        }
+        cupsText.text = $"{currentCupsValue}";// на всякий, если не успеет
+
+        //cupsPlace.SetActive(true); - если без анимации подсчета кубков
+    }
+
+    private void OnDisable()
+    {
+        LobbyWindowsController.ShowLeagueProgressAnimationEvent -= ShowProgressAnimationAfterPlay;
     }
 }   

@@ -87,7 +87,7 @@ public class LevelProgressController : MonoBehaviour
             Debug.Log($"GameOver. Занял {numberOfPlayers + 1} место");
 
             DisabledAllChildElements();
-            CalculateReward(numberOfPlayers + 1);
+            CalculateReward(numberOfPlayers + 1, false);
             StartCoroutine(WaitAndShowLoseWindow());
         }
         else if (numberOfPlayers == 1)
@@ -96,20 +96,41 @@ public class LevelProgressController : MonoBehaviour
             Debug.Log($"Win. Занял {numberOfPlayers} место");
 
             DisabledAllChildElements();
-            CalculateReward(numberOfPlayers);
+            CalculateReward(numberOfPlayers, true);
             StartCoroutine(WaitAndShowWinWindow());
         }
     }
     
-    private void CalculateReward(int place)
+    private void CalculateReward(int place, bool winner)
     {
-        amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsReward(place);
-        amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsReward(place);
+        if (winner)
+        {
+            amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsWinReward(place);
+            amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsWinReward(place);
 
-        Debug.Log($"Награда: Золото - {amountOfGoldReward}; Кубки - {amountOfCupReward}");
+            Debug.Log($"Win Награда: Золото - {amountOfGoldReward}; Кубки - {amountOfCupReward}");
 
-        CurrencyManager.Instance.AddGold(amountOfGoldReward);
-        CurrencyManager.Instance.AddCup(amountOfCupReward);
+            CurrencyManager.Instance.AddGold(amountOfGoldReward);
+            CurrencyManager.Instance.AddCup(amountOfCupReward);
+        }
+        else
+        {
+            amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsLoseReward(place);
+            amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsLoseReward(place);
+
+            Debug.Log($"Lose Награда: Золото - {amountOfGoldReward}; Кубки - {amountOfCupReward}");
+
+            CurrencyManager.Instance.AddGold(amountOfGoldReward);
+            CurrencyManager.Instance.AddCup(amountOfCupReward);
+        }
+
+        //amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsReward(place);
+        //amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsReward(place);
+
+        //Debug.Log($"Награда: Золото - {amountOfGoldReward}; Кубки - {amountOfCupReward}");
+
+        //CurrencyManager.Instance.AddGold(amountOfGoldReward);
+        //CurrencyManager.Instance.AddCup(amountOfCupReward);
     }
     
     private void DisabledAllChildElements()

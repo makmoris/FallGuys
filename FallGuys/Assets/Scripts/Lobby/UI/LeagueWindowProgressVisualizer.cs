@@ -126,6 +126,7 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
             cupsText.text = $"{currentCupsValue}";
             newScalePos = GetNewScalePosX(currentLeagueLevel, currentCupsValue, maxTargetCupsValue);
             isShowingProgressAnimationAfterPlay = false;
+            cupsPlace.SetActive(true);
         }
         else
         {
@@ -151,9 +152,10 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
 
         if (isShowingProgressAnimationAfterPlay)
         {
-            //cupsPlace.SetActive(false); - если без анимации подсчета кубков
+            cupsPlace.SetActive(false);
+            StartCoroutine(FillingAnimationWithoutText(newScalePos));
 
-            StartCoroutine(FillingAnimation(newScalePos));
+            //StartCoroutine(FillingAnimation(newScalePos));
             isShowingProgressAnimationAfterPlay = false;
         }
         else leagueProgressScale.sizeDelta = new Vector2(newScalePos, leagueProgressScale.sizeDelta.y);
@@ -262,7 +264,6 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         float scaleStep = scaleFillingAnimationSpeed;
         //6) домножаем значение текстового шага на значение шага шкалы. Получаем шаг, с которым нужно "двигать" текст
         textStep *= scaleStep;
-        Debug.Log(textStep);
 
         Vector2 target = new Vector2(targetXPos, leagueProgressScale.sizeDelta.y);
 
@@ -281,6 +282,26 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         cupsText.text = $"{currentCupsValue}";// на всякий, если не успеет
 
         //cupsPlace.SetActive(true); - если без анимации подсчета кубков
+    }
+
+    IEnumerator FillingAnimationWithoutText(float targetXPos)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        float scaleStep = scaleFillingAnimationSpeed;
+
+        Vector2 target = new Vector2(targetXPos, leagueProgressScale.sizeDelta.y);
+
+        while (Vector2.Distance(leagueProgressScale.sizeDelta, target) > 0.001f)
+        {
+            leagueProgressScale.sizeDelta = Vector2.MoveTowards(leagueProgressScale.sizeDelta, target, scaleStep);
+
+            //yield return null;
+            yield return new WaitForFixedUpdate();
+        }
+        cupsText.text = $"{currentCupsValue}";// на всякий, если не успеет
+
+        cupsPlace.SetActive(true);
     }
 
     private void OnDisable()

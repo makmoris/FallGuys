@@ -67,6 +67,9 @@ public class CurrencyManager : MonoBehaviour
     //
 
     #region Cups
+    private int _maxCups;// должен равняться кубкам высшей лиги
+    private bool _isMaxCupsValueSetted;
+
     [SerializeField] private int _cups;
     public int Cups
     {
@@ -78,10 +81,20 @@ public class CurrencyManager : MonoBehaviour
         {
             _cups = value;
 
+            if (_cups <= 0) _cups = 0;
+
+            if (_cups > _maxCups && _isMaxCupsValueSetted) _cups = _maxCups;
+
             CupsUpdateEvent?.Invoke(_cups);
             
             Save();
         }
+    }
+    
+    public void SetMaxCups(int maxValue)// leagueManager
+    {
+        _maxCups = maxValue;
+        _isMaxCupsValueSetted = true;
     }
 
     public void AddCup(int value)

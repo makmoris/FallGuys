@@ -20,8 +20,10 @@ public class RewardLevel
     [Header("Reward For Frag")]
     [SerializeField] internal int goldRewardForFrag;
     [SerializeField] internal int cupRewardForFrag;
-    [Header("Reward")]
-    [SerializeField] internal List<PlaceAwards> placeAwards;
+    [Header("Win Reward")]
+    [SerializeField] internal List<PlaceAwards> winPlaceAwards;
+    [Header("Lose Reward")]
+    [SerializeField] internal List<PlaceAwards> losePlaceAwards;
 }
 
 public class LeagueManager : MonoBehaviour
@@ -50,6 +52,8 @@ public class LeagueManager : MonoBehaviour
     private void Start()
     {
         UpdateLeagueLevel(CurrencyManager.Instance.Cups);
+
+        CurrencyManager.Instance.SetMaxCups(leagueLevels[leagueLevels.Count - 1].neededCups);
     }
     
     public List<string> GetAvailableLocations()// вызывается MapSelector-ом
@@ -59,29 +63,54 @@ public class LeagueManager : MonoBehaviour
         return leagueLevels[leagueLevel].locationNames;
     }
 
-    public int ReceiveGoldsAsReward(int place)
+    public int ReceiveGoldsAsWinReward(int place)
     {
         int goldAward;
 
         int leagueLevel = currentLeagueLevel - 1;
         // если такое место забито в наградах, то даем нужную. Если это место не предусмотрено, то даем награду за последнее место
         // прим. объявлено 5 мест, но 6 игроков. Про 6 забыли, ему дадут награду как за 5ое место
-        if (place <= leagueLevels[leagueLevel].placeAwards.Count) goldAward = leagueLevels[leagueLevel].placeAwards[place - 1].goldsValue;
-        else goldAward = leagueLevels[leagueLevel].placeAwards[leagueLevels[leagueLevel].placeAwards.Count - 1].goldsValue;
+        if (place <= leagueLevels[leagueLevel].winPlaceAwards.Count) goldAward = leagueLevels[leagueLevel].winPlaceAwards[place - 1].goldsValue;
+        else goldAward = leagueLevels[leagueLevel].winPlaceAwards[leagueLevels[leagueLevel].winPlaceAwards.Count - 1].goldsValue;
 
         return goldAward;
     }
-    public int ReceiveCupsAsReward(int place)
+    public int ReceiveCupsAsWinReward(int place)
     {
         int cupAward;
 
         int leagueLevel = currentLeagueLevel - 1;
 
-        if (place <= leagueLevels[leagueLevel].placeAwards.Count) cupAward = leagueLevels[leagueLevel].placeAwards[place - 1].cupsValue;
-        else cupAward = leagueLevels[leagueLevel].placeAwards[leagueLevels[leagueLevel].placeAwards.Count - 1].cupsValue;
+        if (place <= leagueLevels[leagueLevel].winPlaceAwards.Count) cupAward = leagueLevels[leagueLevel].winPlaceAwards[place - 1].cupsValue;
+        else cupAward = leagueLevels[leagueLevel].winPlaceAwards[leagueLevels[leagueLevel].winPlaceAwards.Count - 1].cupsValue;
 
         return cupAward;
     }
+
+    public int ReceiveGoldsAsLoseReward(int place)
+    {
+        int goldAward;
+
+        int leagueLevel = currentLeagueLevel - 1;
+        // если такое место забито в наградах, то даем нужную. Если это место не предусмотрено, то даем награду за последнее место
+        // прим. объявлено 5 мест, но 6 игроков. Про 6 забыли, ему дадут награду как за 5ое место
+        if (place <= leagueLevels[leagueLevel].losePlaceAwards.Count) goldAward = leagueLevels[leagueLevel].losePlaceAwards[place - 1].goldsValue;
+        else goldAward = leagueLevels[leagueLevel].losePlaceAwards[leagueLevels[leagueLevel].losePlaceAwards.Count - 1].goldsValue;
+
+        return goldAward;
+    }
+    public int ReceiveCupsAsLoseReward(int place)
+    {
+        int cupAward;
+
+        int leagueLevel = currentLeagueLevel - 1;
+
+        if (place <= leagueLevels[leagueLevel].losePlaceAwards.Count) cupAward = leagueLevels[leagueLevel].losePlaceAwards[place - 1].cupsValue;
+        else cupAward = leagueLevels[leagueLevel].losePlaceAwards[leagueLevels[leagueLevel].losePlaceAwards.Count - 1].cupsValue;
+
+        return cupAward;
+    }
+
     public int GetGoldRewardForFrag()
     {
         int leagueLevel = currentLeagueLevel - 1;
@@ -108,6 +137,19 @@ public class LeagueManager : MonoBehaviour
         currentLeagueLevel = _leagueLevel;
 
         LeagueLevelUpdateEvent?.Invoke(currentLeagueLevel);
+    }
+
+    public int GetNeededCupsForLeagueLevel(int leagueLevelIndex)// вызывается LeagueWindowProgressVisualizer
+    {
+        if(leagueLevelIndex < leagueLevels.Count)
+        {
+            return leagueLevels[leagueLevelIndex].neededCups;
+        }
+        else
+        {
+            Debug.LogError("The number of leagues in the list of LEAGUE WINDOW does not match the number of leagues in the list of LEAGUE MANAGER");
+            return 0;
+        }
     }
 
     public int GetCurrentLeagueLevel()

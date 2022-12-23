@@ -1913,7 +1913,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &376523331
 PrefabInstance:
@@ -2098,6 +2098,7 @@ GameObject:
   - component: {fileID: 493299853}
   - component: {fileID: 493299852}
   - component: {fileID: 493299851}
+  - component: {fileID: 493299854}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -2182,6 +2183,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 493299854}
+        m_TargetAssemblyTypeName: ContinueButton, Assembly-CSharp
+        m_MethodName: ShowLeagueWindowInLobby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &493299852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2220,6 +2233,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 493299849}
   m_CullTransparentMesh: 1
+--- !u!114 &493299854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 493299849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cff0981e3e18c343993013f2e6607bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &534488119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2952,7 +2977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952e272234f178045b306389d2b6db59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startFromLobby: 1
+  startFromLobby: 0
   targetsController: {fileID: 1875949853}
   endGameController: {fileID: 991745150}
   _playerPrefab: {fileID: 7434162804505329504, guid: ae2fbac953aaaf44c8ca9c224139eefe, type: 3}
@@ -2961,21 +2986,6 @@ MonoBehaviour:
   _playerWeaon: {fileID: 7192854324361368598, guid: 6a3b0bab3080b7f49b210d1b8f972cb4, type: 3}
   camCinema: {fileID: 8030063884104693911}
   _enemiesSettings:
-  - _name: Enemy 1
-    _enemyPrefab: {fileID: 4112123068374292011, guid: b7d778293c86733409aec1a5d20b86a1, type: 3}
-    _enemyDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
-    _enemyLimitsData: {fileID: 11400000, guid: 6f58f00d08feda041a74d7bf564022d7, type: 2}
-    _enemyWeapon: {fileID: 7192854324361368598, guid: 6a3b0bab3080b7f49b210d1b8f972cb4, type: 3}
-  - _name: Enemy 1
-    _enemyPrefab: {fileID: 4112123068374292011, guid: b7d778293c86733409aec1a5d20b86a1, type: 3}
-    _enemyDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
-    _enemyLimitsData: {fileID: 11400000, guid: 6f58f00d08feda041a74d7bf564022d7, type: 2}
-    _enemyWeapon: {fileID: 7192854324361368598, guid: 6a3b0bab3080b7f49b210d1b8f972cb4, type: 3}
-  - _name: Enemy 1
-    _enemyPrefab: {fileID: 4112123068374292011, guid: b7d778293c86733409aec1a5d20b86a1, type: 3}
-    _enemyDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
-    _enemyLimitsData: {fileID: 11400000, guid: 6f58f00d08feda041a74d7bf564022d7, type: 2}
-    _enemyWeapon: {fileID: 7192854324361368598, guid: 6a3b0bab3080b7f49b210d1b8f972cb4, type: 3}
   - _name: Enemy 1
     _enemyPrefab: {fileID: 4112123068374292011, guid: b7d778293c86733409aec1a5d20b86a1, type: 3}
     _enemyDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
@@ -3505,6 +3515,7 @@ GameObject:
   - component: {fileID: 911729423}
   - component: {fileID: 911729422}
   - component: {fileID: 911729421}
+  - component: {fileID: 911729424}
   m_Layer: 5
   m_Name: ContinueButton
   m_TagString: Untagged
@@ -3589,6 +3600,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 911729424}
+        m_TargetAssemblyTypeName: ContinueButton, Assembly-CSharp
+        m_MethodName: ShowLeagueWindowInLobby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &911729422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3627,6 +3650,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 911729419}
   m_CullTransparentMesh: 1
+--- !u!114 &911729424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911729419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cff0981e3e18c343993013f2e6607bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &958032899 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8513859187771203891, guid: 7d3c669489085194a9ce6f96b6af07f5, type: 3}
@@ -6390,6 +6425,51 @@ Transform:
   m_Father: {fileID: 1115643007}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1314049312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1314049314}
+  - component: {fileID: 1314049313}
+  m_Layer: 0
+  m_Name: FPS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1314049313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314049312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6311d5b9a68817409e022769f62ecef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fps: 60
+--- !u!4 &1314049314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314049312}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.070067644, y: 0.09999418, z: 2.8301651}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1389373038
 GameObject:
   m_ObjectHideFlags: 0
@@ -6839,7 +6919,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1472847227}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09b11419606a3482ba74f6545db6aff9, type: 3}
   m_Name: 
@@ -6850,7 +6930,6 @@ MonoBehaviour:
   offset: {x: -0, y: 7, z: -10}
   lerpPositionMultiplier: 4
   lerpRotationMultiplier: 6
-  speedometer: {fileID: 0}
 --- !u!54 &1472847230
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6901,7 +6980,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!114 &1472847234
 MonoBehaviour:
@@ -9808,7 +9887,7 @@ Transform:
   m_Children:
   - {fileID: 8030063884945430844}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8030063884104693905
 MonoBehaviour:

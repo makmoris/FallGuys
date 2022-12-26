@@ -65,9 +65,9 @@ public class Installer : MonoBehaviour
         Weapon weapon = Instantiate(_playerWeaon, weaponPlace);
         weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
 
-        Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
-        //camCinema.m_Follow = _playerObj.transform;
-        //camCinema.m_LookAt = _playerObj.transform;
+        //Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
+        camCinema.m_Follow = _playerObj.transform;
+        camCinema.m_LookAt = _playerObj.transform;
 
         Vector3 pos = targetsController.GetStartSpawnPosition(0);
         _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);

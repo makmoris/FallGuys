@@ -21,7 +21,9 @@ public class MapSelector : MonoBehaviour
     [SerializeField] private GameObject gameTutorialWindow;
 
     private string gameTutorialKey = "TutorialWindowWasShown";
-    [SerializeField]private bool tutorialWindowWasShown;
+    private bool tutorialWindowWasShown;
+
+    private string previousSceneNameKey = "PreviousSceneName";
 
     [Space]
     [SerializeField] private List<MapSettings> maps;
@@ -57,12 +59,25 @@ public class MapSelector : MonoBehaviour
         int rand = Random.Range(0, availableLocations.Count);// получаем список доступных сцен в зависимости от лиги. Дальше берем рандомную из них
         string randomLocationName = availableLocations[rand];
 
+        string previousSceneName = PlayerPrefs.GetString(previousSceneNameKey, "null");
+
+        if (randomLocationName == previousSceneName)// если такая сцена была предыдущая
+        {
+            if (rand == 0) rand++;
+            else if (rand == availableLocations.Count - 1) rand--;
+            else rand++;
+            
+            randomLocationName = availableLocations[rand];
+        }
+
         int selectLocationIndex = GetLocationIndex(randomLocationName);// находим под каким индексом здесь хранится сцена с таким же именем
         string sceneName = maps[selectLocationIndex].locationName;
 
+
+        PlayerPrefs.SetString(previousSceneNameKey, sceneName);
         //int selectMapIndex = GetRandomMapIndex(availableLocations.Count);
         //string sceneName = maps[selectMapIndex].locationName;
-        
+
         infiniteScroll.SetTargetIndex(maps[selectLocationIndex].levelImage.gameObject, this);
 
         StartCoroutine(LoadScene(sceneName));

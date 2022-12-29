@@ -6,6 +6,7 @@ namespace SimpleInputNamespace
 {
 	public class Joystick : MonoBehaviour, ISimpleInputDraggable
 	{
+		public bool isCustomJoystic;// чтобы ехал вперед во время поворотов
 		public enum MovementAxes { XandY, X, Y };
 
 		public SimpleInput.AxisInput xAxis = new SimpleInput.AxisInput( "Horizontal" );
@@ -183,9 +184,41 @@ namespace SimpleInputNamespace
 			}
 
 			thumbTR.localPosition = direction;
+			Debug.Log($"X = {m_value.x}; Y = {m_value.y}");
+            if (!isCustomJoystic)
+            {
+				xAxis.value = m_value.x;
+				yAxis.value = m_value.y;
+			}
+            else
+            {
+				if(Mathf.Abs(m_value.x) > Mathf.Abs(m_value.y))
+                {
+					xAxis.value = m_value.x;
+					yAxis.value = Mathf.Abs(m_value.x);
+				}
+                else
+                {
+					xAxis.value = m_value.x;
+					yAxis.value = m_value.y;
+				}
 
-			xAxis.value = m_value.x;
-			yAxis.value = m_value.y;
+				if(m_value.y < 0)
+                {
+					if (Mathf.Abs(m_value.x) > Mathf.Abs(m_value.y))
+					{
+						xAxis.value = m_value.x;
+						yAxis.value = m_value.x;
+						if (m_value.x > 0) yAxis.value *= -1f;
+					}
+					else
+					{
+						xAxis.value = m_value.x;
+						yAxis.value = m_value.y;
+					}
+				}
+			}
+			
 		}
 
 		public void OnPointerUp( PointerEventData eventData )

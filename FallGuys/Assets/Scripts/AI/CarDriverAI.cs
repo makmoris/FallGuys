@@ -34,7 +34,8 @@ public class CarDriverAI : MonoBehaviour
 
     private void Moving()
     {
-        ChooseTargetPosition(targetPositionTransform.position);
+        if (targetPositionTransform != null) ChooseTargetPosition(targetPositionTransform.position);
+        else CheackTargetListOnNullComponent();
 
         float forwardAmount = 0f;
         float turnAmount = 0f;
@@ -58,8 +59,8 @@ public class CarDriverAI : MonoBehaviour
             else
             {
                 // target in behind
-                float reverseDistance = 10f;// если дальше чем на N, то разворачиваемся, а не сдаем назад
-                if (distanceToTarget > reverseDistance)
+                float reverseDistance = 0f;// если дальше чем на N, то разворачиваемся, а не сдаем назад
+                if (distanceToTarget > reverseDistance)// 0 - без заднего хода. Всегда в разворот (Мог застрять, сдавая назад и утыкаясь в препятствие)
                 {
                     // too far to reverse
                     forwardAmount = 1f;
@@ -198,6 +199,20 @@ public class CarDriverAI : MonoBehaviour
         }
 
         targets.Remove(removedObj.transform);
+    }
+
+    private void CheackTargetListOnNullComponent()
+    {
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i] == null)
+            {
+                targets.RemoveAt(i);
+                targetReached = true;
+                ChooseTargetPosition(Vector3.zero);
+                break;
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -27,6 +27,7 @@ public class Weapon : MonoBehaviour
 
     //[Header("AI")]
     private bool isAI;
+    private float shotDecisionSpeed;
 
     //[Header("Is lobby scene?")]
     //[SerializeField] private bool isLobby;
@@ -135,7 +136,7 @@ public class Weapon : MonoBehaviour
         bulletExample.gameObject.SetActive(false);
     }
 
-    public void SetParentBodyCollider(Collider bodyCollider)
+    public void SetParentBodyCollider(Collider bodyCollider)// вызывается из Installer ДО IsAI
     {
         parentBodyCollider = bodyCollider;
         parentShield = parentBodyCollider.transform.GetComponentInChildren<Shield>(true).gameObject;
@@ -145,10 +146,14 @@ public class Weapon : MonoBehaviour
     {
         isAI = value;
         detectorTransform.GetComponent<AttackTargetDetector>().IsAI(isAI);
+
+        shotDecisionSpeed = parentBodyCollider.GetComponent<DifficultyLevelsAI>().GetShotDecisionSpeed();
     }
 
     IEnumerator Shot()
     {
+        if (isAI) yield return new WaitForSeconds(shotDecisionSpeed);
+
         HideBulletExample();
 
         var bullet = bulletPool.GetFreeElement();

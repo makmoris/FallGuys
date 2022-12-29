@@ -172,6 +172,29 @@ public class CarDriverAI : MonoBehaviour
                 targets.RemoveAt(i);
             }
         }
+        // если нужно, то добавляем еще игроков, чтобы был больше шанс на него напасть
+        float frequencyOfTargetingPlayer = GetComponent<DifficultyLevelsAI>().GetFrequencyOfTargetingPlayer();
+
+        if(frequencyOfTargetingPlayer != 0)
+        {
+            Transform _player = targets[0];// как заглушка. Находим игрока
+
+            foreach (var elem in targets)
+            {
+                if(elem.GetComponent<Bumper>() != null && elem.GetComponent<CarDriverAI>() == null)
+                {
+                    _player = elem;
+                    break;
+                }
+            }
+
+            int addedPlayersValue = Mathf.CeilToInt(targets.Count * frequencyOfTargetingPlayer);
+
+            for (int i = 0; i < addedPlayersValue; i++)
+            {
+                targets.Add(_player);
+            }
+        }
 
         int rand = Random.Range(0, targets.Count);
 

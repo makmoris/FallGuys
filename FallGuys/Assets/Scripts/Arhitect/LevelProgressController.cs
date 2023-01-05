@@ -65,7 +65,7 @@ public class LevelProgressController : MonoBehaviour
 
         amountOfGoldReward += LeagueManager.Instance.GetGoldRewardForFrag();
         amountOfCupReward += LeagueManager.Instance.GetCupRewardForFrag();
-
+        Debug.Log("Add FRAG");
         UpdateFragText();
     }
 

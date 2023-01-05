@@ -70,6 +70,7 @@ public class PlayerEffector
                         else
                         {
                             _intermediary.DestroyCar();
+                            Debug.Log("Piska");
                         }
                         //Debug.Log("Destroy in effector");
                     }

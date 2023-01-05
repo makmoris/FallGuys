@@ -19,6 +19,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
     private GameObject playerGO;
     private bool isPlayer;
 
+    private HitHistory hitHistory;
+
     public static event Action<GameObject> PlayerWasDeadEvent; // кидаем событие всем заинтересованным
 
     private void Awake()
@@ -31,6 +33,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
         if (shield.activeSelf) shield.SetActive(false);
         shieldMaterial = shield.GetComponent<MeshRenderer>().material;
+
+        hitHistory = GetComponent<HitHistory>();
     }
 
     private void Start()
@@ -58,10 +62,10 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
         if (isPlayer) PointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
-        else
-        {
+        else { }
 
-        }
+        if(hitHistory.GetLastShooter() == playerGO) LevelProgressController.Instance.AddFrag();
+
         PlayerWasDeadEvent?.Invoke(this.gameObject);
         //gameObject.SetActive(false);
         Destroy(gameObject);
@@ -77,10 +81,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
         if (isPlayer) PointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
-        else
-        {
+        else { }
 
-        }
         PlayerWasDeadEvent?.Invoke(this.gameObject);
         //gameObject.SetActive(false);
         Destroy(gameObject);
@@ -99,14 +101,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         float blinkingFrequency = (time / 3f) / 5f;// 5 мерцаний до деактивации щита
 
         waitShieldCoroutine = StartCoroutine(WaitAndHideShield(waitTime, blinkingFrequency));
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            HideShield();
-        }
     }
 
     public void HideShield()

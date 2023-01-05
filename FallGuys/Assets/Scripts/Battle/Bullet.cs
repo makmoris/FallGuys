@@ -59,8 +59,11 @@ public class Bullet : Bonus
                 {
                     //Debug.Log("Игрок");
                     forceDirection = (other.transform.position - transform.position).normalized;
-                    other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 3f, 
+                    other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 3f,
                         forceDirection.z * force), forceMode);
+
+                    // передаем инфу тому, в кого попали, кто в него попал
+                    other.GetComponent<HitHistory>().SetLastShooter(parentCollider.gameObject);
                 }
                 //StartCoroutine(ShowShotEffect(effectTime));
             }

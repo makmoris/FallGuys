@@ -8,7 +8,8 @@ public class AnalyticsManager : MonoBehaviour
     {
         new FacebookAnalytics(),
         new AmplitudeAnalytics(),
-        new FirebaseAnalytics()
+        new FirebaseAnalytics(),
+        new GameAnalyticsAnalytics()
     };
 
     public static AnalyticsManager Instance { get; private set; }

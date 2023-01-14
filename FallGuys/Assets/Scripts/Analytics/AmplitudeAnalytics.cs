@@ -12,7 +12,7 @@ public class AmplitudeAnalytics : IAnalytics
         amplitude.setServerUrl("https://api2.amplitude.com");
         amplitude.logging = true;
         amplitude.trackSessionEvents(true);
-        amplitude.init("YOUR_API_KEY");
+        amplitude.init("c93c41a93063b32bed422c3a91e96264");
     }
 
     public string GetName()

@@ -1,5 +1,6 @@
 public interface IAnalytics
 {
-    public string GetName();
+    
     public void Initialize();
+    public string GetName();
 }

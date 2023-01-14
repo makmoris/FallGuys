@@ -6,7 +6,8 @@ public class AnalyticsManager : MonoBehaviour
 {
     private List<IAnalytics> analytics = new List<IAnalytics>
     {
-        new FacebookAnalytics()
+        new FacebookAnalytics(),
+        new AmplitudeAnalytics()
     };
 
     public static AnalyticsManager Instance { get; private set; }

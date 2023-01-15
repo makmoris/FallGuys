@@ -92,6 +92,11 @@ public class PointerManager : MonoBehaviour
         _playerHealthUI.UpdatePlayerHealthUI(healthValue);
     }
 
+    public int GetPlayerHealth()// вызывается для аналитики, чтобы взять текущее здоровье игрока
+    {
+        return _playerHealthUI.GetHealthValue();
+    }
+
     void LateUpdate()
     {
         // Left, Right, Down, Up

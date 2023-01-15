@@ -12,6 +12,8 @@ public class PlayerHealthUI : MonoBehaviour
     private Image _image;
     private TextMeshProUGUI _text;
 
+    private int currentHealthValue;
+
     private void Awake()
     {
         _image = gameObject.GetComponent<Image>();
@@ -26,6 +28,8 @@ public class PlayerHealthUI : MonoBehaviour
             _image.color = new Color(98f / 255f, 173f / 255f, 86f / 255f);
             _image.fillAmount = 1f;
             _text.text = $"+ {startHealthValue}";
+
+            currentHealthValue = (int)startHealthValue;
 
             isFirstHealthUpdate = false;
         }
@@ -48,9 +52,19 @@ public class PlayerHealthUI : MonoBehaviour
             }
 
             float val = startHealthValue * healthPercent;
-            
-            if(healthPercent > 0) _text.text = $"+ {(int)val}";
+
+            if (healthPercent > 0)
+            {
+                _text.text = $"+ {(int)val}";
+
+                currentHealthValue = (int)val;
+            }
             else _text.text = $"+ 0";
         }
+    }
+
+    public int GetHealthValue()
+    {
+        return currentHealthValue;
     }
 }

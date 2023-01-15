@@ -10,11 +10,13 @@ public class LevelProgressController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI leftText;
     [SerializeField] private TextMeshProUGUI fragText;
 
-    private int numberOfPlayers;
-    private int numberOfFrags;
+    [SerializeField]private int numberOfPlayers;
+    [SerializeField]private int numberOfFrags;
 
     [SerializeField]private int amountOfGoldReward;
     [SerializeField]private int amountOfCupReward;
+
+    private int playerFinishPlace;
 
     [Header("Win/Lose")]
     [SerializeField] Camera gameCamera;
@@ -69,6 +71,30 @@ public class LevelProgressController : MonoBehaviour
         UpdateFragText();
     }
 
+    public void SendPlayerKillEnemyAnalyticEvent(GameObject killedEnemyObj)// вызывается из VisualIntermediary после AddFrag()
+    {
+        string _battle_id_key = AnalyticsManager.battle_id_key;
+        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
+
+        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
+        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
+
+        int _player_hp_left = PointerManager.Instance.GetPlayerHealth();
+
+        int _player_kills_amount = numberOfFrags;
+
+        int _player_gold_earn = amountOfGoldReward;
+
+        int _enemies_left = numberOfPlayers - 2;
+
+        string _killed_enemy_car_id = killedEnemyObj.GetComponent<VehicleId>().VehicleID;
+
+        string _killed_enemy_gun_id = killedEnemyObj.transform.GetComponentInChildren<Weapon>().GetComponent<WeaponId>().WeaponID;
+
+        AnalyticsManager.Instance.PlayerKillEnemy(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
+            _player_gold_earn, _enemies_left, _killed_enemy_car_id, _killed_enemy_gun_id);
+    }
+
     public void AddGold(int value)// вызывается из PlayerEffector за подбор бонуса
     {
         amountOfGoldReward += value;
@@ -103,6 +129,8 @@ public class LevelProgressController : MonoBehaviour
     
     private void CalculateReward(int place, bool winner)
     {
+        playerFinishPlace = place;
+
         if (winner)
         {
             amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsWinReward(place);
@@ -157,6 +185,19 @@ public class LevelProgressController : MonoBehaviour
         fragText.text = $"{numberOfFrags}";
     }
 
+    public int GetCurrentNumberOfFrags()
+    {
+        return numberOfFrags;
+    }
+    public int GetCurrentAmountOfGoldReward()
+    {
+        return amountOfGoldReward;
+    }
+    public int GetCurrentEnemiesLeft()
+    {
+        return numberOfPlayers - 1;
+    }
+
     IEnumerator WaitAndShowWinWindow()
     {
         if(playerGO.GetComponent<WheelVehicle>() != null) playerGO.GetComponent<WheelVehicle>().Handbrake = true;
@@ -173,6 +214,8 @@ public class LevelProgressController : MonoBehaviour
         gameCamera.gameObject.SetActive(false);
         endGameCamera.gameObject.SetActive(true);
         playerGO.SetActive(false);
+
+        SendBattleFinishAnalyticEvent();
     }
 
     IEnumerator WaitAndShowLoseWindow()
@@ -186,6 +229,8 @@ public class LevelProgressController : MonoBehaviour
 
         gameCamera.gameObject.SetActive(false);
         endGameCamera.gameObject.SetActive(true);
+
+        SendBattleFinishAnalyticEvent();
     }
 
     private void OnEnable()
@@ -197,5 +242,34 @@ public class LevelProgressController : MonoBehaviour
     {
         Installer.IsCurrentPlayer -= SetCurrentPlayer;
         VisualIntermediary.PlayerWasDeadEvent -= ReduceNumberOfPlayers;
+    }
+
+    public void SendBattleFinishAnalyticEvent()// вызывается из VisualIntermediary после AddFrag()
+    {
+        string _battle_id_key = AnalyticsManager.battle_id_key;
+        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
+
+        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
+        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
+
+        int _league_id = LeagueManager.Instance.GetCurrentLeagueLevel();
+
+        string _level_id = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
+        int _enemies_amount = numberOfPlayers;
+
+        int _player_took_place = playerFinishPlace;
+
+        int _player_kills_amount = numberOfFrags;
+
+        int _player_gold_earn = amountOfGoldReward;
+
+        int player_cups_earned = amountOfCupReward;
+
+        AnalyticsManager.Instance.BattleFinish(_battle_id, _player_car_id, _player_gun_id, _league_id, _level_id, _enemies_amount, _player_took_place,
+            _player_kills_amount, _player_gold_earn, player_cups_earned);
+
+        _battle_id++;
+        PlayerPrefs.SetInt(_battle_id_key, _battle_id);
     }
 }

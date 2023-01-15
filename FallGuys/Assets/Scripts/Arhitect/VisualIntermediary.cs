@@ -23,6 +23,7 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     public static event Action<GameObject> PlayerWasDeadEvent; // кидаем событие всем заинтересованным
 
+
     private void Awake()
     {
         Transform enemyPointerTransform = transform.Find("EnemyPointer");
@@ -64,7 +65,12 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         if (isPlayer) PointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
         else { }
 
-        if(hitHistory.GetLastShooter() == playerGO) LevelProgressController.Instance.AddFrag();
+        if (hitHistory.GetLastShooter() == playerGO)
+        {
+            Debug.Log($"игрока {gameObject.name} вытолкнул и убил {playerGO.name}");
+            LevelProgressController.Instance.AddFrag();
+            LevelProgressController.Instance.SendPlayerKillEnemyAnalyticEvent(gameObject);
+        }
 
         PlayerWasDeadEvent?.Invoke(this.gameObject);
         //gameObject.SetActive(false);
@@ -75,7 +81,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         Debug.Log($"игрока {gameObject.name} убил {killer.name}");
         if (killer == playerGO) 
         {
-            LevelProgressController.Instance.AddFrag(); 
+            LevelProgressController.Instance.AddFrag();
+            LevelProgressController.Instance.SendPlayerKillEnemyAnalyticEvent(gameObject);
         }
 
         Instantiate(destroyEffect, transform.position, Quaternion.identity);

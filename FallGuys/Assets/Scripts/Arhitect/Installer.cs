@@ -113,6 +113,8 @@ public class Installer : MonoBehaviour
 
         numberOfPlayers = enemies.Count + 1;// 1 - сам игрок
         LevelProgressController.Instance.SetNumberOfPlayers(numberOfPlayers);
+
+        SendBattleStartAnalyticEvent();
     }
 
     private void LoadDataFromCharacterManager()
@@ -123,6 +125,24 @@ public class Installer : MonoBehaviour
         _playerDefaultData = characterManager.GetPlayerDefaultData();
         _playerLimitsData = characterManager.GetPlayerLimitsData();
         _playerWeaon = characterManager.GetPlayerWeapon();
+    }
+
+    private void SendBattleStartAnalyticEvent()
+    {
+        string _battle_id_key = AnalyticsManager.battle_id_key;
+        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
+
+        string _player_car_id = _playerPrefab.GetComponent<VehicleId>().VehicleID;
+
+        string _player_gun_id = _playerWeaon.GetComponent<WeaponId>().WeaponID;
+
+        int _league_id = LeagueManager.Instance.GetCurrentLeagueLevel();
+
+        string _level_id = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
+        int _enemies_amount = numberOfPlayers;
+
+        AnalyticsManager.Instance.BattleStart(_battle_id, _player_car_id, _player_gun_id, _league_id, _level_id, _enemies_amount);
     }
 
     //void Start()

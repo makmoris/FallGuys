@@ -68,7 +68,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354399e280a05f649af8c0be029eaadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTargetObject: {fileID: 0}
   weapon: {fileID: 7192854324361368598}
 --- !u!1 &3799703235595045072
 GameObject:
@@ -110,6 +109,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6398649031297112923}
+  - component: {fileID: 5993725339395690547}
   - component: {fileID: 7192854324361368598}
   m_Layer: 0
   m_Name: Gun_1_Prefab
@@ -135,6 +135,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5993725339395690547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5974358611791307304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42f0732fb17f4e44854e41c469577bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponId: rocket_gun
 --- !u!114 &7192854324361368598
 MonoBehaviour:
   m_ObjectHideFlags: 0

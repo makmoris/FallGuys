@@ -19,4 +19,9 @@ public abstract class Bonus : MonoBehaviour
         //Destroy(gameObject);
         gameObject.SetActive(false);
     }
+
+    public virtual void Test()
+    {
+        Debug.Log("");
+    }
 }

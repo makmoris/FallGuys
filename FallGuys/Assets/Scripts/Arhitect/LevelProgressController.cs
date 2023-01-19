@@ -17,6 +17,7 @@ public class LevelProgressController : MonoBehaviour
     [SerializeField]private int amountOfCupReward;
 
     private int playerFinishPlace;
+    private int startNumberOfPlayers;
 
     [Header("Win/Lose")]
     [SerializeField] Camera gameCamera;
@@ -56,6 +57,7 @@ public class LevelProgressController : MonoBehaviour
     {
         numberOfPlayers = _numberOfPlayers;
         numberOfFrags = 0;
+        startNumberOfPlayers = _numberOfPlayers;
 
         UpdateLeftText();
         UpdateFragText();
@@ -256,7 +258,7 @@ public class LevelProgressController : MonoBehaviour
 
         string _level_id = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
-        int _enemies_amount = numberOfPlayers;
+        int _enemies_amount = startNumberOfPlayers;
 
         int _player_took_place = playerFinishPlace;
 

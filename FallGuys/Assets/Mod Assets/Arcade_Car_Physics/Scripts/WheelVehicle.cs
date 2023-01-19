@@ -223,7 +223,8 @@ namespace VehicleBehaviour {
         // Init rigidbody, center of mass, wheels and more
 
         // Для проверки, что игрок не перевернулся
-        private int immobilityValue;// сколько игрок провел в неподвижном состоянии
+        [SerializeField]private int immobilityValue;// сколько игрок провел в неподвижном состоянии
+        [SerializeField] private int immobilityValue2;
         private Vector3 previousPosition;
 
         void Start() {
@@ -285,6 +286,20 @@ namespace VehicleBehaviour {
                 if (throttleInput != "" && throttleInput != null)
                 {
                     throttle = GetInput(throttleInput) - GetInput(brakeInput);
+                    
+                    if(throttle != 0 && Mathf.RoundToInt(speed) == 0)
+                    {
+                        Debug.Log("Zastral");
+                        immobilityValue2++;
+
+                        if (immobilityValue2 >= 50)
+                        {
+                            immobilityValue2 = 0;
+                            transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                            transform.position = new Vector3(transform.position.x, 5f, transform.position.z);
+                        }
+                    }
+                    else immobilityValue2 = 0;
                 }
                 // Boost
                 boosting = (GetInput(boostInput) > 0.5f);
@@ -406,6 +421,12 @@ namespace VehicleBehaviour {
             }
             else immobilityValue = 0;
 
+
+            //if (Mathf.RoundToInt(speed) == 0)
+            //{
+            //    Debug.Log("STOIT");
+            //}
+            previousPosition = transform.position;
         }
 
         // Reposition the car to the start position

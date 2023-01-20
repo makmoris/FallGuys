@@ -52,5 +52,4 @@ public class LobbyWindowsController : MonoBehaviour
     {
         showLeagueWindow = true;
     }
-
 }

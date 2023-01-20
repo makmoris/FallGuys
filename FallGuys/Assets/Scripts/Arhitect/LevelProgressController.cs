@@ -154,6 +154,13 @@ public class LevelProgressController : MonoBehaviour
             CurrencyManager.Instance.AddCup(amountOfCupReward);
         }
 
+        if(place == 1)
+        {
+            BattleStatisticsManager.Instance.AddFirstPlace();
+        }
+
+        BattleStatisticsManager.Instance.AddBattle();
+
         //amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsReward(place);
         //amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsReward(place);
 

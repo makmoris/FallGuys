@@ -1,15 +1,38 @@
 using Firebase;
 using Firebase.Analytics;
+using Firebase.Extensions;
+using System;
 using System.Collections.Generic;
 
 public class FirebaseAnalytics : IAnalytics
 {
+    //public void Initialize() ContinueWith фризит на User событии - при запуске приложения
+    //{
+    //    FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+    //    {
+    //        Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
+    //    });
+    //}
+    DependencyStatus dependencyStatus = DependencyStatus.UnavailableOther;
+
     public void Initialize()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
-            Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
+            dependencyStatus = task.Result;
+            if (dependencyStatus == DependencyStatus.Available)
+            {
+                InitializeFirebase();
+            }
         });
+    }
+    private void InitializeFirebase()
+    {
+        Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
+
+        Firebase.Analytics.FirebaseAnalytics.SetUserProperty(Firebase.Analytics.FirebaseAnalytics.UserPropertySignUpMethod, "Google");
+
+        //Firebase.Analytics.FirebaseAnalytics.SetSessionTimeoutDuration(new TimeSpan(0, 30, 0));
     }
 
     public string GetName()
@@ -174,6 +197,94 @@ public class FirebaseAnalytics : IAnalytics
         };
 
         Firebase.Analytics.FirebaseAnalytics.LogEvent("Battle_Finish", param.ToArray());
+    }
+    #endregion
+
+    #region GENERAL
+    public void User(int battles_amount, float win_rate, int cups_amount, int league, int gold, string car_id, string gun_id, string control_type)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("battles_amount", battles_amount),
+            new Parameter("win_rate", win_rate),
+            new Parameter("cups_amount", cups_amount),
+            new Parameter("league", league),
+            new Parameter("gold", gold),
+            new Parameter("car_id", car_id),
+            new Parameter("gun_id", gun_id),
+            new Parameter("control_type", control_type)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("User", param.ToArray());
+    }
+
+    public void PlayerBuyCar(string new_car_id, int gold_spent, int gold)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("new_car_id", new_car_id),
+            new Parameter("gold_spent", gold_spent),
+            new Parameter("gold", gold)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Buy_Car", param.ToArray());
+    }
+
+    public void PlayerChangedCar(string new_car_id, string old_car_id)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("new_car_id", new_car_id),
+            new Parameter("old_car_id", old_car_id)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Changed_Car", param.ToArray());
+    }
+
+    public void PlayerBuyGun(string new_gun_id, int gold_spent, int gold)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("new_gun_id", new_gun_id),
+            new Parameter("gold_spent", gold_spent),
+            new Parameter("gold", gold)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Buy_Gun", param.ToArray());
+    }
+
+    public void PlayerChangedGun(string new_gun_id, string old_gun_id)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("new_gun_id", new_gun_id),
+            new Parameter("old_gun_id", old_gun_id)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Changed_Gun", param.ToArray());
+    }
+
+    public void PlayerBuySkin(string new_skin_id, int gold_spent, int gold)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("new_skin_id", new_skin_id),
+            new Parameter("gold_spent", gold_spent),
+            new Parameter("gold", gold)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Buy_Skin", param.ToArray());
+    }
+
+    public void PlayerChangedControls(string new_control_type, string old_control_type)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("new_control_type", new_control_type),
+            new Parameter("old_control_type", old_control_type)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Changed_Controls", param.ToArray());
     }
     #endregion
 }

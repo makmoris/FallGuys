@@ -51,8 +51,13 @@ public class WeaponButton : MonoBehaviour
     {
         // сделать сначала проверку. Если все гуд, то делаем активной
         // в момент выбора подтягивать остальную инфу из LobbyVehicleData через эту тачу и кидать ее на нужные места (текст, иконка и т.д.)
+        LobbyManager.Instance.SetCharacter();
+        string previousGunId = CharacterManager.Instance.GetPlayerWeapon().GetComponent<WeaponId>().WeaponID;
+
         lobbyWeaponOnScene.MakeThisWeaponActive();
         weaponContent.InfoWasUpdate();
+
+        SendPlayerChangeGunAnalyticsEvent(previousGunId);
     }
 
     public void ShowWeapon()// вызывается кнопой при выборе пушки, чтобы посмотреть. Смотреть можно все кнопы
@@ -265,6 +270,8 @@ public class WeaponButton : MonoBehaviour
             lobbyWeaponData.SaveNewAwailableStatus(_isWeaponAvailable);
 
             SelectWeapon();
+
+            SendPlayerBuyGunAnalyticsEvent(_weaponCost);// analytics
         }
     }
 
@@ -311,5 +318,25 @@ public class WeaponButton : MonoBehaviour
     private void OnDisable()
     {
         ResetInfo();
+    }
+
+    private void SendPlayerBuyGunAnalyticsEvent(int spentValue)
+    {
+        LobbyManager.Instance.SetCharacter();
+        string _new_gun_id = CharacterManager.Instance.GetPlayerWeapon().GetComponent<WeaponId>().WeaponID;
+
+        int _gold_spent = spentValue;
+
+        int gold = CurrencyManager.Instance.Gold;
+
+        AnalyticsManager.Instance.PlayerBuyGun(_new_gun_id, _gold_spent, gold);
+    }
+
+    private void SendPlayerChangeGunAnalyticsEvent(string _old_gun_id)
+    {
+        LobbyManager.Instance.SetCharacter();
+        string _new_gun_id = CharacterManager.Instance.GetPlayerWeapon().GetComponent<WeaponId>().WeaponID;
+
+        AnalyticsManager.Instance.PlayerChangedGun(_new_gun_id, _old_gun_id);
     }
 }

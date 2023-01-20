@@ -27,6 +27,8 @@ public class LayoutWindow : MonoBehaviour
     private string key = "Layout";
     private int layoutIndex;
 
+    private string previousLayout;
+
     private void OnEnable()
     {
         ShowCurrentLayout();
@@ -50,6 +52,10 @@ public class LayoutWindow : MonoBehaviour
         DeactiveLeftRightJoysticButton();
         DeactiveAllJoysticButton();
 
+        string previousLayout = GetCurrentLayout();
+        string newLayout = "Arrows";
+        if (previousLayout != newLayout) SendPlayerChangedControlsAnalyticsEvent(newLayout, previousLayout);
+
         layoutIndex = 0;
         PlayerPrefs.SetInt(key, layoutIndex);
     }
@@ -71,6 +77,10 @@ public class LayoutWindow : MonoBehaviour
         DeactiveArrowsButton();
         DeactiveAllJoysticButton();
 
+        string previousLayout = GetCurrentLayout();
+        string newLayout = "LeftRight_Joystick";
+        if (previousLayout != newLayout) SendPlayerChangedControlsAnalyticsEvent(newLayout, previousLayout);
+
         layoutIndex = 1;
         PlayerPrefs.SetInt(key, layoutIndex);
     }
@@ -91,6 +101,10 @@ public class LayoutWindow : MonoBehaviour
 
         DeactiveArrowsButton();
         DeactiveLeftRightJoysticButton();
+
+        string previousLayout = GetCurrentLayout();
+        string newLayout = "Full_Joystick";
+        if(previousLayout != newLayout) SendPlayerChangedControlsAnalyticsEvent(newLayout, previousLayout);
 
         layoutIndex = 2;
         PlayerPrefs.SetInt(key, layoutIndex);
@@ -143,5 +157,34 @@ public class LayoutWindow : MonoBehaviour
                 SetAllJoystickButtonActiveLayout();
                 break;
         }
+    }
+
+    private string GetCurrentLayout()
+    {
+        int layoutIndex = PlayerPrefs.GetInt(key, 0);
+
+        string layoutName = "";
+
+        switch (layoutIndex)
+        {
+            case 0:// arrows
+                layoutName = "Arrows";
+                break;
+
+            case 1:// leftRught
+                layoutName = "LeftRight_Joystick";
+                break;
+
+            case 2:// allJoystick
+                layoutName = "Full_Joystick";
+                break;
+        }
+
+        return layoutName;
+    }
+
+    private void SendPlayerChangedControlsAnalyticsEvent(string newLayout, string oldLayout)
+    {
+        AnalyticsManager.Instance.PlayerChangedControls(newLayout, oldLayout);
     }
 }

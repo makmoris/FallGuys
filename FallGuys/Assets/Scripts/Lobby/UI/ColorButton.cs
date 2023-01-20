@@ -250,6 +250,8 @@ public class ColorButton : MonoBehaviour
             colorData.SaveNewAwailableStatus(_isColorAvailable);
 
             SetColor();
+
+            SendPlayerBuySkinAnalyticsEvent(_colorCost);
         }
     }
 
@@ -298,5 +300,16 @@ public class ColorButton : MonoBehaviour
     private void OnDisable()
     {
         ResetInfo();
+    }
+
+    private void SendPlayerBuySkinAnalyticsEvent(int spentValue)
+    {
+        string _new_skin_id = colorData.GetSkinID();
+
+        int _gold_spent = spentValue;
+
+        int gold = CurrencyManager.Instance.Gold;
+
+        AnalyticsManager.Instance.PlayerBuySkin(_new_skin_id, _gold_spent, gold);
     }
 }

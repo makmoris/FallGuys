@@ -49,8 +49,13 @@ public class VehicleButton : MonoBehaviour
 
         // сделать сначала проверку. Если все гуд, то делаем активной
         // в момент выбора подтягивать остальную инфу из LobbyVehicleData через эту тачу и кидать ее на нужные места (текст, иконка и т.д.)
+        LobbyManager.Instance.SetCharacter();
+        string previousCarId = CharacterManager.Instance.GetPlayerPrefab().GetComponent<VehicleId>().VehicleID;
+
         lobbyVehicleOnScene.MakeThisVehicleActive();
         vehicleContent.InfoWasUpdate();
+
+        SendPlayerChangeCarAnalyticsEvent(previousCarId);
     }
     public void ShowVehicle()// вызывается кнопой при выборе пушки, чтобы посмотреть. Смотреть можно все кнопы
     {
@@ -252,6 +257,8 @@ public class VehicleButton : MonoBehaviour
             lobbyVehicleData.SaveNewAwailableStatus(_isVehicleAvailable);
 
             SelectVehicle();
+
+            SendPlayerBuyCarAnalyticsEvent(_vehicleCost);
         }
     }
 
@@ -305,5 +312,25 @@ public class VehicleButton : MonoBehaviour
     private void OnDisable()
     {
         ResetInfo();
+    }
+
+    private void SendPlayerBuyCarAnalyticsEvent(int spentValue)
+    {
+        LobbyManager.Instance.SetCharacter();
+        string _new_car_id = CharacterManager.Instance.GetPlayerPrefab().GetComponent<VehicleId>().VehicleID;
+
+        int _gold_spent = spentValue;
+
+        int gold = CurrencyManager.Instance.Gold;
+
+        AnalyticsManager.Instance.PlayerBuyCar(_new_car_id, _gold_spent, gold);
+    }
+
+    private void SendPlayerChangeCarAnalyticsEvent(string _old_car_id)
+    {
+        LobbyManager.Instance.SetCharacter();
+        string _new_car_id = CharacterManager.Instance.GetPlayerPrefab().GetComponent<VehicleId>().VehicleID;
+
+        AnalyticsManager.Instance.PlayerChangedCar(_new_car_id, _old_car_id);
     }
 }

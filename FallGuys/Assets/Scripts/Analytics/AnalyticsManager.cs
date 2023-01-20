@@ -256,4 +256,135 @@ public class AnalyticsManager : MonoBehaviour
     }
 
     #endregion
+    
+    #region GENERAL
+
+    public void User(int battles_amount, float win_rate, int cups_amount, int league, int gold, string car_id, string gun_id, string control_type)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.User(battles_amount, win_rate, cups_amount, league, gold, car_id, gun_id, control_type);
+                
+                Debug.Log($"battles_amount = {battles_amount}; win_rate = {win_rate}; cups_amount = {cups_amount}; league = {league};" +
+                    $"gold = {gold}; car_id = {car_id}; gun_id = {gun_id}; control_type = {control_type}");
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} User");
+            }
+            catch
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to User Event");
+            }
+        }
+    }
+
+    public void PlayerBuyCar(string new_car_id, int gold_spent, int gold)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.PlayerBuyCar(new_car_id, gold_spent, gold);
+
+                Debug.Log($"new_car_id = {new_car_id}; gold_spent = {gold_spent}; gold = {gold}");
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Buy_Car");
+            }
+            catch
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Car Event");
+            }
+        }
+    }
+
+    public void PlayerChangedCar(string new_car_id, string old_car_id)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.PlayerChangedCar(new_car_id, old_car_id);
+
+                Debug.Log($"new_car_id = {new_car_id}; old_car_id = {old_car_id}");
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Changed_Car");
+            }
+            catch
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Car Event");
+            }
+        }
+    }
+
+    public void PlayerBuyGun(string new_gun_id, int gold_spent, int gold)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.PlayerBuyGun(new_gun_id, gold_spent, gold);
+
+                Debug.Log($"new_gun_id = {new_gun_id}; gold_spent = {gold_spent}; gold = {gold}");
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Buy_Gun");
+            }
+            catch
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Gun Event");
+            }
+        }
+    }
+
+    public void PlayerChangedGun(string new_gun_id, string old_gun_id)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.PlayerChangedGun(new_gun_id, old_gun_id);
+
+                Debug.Log($"new_gun_id = {new_gun_id}; old_gun_id = {old_gun_id}");
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Changed_Gun");
+            }
+            catch
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Gun Event");
+            }
+        }
+    }
+
+    public void PlayerBuySkin(string new_skin_id, int gold_spent, int gold)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.PlayerBuySkin(new_skin_id, gold_spent, gold);
+
+                Debug.Log($"new_skin_id = {new_skin_id}; gold_spent = {gold_spent}; gold = {gold}");
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Buy_Skin");
+            }
+            catch
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Skin Event");
+            }
+        }
+    }
+
+    public void PlayerChangedControls(string new_control_type, string old_control_type)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.PlayerChangedControls(new_control_type, old_control_type);
+
+                Debug.Log($"new_control_type = {new_control_type}; old_control_type = {old_control_type};");
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Changed_Controls");
+            }
+            catch
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Controls Event");
+            }
+        }
+    }
+
+    #endregion
 }

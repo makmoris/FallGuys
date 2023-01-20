@@ -13,7 +13,10 @@ public class VehicleColorData : ScriptableObject
     [Space]
     [SerializeField] private bool alwaysAvailable;// если true, значит игнорируем то, что в памяти. Объект всегда доступен
 
-                // name каждого объекта всегда уникальный, т.к. юнити не позволяет создавать два объекта с одинаковым именем. люблю ее
+    // name каждого объекта всегда уникальный, т.к. юнити не позволяет создавать два объекта с одинаковым именем
+
+    [Header("Unique ID for analytics")]
+    [SerializeField] private string skinId;// уникальный id для аналитики
 
     public void LoadData()
     {
@@ -58,5 +61,10 @@ public class VehicleColorData : ScriptableObject
         {
             return isColorAvailable;
         }
+    }
+
+    public string GetSkinID()
+    {
+        return skinId;
     }
 }

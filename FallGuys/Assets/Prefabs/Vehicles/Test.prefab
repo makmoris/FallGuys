@@ -16156,6 +16156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6126495002538707398}
+  - component: {fileID: 7540350474463736966}
   - component: {fileID: 7220679841825585919}
   - component: {fileID: 8398128615517854133}
   - component: {fileID: 8211247851875879211}
@@ -16201,6 +16202,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7540350474463736966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434162804505329504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e6bca09c0e3cd14689aa79c9ba18e4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _vehicleId: TestID_Car
 --- !u!114 &7220679841825585919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16354,6 +16368,8 @@ MonoBehaviour:
   boostClip: {fileID: 8300000, guid: 7c29c309722a2444582a425e8e6aeb77, type: 3}
   boostSource: {fileID: 2761268709838729471}
   rb: {fileID: 0}
+  immobilityValue: 0
+  immobilityValue2: 0
 --- !u!114 &1761472695379857695
 MonoBehaviour:
   m_ObjectHideFlags: 0

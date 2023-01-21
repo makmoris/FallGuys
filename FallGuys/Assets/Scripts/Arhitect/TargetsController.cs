@@ -57,14 +57,27 @@ public class TargetsController : MonoBehaviour
             spawnPoints.Add(spawnPointsContainer.GetChild(i));
             targets.Add(spawnPointsContainer.GetChild(i));
         }
+
+        // перемешаем позиции спавна для рандомного появления на карте
+        // создаем экземпляр класса Random для генерирования случайных чисел
+        System.Random rand = new();
+
+        for (int i = spawnPoints.Count - 1; i >= 1; i--)
+        {
+            int j = rand.Next(i + 1);
+
+            var tmp = spawnPoints[j];
+            spawnPoints[j] = spawnPoints[i];
+            spawnPoints[i] = tmp;
+        }
     }
 
-    public Vector3 GetStartSpawnPosition(int index)
+    public Transform GetStartSpawnPosition(int index)
     {
-        return spawnPoints[index].position;
+        return spawnPoints[index];
     }
 
-    public Vector3 GetRespawnPosition()
+    public Transform GetRespawnPosition()
     {
         int minVal = spawnPoints.Count;
         int respIndex = 0;
@@ -100,6 +113,6 @@ public class TargetsController : MonoBehaviour
             //Debug.Log($"Позиция {i} Кол-во авто = {carCount}");
         }
         //Debug.Log($"Респавн в позиции {respIndex}. Количество авто в ней = {minVal}");
-        return spawnPoints[respIndex].position;
+        return spawnPoints[respIndex];
     }
 }

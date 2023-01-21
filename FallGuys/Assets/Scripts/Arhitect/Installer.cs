@@ -69,8 +69,9 @@ public class Installer : MonoBehaviour
         camCinema.m_Follow = _playerObj.transform;
         camCinema.m_LookAt = _playerObj.transform;
 
-        Vector3 pos = targetsController.GetStartSpawnPosition(0);
+        Vector3 pos = targetsController.GetStartSpawnPosition(0).position;
         _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
+        _playerObj.transform.rotation = targetsController.GetStartSpawnPosition(0).rotation;
 
         var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerVisualIntermediary);
 
@@ -98,8 +99,9 @@ public class Installer : MonoBehaviour
             weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
             weaponAI.IsAI(true);
 
-            Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1);
+            Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1).position;
             _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
+            _enemyObj.transform.rotation = targetsController.GetStartSpawnPosition(i + 1).rotation;
 
             var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyVisualIntermediary);
         }

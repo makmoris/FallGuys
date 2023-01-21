@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class AnalyticsManager : MonoBehaviour
 
     private string current_player_car_id;// во врем€ бо€ они не мен€ютс€
     private string current_player_gun_id;
+
+    private bool initializationCompleted;
 
     private List<IAnalytics> analytics = new List<IAnalytics>
     {
@@ -42,11 +45,13 @@ public class AnalyticsManager : MonoBehaviour
                 item.Initialize();
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Initialized");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Initialize");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Initialize. {ex.Message}");
             }
         }
+
+        initializationCompleted = true;
     }
 
     #region BATTLE
@@ -66,9 +71,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"league_id = {league_id}; level_id = {level_id}; enemies_amount = {enemies_amount};");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Battle_Start");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Battle_Start Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Battle_Start Event. {ex.Message}");
             }
         }
     }
@@ -97,9 +102,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"enemies_left = {enemies_left}; killed_enemy_car_id = {killed_enemy_car_id}; killed_enemy_gun_id = {killed_enemy_gun_id}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Kill_Enemy");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Kill_Enemy Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Kill_Enemy Event. {ex.Message}");
             }
         }
     }
@@ -118,9 +123,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"enemies_left = {enemies_left};");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Pick_MysteryBox");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Pick_MysteryBox Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Pick_MysteryBox Event. {ex.Message}");
             }
         }
     }
@@ -139,9 +144,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"enemies_left = {enemies_left};");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Get_Shield");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Get_Shield Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Get_Shield Event. {ex.Message}");
             }
         }
     }
@@ -161,9 +166,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"enemies_left = {enemies_left};");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Get_Gold");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Get_Gold Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Get_Gold Event. {ex.Message}");
             }
         }
     }
@@ -183,9 +188,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"enemies_left = {enemies_left};");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Recover_HP");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Recover_HP Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Recover_HP Event. {ex.Message}");
             }
         }
     }
@@ -204,9 +209,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"enemies_left = {enemies_left};");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Falls_Out_Map");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Falls_Out_Map Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Falls_Out_Map Event. {ex.Message}");
             }
         }
     }
@@ -225,9 +230,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"enemies_left = {enemies_left};");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Destroyed");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Destroyed Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Destroyed Event. {ex.Message}");
             }
         }
     }
@@ -248,9 +253,9 @@ public class AnalyticsManager : MonoBehaviour
                     $"player_cups_earned = {player_cups_earned}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Battle_Finish");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Battle_Finish Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Battle_Finish Event. {ex.Message}");
             }
         }
     }
@@ -266,14 +271,14 @@ public class AnalyticsManager : MonoBehaviour
             try
             {
                 item.User(battles_amount, win_rate, cups_amount, league, gold, car_id, gun_id, control_type);
-                
+
                 Debug.Log($"battles_amount = {battles_amount}; win_rate = {win_rate}; cups_amount = {cups_amount}; league = {league};" +
                     $"gold = {gold}; car_id = {car_id}; gun_id = {gun_id}; control_type = {control_type}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} User");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to User Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to User Event. {ex.Message}");
             }
         }
     }
@@ -289,9 +294,9 @@ public class AnalyticsManager : MonoBehaviour
                 Debug.Log($"new_car_id = {new_car_id}; gold_spent = {gold_spent}; gold = {gold}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Buy_Car");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Car Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Car Event. {ex.Message}");
             }
         }
     }
@@ -307,9 +312,9 @@ public class AnalyticsManager : MonoBehaviour
                 Debug.Log($"new_car_id = {new_car_id}; old_car_id = {old_car_id}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Changed_Car");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Car Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Car Event. {ex.Message}");
             }
         }
     }
@@ -325,9 +330,9 @@ public class AnalyticsManager : MonoBehaviour
                 Debug.Log($"new_gun_id = {new_gun_id}; gold_spent = {gold_spent}; gold = {gold}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Buy_Gun");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Gun Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Gun Event. {ex.Message}");
             }
         }
     }
@@ -343,9 +348,9 @@ public class AnalyticsManager : MonoBehaviour
                 Debug.Log($"new_gun_id = {new_gun_id}; old_gun_id = {old_gun_id}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Changed_Gun");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Gun Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Gun Event. {ex.Message}");
             }
         }
     }
@@ -361,9 +366,9 @@ public class AnalyticsManager : MonoBehaviour
                 Debug.Log($"new_skin_id = {new_skin_id}; gold_spent = {gold_spent}; gold = {gold}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Buy_Skin");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Skin Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Buy_Skin Event. {ex.Message}");
             }
         }
     }
@@ -379,9 +384,9 @@ public class AnalyticsManager : MonoBehaviour
                 Debug.Log($"new_control_type = {new_control_type}; old_control_type = {old_control_type};");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Changed_Controls");
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Controls Event");
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Changed_Controls Event. {ex.Message}");
             }
         }
     }

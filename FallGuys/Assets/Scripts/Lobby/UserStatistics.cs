@@ -47,6 +47,13 @@ public class UserStatistics : MonoBehaviour
 
     private void SendUserAnalyticEvent()
     {
+        StartCoroutine(WaitAndSendEvent());
+        //AnalyticsManager.Instance.User(battles_amount, win_rate, cups_amount, league, gold, car_id, gun_id, control_type);
+    }
+
+    IEnumerator WaitAndSendEvent()
+    {
+        yield return new WaitForSeconds(2f);
         AnalyticsManager.Instance.User(battles_amount, win_rate, cups_amount, league, gold, car_id, gun_id, control_type);
     }
 

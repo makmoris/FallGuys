@@ -35,6 +35,7 @@ public class LevelProgressController : MonoBehaviour
 
 
     private GameObject playerGO;
+    private bool playerWasDead;
 
     public static LevelProgressController Instance { get; private set; }
     private void Awake()
@@ -117,8 +118,9 @@ public class LevelProgressController : MonoBehaviour
             DisabledAllChildElements();
             CalculateReward(numberOfPlayers + 1, false);
             StartCoroutine(WaitAndShowLoseWindow());
+            playerWasDead = true;
         }
-        else if (numberOfPlayers == 1)
+        else if (numberOfPlayers == 1 && !playerWasDead)
         {
             // если остался один игрок, т.е. numberOfPlayers = 1, то кидаем окно победы
             Debug.Log($"Win. Занял {numberOfPlayers} место");

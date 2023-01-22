@@ -31,14 +31,6 @@ public class Explosion : Bonus
     [Header("Mine or Bomb")]
     [SerializeField] private bool isMine;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ExplodeWithDelay();
-        }
-    }
-
     // метод вызываетс€ пулей при соприкосновении коллайдеров. ≈сли это бочка, то можешь дать врем€ перед взырвом. ≈сли игрок - взрыв сразу
     public void ExplodeWithDelay()
     {

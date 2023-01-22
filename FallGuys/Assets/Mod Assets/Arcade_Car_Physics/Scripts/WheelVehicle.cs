@@ -225,6 +225,7 @@ namespace VehicleBehaviour {
         // Для проверки, что игрок не перевернулся
         [SerializeField]private int immobilityValue;// сколько игрок провел в неподвижном состоянии
         [SerializeField] private int immobilityValue2;
+        [SerializeField] private int immobilityValue3;
         private Vector3 previousPosition;
 
         void Start() {
@@ -286,17 +287,19 @@ namespace VehicleBehaviour {
                 if (throttleInput != "" && throttleInput != null)
                 {
                     throttle = GetInput(throttleInput) - GetInput(brakeInput);
-                    
-                    if(throttle != 0 && Mathf.RoundToInt(speed) == 0)
+
+                    if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
                     {
-                        Debug.Log("Zastral");
+                        //Debug.Log("Жмем на газ. Застрял");
                         immobilityValue2++;
 
-                        if (immobilityValue2 >= 50)
+                        if (immobilityValue2 >= 100)
                         {
+                            immobilityValue = 0;
                             immobilityValue2 = 0;
+                            immobilityValue3 = 0;
                             transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                            transform.position = new Vector3(transform.position.x, 5f, transform.position.z);
+                            transform.position = GetAppearPosition();
                         }
                     }
                     else immobilityValue2 = 0;
@@ -411,16 +414,32 @@ namespace VehicleBehaviour {
             if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
             {
                 immobilityValue++;
-
+                //Debug.Log("Перевернулся на крышу или на бок");
                 if (immobilityValue >= 100)
                 {
                     immobilityValue = 0;
+                    immobilityValue2 = 0;
+                    immobilityValue3 = 0;
                     transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                    transform.position = new Vector3(transform.position.x, 5f, transform.position.z);
+                    transform.position = GetAppearPosition();
                 }
             }
             else immobilityValue = 0;
 
+            if (Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+            {
+                immobilityValue3++;
+                //Debug.Log("Просто застрял");
+                if (immobilityValue3 >= 100)
+                {
+                    immobilityValue = 0;
+                    immobilityValue2 = 0;
+                    immobilityValue3 = 0;
+                    transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                    transform.position = GetAppearPosition();
+                }
+            }
+            else immobilityValue3 = 0;
 
             //if (Mathf.RoundToInt(speed) == 0)
             //{
@@ -456,6 +475,16 @@ namespace VehicleBehaviour {
             //return Input.GetAxis(input);
             return SimpleInput.GetAxis(input);
 #endif
+        }
+
+        private Vector3 GetAppearPosition()
+        {
+            Vector3 currentPos = transform.position;
+            int random = UnityEngine.Random.Range(-5, 6);
+            if (random == 0) random = 1;
+            Vector3 newPos = new Vector3(currentPos.x + random, currentPos.y + 5f, currentPos.z + random);
+
+            return newPos;
         }
     }
 }

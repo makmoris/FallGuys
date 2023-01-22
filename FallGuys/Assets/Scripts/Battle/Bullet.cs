@@ -67,7 +67,7 @@ public class Bullet : Bonus
                 }
                 //StartCoroutine(ShowShotEffect(effectTime));
             }
-            Debug.Log($"пуля попала в {other.name}. Выстрелил {parentCollider.gameObject.name}");
+            if (other != null && parentCollider != null) Debug.Log($"пуля попала в {other.name}. Выстрелил {parentCollider.gameObject.name}");
             StartCoroutine(ShowShotEffect(effectTime));
 
             //gameObject.SetActive(false);

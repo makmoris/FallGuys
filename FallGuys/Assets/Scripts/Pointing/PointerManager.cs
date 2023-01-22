@@ -63,8 +63,14 @@ public class PointerManager : MonoBehaviour
         //Destroy(_dictionary[enemyPointer].gameObject);
 
         PointerIcon pointerIcon = _positionDictionary[enemyPointer];
-        pointerIcon.Hide();
-        pointerIcon.gameObject.SetActive(false);
+        
+        if(pointerIcon != null)
+        {
+            pointerIcon.Hide();
+            pointerIcon.gameObject.SetActive(false);
+        }
+        //pointerIcon.Hide();
+        //pointerIcon.gameObject.SetActive(false);
 
         _positionDictionary.Remove(enemyPointer);
     }
@@ -78,7 +84,8 @@ public class PointerManager : MonoBehaviour
     public void HidePositionPointer(EnemyPointer enemyPointer)
     {
         PointerIcon newPointer = _positionDictionary[enemyPointer];
-        newPointer.Hide();
+        if (newPointer != null) newPointer.Hide();
+        //newPointer.Hide();
     }
 
     public void UpdateHealthInUI(EnemyPointer enemyPointer, float healthValue)

@@ -28,6 +28,8 @@ public class Explosion : Bonus
 
     private bool explosionDone;
 
+    [SerializeField]private int mineCounter;// если наехал 1 раз - активировал мину. 2 раз - мина взрывается
+
     [Header("Mine or Bomb")]
     [SerializeField] private bool isMine;
 
@@ -38,7 +40,7 @@ public class Explosion : Bonus
 
         //explosionDone = true;
         Invoke("Explode", timeBeforExplotion);
-        GetComponent<Renderer>().material.color = Color.red;
+        //GetComponent<Renderer>().material.color = Color.red;
     }
 
     private void Explode()
@@ -104,6 +106,32 @@ public class Explosion : Bonus
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isMine) ExplodeWithDelay();
+        if (isMine)
+        {
+            mineCounter++;
+
+            if (mineCounter == 1)
+            {
+                Renderer renderer = GetComponent<Renderer>();
+                Color startColor = renderer.material.GetColor("_BaseTint");
+                Color endColor = Color.red;
+
+                StartCoroutine(MineBlinking(startColor, endColor, renderer));
+            }
+
+            if (mineCounter >= 2) ExplodeWithDelay();
+        }
+    }
+
+    IEnumerator MineBlinking(Color startColor, Color endColor, Renderer renderer)
+    {
+        for (; ; )
+        {
+            yield return new WaitForFixedUpdate();
+
+            Color _color = Color.Lerp(startColor, endColor, Mathf.PingPong(Time.time * 2f, 1));
+
+            renderer.material.SetColor("_BaseTint", _color);
+        }
     }
 }

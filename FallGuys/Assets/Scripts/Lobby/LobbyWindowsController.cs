@@ -14,6 +14,8 @@ public class LobbyWindowsController : MonoBehaviour
 
     private int previousCupValue;
 
+    private string key = "IsFirstLobbyEnterFromLocation";
+
     private bool showLeagueWindow;
 
     public static LobbyWindowsController Instance { get; private set; }
@@ -35,10 +37,9 @@ public class LobbyWindowsController : MonoBehaviour
 
     private void SceneWasChanged(Scene current, Scene next)
     {
-        
         if(next.name != lobbySceneName) previousCupValue = CurrencyManager.Instance.Cups;
 
-        if (showLeagueWindow)
+        if (showLeagueWindow && !IsFirstLobbyEnterFromLocation())
         {
             Canvas lobbyCanvas = FindObjectOfType<Canvas>();
             GameObject leagueWindow = lobbyCanvas.transform.Find("Lobby").transform.Find("LeagueWindow").gameObject;
@@ -51,5 +52,17 @@ public class LobbyWindowsController : MonoBehaviour
     public void ShowLeagueWindowOnLobby()// вызывают кнопки win lose окон
     {
         showLeagueWindow = true;
+    }
+
+    private bool IsFirstLobbyEnterFromLocation()
+    {
+        bool returnValue;
+        int _value = PlayerPrefs.GetInt(key, 0);
+        if (_value == 0) returnValue = true;
+        else returnValue = false;
+
+        PlayerPrefs.SetInt(key, 1);
+
+        return returnValue;
     }
 }

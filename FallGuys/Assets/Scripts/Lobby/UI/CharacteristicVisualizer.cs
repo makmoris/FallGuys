@@ -28,7 +28,7 @@ public class CharacteristicVisualizer : MonoBehaviour
     private float _maxValue;
 
     private Color blueText = new Color(184f / 255f, 224f / 255f, 255f / 255f);
-    private Color green = new Color(113f / 255f, 171f / 255f, 85f / 255f);
+    private Color green = new Color(125f / 255f, 226f / 255f, 64f / 255f);
     private Color red = new Color(255f / 255f, 108f / 255f, 108f / 255f);
     private Color yellow = new Color(255f / 255f, 222f / 255f, 77f / 255f);
 

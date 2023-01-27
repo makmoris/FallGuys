@@ -11,6 +11,7 @@ public class HitSide : MonoBehaviour
         _sidesController = transform.parent.GetComponent<HitSidesController>();
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
         _sidesController.SideHitted(gameObject.name, other);

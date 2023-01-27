@@ -22,16 +22,24 @@ public class HitSidesController : Bonus
     private bool isBackwardMovement;
 
     private bool canNewHit = true;
+    [SerializeField]private bool isPlayer;
 
     private void Awake()
     {
         _rbParent = transform.GetComponentInParent<Rigidbody>();
     }
 
+    public void SetIsPlayer()
+    {
+        isPlayer = true;
+    }
+
     public void SideHitted(string hittedSide, Collider enemyCollider)
     {
         if (canNewHit)
         {
+            if (isPlayer) CinemachineShake.Instance.ShakeCamera();
+
             Bumper enemyBumper = GetParentElementFromDictionary(enemyCollider);// получили RB объекта, с которым ударились
 
             // смотрим, в каком направлении МЫ двигались в этот момент. Вперед или сдавали назад
@@ -54,7 +62,7 @@ public class HitSidesController : Bonus
             {
                 if (isForwardMovement)// а мы в этот момент ехали вперед, значит противник влетел нам в жопу. Мы получаем урон
                 {
-                    //Debug.Log($"{gameObject.transform.parent.name} получает урон от {enemyBumper.name}, т.к. {enemyBumper.name} влетел нам в жопу");
+                    Debug.Log($"{gameObject.transform.parent.name} получает урон от {enemyBumper.name}, т.к. {enemyBumper.name} влетел нам в жопу");
                 }
                 else if (isBackwardMovement)// а мы в этот момент сдавали назад, значит мы наносим урон, т.к. хотели ударить врага жопой
                 {
@@ -66,7 +74,7 @@ public class HitSidesController : Bonus
 
                         enemyBumper.GetBonus(this);
                     }
-                    //Debug.Log($"{gameObject.transform.parent.name} наносит урон {enemyBumper.name} в размере {val}, т.к. {gameObject.transform.parent.name} влетел ему в жопой");
+                    Debug.Log($"{gameObject.transform.parent.name} наносит урон {enemyBumper.name} в размере {val}, т.к. {gameObject.transform.parent.name} влетел ему в жопой");
                 }
 
                 StartCoroutine(WaitToNewHit());
@@ -84,11 +92,11 @@ public class HitSidesController : Bonus
 
                         enemyBumper.GetBonus(this);
                     }
-                    //Debug.Log($"{gameObject.transform.parent.name} наносит урон {enemyBumper.name} в размере {val}, т.к. {gameObject.transform.parent.name} хотел ударить его передом");
+                    Debug.Log($"{gameObject.transform.parent.name} наносит урон {enemyBumper.name} в размере {val}, т.к. {gameObject.transform.parent.name} хотел ударить его передом");
                 }
                 else if (isBackwardMovement)// а мы в этот момент сдавали назад, значит мы получаем урон, т.к. сдавали назад, а противник влетел нам в перед
                 {
-                    //Debug.Log($"{gameObject.transform.parent.name} получает урон от {enemyBumper.name}, т.к. {enemyBumper.name} влетел нам в перед");
+                    Debug.Log($"{gameObject.transform.parent.name} получает урон от {enemyBumper.name}, т.к. {enemyBumper.name} влетел нам в перед");
                 }
 
                 StartCoroutine(WaitToNewHit());
@@ -96,7 +104,7 @@ public class HitSidesController : Bonus
             }
             else// если удар пришелся на любую из сторон, то там в любом случае получаем урон, т.к. в нас влетели
             {
-                //Debug.Log($"{gameObject.transform.parent.name} получает урон от в бок от {enemyBumper.name}");
+                Debug.Log($"{gameObject.transform.parent.name} получает урон в бок от {enemyBumper.name}");
 
                 StartCoroutine(WaitToNewHit());
                 return;

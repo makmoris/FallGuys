@@ -18,16 +18,20 @@ public class AddBonus : Bonus
     [SerializeField] private float boxRespawnTime;
 
     [Header("Health")]
-    [SerializeField] int minHealthBonusValue;
-    [SerializeField] int maxHealthBonusValue;
+    [SerializeField] private int minHealthBonusValue;
+    [SerializeField] private int maxHealthBonusValue;
+    [Space]
+    [SerializeField] private ParticleSystem healthEffect; 
 
     [Header("Shield")]
-    [SerializeField] int minShieldBonusValue;
-    [SerializeField] int maxShieldBonusValue;
+    [SerializeField] private int minShieldBonusValue;
+    [SerializeField] private int maxShieldBonusValue;
 
     [Header("Gold")]
-    [SerializeField] int minGoldBonusValue;
-    [SerializeField] int maxGoldBonusValue;
+    [SerializeField] private int minGoldBonusValue;
+    [SerializeField] private int maxGoldBonusValue;
+    [Space]
+    [SerializeField] private ParticleSystem goldEffect;
 
     private void Awake()
     {
@@ -81,6 +85,9 @@ public class AddBonus : Bonus
 
     public override void Got()
     {
+        if (Type == BonusType.AddHealth) healthEffect.Play();
+        if (Type == BonusType.AddGold) goldEffect.Play();
+
         CoroutineRunner.Run(WaitAndRespawn());
     }
 

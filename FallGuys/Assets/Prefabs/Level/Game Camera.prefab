@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2868099996627508111}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.056391783, y: 0.0000009536743, z: -0.52921337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -178,6 +178,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5241360172793806436}
+  - component: {fileID: 1915163211}
   - component: {fileID: 5241360172793806435}
   - component: {fileID: 5241360172793806437}
   m_Layer: 0
@@ -203,6 +204,20 @@ Transform:
   m_Father: {fileID: 2868099997127116195}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1915163211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241360172793806434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b17242033878f784eaf07ebcb6a2a9d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intensity: 2.5
+  time: 0.25
 --- !u!114 &5241360172793806435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +298,7 @@ GameObject:
   - component: {fileID: 5241360174171316171}
   - component: {fileID: 5241360174171316170}
   - component: {fileID: 5241360174171316169}
+  - component: {fileID: 677430002}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -366,3 +382,20 @@ MonoBehaviour:
   m_YawDamping: 1
   m_RollDamping: 0
   m_AngularDamping: 0
+--- !u!114 &677430002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241360174171316183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}

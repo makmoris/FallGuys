@@ -57,6 +57,8 @@ public class Installer : MonoBehaviour
         _playerBumper = _playerObj.GetComponent<Bumper>();
         _playerVisualIntermediary = _playerObj.GetComponent<VisualIntermediary>();
 
+        _playerObj.GetComponentInChildren<HitSidesController>().SetIsPlayer();
+
         PointerManager.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
 

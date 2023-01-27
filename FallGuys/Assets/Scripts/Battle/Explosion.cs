@@ -32,6 +32,7 @@ public class Explosion : Bonus
 
     [Header("Mine or Bomb")]
     [SerializeField] private bool isMine;
+    [SerializeField] private ParticleSystem mineActiveEffect;
 
     // метод вызываетс€ пулей при соприкосновении коллайдеров. ≈сли это бочка, то можешь дать врем€ перед взырвом. ≈сли игрок - взрыв сразу
     public void ExplodeWithDelay()
@@ -106,32 +107,17 @@ public class Explosion : Bonus
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isMine)
+        if (isMine && other.CompareTag("Car"))
         {
             mineCounter++;
 
             if (mineCounter == 1)
             {
-                Renderer renderer = GetComponent<Renderer>();
-                Color startColor = renderer.material.GetColor("_BaseTint");
-                Color endColor = Color.red;
-
-                StartCoroutine(MineBlinking(startColor, endColor, renderer));
+                mineActiveEffect.Simulate(1f, true, true);
+                mineActiveEffect.Play();
             }
-
+            
             if (mineCounter >= 2) ExplodeWithDelay();
-        }
-    }
-
-    IEnumerator MineBlinking(Color startColor, Color endColor, Renderer renderer)
-    {
-        for (; ; )
-        {
-            yield return new WaitForFixedUpdate();
-
-            Color _color = Color.Lerp(startColor, endColor, Mathf.PingPong(Time.time * 2f, 1));
-
-            renderer.material.SetColor("_BaseTint", _color);
         }
     }
 }

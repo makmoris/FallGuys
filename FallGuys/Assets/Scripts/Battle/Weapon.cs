@@ -83,7 +83,7 @@ public class Weapon : MonoBehaviour
         bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, startBulletPosition.rotation, startBulletPosition);
         bulletExample.GetComponent<Bullet>().enabled = false;
         bulletExample.GetComponent<Collider>().enabled = false;
-        bulletExample.transform.Find("Jet02Red").gameObject.SetActive(false);
+        bulletExample.transform.Find("FireTrail").gameObject.SetActive(false);
     }
 
     private void Update()

@@ -41,7 +41,7 @@ public class Bullet : Bonus
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other != parentCollider && other.gameObject != parentShield)
+        if (other != parentCollider && other.gameObject != parentShield && !other.CompareTag("ArenaBorder"))
         {
             Explosion explosion = other.GetComponent<Explosion>();
             if (explosion != null)// значит это бочка

@@ -63,7 +63,7 @@ public class Bullet : Bonus
                         forceDirection.z * force), forceMode);
 
                     // передаем инфу тому, в кого попали, кто в него попал
-                    other.GetComponent<HitHistory>().SetLastShooter(parentCollider.gameObject);
+                    if (other != null && parentCollider != null) other.GetComponent<HitHistory>().SetLastShooter(parentCollider.gameObject);
                 }
                 //StartCoroutine(ShowShotEffect(effectTime));
             }

@@ -114,7 +114,7 @@ public class WeaponButton : MonoBehaviour
 
             dataWasLoaded = true;
 
-            oldCupsTextPosition = cupsText.rectTransform.anchoredPosition;
+            oldCupsTextPosition = cupsText.GetComponent<CupsTextInBuyButton>().CupsTextPosition;
         }
     }
 
@@ -206,7 +206,6 @@ public class WeaponButton : MonoBehaviour
                     costText.text = _weaponCost.ToString();
                     cupsText.text = "PURCHASE";
                     cupsText.rectTransform.anchoredPosition = new Vector2(0, oldCupsTextPosition.y);
-
 
                     for (int i = 0; i < cupsText.transform.childCount; i++)// отключаем картинку и текст внутри
                     {

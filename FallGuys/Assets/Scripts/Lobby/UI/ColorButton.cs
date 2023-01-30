@@ -97,7 +97,7 @@ public class ColorButton : MonoBehaviour
 
             dataWasLoaded = true;
 
-            oldCupsTextPosition = cupsText.rectTransform.anchoredPosition;
+            oldCupsTextPosition = cupsText.GetComponent<CupsTextInBuyButton>().CupsTextPosition;
         }
     }
 

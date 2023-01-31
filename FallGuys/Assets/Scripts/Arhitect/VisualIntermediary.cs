@@ -16,7 +16,7 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     private EnemyPointer enemyPointer;
 
-    [SerializeField]private GameObject playerGO;
+    private GameObject playerGO;
     private bool isPlayer;
 
     private HitHistory hitHistory;

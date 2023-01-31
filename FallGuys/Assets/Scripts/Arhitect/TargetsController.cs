@@ -6,6 +6,7 @@ public class TargetsController : MonoBehaviour
 {
     [SerializeField] private Transform targetsContainer;
     [SerializeField] private Transform spawnPointsContainer;
+    [SerializeField] private Transform bonusBoxesContainer;
     [SerializeField] private float respawnCheckRadius;
 
     [SerializeField] private List<Transform> targets;
@@ -47,6 +48,11 @@ public class TargetsController : MonoBehaviour
         for (int i = 0; i < targetsContainer.childCount; i++)
         {
             targets.Add(targetsContainer.GetChild(i));
+        }
+
+        for (int i = 0; i < bonusBoxesContainer.childCount; i++)
+        {
+            targets.Add(bonusBoxesContainer.GetChild(i));
         }
     }
 

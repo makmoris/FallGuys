@@ -16,11 +16,19 @@ public class CarDriverAI : MonoBehaviour
     private bool isTargetReachedFirst;
 
     private WheelVehicle wheelVehicle;
-
+    
     private bool obstacle;
     public bool Obstacle { get => obstacle;
         set => obstacle = value;
     }
+
+    private DifficultyLevelsAI difficultyLevelAI;
+
+    private List<Transform> bonusBoxes = new();// для дуэли, чтобы чередовал игрока с бонусами
+    [SerializeField]private bool isDuel;
+    [SerializeField]private int playerWasTargetCounter;
+    [SerializeField] private int bonusWasTargetCounter;
+    private Transform playerTransform;
 
     private void Awake()
     {
@@ -35,7 +43,7 @@ public class CarDriverAI : MonoBehaviour
     private void Moving()
     {
         if (targetPositionTransform != null) ChooseTargetPosition(targetPositionTransform.position);
-        else CheackTargetListOnNullComponent();
+        else CheckTargetListOnNullComponent();
 
         float forwardAmount = 0f;
         float turnAmount = 0f;
@@ -151,6 +159,87 @@ public class CarDriverAI : MonoBehaviour
                 }
             }
 
+            if (isDuel && playerTransform != null)// для дуэли. Выбираем только между игроком и бонусами
+            {
+                //difficultyLevelAI.
+                //int randomDuel = Random.Range(0, сложность бота, как часто он выбирает игрока на дуели);
+                DuelType duelType = difficultyLevelAI.GetDuelType();
+                switch (duelType)
+                {
+                    case DuelType.randomFromPlayerAndBonus:
+
+                        int randVal = Random.Range(0, 2);
+
+                        if(randVal == 0)
+                        {
+                            targetPositionTransform = playerTransform;
+                        }
+                        else
+                        {
+                            int rr = Random.Range(0, bonusBoxes.Count);
+                            targetPositionTransform = bonusBoxes[rr];
+                        }
+
+                        break;
+
+                    case DuelType.alternationBetweenPlayerAndBonusBonus:
+
+                        if(playerWasTargetCounter == 0)
+                        {
+                            targetPositionTransform = playerTransform;
+                            playerWasTargetCounter++;
+                        }
+                        else
+                        {
+                            if(bonusWasTargetCounter == 0)
+                            {
+                                int rr = Random.Range(0, bonusBoxes.Count);
+                                targetPositionTransform = bonusBoxes[rr];
+                                bonusWasTargetCounter++;
+                            }
+                            else if (bonusWasTargetCounter == 1)
+                            {
+                                int rr = Random.Range(0, bonusBoxes.Count);
+                                targetPositionTransform = bonusBoxes[rr];
+
+                                playerWasTargetCounter = 0;
+                                bonusWasTargetCounter = 0;
+                            }
+                        }
+
+                        break;
+
+                    case DuelType.alternationBetweenPlayerAndBonus:
+
+                        if (playerWasTargetCounter == 0)
+                        {
+                            targetPositionTransform = playerTransform;
+                            playerWasTargetCounter++;
+                        }
+                        else
+                        {
+                            int rr = Random.Range(0, bonusBoxes.Count);
+                            targetPositionTransform = bonusBoxes[rr];
+
+                            playerWasTargetCounter = 0;
+                        }
+
+                        break;
+
+                    case DuelType.playerOnly:
+
+                        targetPositionTransform = playerTransform;
+                        break;
+                }
+
+                Debug.Log("Ищем игрока");
+            }
+            else if(playerTransform == null)
+            {
+                isDuel = false;
+                targetPositionTransform = targets[0];
+            }
+
             targetReached = false;
 
             StartCoroutine(CheckWhatTargetChoose());
@@ -165,34 +254,51 @@ public class CarDriverAI : MonoBehaviour
     {
         targets = _targets.GetRange(0, _targets.Count);
 
+        
         for (int i = 0; i < targets.Count; i++)
         {
             if (targets[i].gameObject == gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
             {
                 targets.RemoveAt(i);
+                break;
             }
         }
+
+        foreach (var item in targets)
+        {
+            if (item.GetComponent<Animator>() != null)// пока так, потом, если понадобится, можно создать какой-нибудь скрипт и кинуть на бокс
+            {
+                bonusBoxes.Add(item);
+            }
+
+            if (item.GetComponent<Bumper>() != null && item.GetComponent<CarDriverAI>() == null)
+            {
+                playerTransform = item;
+            }
+        }
+
         // если нужно, то добавляем еще игроков, чтобы был больше шанс на него напасть
-        float frequencyOfTargetingPlayer = GetComponent<DifficultyLevelsAI>().GetFrequencyOfTargetingPlayer();
+        difficultyLevelAI = GetComponent<DifficultyLevelsAI>();
+        float frequencyOfTargetingPlayer = difficultyLevelAI.GetFrequencyOfTargetingPlayer();
 
         if(frequencyOfTargetingPlayer != 0)
         {
-            Transform _player = targets[0];// как заглушка. Находим игрока
+            //Transform _player = targets[0];// как заглушка. Находим игрока
 
-            foreach (var elem in targets)
-            {
-                if(elem.GetComponent<Bumper>() != null && elem.GetComponent<CarDriverAI>() == null)
-                {
-                    _player = elem;
-                    break;
-                }
-            }
+            //foreach (var elem in targets)
+            //{
+            //    if(elem.GetComponent<Bumper>() != null && elem.GetComponent<CarDriverAI>() == null)
+            //    {
+            //        _player = elem;
+            //        break;
+            //    }
+            //}
 
             int addedPlayersValue = Mathf.CeilToInt(targets.Count * frequencyOfTargetingPlayer);
 
             for (int i = 0; i < addedPlayersValue; i++)
             {
-                targets.Add(_player);
+                targets.Add(playerTransform);
             }
         }
 
@@ -202,15 +308,30 @@ public class CarDriverAI : MonoBehaviour
         isTargetReachedFirst = true;
     }
 
+    public void StartDuel()// вызывается LevelProgressController, когда остается один бот и игрок
+    {
+        isDuel = true;
+
+        targetReached = true;
+        ChooseTargetPosition(playerTransform.position);
+    }
+
     public void SetNewPlayerTargetFromDetector(Transform transform)
     {
-        targetPositionTransform = transform;
+        if (!isDuel)// во время дуэли бот не реагирует на внезапные цели
+        {
+            targetPositionTransform = transform;
+            Debug.Log("Jopa");
+        }
     }
 
     public void DetectorLostTarget()
     {
-        targetReached = true;
-        ChooseTargetPosition(targetPositionTransform.position);
+         if(!isDuel )// во время дуэли бот не реагирует на внезапные цели
+        {
+            targetReached = true;
+            ChooseTargetPosition(targetPositionTransform.position);
+        }
     }
 
     private void RemoveFromTargetsList(GameObject removedObj)
@@ -224,7 +345,7 @@ public class CarDriverAI : MonoBehaviour
         targets.Remove(removedObj.transform);
     }
 
-    private void CheackTargetListOnNullComponent()
+    private void CheckTargetListOnNullComponent()
     {
         for (int i = 0; i < targets.Count; i++)
         {

@@ -129,6 +129,29 @@ public class LevelProgressController : MonoBehaviour
             CalculateReward(numberOfPlayers, true);
             StartCoroutine(WaitAndShowWinWindow());
         }
+
+        if (numberOfPlayers == 2 && !playerWasDead)
+        {
+            GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
+            
+            CarDriverAI carDriverAI = null;
+
+            foreach(var car in cars)
+            {
+                var _carAI = car.GetComponent<CarDriverAI>();
+                if (_carAI != null && car != deadPlayer)
+                {
+                    carDriverAI = _carAI;
+                    Debug.Log($"Duel with {carDriverAI.name}");
+                    break;
+                }
+            }
+
+            if(carDriverAI != null)
+            {
+                carDriverAI.StartDuel();
+            }
+        }
     }
     
     private void CalculateReward(int place, bool winner)

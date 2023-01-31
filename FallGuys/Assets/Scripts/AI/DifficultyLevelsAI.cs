@@ -6,6 +6,7 @@ public class DifficultyLevelsAI : MonoBehaviour
 
     private float shotDecisionSpeed;
     private float frequencyOfTargetingPlayer;
+    private DuelType duelType;
 
     private bool dataWasLoad;
 
@@ -18,6 +19,7 @@ public class DifficultyLevelsAI : MonoBehaviour
     {
         shotDecisionSpeed = difficultyLevelData.ShotDecisionSpeed;
         frequencyOfTargetingPlayer = difficultyLevelData.FrequencyOfTargetingPlayer;
+        duelType = difficultyLevelData.GetDuelType();
         dataWasLoad = true;
     }
 
@@ -33,5 +35,10 @@ public class DifficultyLevelsAI : MonoBehaviour
         if (!dataWasLoad) LoadData();
 
         return frequencyOfTargetingPlayer;
+    }
+
+    public DuelType GetDuelType()
+    {
+        return duelType;
     }
 }

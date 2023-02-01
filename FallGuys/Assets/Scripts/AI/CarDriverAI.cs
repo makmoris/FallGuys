@@ -321,7 +321,6 @@ public class CarDriverAI : MonoBehaviour
         if (!isDuel)// во время дуэли бот не реагирует на внезапные цели
         {
             targetPositionTransform = transform;
-            Debug.Log("Jopa");
         }
     }
 

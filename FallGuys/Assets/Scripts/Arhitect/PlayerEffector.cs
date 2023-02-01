@@ -14,6 +14,8 @@ public class PlayerEffector
 
     private bool isBot;
 
+    private float defaultHealth;// для вибрации
+
     public PlayerEffector(IPlayer player, Bumper bumper, PlayerLimitsData limitsData, VisualIntermediary intermediary)
     {
         _player = player;
@@ -24,6 +26,8 @@ public class PlayerEffector
         _intermediary.UpdateHealthInUI(_player.Health);
 
         if (bumper.GetComponent<CarDriverAI>() != null) isBot = true;
+
+        defaultHealth = _player.Health;
     }
 
     private void ActionTransition(float time)
@@ -54,7 +58,7 @@ public class PlayerEffector
                     {
                         resultHealth = 0;
                     }
-
+                    
                     
                     _player.SetHealth(resultHealth);
                     _intermediary.UpdateHealthInUI(_player.Health);
@@ -77,6 +81,25 @@ public class PlayerEffector
                     }
 
                     if (bonus.Value > 0 && !isBot) SendPlayerRecoverHPAnalyticEvent((int)bonus.Value);
+
+                    if (bonus.Value < 0 && !isBot)
+                    {
+                        float percent = ((bonus.Value * -1f) / defaultHealth) * 100f;
+
+                        if(percent < 10f)
+                        {
+                            VibrationManager.Instance.LowDamageVibration();
+                        }
+                        else if(percent >= 10f && percent <= 30f)
+                        {
+                            VibrationManager.Instance.MediumDamageVibration();
+                        }
+                        else
+                        {
+                            VibrationManager.Instance.LargeDamageVibration();
+                        }
+                        Debug.Log($"Percent = {percent}");
+                    }
                 }
 
                 break;

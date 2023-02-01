@@ -44,7 +44,11 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                     }
 
                     Debug.Log($"{name} Event GetBonus {other.name}");
-                    if (other.name == "MysteryBox" && isPlayer) SendPlayerPickMysteryBoxAnalyticEvent();
+                    if (other.name == "MysteryBox" && isPlayer)
+                    {
+                        SendPlayerPickMysteryBoxAnalyticEvent();
+                        VibrationManager.Instance.BonusBoxVibration();
+                    }
 
                     if (enabled)
                     {

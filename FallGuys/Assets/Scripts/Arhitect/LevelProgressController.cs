@@ -31,7 +31,9 @@ public class LevelProgressController : MonoBehaviour
     [Header("Lose Window")]
     [SerializeField] private float pauseBeforShowingLoseWindow;
     [SerializeField] private GameObject loseWindow;
+    [SerializeField] private TextMeshProUGUI fragLWText;
     [SerializeField] private TextMeshProUGUI goldLWText;
+    [SerializeField] private TextMeshProUGUI cupsLWText;
 
 
     private GameObject playerGO;
@@ -257,7 +259,9 @@ public class LevelProgressController : MonoBehaviour
         if (!loseWindow.activeSelf) loseWindow.SetActive(true);
         if (winWindow.activeSelf) winWindow.SetActive(false);
 
+        fragLWText.text = $"{numberOfFrags}";
         goldLWText.text = $"{amountOfGoldReward}";
+        cupsLWText.text = $"{amountOfCupReward}";
 
         yield return new WaitForSeconds(pauseBeforShowingLoseWindow);
 

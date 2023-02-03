@@ -44,6 +44,11 @@ public class Explosion : Bonus
         //GetComponent<Renderer>().material.color = Color.red;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) Explode();
+    }
+
     private void Explode()
     {
         Collider[] overLappedColliders = Physics.OverlapSphere(transform.position, radius);

@@ -16,7 +16,7 @@ public class LobbyWindowsController : MonoBehaviour
 
     private string key = "IsFirstLobbyEnterFromLocation";
 
-    private bool showLeagueWindow;
+    private bool showLeagueWindow = false;
 
     public static LobbyWindowsController Instance { get; private set; }
 
@@ -37,7 +37,7 @@ public class LobbyWindowsController : MonoBehaviour
 
     private void SceneWasChanged(Scene current, Scene next)
     {
-        if(next.name != lobbySceneName) previousCupValue = CurrencyManager.Instance.Cups;
+        if (next.name != lobbySceneName) previousCupValue = CurrencyManager.Instance.Cups;
 
         if (showLeagueWindow && !IsFirstLobbyEnterFromLocation())
         {

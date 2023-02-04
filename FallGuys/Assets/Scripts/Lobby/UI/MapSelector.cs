@@ -39,6 +39,8 @@ public class MapSelector : MonoBehaviour
         else tutorialWindowWasShown = true;
 
         LoadMap();
+
+        MusicManager.Instance.PlayArenaMapSearchMusic();
     }
 
     public void GoToLevel()// вызывается из UI_InfiniteScroll по завершению анимации. Или окном gameTutorialWindow

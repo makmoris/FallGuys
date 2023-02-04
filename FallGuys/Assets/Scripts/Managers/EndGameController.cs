@@ -23,6 +23,7 @@ public class EndGameController : MonoBehaviour
         if (playerVehicleClone.GetComponent<Bumper>() != null) playerVehicleClone.GetComponent<Bumper>().enabled = false;
         if (playerVehicleClone.GetComponentInChildren<Weapon>() != null) playerVehicleClone.GetComponentInChildren<Weapon>().enabled = false;
         if (playerVehicleClone.GetComponent<Rigidbody>() != null) playerVehicleClone.GetComponent<Rigidbody>().isKinematic = true;
+        if (playerVehicleClone.GetComponent<AudioListener>() != null) playerVehicleClone.GetComponent<AudioListener>().enabled = false;
 
         playerVehicleClone.transform.position = Vector3.zero;
         playerVehicleClone.transform.rotation = Quaternion.Euler(Vector3.zero);

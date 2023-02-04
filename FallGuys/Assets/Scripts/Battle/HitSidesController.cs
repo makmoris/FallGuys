@@ -23,6 +23,7 @@ public class HitSidesController : Bonus
 
     private bool canNewHit = true;
     [SerializeField]private bool isPlayer;
+    private AudioSource audioSource;
 
     private void Awake()
     {
@@ -32,13 +33,18 @@ public class HitSidesController : Bonus
     public void SetIsPlayer()
     {
         isPlayer = true;
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void SideHitted(string hittedSide, Collider enemyCollider)
     {
         if (canNewHit)
         {
-            if (isPlayer) CinemachineShake.Instance.ShakeCamera();
+            if (isPlayer)
+            {
+                CinemachineShake.Instance.ShakeCamera();
+                audioSource.Play();
+            }
 
             Bumper enemyBumper = GetParentElementFromDictionary(enemyCollider);// получили RB объекта, с которым ударились
 

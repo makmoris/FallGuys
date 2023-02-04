@@ -286,6 +286,9 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
 
     IEnumerator FillingAnimationWithoutText(float targetXPos)
     {
+        // старт музыка заполнения 
+        MusicManager.Instance.PlayFillingLeagueScaleMusic();
+
         yield return new WaitForSeconds(0.5f);
 
         float scaleStep = scaleFillingAnimationSpeed;
@@ -302,6 +305,9 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         cupsText.text = $"{currentCupsValue}";// на всякий, если не успеет
 
         cupsPlace.SetActive(true);
+
+        // стоп музыка заполнения 
+        MusicManager.Instance.PlayLobbyMusic();
     }
 
     private void OnDisable()

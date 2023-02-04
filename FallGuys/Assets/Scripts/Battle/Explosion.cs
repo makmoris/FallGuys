@@ -120,6 +120,8 @@ public class Explosion : Bonus
             {
                 mineActiveEffect.Simulate(1f, true, true);
                 mineActiveEffect.Play();
+
+                GetComponent<AudioSource>().Play();
             }
             
             if (mineCounter >= 2) ExplodeWithDelay();

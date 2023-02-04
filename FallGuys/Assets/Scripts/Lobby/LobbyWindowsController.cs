@@ -47,6 +47,9 @@ public class LobbyWindowsController : MonoBehaviour
             ShowLeagueProgressAnimationEvent?.Invoke(previousCupValue);
             showLeagueWindow = false;
         }
+
+        if (next.name == lobbySceneName) MusicManager.Instance.PlayLobbyMusic();
+        if(next.name.EndsWith("Arena")) MusicManager.Instance.PlayArenaMusic();
     }
 
     public void ShowLeagueWindowOnLobby()// вызывают кнопки win lose окон

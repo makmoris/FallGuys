@@ -15,6 +15,8 @@ public class VibrationManager : MonoBehaviour
     [SerializeField] private HapticTypes lowDamageVibrationType = HapticTypes.HeavyImpact;
     [SerializeField] private HapticTypes mediumDamageVibrationType = HapticTypes.Warning;
     [SerializeField] private HapticTypes largeDamageVibrationType = HapticTypes.Failure;
+    
+    private AudioSource audioSource;
 
     public static VibrationManager Instance { get; private set; }
 
@@ -30,6 +32,7 @@ public class VibrationManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        audioSource = GetComponent<AudioSource>();
         isMobile = Application.isMobilePlatform;
     }
 
@@ -51,6 +54,7 @@ public class VibrationManager : MonoBehaviour
                         if (button != null)
                         {
                             UIButtonsVibration();
+                            audioSource.Play();
                         }
                     }
                 }
@@ -68,6 +72,7 @@ public class VibrationManager : MonoBehaviour
                     if (button != null)
                     {
                         Debug.Log("UIButtonVibration");
+                        audioSource.Play();
                         //UIButtonsVibration();
                     }
                 }

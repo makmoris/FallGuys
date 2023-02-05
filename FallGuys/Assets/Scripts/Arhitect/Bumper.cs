@@ -4,6 +4,9 @@ using UnityEngine;
 public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обьекте нашего игрока будет висеть этот скрипт
 {
     private bool isPlayer;
+    private bool playerWasSetted;
+
+    private AudioListener playerAudioListener;
 
     public event Action<Bonus> OnBonusGot;
 
@@ -35,7 +38,10 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
                 {
                     if(other.GetComponent<DeadZone>() != null && enabled) // сделано, т.к. было по несколько вызовов
                     {
-                        if (isPlayer) SendPlayerFallsOutMapAnalyticEvent();
+                        if (isPlayer)
+                        {
+                            SendPlayerFallsOutMapAnalyticEvent();
+                        }
 
                         OnBonusGot?.Invoke(bonus);
                         bonus.Got();
@@ -111,14 +117,41 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
     {
         if (playerObj == gameObject) isPlayer = true;
         else isPlayer = false;
+
+        if (isPlayer)
+        {
+            playerAudioListener = GetComponent<AudioListener>();
+        }
+
+        playerWasSetted = true;
     }
 
     private void OnEnable()
     {
         Installer.IsCurrentPlayer += SetIsPlayer;
+
+        if (playerWasSetted)
+        {
+            //включаем листенер на тачке, отключаем на камере
+            if (isPlayer)
+            {
+                GameCameraAudioListenerController.Instance.DeactivateAudioListener();
+                playerAudioListener.enabled = true;
+            }
+        }
     }
     private void OnDisable()
     {
         Installer.IsCurrentPlayer -= SetIsPlayer;
+
+        if (playerWasSetted)
+        {
+            //отключаем листенер на тачке, включаем на камере
+            if (isPlayer)
+            {
+                GameCameraAudioListenerController.Instance.ActivateAudioListener();
+                playerAudioListener.enabled = false;
+            }
+        }
     }
 }

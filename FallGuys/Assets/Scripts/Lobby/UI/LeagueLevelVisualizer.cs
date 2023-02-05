@@ -8,7 +8,7 @@ public class LeagueLevelVisualizer : MonoBehaviour
 {
     [SerializeField] private List<Sprite> leagueIcons;
 
-    private int leaguLevel;
+    [SerializeField]private int leaguLevel;
     private Image _image;
 
     private void Awake()
@@ -18,7 +18,7 @@ public class LeagueLevelVisualizer : MonoBehaviour
 
     private void Start()
     {
-        
+        UpdateLeagueLevelValue(LeagueManager.Instance.GetCurrentLeagueLevel());
     }
 
     private void UpdateLeagueLevelValue(int value)

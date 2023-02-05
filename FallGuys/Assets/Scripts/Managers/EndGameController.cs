@@ -36,4 +36,9 @@ public class EndGameController : MonoBehaviour
             trn.gameObject.layer = 5;
         }
     }
+
+    public void EnabledAudioListener()
+    {
+        if (playerVehicleClone.GetComponent<AudioListener>() != null) playerVehicleClone.GetComponent<AudioListener>().enabled = true;
+    }
 }

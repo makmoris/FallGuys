@@ -22,6 +22,8 @@ public class LevelProgressController : MonoBehaviour
     [Header("Win/Lose")]
     [SerializeField] Camera gameCamera;
     [SerializeField] Camera endGameCamera;
+    [Header("End Game Controller")]
+    [SerializeField] private EndGameController endGameController;
     [Header("Win window")]
     [SerializeField] private float pauseBeforShowingWinWindow;
     [SerializeField] private GameObject winWindow;
@@ -53,6 +55,8 @@ public class LevelProgressController : MonoBehaviour
 
         if (!gameCamera.gameObject.activeSelf) gameCamera.gameObject.SetActive(true);
         if (endGameCamera.gameObject.activeSelf) endGameCamera.gameObject.SetActive(false);
+
+        GameCameraAudioListenerController.Instance.DeactivateAudioListener();// изначально листенер только на самом авто игрока, чтобы правильно слышать звуки
     }
 
 
@@ -114,11 +118,12 @@ public class LevelProgressController : MonoBehaviour
 
         if(deadPlayer == playerGO)
         {
+            GameCameraAudioListenerController.Instance.ActivateAudioListener();// включаем на игровой камере, чтобы услышать звук взрыва авто. Т.к. листенер на авто уничтожается
             // значит окно поражения. Игра закончена
             Debug.Log($"GameOver. Занял {numberOfPlayers + 1} место");
 
             DisabledAllChildElements();
-            CalculateReward(numberOfPlayers + 1, false);
+            CalculateReward(numberOfPlayers + 1);
             StartCoroutine(WaitAndShowLoseWindow());
             playerWasDead = true;
         }
@@ -128,7 +133,7 @@ public class LevelProgressController : MonoBehaviour
             Debug.Log($"Win. Занял {numberOfPlayers} место");
 
             DisabledAllChildElements();
-            CalculateReward(numberOfPlayers, true);
+            CalculateReward(numberOfPlayers);
             StartCoroutine(WaitAndShowWinWindow());
         }
 
@@ -156,30 +161,17 @@ public class LevelProgressController : MonoBehaviour
         }
     }
     
-    private void CalculateReward(int place, bool winner)
+    private void CalculateReward(int place)
     {
         playerFinishPlace = place;
 
-        if (winner)
-        {
-            amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsWinReward(place);
-            amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsWinReward(place);
+        amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsReward(place);
+        amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsReward(place);
 
-            Debug.Log($"Win Награда: Золото - {amountOfGoldReward}; Кубки - {amountOfCupReward}");
+        Debug.Log($"Награда: Золото - {amountOfGoldReward}; Кубки - {amountOfCupReward}");
 
-            CurrencyManager.Instance.AddGold(amountOfGoldReward);
-            CurrencyManager.Instance.AddCup(amountOfCupReward);
-        }
-        else
-        {
-            amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsLoseReward(place);
-            amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsLoseReward(place);
-
-            Debug.Log($"Lose Награда: Золото - {amountOfGoldReward}; Кубки - {amountOfCupReward}");
-
-            CurrencyManager.Instance.AddGold(amountOfGoldReward);
-            CurrencyManager.Instance.AddCup(amountOfCupReward);
-        }
+        CurrencyManager.Instance.AddGold(amountOfGoldReward);
+        CurrencyManager.Instance.AddCup(amountOfCupReward);
 
         if(place == 1)
         {
@@ -187,14 +179,6 @@ public class LevelProgressController : MonoBehaviour
         }
 
         BattleStatisticsManager.Instance.AddBattle();
-
-        //amountOfGoldReward += LeagueManager.Instance.ReceiveGoldsAsReward(place);
-        //amountOfCupReward += LeagueManager.Instance.ReceiveCupsAsReward(place);
-
-        //Debug.Log($"Награда: Золото - {amountOfGoldReward}; Кубки - {amountOfCupReward}");
-
-        //CurrencyManager.Instance.AddGold(amountOfGoldReward);
-        //CurrencyManager.Instance.AddCup(amountOfCupReward);
     }
     
     private void DisabledAllChildElements()
@@ -266,6 +250,9 @@ public class LevelProgressController : MonoBehaviour
         yield return new WaitForSeconds(pauseBeforShowingLoseWindow);
 
         gameCamera.gameObject.SetActive(false);
+        GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
+
+        endGameController.EnabledAudioListener();// подрубаем листенер на финишной тачке
         endGameCamera.gameObject.SetActive(true);
 
         SendBattleFinishAnalyticEvent();

@@ -36,10 +36,11 @@ public class Weapon : MonoBehaviour
 
 
     private Quaternion defaultWeaponRotation;
-    private bool canAttack = true;
-    private bool canAIAttack;
+    [SerializeField]private bool canAttack = true;
+    [SerializeField] private bool canAIAttack;
     private bool nextShot = true;
 
+    [SerializeField] private bool disableWeaponEvent;
 
     private void Awake()
     {
@@ -78,6 +79,12 @@ public class Weapon : MonoBehaviour
         ////defaultWeaponRotation = weaponTransform.localRotation;
     }
 
+    private void OnEnable()
+    {
+        PlayerEffector.EnableWeaponEvent += EnableWeapon;
+        PlayerEffector.DisableWeaponEvent += DisableWeapon;
+    }
+
     private void CreateExampleBullet()
     {
         bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, startBulletPosition.rotation, startBulletPosition);
@@ -105,20 +112,44 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    private void EnableWeapon(GameObject gameObj)
+    {
+        GameObject thisGO = parentBodyCollider.gameObject;
+
+        if (thisGO == gameObj && isAI)
+        {
+            disableWeaponEvent = false;
+        }
+        if (thisGO == gameObj && !isAI) canAttack = true;
+    }
+    private void DisableWeapon(GameObject gameObj)
+    {
+        GameObject thisGO = parentBodyCollider.gameObject;
+
+        if (thisGO == gameObj && isAI)
+        {
+            canAIAttack = false;
+            disableWeaponEvent = true;
+        }
+        if (thisGO == gameObj && !isAI) canAttack = false;
+
+        Debug.Log($"{thisGO.name} == {gameObj.name} = {thisGO == gameObj}");
+    }
+
     // два метода вызываются из TargetDetector при обнаружении цели
     public void SetObjectForAttack(Transform objForAttackTransform)
     {
         weaponTransform.LookAt(objForAttackTransform);
         target = objForAttackTransform;
         //canAttack = true;
-        canAIAttack = true;
+        if(!disableWeaponEvent) canAIAttack = true;
     }
 
     public void ReturnWeaponToPosition()
     {
         weaponTransform.localRotation = defaultWeaponRotation;
         //canAttack = false;
-        canAIAttack = false;
+        if (!disableWeaponEvent) canAIAttack = false;
     }
 
     private void SetDetectorScale()
@@ -172,5 +203,8 @@ public class Weapon : MonoBehaviour
     {
         nextShot = true;
         ShowBulletExample();
+
+        PlayerEffector.EnableWeaponEvent -= EnableWeapon;
+        PlayerEffector.DisableWeaponEvent -= DisableWeapon;
     }
 }

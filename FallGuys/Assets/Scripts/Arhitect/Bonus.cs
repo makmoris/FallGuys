@@ -4,7 +4,8 @@ public enum BonusType
 {
     AddHealth = 0,
     AddShield = 1,
-    AddGold = 2
+    AddGold = 2,
+    DisableWeapon = 3
     //AddSpeed = 2,
     //AddDamage = 3
 }

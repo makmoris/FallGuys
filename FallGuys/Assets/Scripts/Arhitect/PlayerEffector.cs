@@ -16,11 +16,16 @@ public class PlayerEffector
 
     private float defaultHealth;// дл€ вибрации
 
+    public static System.Action<GameObject> DisableWeaponEvent;
+    public static System.Action<GameObject> EnableWeaponEvent;
+    private Coroutine disableWeaponCoroutine = null;
+
     public PlayerEffector(IPlayer player, Bumper bumper, PlayerLimitsData limitsData, VisualIntermediary intermediary)
     {
         _player = player;
         _limitsData = limitsData;
         bumper.OnBonusGot += ApplyBonus;
+        bumper.OnBonusGotWithGameObject += ApplyBonus;
 
         _intermediary = intermediary;
         _intermediary.UpdateHealthInUI(_player.Health);
@@ -136,6 +141,34 @@ public class PlayerEffector
 
                 break;
         }
+    }
+
+    private void ApplyBonus(Bonus bonus, GameObject _gameObject)
+    {
+        switch (bonus.Type)
+        {
+            case BonusType.DisableWeapon:
+
+                if (!isShieldActive)
+                {
+                    if (disableWeaponCoroutine != null)
+                    {
+                        CoroutineRunner.Stop(disableWeaponCoroutine);
+                    }
+                    disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.Value, _gameObject));
+
+                    DisableWeaponEvent?.Invoke(_gameObject);// чтобы канвас провер€л, игрок это или нет. “.к. выводим только игроку на ui
+                }
+
+                break;
+        }
+    }
+
+    IEnumerator WaitAndEnableWeapon(float time, GameObject _gameObject)
+    {
+        yield return new WaitForSeconds(time);
+
+        EnableWeaponEvent?.Invoke(_gameObject);
     }
 
     IEnumerator ShieldActive(float time)

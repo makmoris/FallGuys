@@ -56,7 +56,7 @@ public class LevelProgressController : MonoBehaviour
         if (!gameCamera.gameObject.activeSelf) gameCamera.gameObject.SetActive(true);
         if (endGameCamera.gameObject.activeSelf) endGameCamera.gameObject.SetActive(false);
 
-        GameCameraAudioListenerController.Instance.DeactivateAudioListener();// изначально листенер только на самом авто игрока, чтобы правильно слышать звуки
+        //GameCameraAudioListenerController.Instance.DeactivateAudioListener();// изначально листенер только на самом авто игрока, чтобы правильно слышать звуки
     }
 
 

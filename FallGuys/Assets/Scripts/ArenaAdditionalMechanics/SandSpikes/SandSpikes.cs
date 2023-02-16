@@ -27,6 +27,8 @@ public class SandSpikes : Bonus
     private ParticleSystem spikesEffect;
     private CapsuleCollider spikesCollider;
 
+    private AudioSource audioSource;
+
     private void Awake()
     {
         appearancePlace.SetActive(false);
@@ -35,6 +37,8 @@ public class SandSpikes : Bonus
         spikesCollider = spikesEffectGO.GetComponent<CapsuleCollider>();
 
         spikesCollider.enabled = false;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -43,6 +47,11 @@ public class SandSpikes : Bonus
         {
             StartSpikesAppearance();
         }
+    }
+
+    public void StartSandSpikesAppearanceFromController(float waitTime)// вызывается контроллером
+    {
+        StartCoroutine(WaitAndStartSandSpikesAppearFromController(waitTime));
     }
 
     private void StartSpikesAppearance()
@@ -103,9 +112,18 @@ public class SandSpikes : Bonus
         collidersWithAttackPointers.RemoveRange(0, collidersWithAttackPointers.Count);
     }
 
+    IEnumerator WaitAndStartSandSpikesAppearFromController(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        StartSpikesAppearance();
+    }
+
     IEnumerator WaitAndSpikesAppear()
     {
         yield return new WaitForSeconds(timeBeforeAppearance);
+
+        audioSource.Play();
 
         appearancePlace.SetActive(false);
         spikesEffect.Play();
@@ -117,6 +135,9 @@ public class SandSpikes : Bonus
 
         yield return new WaitForSeconds(colliderTime - triggerTime);
         spikesCollider.enabled = false;
+
+        yield return new WaitForSeconds(1f); // для пула
+        gameObject.SetActive(false);
     }
 
     public override void Got()

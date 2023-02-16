@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SandSpikesMechanicsController : MonoBehaviour
+public class OilPuddleMechanicsController : MonoBehaviour
 {
     [Header("Pool")]
     [SerializeField] private int poolCount = 50;
     [SerializeField] private bool autoExpand = true;
-    [SerializeField] private SandSpikes sandSpikesPrefab;
+    [SerializeField] private OilPuddle oilPuddlePrefab;
 
-    private PoolMono<SandSpikes> sandSpikesPool;
+    private PoolMono<OilPuddle> oilPuddlePool;
 
     [Header("Mechanics Activation Time Interval")]
     [SerializeField] private int minRandomInterval = 10;
@@ -18,9 +18,9 @@ public class SandSpikesMechanicsController : MonoBehaviour
     [Header("Mechanics Deactivation Time")]
     [SerializeField] private float returnTimeToOriginal = 3f;
 
-    [Header("Sand Spikes Appearance Interval")]
+    [Header("Oil Drop Drop Interval")]
     [Range(0f, 2f)]
-    [SerializeField] private float SandSpikesRandomAppearanceInterval = 2f;
+    [SerializeField] private float OilDropRandomDropInterval = 2f;
 
     [Header("Spawn")]
     [SerializeField] private float spawnObjectRadius;
@@ -32,12 +32,11 @@ public class SandSpikesMechanicsController : MonoBehaviour
 
     private void Awake()
     {
-        sandSpikesPool = new PoolMono<SandSpikes>(sandSpikesPrefab, poolCount);
-        sandSpikesPool.autoExpand = autoExpand;
+        oilPuddlePool = new PoolMono<OilPuddle>(oilPuddlePrefab, poolCount);
+        oilPuddlePool.autoExpand = autoExpand;
 
         positionControllerForAdditionalMechanics.PreparePositions(spawnObjectRadius);
     }
-
     private void Start()
     {
         StartCoroutine(WaitAndActivateMechanic());
@@ -54,11 +53,11 @@ public class SandSpikesMechanicsController : MonoBehaviour
 
         foreach (var position in spawnPositions)
         {
-            var sandSpikes = sandSpikesPool.GetFreeElement();
-            sandSpikes.transform.position = position;
+            var oilPuddle = oilPuddlePool.GetFreeElement();
+            oilPuddle.transform.position = position;
 
-            float randomInterval = Random.Range(0f, SandSpikesRandomAppearanceInterval);
-            sandSpikes.StartSandSpikesAppearanceFromController(randomInterval);
+            float randomInterval = Random.Range(0f, OilDropRandomDropInterval);
+            oilPuddle.StartOilPuddleAppearanceFromController(randomInterval);
         }
 
         yield return new WaitForSeconds(returnTimeToOriginal);

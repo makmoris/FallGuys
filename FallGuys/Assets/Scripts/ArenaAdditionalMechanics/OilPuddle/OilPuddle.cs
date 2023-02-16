@@ -40,6 +40,11 @@ public class OilPuddle : Bonus
         }
     }
 
+    public void StartOilPuddleAppearanceFromController(float waitTime)// вызывается контроллером
+    {
+        StartCoroutine(WaitAndStartOilPuddleAppearanceFromController(waitTime));
+    }
+
     public void MakeDamage(GameObject damagableObject)
     {
         Bumper bumper = damagableObject.GetComponent<Bumper>();
@@ -102,6 +107,12 @@ public class OilPuddle : Bonus
         }
     }
 
+    IEnumerator WaitAndStartOilPuddleAppearanceFromController(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        StartOilPuddleAppearance();
+    }
     IEnumerator PuddleMakingAnimation()
     {
         currentPuddle.SetActive(true);
@@ -122,6 +133,8 @@ public class OilPuddle : Bonus
         }
 
         currentPuddle.SetActive(false);
+
+        gameObject.SetActive(false);
     }
 
     public override void Got()

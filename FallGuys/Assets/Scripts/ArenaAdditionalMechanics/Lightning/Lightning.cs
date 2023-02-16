@@ -34,6 +34,11 @@ public class Lightning : Bonus
         }
     }
 
+    public void StartLightningStrike(float waitTime)// вызывается контроллером
+    {
+        StartCoroutine(WaitAndStartLightning(waitTime));
+    }
+
     public void MakeDamage(GameObject damagableObj)
     {
         Bumper bumper = damagableObj.GetComponent<Bumper>();
@@ -54,6 +59,13 @@ public class Lightning : Bonus
         appearancePlace.SetActive(true);
 
         StartCoroutine(WaitAndStrike());
+    }
+
+    IEnumerator WaitAndStartLightning(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        LightningStrike();
     }
 
     IEnumerator WaitAndStrike()

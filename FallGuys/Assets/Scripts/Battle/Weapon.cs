@@ -132,8 +132,6 @@ public class Weapon : MonoBehaviour
             disableWeaponEvent = true;
         }
         if (thisGO == gameObj && !isAI) canAttack = false;
-
-        Debug.Log($"{thisGO.name} == {gameObj.name} = {thisGO == gameObj}");
     }
 
     // два метода вызываются из TargetDetector при обнаружении цели

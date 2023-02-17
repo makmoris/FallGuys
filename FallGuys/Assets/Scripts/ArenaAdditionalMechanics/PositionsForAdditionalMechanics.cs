@@ -70,7 +70,7 @@ public class PositionsForAdditionalMechanics : MonoBehaviour
                     zPos = plusZ + spawnStepZ * z;
                 }
 
-                allPositionsList.Add(new Vector3(xPos, 0f, zPos));
+                allPositionsList.Add(new Vector3(xPos, center.y, zPos));
             }
         }
 
@@ -87,7 +87,7 @@ public class PositionsForAdditionalMechanics : MonoBehaviour
 
         float centerX = transform.position.x;
         float centerZ = transform.position.z;
-        center = new Vector3(centerX, 0f, centerZ);
+        center = new Vector3(centerX, transform.position.y, centerZ);
 
         minusX = centerX - (widthX / 2f) + objectSize / 2f;
         plusX = centerX + (widthX / 2f) + objectSize / 2f;

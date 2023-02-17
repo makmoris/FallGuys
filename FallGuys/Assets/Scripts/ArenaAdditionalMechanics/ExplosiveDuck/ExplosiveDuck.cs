@@ -20,20 +20,25 @@ public class ExplosiveDuck : Bonus
     public ForceMode forceMode = ForceMode.VelocityChange;
     
     [Header("Throwing")]
-    [SerializeField] private float throwForce;
-
-    [SerializeField] private float timeToExplosion;
+    [SerializeField] private int minThrowForce = 20;
+    [SerializeField] private int maxThrowForce = 50;
+    [Space]
+    [SerializeField] private float minTimeToExplosion = 2f;
+    [SerializeField] private float maxTimeToExplosion = 4f;
 
     private Rigidbody _rb;
     private Renderer _renderer;
     private Color startColor;
     [Space]
-    [SerializeField] private float colorChangeTime;
+    [SerializeField] private float colorChangeTime = 1f;
     [SerializeField] private Color explosionColor;
 
     [Space]
     [SerializeField] private GameObject explosionEffect;
     [SerializeField] private GameObject duck;
+
+    private Vector3 startDuckLocalPosition;
+    private Quaternion startDuckLocalRotation;
 
     private void Awake()
     {
@@ -44,6 +49,9 @@ public class ExplosiveDuck : Bonus
         startColor = _renderer.material.GetColor("_Color");
 
         _rb.isKinematic = true;
+
+        startDuckLocalPosition = duck.transform.localPosition;
+        startDuckLocalRotation = duck.transform.localRotation;
     }
 
     private void Update()
@@ -54,12 +62,23 @@ public class ExplosiveDuck : Bonus
         }
     }
 
+    public void StartThrowingDuck(float waitTime)// вызывается контроллером
+    {
+        StartCoroutine(WaitAndStartThrowingDuck(waitTime));
+    }
+
     private void ThrowDuck()
     {
-        _rb.isKinematic = false;
-        _rb.AddRelativeForce(-Vector3.forward * throwForce, ForceMode.VelocityChange);
+        gameObject.SetActive(true);
 
-        StartCoroutine(StartExplosion());
+        _rb.isKinematic = false;
+
+        int randomThrowForce = Random.Range(minThrowForce, maxThrowForce + 1);
+
+        _rb.AddRelativeForce(-Vector3.forward * randomThrowForce, ForceMode.VelocityChange);
+
+        float timeToExplosion = Random.Range(minTimeToExplosion, maxTimeToExplosion);
+        StartCoroutine(StartExplosion(timeToExplosion));
     }
 
     private void Explode()
@@ -109,10 +128,22 @@ public class ExplosiveDuck : Bonus
 
         Instantiate(explosionEffect, duck.transform.position, Quaternion.identity);
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+
+        duck.transform.localPosition = startDuckLocalPosition;
+        duck.transform.localRotation = startDuckLocalRotation;
+        _renderer.material.SetColor("_Color", startColor);
+        _rb.isKinematic = true;
     }
 
-    public IEnumerator StartExplosion()
+    IEnumerator WaitAndStartThrowingDuck(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        ThrowDuck();
+    }
+
+    public IEnumerator StartExplosion(float timeToExplosion)
     {
         yield return new WaitForSeconds(timeToExplosion);
 

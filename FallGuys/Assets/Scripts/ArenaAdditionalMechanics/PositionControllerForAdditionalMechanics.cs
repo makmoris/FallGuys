@@ -14,6 +14,8 @@ public class PositionControllerForAdditionalMechanics : MonoBehaviour
 
     private List<PositionsForAdditionalMechanics> positionsForAdditionalMechanicsList = new List<PositionsForAdditionalMechanics>();
 
+    private bool allPositionsFound;
+
     //private void Awake()
     //{
     //    FillPositionsForAdditionalMechanicsList();
@@ -32,7 +34,7 @@ public class PositionControllerForAdditionalMechanics : MonoBehaviour
     public List<Vector3> GetRandomSpawnPositions(int percentageOfPositions)
     {
         var _spawnPosList = allSpawnPositions.GetRange(0, allSpawnPositions.Count);
-
+        
         for (int i = 0; i < _spawnPosList.Count; i++)
         {
             var temp = _spawnPosList[i];
@@ -62,7 +64,7 @@ public class PositionControllerForAdditionalMechanics : MonoBehaviour
 
             _spawnPosList.RemoveAt(randIndex);
         }
-
+        
         return newRandomPositionsList;
     }
 
@@ -73,6 +75,8 @@ public class PositionControllerForAdditionalMechanics : MonoBehaviour
             List<Vector3> positionsList = item.GetPositions(spawnObjectSize);
             allSpawnPositions.AddRange(positionsList);
         }
+        
+        allPositionsFound = true;
     }
 
     private void FillPositionsForAdditionalMechanicsList()

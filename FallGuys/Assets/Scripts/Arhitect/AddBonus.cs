@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -33,9 +34,26 @@ public class AddBonus : Bonus
     [Space]
     [SerializeField] private ParticleSystem goldEffect;
 
+    List<BonusType> bonuses = new List<BonusType>();
+
     private void Awake()
     {
         enumLength = Enum.GetNames(typeof(BonusType)).Length;
+
+        FillBonusesList();
+    }
+
+    private void FillBonusesList()
+    {
+        for (int i = 0; i < enumLength; i++)
+        {
+            BonusType bonusType = (BonusType)Enum.GetValues(typeof(BonusType)).GetValue(i);
+
+            if (bonusType != BonusType.DisableWeapon)
+            {
+                bonuses.Add(bonusType);
+            }
+        }
     }
 
     private void OnEnable()
@@ -46,8 +64,9 @@ public class AddBonus : Bonus
 
     private BonusType GetRandomBonus()
     {
-        int rand = Random.Range(0, enumLength);
-        BonusType bonusType = (BonusType)Enum.GetValues(typeof(BonusType)).GetValue(rand);
+        int rand = Random.Range(0, bonuses.Count);
+
+        BonusType bonusType = bonuses[rand];
 
         return bonusType;
     }

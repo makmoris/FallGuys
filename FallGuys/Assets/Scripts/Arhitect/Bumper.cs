@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обьекте нашего игрока будет висеть этот скрипт
 {
@@ -9,6 +10,9 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     private AudioListener playerAudioListener;
 
     public event Action<Bonus> OnBonusGot;
+    public event Action<Bonus, GameObject> OnBonusGotWithGameObject;
+
+    private Coroutine oilPuddleCoroutine = null;
 
     private void Start()
     {
@@ -68,10 +72,45 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
 
     public void GetBonus(Bonus bonus)// вызывается взрывом без коллайдера
     {
-        Debug.Log($"Public GetBonus - {bonus.Type}");
+        Debug.Log($"Public GetBonus - {bonus.Type}; {gameObject.name}");
         OnBonusGot?.Invoke(bonus);
         bonus.Got();
     }
+
+    public void GetBonus(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера
+    {
+        Debug.Log($"Public GetBonus - {bonus.Type}; {gameObject.name}");
+        OnBonusGotWithGameObject?.Invoke(bonus, _gameObject);
+        bonus.Got();
+    }
+
+    #region OilPuddle
+    public void GetBonusFromOilPuddle(Bonus bonus, float damageInterval)// вызывается при въезде в лужу из OilPuddle
+    {
+        OnBonusGot?.Invoke(bonus);
+        bonus.Got();
+
+        oilPuddleCoroutine = StartCoroutine(WaitAndGetBonusFromOilPuddle(bonus, damageInterval));
+    }
+
+    IEnumerator WaitAndGetBonusFromOilPuddle(Bonus bonus , float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        OnBonusGot?.Invoke(bonus);
+        bonus.Got();
+
+        oilPuddleCoroutine = StartCoroutine(WaitAndGetBonusFromOilPuddle(bonus, time));
+    }
+
+    public void StopOilPuddleCoroutine()// вызывается при выходе из лужи из OilPuddle
+    {
+        if (oilPuddleCoroutine != null)
+        {
+            StopCoroutine(oilPuddleCoroutine);
+        }
+    }
+    #endregion
 
     private void SendPlayerPickMysteryBoxAnalyticEvent()
     {

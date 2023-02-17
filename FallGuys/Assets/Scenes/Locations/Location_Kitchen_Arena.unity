@@ -123,103 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &3659090
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3659091}
-  - component: {fileID: 3659094}
-  - component: {fileID: 3659093}
-  - component: {fileID: 3659092}
-  m_Layer: 0
-  m_Name: PositionsForAdditionalMechanics
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3659091
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3659090}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3913, y: 0, z: -1.0916}
-  m_LocalScale: {x: 69.676476, y: 5, z: 91.383026}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 674210007}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3659092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3659090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2037e0cae0391134cb8bf1a7f9a66c7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allPositionsList: []
---- !u!23 &3659093
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3659090}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d7c952dd575d167419cb68ab18dcbf97, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &3659094
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3659090}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!108 &185076869 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 6292116640619049186, guid: a17f0dfab68826e488a4db5560535276, type: 3}
@@ -296,53 +199,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7548085799337146402, guid: a17f0dfab68826e488a4db5560535276, type: 3}
   m_PrefabInstance: {fileID: 349114407}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &674210006
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 674210007}
-  - component: {fileID: 674210008}
-  m_Layer: 0
-  m_Name: PositionControllerForAdditionalMechanics
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &674210007
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 674210006}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3659091}
-  m_Father: {fileID: 6292116640769522793}
-  m_RootOrder: 21
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &674210008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 674210006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a52b5b5f650a34e438d8305037aa222d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  randomShiftInPosition: 0.5
-  allSpawnPositions: []
 --- !u!1001 &1391560013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -414,60 +270,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7548085799337146402, guid: a17f0dfab68826e488a4db5560535276, type: 3}
   m_PrefabInstance: {fileID: 1391560013}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1546119017
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1546119018}
-  - component: {fileID: 1546119019}
-  m_Layer: 0
-  m_Name: OilPuddleMechanicsController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1546119018
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1546119017}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6292116640769522793}
-  m_RootOrder: 20
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1546119019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1546119017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a4c7634d5555ad43afb2d8a4c826580, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolCount: 50
-  autoExpand: 1
-  oilPuddlePrefab: {fileID: 8380735225065060061, guid: 50bc1aec2b352114a93f06faf3a7735a, type: 3}
-  minRandomInterval: 10
-  maxRandomInterval: 20
-  returnTimeToOriginal: 14
-  OilDropRandomDropInterval: 2
-  spawnObjectRadius: 8
-  percentageOfSpawnPositions: 25
-  positionControllerForAdditionalMechanics: {fileID: 674210008}
 --- !u!1 &2000775063
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,7 +341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4206763207813243247, guid: a17f0dfab68826e488a4db5560535276, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6292116639291997928, guid: a17f0dfab68826e488a4db5560535276, type: 3}
       propertyPath: m_IsActive
@@ -551,11 +353,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6292116639291997943, guid: a17f0dfab68826e488a4db5560535276, type: 3}
       propertyPath: startFromLobby
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6292116639291997943, guid: a17f0dfab68826e488a4db5560535276, type: 3}
       propertyPath: _enemiesSettings.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7548085799337146402, guid: a17f0dfab68826e488a4db5560535276, type: 3}
       propertyPath: m_RootOrder

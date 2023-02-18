@@ -37,6 +37,11 @@ public class MusicManager : MonoBehaviour
         _audioSource.Play();
     }
 
+    public void StopMusicPlaying()
+    {
+        _audioSource.Stop();
+    }
+
     public void PlayLobbyMusic()
     {
         PlayerMusic(lobbyMusic);

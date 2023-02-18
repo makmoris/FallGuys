@@ -64,12 +64,14 @@ public class ExplosiveDuck : Bonus
 
     public void StartThrowingDuck(float waitTime)// вызывается контроллером
     {
+        duck.SetActive(false);
         StartCoroutine(WaitAndStartThrowingDuck(waitTime));
     }
 
     private void ThrowDuck()
     {
         gameObject.SetActive(true);
+        duck.SetActive(true);
 
         _rb.isKinematic = false;
 

@@ -232,8 +232,13 @@ public class LevelProgressController : MonoBehaviour
         yield return new WaitForSeconds(pauseBeforShowingWinWindow);
 
         gameCamera.gameObject.SetActive(false);
+        GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
+
+        endGameController.EnabledAudioListener();// подрубаем листенер на финишной тачке
         endGameCamera.gameObject.SetActive(true);
         playerGO.SetActive(false);
+
+        MusicManager.Instance.StopMusicPlaying();
 
         SendBattleFinishAnalyticEvent();
     }
@@ -254,6 +259,8 @@ public class LevelProgressController : MonoBehaviour
 
         endGameController.EnabledAudioListener();// подрубаем листенер на финишной тачке
         endGameCamera.gameObject.SetActive(true);
+
+        MusicManager.Instance.StopMusicPlaying();
 
         SendBattleFinishAnalyticEvent();
     }

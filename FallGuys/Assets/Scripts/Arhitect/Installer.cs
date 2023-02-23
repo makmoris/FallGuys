@@ -75,7 +75,7 @@ public class Installer : MonoBehaviour
         _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
         _playerObj.transform.rotation = targetsController.GetStartSpawnPosition(0).rotation;
 
-        var playerEffector = new PlayerEffector(_player, _playerBumper, _playerLimitsData, _playerVisualIntermediary);
+        var playerEffector = new PlayerEffector(true, _player, _playerBumper, _playerLimitsData, _playerVisualIntermediary);
 
         GameObject playerObjectClone = Instantiate(_playerObj);
         endGameController.SetPlayerObjectClone(playerObjectClone);
@@ -105,7 +105,7 @@ public class Installer : MonoBehaviour
             _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
             _enemyObj.transform.rotation = targetsController.GetStartSpawnPosition(i + 1).rotation;
 
-            var enemyPlayerEffector = new PlayerEffector(_enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyVisualIntermediary);
+            var enemyPlayerEffector = new PlayerEffector(false, _enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyVisualIntermediary);
         }
         
         _gameController = new GameController(_player, enemies);

@@ -12,10 +12,12 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public event Action<Bonus> OnBonusGot;
     public event Action<Bonus, GameObject> OnBonusGotWithGameObject;
 
+    public static event Action PlayerSlowedEvent;
+    public static event Action PlayerStoppedSlowingEvent;
     private Coroutine oilPuddleCoroutine = null;
 
-    public static Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
-    public static Action<int> BonusBoxGiveHPEvent;
+    public static event Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
+    public static event Action<int> BonusBoxGiveHPEvent;
 
     private void Start()
     {
@@ -62,7 +64,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                         SendPlayerPickMysteryBoxAnalyticEvent();
                         VibrationManager.Instance.BonusBoxVibration();
 
-                        if (bonus.Type == BonusType.AddGold)
+                        if (bonus.Type == BonusType.AddGold)// здесь, т.к. знаем, что это игрок подобрал бокс
                         {
                             BonusBoxGiveGoldEvent?.Invoke((int)bonus.Value);
                         }
@@ -90,7 +92,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         bonus.Got();
     }
 
-    public void GetBonus(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера
+    public void GetBonus(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера. Для молнии
     {
         Debug.Log($"Public GetBonus - {bonus.Type}; {gameObject.name}");
         OnBonusGotWithGameObject?.Invoke(bonus, _gameObject);
@@ -104,6 +106,12 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         bonus.Got();
 
         oilPuddleCoroutine = StartCoroutine(WaitAndGetBonusFromOilPuddle(bonus, damageInterval));
+
+        if(isPlayer)
+        {
+            // нотификация
+            PlayerSlowedEvent?.Invoke();
+        }
     }
 
     IEnumerator WaitAndGetBonusFromOilPuddle(Bonus bonus , float time)
@@ -121,6 +129,12 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         if (oilPuddleCoroutine != null)
         {
             StopCoroutine(oilPuddleCoroutine);
+
+            if (isPlayer)
+            {
+                // нотификация стоп
+                PlayerStoppedSlowingEvent?.Invoke();
+            }
         }
     }
     #endregion

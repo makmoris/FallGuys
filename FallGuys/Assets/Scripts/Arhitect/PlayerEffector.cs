@@ -16,11 +16,14 @@ public class PlayerEffector
 
     private float defaultHealth;// для вибрации
 
-    public static System.Action<GameObject, float> DisableWeaponEvent;
-    public static System.Action<GameObject> EnableWeaponEvent;
+    public static event System.Action<GameObject, float> DisableWeaponEvent;
+    public static event System.Action<GameObject> EnableWeaponEvent;
     private Coroutine disableWeaponCoroutine = null;
 
-    public PlayerEffector(IPlayer player, Bumper bumper, PlayerLimitsData limitsData, VisualIntermediary intermediary)
+    public static event System.Action EnableShieldEvent;
+    public static event System.Action DisableShieldEvent;
+
+    public PlayerEffector(bool isCurrentPlayer, IPlayer player, Bumper bumper, PlayerLimitsData limitsData, VisualIntermediary intermediary)
     {
         _player = player;
         _limitsData = limitsData;
@@ -30,7 +33,7 @@ public class PlayerEffector
         _intermediary = intermediary;
         _intermediary.UpdateHealthInUI(_player.Health);
 
-        if (bumper.GetComponent<CarDriverAI>() != null) isBot = true;
+        if (!isCurrentPlayer) isBot = true;
 
         defaultHealth = _player.Health;
     }
@@ -158,7 +161,8 @@ public class PlayerEffector
                         CoroutineRunner.Stop(disableWeaponCoroutine);
                     }
                     disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.Value, _gameObject));
-
+                    // здесь через gameObject потому что это событие не только для нотификации, но еще и для отключения на всех 
+                    // если сделать только Игроку, то боты не будут знать, что им нужно отключить пушку
                     DisableWeaponEvent?.Invoke(_gameObject, bonus.Value);// чтобы канвас проверял, игрок это или нет. Т.к. выводим только игроку на ui
                 }
 
@@ -175,6 +179,12 @@ public class PlayerEffector
 
     IEnumerator ShieldActive(float time)
     {
+        if (!isBot)
+        {
+            // notification
+            EnableShieldEvent?.Invoke();
+        }
+
         isShieldActive = true;
         _intermediary.ShowShield(time);
         Debug.Log("Щит активирован");
@@ -182,6 +192,12 @@ public class PlayerEffector
         isShieldActive = false;
         _intermediary.HideShield();
         Debug.Log("Щит отключен");
+
+        if (!isBot)
+        {
+            // stop notification
+            DisableShieldEvent?.Invoke();
+        }
     }
 
     private IEnumerator Timer(float time)

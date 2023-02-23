@@ -122,7 +122,7 @@ public class Weapon : MonoBehaviour
         }
         if (thisGO == gameObj && !isAI) canAttack = true;
     }
-    private void DisableWeapon(GameObject gameObj)
+    private void DisableWeapon(GameObject gameObj, float disableTime)
     {
         GameObject thisGO = parentBodyCollider.gameObject;
 

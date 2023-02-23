@@ -16,7 +16,7 @@ public class PlayerEffector
 
     private float defaultHealth;// дл€ вибрации
 
-    public static System.Action<GameObject> DisableWeaponEvent;
+    public static System.Action<GameObject, float> DisableWeaponEvent;
     public static System.Action<GameObject> EnableWeaponEvent;
     private Coroutine disableWeaponCoroutine = null;
 
@@ -159,7 +159,7 @@ public class PlayerEffector
                     }
                     disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.Value, _gameObject));
 
-                    DisableWeaponEvent?.Invoke(_gameObject);// чтобы канвас провер€л, игрок это или нет. “.к. выводим только игроку на ui
+                    DisableWeaponEvent?.Invoke(_gameObject, bonus.Value);// чтобы канвас провер€л, игрок это или нет. “.к. выводим только игроку на ui
                 }
 
                 break;
@@ -169,7 +169,7 @@ public class PlayerEffector
     IEnumerator WaitAndEnableWeapon(float time, GameObject _gameObject)
     {
         yield return new WaitForSeconds(time);
-
+        
         EnableWeaponEvent?.Invoke(_gameObject);
     }
 

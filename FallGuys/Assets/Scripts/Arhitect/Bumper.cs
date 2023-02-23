@@ -14,6 +14,9 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
 
     private Coroutine oilPuddleCoroutine = null;
 
+    public static Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
+    public static Action<int> BonusBoxGiveHPEvent;
+
     private void Start()
     {
         // для работы enabled = true/false
@@ -58,12 +61,22 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                     {
                         SendPlayerPickMysteryBoxAnalyticEvent();
                         VibrationManager.Instance.BonusBoxVibration();
+
+                        if (bonus.Type == BonusType.AddGold)
+                        {
+                            BonusBoxGiveGoldEvent?.Invoke((int)bonus.Value);
+                        }
+                        if (bonus.Type == BonusType.AddHealth)
+                        {
+                            BonusBoxGiveHPEvent?.Invoke((int)bonus.Value);
+                        }
                     }
 
                     if (enabled)
                     {
                         OnBonusGot?.Invoke(bonus);
                         bonus.Got();
+                        Debug.Log($"TEST {bonus.Type}");
                     }
                 }
             }

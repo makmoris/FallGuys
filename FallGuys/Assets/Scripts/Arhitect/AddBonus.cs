@@ -36,6 +36,7 @@ public class AddBonus : Bonus
 
     List<BonusType> bonuses = new List<BonusType>();
 
+
     private void Awake()
     {
         enumLength = Enum.GetNames(typeof(BonusType)).Length;

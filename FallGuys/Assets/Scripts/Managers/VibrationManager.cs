@@ -15,8 +15,10 @@ public class VibrationManager : MonoBehaviour
     [SerializeField] private HapticTypes lowDamageVibrationType = HapticTypes.HeavyImpact;
     [SerializeField] private HapticTypes mediumDamageVibrationType = HapticTypes.Warning;
     [SerializeField] private HapticTypes largeDamageVibrationType = HapticTypes.Failure;
-    
-    private AudioSource audioSource;
+
+    private bool vibrationEnabled;
+
+    private string  vibrationKey = "VibrationEnabled";
 
     public static VibrationManager Instance { get; private set; }
 
@@ -32,8 +34,20 @@ public class VibrationManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        audioSource = GetComponent<AudioSource>();
         isMobile = Application.isMobilePlatform;
+
+        Load();
+    }
+
+    public bool GetVibrationEnabledState()
+    {
+        return vibrationEnabled;
+    }
+
+    public void ToogleVibration(bool enable)
+    {
+        vibrationEnabled = enable;
+        Save();
     }
 
     private void Update()
@@ -53,8 +67,21 @@ public class VibrationManager : MonoBehaviour
                         Button button = currentObj.GetComponent<Button>();
                         if (button != null)
                         {
-                            UIButtonsVibration();
-                            audioSource.Play();
+                            if (button.gameObject.name == "VibrationButton")
+                            {
+                                if (vibrationEnabled)
+                                {
+                                    ToogleVibration(false);
+                                }
+                                else
+                                {
+                                    ToogleVibration(true);
+                                }
+                            }
+
+                            if (vibrationEnabled) UIButtonsVibration();
+
+                            MusicManager.Instance.PlayUIButtonSounds(button);
                         }
                     }
                 }
@@ -71,8 +98,21 @@ public class VibrationManager : MonoBehaviour
                     Button button = currentObj.GetComponent<Button>();
                     if (button != null)
                     {
-                        Debug.Log("UIButtonVibration");
-                        audioSource.Play();
+                        if (button.gameObject.name == "VibrationButton")
+                        {
+                            if (vibrationEnabled)
+                            {
+                                ToogleVibration(false);
+                            }
+                            else
+                            {
+                                ToogleVibration(true);
+                            }
+                        }
+
+                        if(vibrationEnabled) Debug.Log("UIButtonVibration");
+
+                        MusicManager.Instance.PlayUIButtonSounds(button);
                         //UIButtonsVibration();
                     }
                 }
@@ -83,29 +123,46 @@ public class VibrationManager : MonoBehaviour
     public void LowDamageVibration()
     {
         Debug.Log("LowDamageVibration");
-        MMVibrationManager.Haptic(bonusBoxVibrationType, false, true, this);
+        if (vibrationEnabled) MMVibrationManager.Haptic(bonusBoxVibrationType, false, true, this);
     }
 
     public void MediumDamageVibration()
     {
         Debug.Log("MediumDamageVibration");
-        MMVibrationManager.Haptic(bonusBoxVibrationType, false, true, this);
+        if (vibrationEnabled) MMVibrationManager.Haptic(bonusBoxVibrationType, false, true, this);
     }
 
     public void LargeDamageVibration()
     {
         Debug.Log("LargeDamageVibration");
-        MMVibrationManager.Haptic(bonusBoxVibrationType, false, true, this);
+        if (vibrationEnabled) MMVibrationManager.Haptic(bonusBoxVibrationType, false, true, this);
     }
 
     public void BonusBoxVibration()
     {
         Debug.Log("BonusBoxVibration");
-        MMVibrationManager.Haptic(bonusBoxVibrationType, false, true, this);
+        if (vibrationEnabled) MMVibrationManager.Haptic(bonusBoxVibrationType, false, true, this);
     }
 
     private void UIButtonsVibration()
     {
-        MMVibrationManager.Haptic(uIButtonsVibrationType, false, true, this);
+        if (vibrationEnabled) MMVibrationManager.Haptic(uIButtonsVibrationType, false, true, this);
+    }
+
+    private void Load()
+    {
+        int vibrationValue = PlayerPrefs.GetInt(vibrationKey, 1);
+
+        if (vibrationValue == 0) vibrationEnabled = false;
+        else vibrationEnabled = true;
+    }
+    private void Save()
+    {
+        int vibrationValue;
+
+        if (vibrationEnabled) vibrationValue = 1;
+        else vibrationValue = 0;
+
+        PlayerPrefs.SetInt(vibrationKey, vibrationValue);
     }
 }

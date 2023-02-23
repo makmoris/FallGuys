@@ -22,7 +22,7 @@ public class GameCameraAudioListenerController : MonoBehaviour
 
     public void ActivateAudioListener()
     {
-        audioListener.enabled = true;
+        if(audioListener != null) audioListener.enabled = true;
     }
 
     public void DeactivateAudioListener()

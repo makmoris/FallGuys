@@ -43,6 +43,8 @@ public class PlayerEffector
 
     private void ApplyBonus(Bonus bonus)
     {
+        Debug.Log($"PLAYER EFFECTOR {bonus.Type}");
+
         switch (bonus.Type)
         {
             case BonusType.AddHealth:

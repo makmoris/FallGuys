@@ -8,9 +8,14 @@ public class AttackTargetDetector : MonoBehaviour
     private bool isAI;
     private CarDriverAI driverAI;
 
-    private void Start()
+
+    private void Awake()
     {
         driverAI = transform.GetComponentInParent<CarDriverAI>();
+    }
+    private void Start()
+    {
+        //driverAI = transform.GetComponentInParent<CarDriverAI>();
     }
 
     private void OnTriggerEnter(Collider other)

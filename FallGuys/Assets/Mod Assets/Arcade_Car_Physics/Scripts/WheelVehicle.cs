@@ -226,6 +226,7 @@ namespace VehicleBehaviour {
         [SerializeField]private int immobilityValue;// сколько игрок провел в неподвижном состоянии
         [SerializeField] private int immobilityValue2;
         [SerializeField] private int immobilityValue3;
+        [SerializeField] private int immobilityValueOnlyForBot;
         private Vector3 previousPosition;
 
         void Start() {
@@ -317,6 +318,19 @@ namespace VehicleBehaviour {
             {
                 steering = turnInputCurve.Evaluate(steering) * steerAngle;
 
+                if (throttle != 0 && Mathf.RoundToInt(speed) == 0)
+                {
+                    //Debug.Log("Газует бот, но застрял");
+                    immobilityValueOnlyForBot++;
+
+                    if (immobilityValueOnlyForBot >= 100)
+                    {
+                        immobilityValueOnlyForBot = 0;
+                        transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                        transform.position = GetAppearPosition();
+                    }
+                }
+                else immobilityValueOnlyForBot = 0;
             }
 
             // Direction

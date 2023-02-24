@@ -212,7 +212,7 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
 
         if (playerWasSetted)
         {
-            //отключаем листенер на тачке, включаем на камере
+            //отключаем листенер на тачке, включаем на камере, чтобы проиграть взрыв игрока
             if (isPlayer)
             {
                 GameCameraAudioListenerController.Instance.ActivateAudioListener();

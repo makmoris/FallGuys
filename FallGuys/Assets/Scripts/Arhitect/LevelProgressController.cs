@@ -238,7 +238,9 @@ public class LevelProgressController : MonoBehaviour
         endGameCamera.gameObject.SetActive(true);
         playerGO.SetActive(false);
 
-        MusicManager.Instance.StopMusicPlaying();
+        //MusicManager.Instance.StopMusicPlaying();
+        MusicManager.Instance.StopSoundsPlayingInWinLose();
+        MusicManager.Instance.PlayWinMusic();
 
         SendBattleFinishAnalyticEvent();
     }
@@ -261,6 +263,7 @@ public class LevelProgressController : MonoBehaviour
         endGameCamera.gameObject.SetActive(true);
 
         MusicManager.Instance.StopMusicPlaying();
+        MusicManager.Instance.StopSoundsPlayingInWinLose();
 
         SendBattleFinishAnalyticEvent();
     }

@@ -8,10 +8,16 @@ public class MusicManager : MonoBehaviour
 {
     // Для БГ Лобби, БГ Арена, Поиск карты, Заполнение шкалы лиги
     // для остальных локально на том объекте, который издает этот звук
+    [Header("Music")]
     [SerializeField] private AudioClip lobbyMusic;
     [SerializeField] private AudioClip arenaMusic;
     [SerializeField] private AudioClip arenaMapSearchMusic;
     [SerializeField] private AudioClip fillingLeagueScaleMusic;
+    [SerializeField] private AudioClip winMusic;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip buttonPressSound;
+    [SerializeField] private AudioClip applyButtonPressSound;
 
     [Space]
     [SerializeField] private AudioSource musicAudioSource;
@@ -27,6 +33,8 @@ public class MusicManager : MonoBehaviour
     [SerializeField]private bool soundsEnabled;
 
     private bool loadingComplete;
+
+    private float previousSoundsValueForWinLose;
 
     public static MusicManager Instance { get; private set; }
 
@@ -129,14 +137,32 @@ public class MusicManager : MonoBehaviour
             else ToggleSounds(true);
         }
 
+        if (_button.gameObject.name == "ApplyButton")
+        {
+            soundsAudioSource.clip = applyButtonPressSound;
+        }
+        else if (soundsAudioSource.clip != buttonPressSound) soundsAudioSource.clip = buttonPressSound;
+
         soundsAudioSource.Play();
     }
 
-    private void PlayMusic(AudioClip audioClip)
+    public void StopSoundsPlayingInWinLose()// при открытии вин луз окна
+    {
+        soundMixer.audioMixer.GetFloat("SoundsVolume", out float value);
+        previousSoundsValueForWinLose = value;
+        soundMixer.audioMixer.SetFloat("SoundsVolume", -80f);
+    }
+    public void ReturnPreviousSoundsValueInWinLose()// вызывается кнопками перехода в лобби
+    {
+        soundMixer.audioMixer.SetFloat("SoundsVolume", previousSoundsValueForWinLose);
+    }
+
+    private void PlayMusic(AudioClip audioClip, bool loop = true)
     {
         musicAudioSource.Stop();
         musicAudioSource.clip = audioClip;
         musicAudioSource.Play();
+        musicAudioSource.loop = loop;
     }
 
     public void StopMusicPlaying()
@@ -159,6 +185,11 @@ public class MusicManager : MonoBehaviour
     public void PlayFillingLeagueScaleMusic()
     {
         PlayMusic(fillingLeagueScaleMusic);
+    }
+
+    public void PlayWinMusic()
+    {
+        PlayMusic(winMusic, false);
     }
 
     private void Load()

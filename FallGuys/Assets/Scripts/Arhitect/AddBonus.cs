@@ -22,20 +22,25 @@ public class AddBonus : Bonus
     [SerializeField] private int minHealthBonusValue;
     [SerializeField] private int maxHealthBonusValue;
     [Space]
-    [SerializeField] private ParticleSystem healthEffect; 
+    [SerializeField] private ParticleSystem healthEffect;
 
     [Header("Shield")]
     [SerializeField] private int minShieldBonusValue;
     [SerializeField] private int maxShieldBonusValue;
+    [Space]
+    [SerializeField] private AudioClip shieldSound;
 
     [Header("Gold")]
     [SerializeField] private int minGoldBonusValue;
     [SerializeField] private int maxGoldBonusValue;
     [Space]
     [SerializeField] private ParticleSystem goldEffect;
+    [SerializeField] private AudioClip goldSound;
 
     List<BonusType> bonuses = new List<BonusType>();
 
+    [Space]
+    [SerializeField] private AudioSource audioSource;
 
     private void Awake()
     {
@@ -105,8 +110,22 @@ public class AddBonus : Bonus
 
     public override void Got()
     {
-        if (Type == BonusType.AddHealth) healthEffect.Play();
-        if (Type == BonusType.AddGold) goldEffect.Play();
+        if (Type == BonusType.AddHealth)
+        {
+            healthEffect.Play();
+        }
+        if (Type == BonusType.AddGold)
+        {
+            goldEffect.Play();
+
+            audioSource.clip = goldSound;
+            audioSource.Play();
+        }
+        if (Type == BonusType.AddShield)
+        {
+            audioSource.clip = shieldSound;
+            audioSource.Play();
+        }
 
         CoroutineRunner.Run(WaitAndRespawn());
     }

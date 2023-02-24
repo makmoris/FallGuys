@@ -33,6 +33,7 @@ public class LobbyWindowsController : MonoBehaviour
         }
 
         SceneManager.activeSceneChanged += SceneWasChanged;
+        Debug.Log("WINDOWCONTROLLER AWAKE");
     }
 
     private void SceneWasChanged(Scene current, Scene next)
@@ -53,8 +54,8 @@ public class LobbyWindowsController : MonoBehaviour
     }
 
     public void ShowLeagueWindowOnLobby()// вызывают кнопки win lose окон
-    {
-        showLeagueWindow = true;
+    {   // если это не первый вход в лобби из локации
+        if(!IsFirstLobbyEnterFromLocation()) showLeagueWindow = true;
     }
 
     private bool IsFirstLobbyEnterFromLocation()
@@ -67,5 +68,11 @@ public class LobbyWindowsController : MonoBehaviour
         PlayerPrefs.SetInt(key, 1);
 
         return returnValue;
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("WINDOWCONTROLLER ONDISABLE");
+        SceneManager.activeSceneChanged -= SceneWasChanged;
     }
 }

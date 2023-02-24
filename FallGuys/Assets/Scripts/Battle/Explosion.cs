@@ -33,6 +33,10 @@ public class Explosion : Bonus
     [Header("Mine or Bomb")]
     [SerializeField] private bool isMine;
     [SerializeField] private ParticleSystem mineActiveEffect;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip mineActivatedSound;
+    [SerializeField] private AudioClip mineActiveSound;
+    private Coroutine mineActivatedSoundCoroutine = null;
 
     // метод вызываетс€ пулей при соприкосновении коллайдеров. ≈сли это бочка, то можешь дать врем€ перед взырвом. ≈сли игрок - взрыв сразу
     public void ExplodeWithDelay()
@@ -42,11 +46,6 @@ public class Explosion : Bonus
         //explosionDone = true;
         Invoke("Explode", timeBeforExplotion);
         //GetComponent<Renderer>().material.color = Color.red;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) Explode();
     }
 
     private void Explode()
@@ -96,6 +95,8 @@ public class Explosion : Bonus
 
         Instantiate(explosionEffect, transform.position, Quaternion.identity);
 
+        if (mineActivatedSoundCoroutine != null) StopCoroutine(mineActivatedSoundCoroutine);
+
         Destroy(gameObject);
         //gameObject.SetActive(false);
     }
@@ -121,10 +122,24 @@ public class Explosion : Bonus
                 mineActiveEffect.Simulate(1f, true, true);
                 mineActiveEffect.Play();
 
-                GetComponent<AudioSource>().Play();
+                audioSource = GetComponent<AudioSource>();
+                mineActivatedSoundCoroutine = StartCoroutine(MineActivatedSound());
             }
             
             if (mineCounter >= 2) ExplodeWithDelay();
         }
+    }
+
+    IEnumerator MineActivatedSound()
+    {
+        audioSource.clip = mineActivatedSound;
+        audioSource.Play();
+        audioSource.loop = false;
+
+        yield return new WaitForSeconds(mineActivatedSound.length);
+
+        audioSource.clip = mineActiveSound;
+        audioSource.Play();
+        audioSource.loop = true;
     }
 }

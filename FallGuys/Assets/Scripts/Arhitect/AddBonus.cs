@@ -27,8 +27,6 @@ public class AddBonus : Bonus
     [Header("Shield")]
     [SerializeField] private int minShieldBonusValue;
     [SerializeField] private int maxShieldBonusValue;
-    [Space]
-    [SerializeField] private AudioClip shieldSound;
 
     [Header("Gold")]
     [SerializeField] private int minGoldBonusValue;
@@ -119,11 +117,6 @@ public class AddBonus : Bonus
             goldEffect.Play();
 
             audioSource.clip = goldSound;
-            audioSource.Play();
-        }
-        if (Type == BonusType.AddShield)
-        {
-            audioSource.clip = shieldSound;
             audioSource.Play();
         }
 

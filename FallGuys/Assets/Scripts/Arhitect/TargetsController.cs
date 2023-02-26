@@ -52,7 +52,9 @@ public class TargetsController : MonoBehaviour
 
         for (int i = 0; i < bonusBoxesContainer.childCount; i++)
         {
-            targets.Add(bonusBoxesContainer.GetChild(i));
+            var bonusBox = bonusBoxesContainer.GetChild(i);
+
+            if(bonusBox.gameObject.activeInHierarchy) targets.Add(bonusBox);
         }
     }
 
@@ -61,7 +63,7 @@ public class TargetsController : MonoBehaviour
         for (int i = 0; i < spawnPointsContainer.childCount; i++)
         {
             spawnPoints.Add(spawnPointsContainer.GetChild(i));
-            targets.Add(spawnPointsContainer.GetChild(i));
+            //targets.Add(spawnPointsContainer.GetChild(i)); // не добавляем в качестве точек интересов для ботов спавн позиции
         }
 
         // перемешаем позиции спавна для рандомного появления на карте

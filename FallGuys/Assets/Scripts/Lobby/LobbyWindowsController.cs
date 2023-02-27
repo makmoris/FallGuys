@@ -43,8 +43,19 @@ public class LobbyWindowsController : MonoBehaviour
         if (showLeagueWindow && !IsFirstLobbyEnterFromLocation())
         {
             Canvas lobbyCanvas = FindObjectOfType<Canvas>();
+
             GameObject leagueWindow = lobbyCanvas.transform.Find("Lobby").transform.Find("LeagueWindow").gameObject;
+
+            GameObject backToLobbyButton = leagueWindow.transform.Find("BackToLobbyButton").gameObject;
+            GameObject homeButton = leagueWindow.transform.Find("HomeButton").gameObject;
+            GameObject continueButton = leagueWindow.transform.Find("ContinueButton").gameObject;
+
             leagueWindow.SetActive(true);
+
+            backToLobbyButton.SetActive(false);
+            homeButton.SetActive(false);
+            continueButton.SetActive(true);
+
             ShowLeagueProgressAnimationEvent?.Invoke(previousCupValue);
             showLeagueWindow = false;
         }

@@ -242,6 +242,9 @@ public class LevelProgressController : MonoBehaviour
         MusicManager.Instance.StopSoundsPlayingInWinLose();
         MusicManager.Instance.PlayWinMusic();
 
+        // запуск окна оценки
+        InAppReviewsManager.Instance.ShowReviewWindow();
+
         SendBattleFinishAnalyticEvent();
     }
 

@@ -31,6 +31,9 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
     [Header("Leagues")]
     [SerializeField] private List<LeagueWindowLeagues> leagues;
 
+    [Space]
+    [SerializeField] private NewLeagueWindow newLeagueWindow;
+
     private int currentCupsValue;
     private int previousCupsValue;
 
@@ -42,6 +45,8 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
 
     private bool notFirstActive;
     private bool isShowingProgressAnimationAfterPlay;// показываем анимацию шкалы прогресса после игры на уровне
+
+    private string leagueIconsKey = "LeagueWindowEnabledLeagueIcons";
 
     private void Awake()
     {
@@ -204,17 +209,22 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         //UpdateScalePosition();
     }
 
+
     private void UpdateCupsValue(int value)
     {
         currentCupsValue = value;
-        //cupsText.text = $"{currentCupsValue}";
+
+        if (!isShowingProgressAnimationAfterPlay) UpdateElementsVisual(currentCupsValue);
+        else UpdateElementsVisual(previousCupsValue);
 
         UpdateScalePosition();
-        UpdateElementsVisual();
     }
 
-    private void UpdateElementsVisual()
+    private void UpdateElementsVisual(int _currentCupsValue)
     {
+        int enabledLeagueIcons = PlayerPrefs.GetInt(leagueIconsKey, 1);
+        int enabledLeagueIconsCounter = 0;
+
         foreach (var league in leagues)
         {
             Image _leagueBack = league.league;
@@ -223,7 +233,7 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
             TextMeshProUGUI _leagueNameText = league.leagueNameText;
             int _neededCupsValue = league.neededCupsValue;
             
-            if(currentCupsValue >= _neededCupsValue)
+            if(_currentCupsValue >= _neededCupsValue)
             {
                 _leagueBack.color = new Color(1f, 1f, 1f, 100f / 255f);
                 _leagueIconImage.color = Color.white;
@@ -232,6 +242,16 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
                 Color textColor = _leagueNameText.color;
                 textColor = new Color(textColor.r, textColor.g, textColor.b, 1f);
                 _leagueNameText.color = textColor;
+
+                enabledLeagueIconsCounter++;
+                if (enabledLeagueIconsCounter > enabledLeagueIcons && enabledLeagueIconsCounter != 1)// показываем окно поздравления с новой лигой
+                {
+                    Debug.Log($"Лига {league.leagueNameText.text} открыта впервые!");
+                    newLeagueWindow.gameObject.SetActive(true);
+                    newLeagueWindow.ShowLeagueIcon(enabledLeagueIconsCounter - 1);
+
+                    PlayerPrefs.SetInt(leagueIconsKey, enabledLeagueIconsCounter);
+                }
             }
             else
             {
@@ -305,6 +325,8 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         cupsText.text = $"{currentCupsValue}";// на всякий, если не успеет
 
         cupsPlace.SetActive(true);
+
+        UpdateElementsVisual(currentCupsValue);
 
         // стоп музыка заполнения 
         MusicManager.Instance.PlayLobbyMusic();

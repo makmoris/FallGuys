@@ -62,7 +62,7 @@ public class PlayerEffector
                     Debug.Log(resultHealth + " = " + _player.Health + " + " + bonus.Value);
                     if (resultHealth > _limitsData.MaxHP)
                     {
-                        resultHealth = _limitsData.MaxHP;
+                        //resultHealth = _limitsData.MaxHP; // убрали лимит на хп
                     }
                     else if (resultHealth <= 0)
                     {

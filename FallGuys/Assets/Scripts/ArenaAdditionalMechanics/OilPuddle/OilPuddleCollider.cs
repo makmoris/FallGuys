@@ -8,8 +8,6 @@ public class OilPuddleCollider : MonoBehaviour
 
     private float decelerationAmount;
 
-    private Dictionary<GameObject, float> oldDragDictionary = new Dictionary<GameObject, float>();
-
     private void Awake()
     {
         oilPuddle = transform.GetComponentInParent<OilPuddle>();
@@ -25,12 +23,13 @@ public class OilPuddleCollider : MonoBehaviour
         if (other.CompareTag("Car"))
         {
             Rigidbody rb = other.GetComponent<Rigidbody>();
-            if(!oldDragDictionary.ContainsKey(other.gameObject)) oldDragDictionary.Add(other.gameObject, rb.drag);
 
             Shield shield = other.GetComponentInChildren<Shield>(true);
             if(!shield.gameObject.activeSelf) rb.drag = decelerationAmount;
 
             oilPuddle.MakeDamage(other.gameObject);
+
+            Debug.Log($"{other.name} ¬ъехал в лужу");
         }
     }
 
@@ -38,10 +37,9 @@ public class OilPuddleCollider : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
-            Rigidbody rb = other.GetComponent<Rigidbody>();
-            rb.drag = oldDragDictionary[other.gameObject];
-
             oilPuddle.StopDamage(other.gameObject);
+
+            Debug.Log($"{other.name} ѕќ »Ќ”Ћ лужу");
         }
     }
 

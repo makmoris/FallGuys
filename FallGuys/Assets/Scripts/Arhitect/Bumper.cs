@@ -15,6 +15,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public static event Action PlayerSlowedEvent;
     public static event Action PlayerStoppedSlowingEvent;
     private Coroutine oilPuddleCoroutine = null;
+    private int coroutineCounter;
 
     public static event Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
     public static event Action<int> BonusBoxGiveHPEvent;
@@ -105,9 +106,14 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         OnBonusGot?.Invoke(bonus);
         bonus.Got();
 
-        oilPuddleCoroutine = StartCoroutine(WaitAndGetBonusFromOilPuddle(bonus, damageInterval));
+        coroutineCounter++;
 
-        if(isPlayer)
+        if (oilPuddleCoroutine == null)
+        {
+            oilPuddleCoroutine = StartCoroutine(WaitAndGetBonusFromOilPuddle(bonus, damageInterval));
+        }
+
+        if (isPlayer)
         {
             // нотификация
             PlayerSlowedEvent?.Invoke();
@@ -117,7 +123,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     IEnumerator WaitAndGetBonusFromOilPuddle(Bonus bonus , float time)
     {
         yield return new WaitForSeconds(time);
-
+        Debug.Log($"OIL COROUTINE");
         OnBonusGot?.Invoke(bonus);
         bonus.Got();
 
@@ -128,13 +134,24 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     {
         if (oilPuddleCoroutine != null)
         {
-            StopCoroutine(oilPuddleCoroutine);
+            coroutineCounter--;
 
-            if (isPlayer)
+            if (coroutineCounter == 0)
             {
-                // нотификация стоп
-                PlayerStoppedSlowingEvent?.Invoke();
+                StopCoroutine(oilPuddleCoroutine);
+                oilPuddleCoroutine = null;
+                Debug.Log($"STOP OIL COROUTINE");
+
+                Rigidbody _rb = GetComponent<Rigidbody>();
+                _rb.drag = 0.02f;
+
+                if (isPlayer)
+                {
+                    // нотификация стоп
+                    PlayerStoppedSlowingEvent?.Invoke();
+                }
             }
+            else if (coroutineCounter < 0) coroutineCounter = 0;
         }
     }
     #endregion

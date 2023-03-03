@@ -13,7 +13,7 @@ public class OilDrop : MonoBehaviour
         oilPuddle = transform.parent.GetComponent<OilPuddle>();
         _rb = GetComponent<Rigidbody>();
         _rb.velocity = new Vector3(0f, -20f, 0f);
-        startPosition = transform.position;
+        startPosition = transform.localPosition;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,7 +21,7 @@ public class OilDrop : MonoBehaviour
         oilPuddle.MakePuddle();
 
         gameObject.SetActive(false);
-        transform.position = startPosition;
+        transform.localPosition = startPosition;
         _rb.velocity = new Vector3(0f, -20f, 0f);
     }
 }

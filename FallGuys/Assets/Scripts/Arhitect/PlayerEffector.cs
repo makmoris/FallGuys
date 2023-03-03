@@ -59,7 +59,7 @@ public class PlayerEffector
                 else
                 {
                     var resultHealth = _player.Health + bonus.Value;
-                    Debug.Log(resultHealth + " = " + _player.Health + " + " + bonus.Value);
+                    //Debug.Log(resultHealth + " = " + _player.Health + " + " + bonus.Value);
                     if (resultHealth > _limitsData.MaxHP)
                     {
                         //resultHealth = _limitsData.MaxHP; // убрали лимит на хп

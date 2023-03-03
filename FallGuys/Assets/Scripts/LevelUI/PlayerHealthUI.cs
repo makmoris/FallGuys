@@ -29,7 +29,7 @@ public class PlayerHealthUI : MonoBehaviour
             _image.fillAmount = 1f;
             _text.text = $"+ {startHealthValue}";
 
-            currentHealthValue = Mathf.CeilToInt(startHealthValue);
+            currentHealthValue = Mathf.RoundToInt(startHealthValue);
 
             isFirstHealthUpdate = false;
         }
@@ -55,9 +55,9 @@ public class PlayerHealthUI : MonoBehaviour
 
             if (healthPercent > 0)
             {
-                _text.text = $"+ {Mathf.CeilToInt(val)}";
+                _text.text = $"+ {Mathf.RoundToInt(val)}";
 
-                currentHealthValue = Mathf.CeilToInt(val);
+                currentHealthValue = Mathf.RoundToInt(val);
             }
             else _text.text = $"+ 0";
         }

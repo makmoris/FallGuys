@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Networking;
 
 public class LoadingScene : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class LoadingScene : MonoBehaviour
     private bool analyticsEventWasSended;
 
     private AsyncOperation asyncOperation;
+
+    //internet
+    [SerializeField] private string[] urls;
 
     private void Start()
     {
@@ -97,6 +101,31 @@ public class LoadingScene : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    IEnumerator TestConnection(System.Action<bool> callback)
+    {
+        foreach (var url in urls)
+        {
+            //Create unity web request
+            UnityWebRequest request = UnityWebRequest.Get(url);
+
+            //Wait Responce
+            yield return request.SendWebRequest();
+
+            Debug.Log($"URL {url}; Network Error: {request.isNetworkError}");
+
+            //Check network error
+            if (request.isNetworkError == false)
+            {
+                // Run callback
+                callback(true);
+
+                yield break;
+            }
+        }
+
+        callback(false);
     }
 
     // for analytics

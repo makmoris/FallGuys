@@ -266,5 +266,10 @@ public class FacebookAnalytics : IAnalytics
 
         FB.LogAppEvent("Player_Changed_Controls", parameters: param);
     }
+
+    public void PlayerInternetConnectionRestore()
+    {
+        FB.LogAppEvent("Player_Internet_Connection_Restore");
+    }
     #endregion
 }

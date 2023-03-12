@@ -232,5 +232,10 @@ public class AmplitudeAnalytics : IAnalytics
 
         amplitude.logEvent("Player_Changed_Controls", param);
     }
+
+    public void PlayerInternetConnectionRestore()
+    {
+        amplitude.logEvent("Player_Internet_Connection_Restore");
+    }
     #endregion
 }

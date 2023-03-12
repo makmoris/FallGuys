@@ -227,5 +227,10 @@ public class GameAnalyticsAnalytics : IAnalytics
 
         GameAnalytics.NewDesignEvent("Player_Changed_Controls", param);
     }
+
+    public void PlayerInternetConnectionRestore()
+    {
+        GameAnalytics.NewDesignEvent("Player_Internet_Connection_Restore");
+    }
     #endregion
 }

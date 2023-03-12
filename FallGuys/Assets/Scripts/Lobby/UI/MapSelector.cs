@@ -28,12 +28,31 @@ public class MapSelector : MonoBehaviour
     [Space]
     [SerializeField] private List<MapSettings> maps;
 
+    [SerializeField] private bool internetConnectionIsActive;
+
     //[SerializeField]private bool isSceneLoaded;
     private AsyncOperation asyncOperation;
 
+    private void OnEnable()
+    {
+        NetworkChecker.InternetConnectionAppearedEvent += SetInternetConnectionIsActive;
+        NetworkChecker.InternetConnectionLostEvent += SetInternetConnectionIsInactive;
+    }
+    private void SetInternetConnectionIsActive()
+    {
+        internetConnectionIsActive = true;
+    }
+    private void SetInternetConnectionIsInactive()
+    {
+        internetConnectionIsActive = false;
+
+        asyncOperation.allowSceneActivation = false;
+    }
 
     public void StartPlayGame()// вызывается по кнопке Play
     {
+        internetConnectionIsActive = NetworkChecker.Instance.GetNetworkStatus();
+
         int value = PlayerPrefs.GetInt(gameTutorialKey, 0);
         if (value == 0) tutorialWindowWasShown = false;
         else tutorialWindowWasShown = true;
@@ -100,7 +119,7 @@ public class MapSelector : MonoBehaviour
             if (asyncOperation.progress >= 0.9f)
             {
                 //isSceneLoaded = true;
-                if (!sendCanStop)
+                if (!sendCanStop && internetConnectionIsActive)
                 {
                     infiniteScroll.CanStopScrolling();
                     sendCanStop = true;
@@ -146,5 +165,11 @@ public class MapSelector : MonoBehaviour
                 Instantiate(maps[y].levelImage, maps[y].levelImage.transform.parent);
             }
         }
+    }
+
+    private void OnDisable()
+    {
+        NetworkChecker.InternetConnectionAppearedEvent -= SetInternetConnectionIsActive;
+        NetworkChecker.InternetConnectionLostEvent -= SetInternetConnectionIsInactive;
     }
 }

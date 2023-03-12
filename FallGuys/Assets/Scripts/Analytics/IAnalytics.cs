@@ -46,5 +46,7 @@ public interface IAnalytics
     public void PlayerBuySkin(string new_skin_id, int gold_spent, int gold);
 
     public void PlayerChangedControls(string new_control_type, string old_control_type);
+
+    public void PlayerInternetConnectionRestore();
     #endregion
 }

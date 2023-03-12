@@ -286,5 +286,10 @@ public class FirebaseAnalytics : IAnalytics
 
         Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Changed_Controls", param.ToArray());
     }
+
+    public void PlayerInternetConnectionRestore()
+    {
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Internet_Connection_Restore");
+    }
     #endregion
 }

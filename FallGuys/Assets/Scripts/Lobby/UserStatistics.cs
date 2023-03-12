@@ -54,6 +54,13 @@ public class UserStatistics : MonoBehaviour
     IEnumerator WaitAndSendEvent()
     {
         yield return new WaitForSeconds(2f);
+
+        while (NetworkChecker.Instance.GetNetworkStatus() == false)
+        {
+            // ожидание подключения интернета
+            yield return null;
+        }
+
         AnalyticsManager.Instance.User(battles_amount, win_rate, cups_amount, league, gold, car_id, gun_id, control_type);
     }
 

@@ -438,7 +438,16 @@ namespace UnityEngine.UI.Extensions
                 //yield return null;
             }
 
+            //yield return new WaitForSeconds(1f);
+            //mapSelector.GoToLevel();
+
             yield return new WaitForSeconds(1f);
+
+            while (NetworkChecker.Instance.GetNetworkStatus() == false)
+            {
+                // ожидание подключения интернета
+                yield return null;
+            }
             mapSelector.GoToLevel();
         }
     }

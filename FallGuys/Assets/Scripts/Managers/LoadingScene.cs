@@ -24,7 +24,15 @@ public class LoadingScene : MonoBehaviour
 
     private bool analyticsEventWasSended;
 
+    [SerializeField]private bool internetConnectionIsActive;
+
     private AsyncOperation asyncOperation;
+
+    private void OnEnable()
+    {
+        NetworkChecker.InternetConnectionAppearedEvent += SetInternetConnectionIsActive;
+        NetworkChecker.InternetConnectionLostEvent += SetInternetConnectionIsInactive;
+    }
 
     private void Start()
     {
@@ -52,6 +60,19 @@ public class LoadingScene : MonoBehaviour
         }
     }
 
+    private void SetInternetConnectionIsActive()
+    {
+        internetConnectionIsActive = true;
+
+        if(tutorialWindowWasShown) asyncOperation.allowSceneActivation = true;
+    }
+    private void SetInternetConnectionIsInactive()
+    {
+        internetConnectionIsActive = false;
+
+        asyncOperation.allowSceneActivation = false;
+    }
+
     public void GoToLevel()// вызывается окном gameTutorialWindow
     {
         asyncOperation.allowSceneActivation = true;
@@ -77,7 +98,8 @@ public class LoadingScene : MonoBehaviour
     {
         asyncOperation = SceneManager.LoadSceneAsync(mapName);
 
-        if(!tutorialWindowWasShown) asyncOperation.allowSceneActivation = false;// для показа окна тутора
+        //if(!tutorialWindowWasShown) asyncOperation.allowSceneActivation = false;// для показа окна тутора
+        asyncOperation.allowSceneActivation = false;// для показа окна тутора
 
         while (!asyncOperation.isDone)
         {
@@ -88,7 +110,7 @@ public class LoadingScene : MonoBehaviour
             if (asyncOperation.progress >= 0.9f)
             {
                 //if (!tutorialWindowWasShown) gameTutorialWindow.SetActive(true);// для показа окна тутора
-                if (!tutorialWindowWasShown && !analyticsEventWasSended)
+                if (!tutorialWindowWasShown && !analyticsEventWasSended && internetConnectionIsActive)
                 {
                     analyticsEventWasSended = true;
                     SendUserAnalyticEvent();// analytics
@@ -98,7 +120,6 @@ public class LoadingScene : MonoBehaviour
             yield return null;
         }
     }
-
 
     // for analytics
     private int battles_amount;
@@ -172,5 +193,11 @@ public class LoadingScene : MonoBehaviour
         }
 
         return layoutName;
+    }
+
+    private void OnDisable()
+    {
+        NetworkChecker.InternetConnectionAppearedEvent -= SetInternetConnectionIsActive;
+        NetworkChecker.InternetConnectionLostEvent -= SetInternetConnectionIsInactive;
     }
 }

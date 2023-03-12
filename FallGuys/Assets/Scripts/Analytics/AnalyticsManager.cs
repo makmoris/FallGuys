@@ -391,5 +391,22 @@ public class AnalyticsManager : MonoBehaviour
         }
     }
 
+    public void PlayerInternetConnectionRestore()
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.PlayerInternetConnectionRestore();
+
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Internet_Connection_Restore");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Internet_Connection_Restore Event. {ex.Message}");
+            }
+        }
+    }
+
     #endregion
 }

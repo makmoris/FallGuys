@@ -39,7 +39,7 @@ public class NetworkCheck {
 #if UNITY_EDITOR
     private void Initilize()
     {
-        Debug.Log("Initilized Network Check");
+        Debug.Log("[A] Initilized Network Check");
     }
 
     private bool CheckConnection()

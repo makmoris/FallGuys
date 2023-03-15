@@ -10,7 +10,9 @@ public class AnalyticsManager : MonoBehaviour
     private string current_player_car_id;// во время боя они не меняются
     private string current_player_gun_id;
 
-    private bool initializationCompleted;
+    private bool initializeCompleted;
+    
+    public static event Action InitializeCompletedEvent;
 
     private List<IAnalytics> analytics = new List<IAnalytics>
     {
@@ -20,6 +22,8 @@ public class AnalyticsManager : MonoBehaviour
         new GameAnalyticsAnalytics()
     };
 
+    private int responseCount;// количество ответов, что аналитика инициализирована
+
     public static AnalyticsManager Instance { get; private set; }
     private void Awake()
     {
@@ -28,7 +32,7 @@ public class AnalyticsManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
 
-            Initialize();
+            //if (!initializeCompleted) Initialize();
         }
         else
         {
@@ -36,13 +40,22 @@ public class AnalyticsManager : MonoBehaviour
         }
     }
 
-    private void Initialize()
+
+    private void Start()
     {
+        if (!initializeCompleted) Initialize();
+    }
+
+    private void Initialize()
+    {   // вызываем методы инициализации. Потом нужно дождаться ответов, что инициализация выполнена
         foreach (var item in analytics)
         {
             try
             {
-                item.Initialize();
+                item.InitializationСompletedEvent += InitializationCompleted;
+
+                item.Initialize(); // не означает, что инициализация завершена. Только запускаем ее
+
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Initialized");
             }
             catch (Exception ex)
@@ -51,7 +64,24 @@ public class AnalyticsManager : MonoBehaviour
             }
         }
 
-        initializationCompleted = true;
+        initializeCompleted = true;
+    }
+
+    private void InitializationCompleted()
+    {
+        responseCount++;
+
+        if(initializeCompleted && responseCount == analytics.Count)
+        {
+            // Посылаем событие, что инициализация выполнена
+            InitializeCompletedEvent?.Invoke();
+
+
+            foreach (var item in analytics)// инициализация выполняется один раз. Отписываемся от событий
+            {
+                item.InitializationСompletedEvent -= InitializationCompleted;
+            }
+        }
     }
 
     #region BATTLE

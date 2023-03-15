@@ -1,9 +1,12 @@
 using Facebook.Unity;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FacebookAnalytics : IAnalytics
 {
+    public event Action Initialization—ompletedEvent;
+
     #region Initialize
     public void Initialize() // Calling from AnalyticsManager
     {
@@ -26,6 +29,8 @@ public class FacebookAnalytics : IAnalytics
             FB.ActivateApp();
             // Continue with Facebook SDK
             // ...
+            Initialization—ompletedEvent?.Invoke();
+            UnityEngine.Debug.Log("[A] Facebook Initialization —ompleted");
         }
         else
         {

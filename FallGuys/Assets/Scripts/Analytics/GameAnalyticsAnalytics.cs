@@ -1,11 +1,17 @@
 using GameAnalyticsSDK;
+using System;
 using System.Collections.Generic;
 
 public class GameAnalyticsAnalytics : IAnalytics
 {
+    public event Action Initialization—ompletedEvent;
+
     public void Initialize()
     {
         GameAnalytics.Initialize();
+
+        Initialization—ompletedEvent?.Invoke();
+        UnityEngine.Debug.Log("[A] GameAnalytics Initialization —ompleted");
     }
 
     public string GetName()

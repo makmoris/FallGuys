@@ -1,5 +1,6 @@
 public interface IAnalytics
 {
+    public event System.Action Initialization—ompletedEvent;
     public void Initialize();
 
     public string GetName();

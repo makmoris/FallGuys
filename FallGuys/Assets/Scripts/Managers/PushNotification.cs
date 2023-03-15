@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PushNotification : MonoBehaviour
 {
-    private bool isInit;
+    [SerializeField]private bool isInit;
+    public TMPro.TextMeshProUGUI text;
 
     public static PushNotification Instance { get; private set; }
     private void Awake()
@@ -18,7 +19,16 @@ public class PushNotification : MonoBehaviour
         }
     }
 
-    public void Start()
+    private void OnEnable()
+    {
+        AnalyticsManager.InitializeCompletedEvent += Initialize;
+    }
+    private void OnDisable()
+    {
+        AnalyticsManager.InitializeCompletedEvent -= Initialize;
+    }
+
+    private void Initialize()
     {
         if (!isInit)
         {
@@ -26,7 +36,10 @@ public class PushNotification : MonoBehaviour
             Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
 
             isInit = true;
-            Debug.Log("IS INIT TRUE");
+
+            Debug.Log("[A] Firebase Push Notification Initialization Ñompleted");
+
+            text.text = "sfdsf";
         }
     }
 

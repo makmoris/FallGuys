@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 
 public class AmplitudeAnalytics : IAnalytics
 {
     Amplitude amplitude = null;
+
+    public event Action Initialization—ompletedEvent;
 
     public void Initialize()
     {
@@ -11,6 +14,9 @@ public class AmplitudeAnalytics : IAnalytics
         amplitude.logging = true;
         amplitude.trackSessionEvents(true);
         amplitude.init("c93c41a93063b32bed422c3a91e96264");
+
+        Initialization—ompletedEvent?.Invoke();
+        UnityEngine.Debug.Log("[A] Amplitude Initialization —ompleted");
     }
 
     public string GetName()

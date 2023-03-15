@@ -6,23 +6,27 @@ using System.Collections.Generic;
 
 public class FirebaseAnalytics : IAnalytics
 {
-    //public void Initialize() ContinueWith ÙËÁËÚ Ì‡ User ÒÓ·˚ÚËË - ÔË Á‡ÔÛÒÍÂ ÔËÎÓÊÂÌËˇ
-    //{
-    //    FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
-    //    {
-    //        Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-    //    });
-    //}
-    DependencyStatus dependencyStatus = DependencyStatus.UnavailableOther;
+    public event Action Initialization—ompletedEvent;
 
     public void Initialize()
     {
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
-            dependencyStatus = task.Result;
-            if (dependencyStatus == DependencyStatus.Available)
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
+                // Create and hold a reference to your FirebaseApp,
+                // where app is a Firebase.FirebaseApp property of your application class.
+                var app = FirebaseApp.DefaultInstance;
+
+                // Set a flag here to indicate whether Firebase is ready to use by your app.
                 InitializeFirebase();
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                // Firebase Unity SDK is not safe to use here.
             }
         });
     }
@@ -31,6 +35,10 @@ public class FirebaseAnalytics : IAnalytics
         Firebase.Analytics.FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
 
         Firebase.Analytics.FirebaseAnalytics.SetUserProperty(Firebase.Analytics.FirebaseAnalytics.UserPropertySignUpMethod, "Google");
+
+        UnityEngine.Debug.Log("[A] Firebase Initialization —ompleted");
+
+        Initialization—ompletedEvent?.Invoke();
 
         //Firebase.Analytics.FirebaseAnalytics.SetSessionTimeoutDuration(new TimeSpan(0, 30, 0));
     }

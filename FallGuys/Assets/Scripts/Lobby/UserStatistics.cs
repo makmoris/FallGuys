@@ -53,7 +53,7 @@ public class UserStatistics : MonoBehaviour
 
     IEnumerator WaitAndSendEvent()
     {
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(2f);
 
         while (NetworkChecker.Instance.GetNetworkStatus() == false)
         {

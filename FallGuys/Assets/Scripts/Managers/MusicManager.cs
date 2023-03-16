@@ -96,14 +96,14 @@ public class MusicManager : MonoBehaviour
         {
             musicMixer.audioMixer.SetFloat("MusicVolume", 0f);
             musicEnabled = true;
-            Debug.Log("MUSIC ENABLED TRUE");
+            //Debug.Log("MUSIC ENABLED TRUE");
         }
         else
         {
             musicMixer.audioMixer.SetFloat("MusicVolume", -80f);
             musicEnabled = false;
             musicMixer.audioMixer.GetFloat("MusicVolume", out float val);
-            Debug.Log($"MUSIC ENABLED FALSE; {val}");
+            //Debug.Log($"MUSIC ENABLED FALSE; {val}");
         }
 
         Save();
@@ -204,7 +204,7 @@ public class MusicManager : MonoBehaviour
         if (soundsValue == 0) soundsEnabled = false;
         else soundsEnabled = true;
 
-        Debug.Log($"Music enabled = {musicEnabled}");
+        //Debug.Log($"Music enabled = {musicEnabled}");
 
         ToggleMusic(musicEnabled);
         ToggleSounds(soundsEnabled);

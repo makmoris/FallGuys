@@ -33,7 +33,7 @@ public class LobbyWindowsController : MonoBehaviour
         }
 
         SceneManager.activeSceneChanged += SceneWasChanged;
-        Debug.Log("WINDOWCONTROLLER AWAKE");
+        //Debug.Log("WINDOWCONTROLLER AWAKE");
     }
 
     private void SceneWasChanged(Scene current, Scene next)
@@ -83,7 +83,7 @@ public class LobbyWindowsController : MonoBehaviour
 
     private void OnDisable()
     {
-        Debug.Log("WINDOWCONTROLLER ONDISABLE");
+        //Debug.Log("WINDOWCONTROLLER ONDISABLE");
         SceneManager.activeSceneChanged -= SceneWasChanged;
     }
 }

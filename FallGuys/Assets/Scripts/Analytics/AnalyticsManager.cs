@@ -56,7 +56,7 @@ public class AnalyticsManager : MonoBehaviour
 
                 item.Initialize(); // не означает, что инициализация завершена. Только запускаем ее
 
-                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Initialized");
+                //Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Initialized");
             }
             catch (Exception ex)
             {

@@ -496,7 +496,7 @@ namespace VehicleBehaviour {
             Vector3 currentPos = transform.position;
             int random = UnityEngine.Random.Range(-5, 6);
             if (random == 0) random = 2;
-            Vector3 newPos = new Vector3(currentPos.x + random, currentPos.y + 5f, currentPos.z + random);
+            Vector3 newPos = new Vector3(currentPos.x + random, currentPos.y + 7f, currentPos.z + random);
 
             return newPos;
         }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using VehicleBehaviour;
 
@@ -24,18 +25,39 @@ public class ObstacleDetectionAI : MonoBehaviour
 	private CarDriverAI carDriverAI;
 	private WheelVehicle wheelVehicle;
 
+	private Coroutine _coroutine;
+
 	private void Awake()
 	{
 		wheelVehicle = GetComponent<WheelVehicle>();
 		carDriverAI = GetComponent<CarDriverAI>();
 	}
-	 
-	private void Update()
-	{
-		CheckObstacles();
-	}
 
-	public void CheckObstacles()
+    private void Start()
+    {
+        _coroutine = StartCoroutine(WaitAndCheckObstacles());
+    }
+
+    private IEnumerator WaitAndCheckObstacles()
+    {
+        while (true)
+        {
+			CheckObstacles();
+			yield return new WaitForSeconds(0.25f);
+        }
+    }
+
+    private void OnDestroy()
+    {
+		if (_coroutine != null) StopCoroutine(_coroutine);
+    }
+
+    //private void Update()
+    //{
+    //    CheckObstacles();
+    //}
+
+    public void CheckObstacles()
 	{
 		Obstacles = "Null";
 		RaycastHit hit;

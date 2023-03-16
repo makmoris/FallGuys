@@ -25,6 +25,9 @@ public class PointerIcon : MonoBehaviour
 
     private bool pointerIsOffScreen;
 
+    private bool notFirstOffScreen;
+    private bool notFirstWithinScreen;
+
     private Vector2 nativePosition;
     private Vector2 nativeImagePosition;
 
@@ -44,14 +47,30 @@ public class PointerIcon : MonoBehaviour
         pointerIsOffScreen = true;
 
         UpdateHealthColor(_healthValue);
-        _image.SetNativeSize();
+
+        if (!notFirstOffScreen)
+        {
+            _image.SetNativeSize();
+
+            notFirstOffScreen = true;
+            notFirstWithinScreen = false;
+        }
+        //_image.SetNativeSize(); // нагружает
     }
     public void WithinScreenPointer()
     {
         pointerIsOffScreen = false;
 
         UpdateHealthColor(_healthValue);
-        _image.SetNativeSize();
+
+        if (!notFirstWithinScreen)
+        {
+            _image.SetNativeSize();
+
+            notFirstWithinScreen = true;
+            notFirstOffScreen = false;
+        }
+        //_image.SetNativeSize();// нагружает
     }
 
     public void SetIconPosition(Vector3 position, Quaternion rotation)

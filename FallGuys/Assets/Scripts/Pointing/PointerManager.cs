@@ -107,7 +107,7 @@ public class PointerManager : MonoBehaviour
     void LateUpdate()
     {
         // Left, Right, Down, Up
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_camera);// нагружает
 
         foreach (var kvp in _positionDictionary)
         {
@@ -116,8 +116,7 @@ public class PointerManager : MonoBehaviour
 
             Vector3 toEnemy = enemyPointer.transform.position - _playerTransform.position;
             Ray ray = new Ray(_playerTransform.position, toEnemy);
-            Debug.DrawRay(_playerTransform.position, toEnemy);
-
+            //Debug.DrawRay(_playerTransform.position, toEnemy);
 
             float rayMinDistance = Mathf.Infinity;
 

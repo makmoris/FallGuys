@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VehicleBehaviour;
 
 public class TargetsController : MonoBehaviour
 {
@@ -13,10 +14,26 @@ public class TargetsController : MonoBehaviour
     [SerializeField] private List<GameObject> players;
     [SerializeField] private List<Transform> spawnPoints;
 
+    public static TargetsController Instance { get; private set; }
+    
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+
         AddChieldTargets();
         AddChieldSpawnPoints();
+    }
+
+    private void OnEnable()
+    {
+        WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent += SendRespawnPositionToWheelVehicle;
     }
 
     public void AddPlayerToTargets(GameObject playerObj)
@@ -37,7 +54,7 @@ public class TargetsController : MonoBehaviour
             }
         }
     }
-
+    
     private void AddChieldTargets()
     {
         //for (int i = 0; i < transform.childCount; i++)
@@ -47,7 +64,9 @@ public class TargetsController : MonoBehaviour
 
         for (int i = 0; i < targetsContainer.childCount; i++)
         {
-            targets.Add(targetsContainer.GetChild(i));
+            var target = targetsContainer.GetChild(i);
+
+            if (target.gameObject.activeInHierarchy) targets.Add(target);
         }
 
         for (int i = 0; i < bonusBoxesContainer.childCount; i++)
@@ -62,7 +81,9 @@ public class TargetsController : MonoBehaviour
     {
         for (int i = 0; i < spawnPointsContainer.childCount; i++)
         {
-            spawnPoints.Add(spawnPointsContainer.GetChild(i));
+            var spawnPoint = spawnPointsContainer.GetChild(i);
+
+            if(spawnPoint.gameObject.activeInHierarchy) spawnPoints.Add(spawnPoint);
             //targets.Add(spawnPointsContainer.GetChild(i)); // не добавл€ем в качестве точек интересов дл€ ботов спавн позиции
         }
 
@@ -79,7 +100,7 @@ public class TargetsController : MonoBehaviour
             spawnPoints[i] = tmp;
         }
     }
-
+    
     public Transform GetStartSpawnPosition(int index)
     {
         return spawnPoints[index];
@@ -122,5 +143,15 @@ public class TargetsController : MonoBehaviour
         }
         //Debug.Log($"–еспавн в позиции {respIndex}.  оличество авто в ней = {minVal}");
         return spawnPoints[respIndex];
+    }
+
+    private void SendRespawnPositionToWheelVehicle(WheelVehicle wheelVehicle)
+    {
+        wheelVehicle.GetRespawnTransform(GetRespawnPosition());
+    }
+
+    private void OnDisable()
+    {
+        WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent -= SendRespawnPositionToWheelVehicle;
     }
 }

@@ -227,7 +227,8 @@ namespace VehicleBehaviour {
         [SerializeField] private int immobilityValue2;
         [SerializeField] private int immobilityValue3;
         [SerializeField] private int immobilityValueOnlyForBot;
-        private Vector3 previousPosition;
+
+        public static event Action<WheelVehicle> NotifyGetRespanwPositionForWheelVehicleEvent;
 
         void Start() {
 #if MULTIOSCONTROLS
@@ -299,8 +300,9 @@ namespace VehicleBehaviour {
                             immobilityValue = 0;
                             immobilityValue2 = 0;
                             immobilityValue3 = 0;
-                            transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                            transform.position = GetAppearPosition();
+                            RespanwAfterStuck();
+                            //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                            //transform.position = GetAppearPosition();
                         }
                     }
                     else immobilityValue2 = 0;
@@ -326,8 +328,9 @@ namespace VehicleBehaviour {
                     if (immobilityValueOnlyForBot >= 100)
                     {
                         immobilityValueOnlyForBot = 0;
-                        transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                        transform.position = GetAppearPosition();
+                        RespanwAfterStuck();
+                        //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                        //transform.position = GetAppearPosition();
                     }
                 }
                 else immobilityValueOnlyForBot = 0;
@@ -434,8 +437,9 @@ namespace VehicleBehaviour {
                     immobilityValue = 0;
                     immobilityValue2 = 0;
                     immobilityValue3 = 0;
-                    transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                    transform.position = GetAppearPosition();
+                    RespanwAfterStuck();
+                    //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                    //transform.position = GetAppearPosition();
                 }
             }
             else immobilityValue = 0;
@@ -449,8 +453,9 @@ namespace VehicleBehaviour {
                     immobilityValue = 0;
                     immobilityValue2 = 0;
                     immobilityValue3 = 0;
-                    transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                    transform.position = GetAppearPosition();
+                    RespanwAfterStuck();
+                    //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                    //transform.position = GetAppearPosition();
                 }
             }
             else immobilityValue3 = 0;
@@ -459,7 +464,6 @@ namespace VehicleBehaviour {
             //{
             //    Debug.Log("STOIT");
             //}
-            previousPosition = transform.position;
         }
 
         // Reposition the car to the start position
@@ -499,6 +503,16 @@ namespace VehicleBehaviour {
             Vector3 newPos = new Vector3(currentPos.x + random, currentPos.y + 7f, currentPos.z + random);
 
             return newPos;
+        }
+
+        private void RespanwAfterStuck()
+        {
+            NotifyGetRespanwPositionForWheelVehicleEvent?.Invoke(this);
+        }
+        public void GetRespawnTransform(Transform respTransform)
+        {
+            transform.rotation = respTransform.rotation;
+            transform.position = new Vector3(respTransform.position.x, 5f, respTransform.position.z);
         }
     }
 }

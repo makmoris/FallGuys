@@ -18,7 +18,6 @@ public class DeadZone : Bonus
 
     [Space]
     public float respawnTime;
-    public TargetsController targetsController;
 
     [SerializeField]private List<GameObject> destroyedObjects;
 
@@ -61,10 +60,10 @@ public class DeadZone : Bonus
         if(bumper != null)
         {
             GameObject car = bumper.gameObject;
-
-            Vector3 pos = targetsController.GetRespawnPosition().position;
+            
+            Vector3 pos = TargetsController.Instance.GetRespawnPosition().position;
             car.transform.position = new Vector3(pos.x, 5f, pos.z);
-            car.transform.rotation = targetsController.GetRespawnPosition().rotation;
+            car.transform.rotation = TargetsController.Instance.GetRespawnPosition().rotation;
             car.SetActive(true);
             bumper.enabled = true;// отключился при входе в зону из Bumper
             bumper.GetBonus(shieldBonus);

@@ -60,7 +60,7 @@ public class PointerIcon : MonoBehaviour
     public void WithinScreenPointer()
     {
         pointerIsOffScreen = false;
-
+        
         UpdateHealthColor(_healthValue);
 
         if (!notFirstWithinScreen)

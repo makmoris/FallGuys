@@ -48,7 +48,7 @@ public class CarDriverAI : MonoBehaviour
         float forwardAmount = 0f;
         float turnAmount = 0f;
 
-        float reachedTargetDistance = 4f;
+        float reachedTargetDistance = 6f;
         float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
         if (distanceToTarget > reachedTargetDistance)
@@ -67,7 +67,7 @@ public class CarDriverAI : MonoBehaviour
             else
             {
                 // target in behind
-                float reverseDistance = 0f;// если дальше чем на N, то разворачиваемся, а не сдаем назад
+                float reverseDistance = 1f;// если дальше чем на N, то разворачиваемся, а не сдаем назад
                 if (distanceToTarget > reverseDistance)// 0 - без заднего хода. Всегда в разворот (Мог застрять, сдавая назад и утыкаясь в препятствие)
                 {
                     // too far to reverse
@@ -213,11 +213,13 @@ public class CarDriverAI : MonoBehaviour
 
                         if (playerWasTargetCounter == 0)
                         {
+                            Debug.Log("ИЩЕТ ИГРОКА");
                             targetPositionTransform = playerTransform;
                             playerWasTargetCounter++;
                         }
                         else
                         {
+                            Debug.Log("ИЩЕТ БОНУС");
                             int rr = Random.Range(0, bonusBoxes.Count);
                             targetPositionTransform = bonusBoxes[rr];
 

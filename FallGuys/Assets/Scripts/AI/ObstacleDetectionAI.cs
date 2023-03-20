@@ -33,7 +33,7 @@ public class ObstacleDetectionAI : MonoBehaviour
 		carDriverAI = GetComponent<CarDriverAI>();
 	}
 
-    private void Start()
+    private void OnEnable()
     {
         _coroutine = StartCoroutine(WaitAndCheckObstacles());
     }

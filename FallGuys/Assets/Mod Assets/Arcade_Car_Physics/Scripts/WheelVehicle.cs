@@ -505,6 +505,11 @@ namespace VehicleBehaviour {
             return newPos;
         }
 
+        public void PlayerStuckUnder()// from UderPlayerCar. Only on Player car
+        {
+            RespanwAfterStuck();
+        }
+
         private void RespanwAfterStuck()
         {
             NotifyGetRespanwPositionForWheelVehicleEvent?.Invoke(this);

@@ -15717,6 +15717,64 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &5712527261275285592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3553281864882253061}
+  - component: {fileID: 282268209641583681}
+  - component: {fileID: 4371078860543589302}
+  m_Layer: 11
+  m_Name: UnderPlayerCar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3553281864882253061
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5712527261275285592}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6126495002538707398}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &282268209641583681
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5712527261275285592}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.4, z: 1.25}
+  m_Center: {x: 0, y: 0, z: -0.125}
+--- !u!114 &4371078860543589302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5712527261275285592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c936fede843fc94d9fff559cc280812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6300672911523952615
 GameObject:
   m_ObjectHideFlags: 0
@@ -16155,7 +16213,7 @@ GameObject:
   - component: {fileID: 1263788163955850021}
   - component: {fileID: 6868326980650492168}
   - component: {fileID: 851597212124194006}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: CarPlayerPrefab
   m_TagString: Car
   m_Icon: {fileID: 0}
@@ -16188,6 +16246,7 @@ Transform:
   - {fileID: 6997711153270761819}
   - {fileID: 585821526453880125}
   - {fileID: 2034715237130471443}
+  - {fileID: 3553281864882253061}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

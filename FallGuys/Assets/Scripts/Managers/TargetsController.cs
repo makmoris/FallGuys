@@ -46,11 +46,11 @@ public class TargetsController : MonoBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            var carDriverAI = players[i].GetComponent<CarDriverAI>();
+            var arenaCarDriverAI = players[i].GetComponent<ArenaCarDriverAI>();
 
-            if (carDriverAI != null)
+            if (arenaCarDriverAI != null)
             {
-                carDriverAI.SetTargets(targets);
+                arenaCarDriverAI.SetTargets(targets);
             }
         }
     }

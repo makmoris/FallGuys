@@ -142,7 +142,7 @@ namespace VehicleBehaviour {
         }     
 
         // When IsPlayer is false you can use this to control the steering
-        float steering;
+        [SerializeField]float steering;
         public float Steering { get => steering;
             set => steering = Mathf.Clamp(value, -1f, 1f);
         } 

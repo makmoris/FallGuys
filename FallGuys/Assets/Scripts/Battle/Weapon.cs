@@ -176,7 +176,7 @@ public class Weapon : MonoBehaviour
         isAI = value;
         detectorTransform.GetComponent<AttackTargetDetector>().IsAI(isAI);
 
-        shotDecisionSpeed = parentBodyCollider.GetComponent<DifficultyLevelsAI>().GetShotDecisionSpeed();
+        shotDecisionSpeed = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>().GetShotDecisionSpeed();
     }
 
     IEnumerator Shot()

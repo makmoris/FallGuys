@@ -141,11 +141,11 @@ public class LevelProgressController : MonoBehaviour
         {
             GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
             
-            CarDriverAI carDriverAI = null;
+            ArenaCarDriverAI carDriverAI = null;
 
             foreach(var car in cars)
             {
-                var _carAI = car.GetComponent<CarDriverAI>();
+                var _carAI = car.GetComponent<ArenaCarDriverAI>();
                 if (_carAI != null && car != deadPlayer)
                 {
                     carDriverAI = _carAI;

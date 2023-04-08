@@ -5,6 +5,8 @@ using VehicleBehaviour;
 
 public class RaceCarDriverAI : MonoBehaviour
 {
+    [SerializeField] private int pathNumber;
+
     [SerializeField] private int targetNumber;
     [Header("Точки Интереса")]
     public List<CheckpointGate> targets;
@@ -45,7 +47,7 @@ public class RaceCarDriverAI : MonoBehaviour
     {
         targets = RaceCheckpointManager.Instance.GetCheckpointsList();
         targetPositionTransform = targets[0].transform;
-        targetPosition = targets[0].GetTargetPosition();
+        targetPosition = targets[0].GetTargetPosition(pathNumber);
     }
 
     private void Update()
@@ -55,7 +57,6 @@ public class RaceCarDriverAI : MonoBehaviour
 
     private void Moving()
     {
-
         float forwardAmount = 0f;
         float turnAmount = 0f;
 
@@ -92,7 +93,7 @@ public class RaceCarDriverAI : MonoBehaviour
 
             // определяем сторону поворота 
             float angleToDir = Vector3.SignedAngle(transform.forward, dirToMovePosition, Vector3.up);
-            //Debug.Log($"Angle to direction = {angleToDir}");
+            Debug.Log($"Angle to direction = {angleToDir}");
             if (angleToDir == 0 || (angleToDir > -10f && angleToDir < 10f))
             {
                 turnAmount = 0;
@@ -142,7 +143,7 @@ public class RaceCarDriverAI : MonoBehaviour
 
         // для поворотов
         wheelVehicle.Steering = turnAmount;
-
+        steering = turnAmount;
         // для нитро
         //wheelVehicle.boosting = true;
 
@@ -158,7 +159,7 @@ public class RaceCarDriverAI : MonoBehaviour
             //targetReached = true;
             targetNumber++;
             targetPositionTransform = targets[targetNumber].transform;
-            targetPosition = targets[targetNumber].GetTargetPosition();
+            targetPosition = targets[targetNumber].GetTargetPosition(pathNumber);
             Debug.Log($"Доехал");
         }
     }

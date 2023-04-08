@@ -4,6 +4,8 @@ using VehicleBehaviour;
 
 public class ObstacleDetectionAI : MonoBehaviour
 {
+	[SerializeField] private bool inUpdate = false;
+	[Space]
 	[SerializeField] private string Obstacles = "Null";
 	[SerializeField] private float ObstacleDistance = 0;
 	[SerializeField] private float raycastLength = 10F;
@@ -52,8 +54,10 @@ public class ObstacleDetectionAI : MonoBehaviour
         while (true)
         {
 			CheckObstacles();
-			yield return new WaitForSeconds(0.25f);
-        }
+
+			if(inUpdate) yield return new WaitForEndOfFrame();
+			else yield return new WaitForSeconds(0.25f);
+		}
     }
 
     private void OnDestroy()

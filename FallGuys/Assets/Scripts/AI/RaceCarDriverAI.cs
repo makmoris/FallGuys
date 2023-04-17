@@ -11,7 +11,7 @@ public class RaceCarDriverAI : MonoBehaviour
     [Header("Точки Интереса")]
     public List<CheckpointGate> targets;
 
-
+    
     [Space]
     [SerializeField] private Transform targetPositionTransform;
     [SerializeField] private Vector3 targetPosition;
@@ -38,6 +38,15 @@ public class RaceCarDriverAI : MonoBehaviour
 
     public float steering;
 
+    [Header("Player Following Controller")]
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private float distanceToPlayer;
+    [SerializeField] private float dotPlayer;
+
+    [SerializeField] private float maxDistanceInFrontOfPlayer;// максимальная дистанция отрыва перед игроком
+    [SerializeField] private float maxDistanceBehindOfPlayer;// максимальная дистанция отставания позади игрока
+    
+
     private void Awake()
     {
         wheelVehicle = GetComponent<WheelVehicle>();
@@ -53,6 +62,35 @@ public class RaceCarDriverAI : MonoBehaviour
     private void Update()
     {
         if (!obstacle && !side) Moving();
+        PlayerChecker();
+    }
+
+    private void PlayerChecker()
+    {
+        distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+        Vector3 dirToMovePosition = (playerTransform.position - transform.position);
+        dotPlayer = Vector3.Dot(transform.forward, dirToMovePosition);
+
+        if (dotPlayer <= maxDistanceBehindOfPlayer) // Игрок отстает. Бот сбрасывает скорость
+        {
+            Debug.Log("Игрок отстает. Бот сбрасывает скорость");
+            Debug.DrawRay(transform.position, playerTransform.position - transform.position, Color.red);
+        }
+        // бот в пределах гонки. Не сильно впереди и не сильно отстает от игрока. Бот едет как обычно
+        if (dotPlayer > maxDistanceBehindOfPlayer && dotPlayer < maxDistanceInFrontOfPlayer)
+        {
+            Debug.Log("Бот в пределах допустимой дистанции от игрока. Стандартное движение");
+            Debug.DrawRay(transform.position, playerTransform.position - transform.position, Color.blue);
+        }
+
+        if (dotPlayer >= maxDistanceInFrontOfPlayer)// Игрок слишком вырвался вперед. Бот разгоняется
+        {
+            Debug.Log("Игрок слишком вырвался вперед. Бот разгоняется");
+            Debug.DrawRay(transform.position, playerTransform.position - transform.position, Color.yellow);
+        }
+
+        
     }
 
     private void Moving()
@@ -93,7 +131,7 @@ public class RaceCarDriverAI : MonoBehaviour
 
             // определяем сторону поворота 
             float angleToDir = Vector3.SignedAngle(transform.forward, dirToMovePosition, Vector3.up);
-            Debug.Log($"Angle to direction = {angleToDir}");
+            //Debug.Log($"Angle to direction = {angleToDir}");
             if (angleToDir == 0 || (angleToDir > -10f && angleToDir < 10f))
             {
                 turnAmount = 0;

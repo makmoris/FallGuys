@@ -5,12 +5,11 @@ public class WaypointsPath : MonoBehaviour
 {
     #region CREATE PATH
 
-    [HideInInspector]
-    public List<Transform> nodes = new List<Transform>();
-    private int numPoints;
-    private Vector3[] points;
-    private float[] distances;
-    public float Length { get; private set; }
+    [SerializeField] public List<Transform> nodes = new List<Transform>();
+    [SerializeField] private int numPoints;
+    [SerializeField] private Vector3[] points;
+    [SerializeField] private float[] distances;
+    [SerializeField] public float Length { get; private set; }
 
     #endregion
 

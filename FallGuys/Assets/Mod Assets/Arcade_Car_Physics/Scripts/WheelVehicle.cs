@@ -170,6 +170,13 @@ namespace VehicleBehaviour {
         [SerializeField] float speed = 0.0f;
         public float Speed => speed;
 
+        [SerializeField] internal float maxSpeed = 200f;
+        public float MaxSpeed
+        {
+            get => maxSpeed;
+            set => maxSpeed = value;
+        }
+
         [Header("Particles")]
         // Exhaust fumes
         [SerializeField] ParticleSystem[] gasParticles = new ParticleSystem[0];

@@ -3,6 +3,8 @@ using Random = UnityEngine.Random;
 
 public class CarAIInputs : MonoBehaviour
 {
+    public float MySteer;
+    public float MyAccel;
     #region REFERENCES
 
     private AnyCarAI carAIReference;
@@ -103,6 +105,7 @@ public class CarAIInputs : MonoBehaviour
                         float spinningAngle = carAIReference.rb.angularVelocity.magnitude * carAIReference.cautiousAngularVelocityFactor;
                         float cautiousnessRequired = Mathf.InverseLerp(0, carAIReference.cautiousAngle, Mathf.Max(spinningAngle, approachingCornerAngle));
                         desiredSpeed = Mathf.Lerp(carAIReference.maxSpeed, carAIReference.maxSpeed * carAIReference.cautiousSpeedFactor, cautiousnessRequired);
+                        //Debug.Log(desiredSpeed);
                         break;
                     }
 
@@ -113,6 +116,7 @@ public class CarAIInputs : MonoBehaviour
                         float spinningAngle = carAIReference.rb.angularVelocity.magnitude * carAIReference.cautiousAngularVelocityFactor;
                         float cautiousnessRequired = Mathf.Max( Mathf.InverseLerp(0, carAIReference.cautiousAngle, spinningAngle), distanceCautiousFactor);
                         desiredSpeed = Mathf.Lerp(carAIReference.maxSpeed, carAIReference.maxSpeed * carAIReference.cautiousSpeedFactor, cautiousnessRequired);
+                        //Debug.Log(desiredSpeed);
                         break;
                     }
 
@@ -129,6 +133,7 @@ public class CarAIInputs : MonoBehaviour
             if (Time.time < avoidOtherCarTime)
             {
                 desiredSpeed *= avoidOtherCarSlowdown;
+                //Debug.Log(desiredSpeed);
                 offsetTargetPos += carAIReference.carAItarget.right * avoidPathOffset;
             }
             else
@@ -146,13 +151,14 @@ public class CarAIInputs : MonoBehaviour
 
 
             float accel = Mathf.Clamp((desiredSpeed - carAIReference.currentSpeed) * accelBrakeSensitivity, -1, 1);
-
+            //Debug.Log($"desiredSpeed = {desiredSpeed}; carAIReference.currentSpeed = {carAIReference.currentSpeed};" +
+            //    $"accelBrakeSensitivity = {accelBrakeSensitivity}");
             #endregion
 
             #region STEER
 
             accel *= carAIReference.wanderAmount + (Mathf.PerlinNoise(Time.time * carAIReference.accelWanderSpeed, randomValue) * carAIReference.wanderAmount);
-
+            MyAccel = accel;
             Vector3 localTarget;
 
             localTarget = transform.InverseTransformPoint(offsetTargetPos);
@@ -176,7 +182,7 @@ public class CarAIInputs : MonoBehaviour
             }
 
             float steer = Mathf.Clamp(targetAngle * carAIReference.steerSensitivity, -1, 1) * Mathf.Sign(carAIReference.currentSpeed);
-
+            MySteer = steer;
             #endregion
 
             #region MOVE CAR

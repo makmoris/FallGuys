@@ -2,35 +2,39 @@
 
 public class CarAIWaipointTracker : MonoBehaviour
 {
-    [HideInInspector]
+    //[HideInInspector]
     public Transform target;
-    private WaypointsPath circuit;
-    private AnyCarAI ACAI;
+    //private WaypointsPath circuit;
+    [SerializeField] private MYWayPointPath circuit;
+    [SerializeField] private AnyCarAI ACAI;
 
-    private float lookAheadForTargetOffset = 5;
-    private float lookAheadForTargetFactor = .1f;
-    private float lookAheadForSpeedOffset = 10;
-    private float lookAheadForSpeedFactor = .2f;
-    private int progressStyle;
-    private float pointToPointThreshold = 4;
+    [SerializeField] private float lookAheadForTargetOffset = 5;
+    [SerializeField] private float lookAheadForTargetFactor = .1f;
+    [SerializeField] private float lookAheadForSpeedOffset = 10;
+    [SerializeField] private float lookAheadForSpeedFactor = .2f;
+    [SerializeField] private int progressStyle;
+    [SerializeField] private float pointToPointThreshold = 4;
 
-    private float progressDistance;
-    private int progressNum;
-    private Vector3 lastPosition;
-    private float speed;
+    [SerializeField] private float progressDistance;
+    [SerializeField] private int progressNum;
+    [SerializeField] private Vector3 lastPosition;
+    [SerializeField] private float speed;
 
 
     #region KEY POINTS
 
-    [HideInInspector]
+    //[HideInInspector]
     public Transform[] pathTransform;
 
-    [HideInInspector]
-    public WaypointsPath.RoutePoint targetPoint { get; private set; }
-    [HideInInspector]
-    public WaypointsPath.RoutePoint speedPoint { get; private set; }
-    [HideInInspector]
-    public WaypointsPath.RoutePoint progressPoint { get; private set; }
+    //[HideInInspector]
+    //public WaypointsPath.RoutePoint targetPoint { get; private set; }
+    public MYWayPointPath.RoutePoint targetPoint { get; private set; }
+    //[HideInInspector]
+    //public WaypointsPath.RoutePoint speedPoint { get; private set; }
+    public MYWayPointPath.RoutePoint speedPoint { get; private set; }
+    //[HideInInspector]
+    //public WaypointsPath.RoutePoint progressPoint { get; private set; }
+    public MYWayPointPath.RoutePoint progressPoint { get; private set; }
 
     #endregion
 
@@ -100,8 +104,9 @@ public class CarAIWaipointTracker : MonoBehaviour
         {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, target.position);
+            Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(circuit.GetRoutePosition(progressDistance), 1);
-            Gizmos.color = Color.yellow;
+            Gizmos.color = Color.blue;
             Gizmos.DrawLine(target.position, target.position + target.forward);
         }
     }

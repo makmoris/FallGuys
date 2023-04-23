@@ -4,6 +4,8 @@ using VehicleBehaviour;
 
 public class ObstacleDetectionAI : MonoBehaviour
 {
+	[SerializeField] private bool inUpdate = false;
+	[Space]
 	[SerializeField] private string Obstacles = "Null";
 	[SerializeField] private float ObstacleDistance = 0;
 	[SerializeField] private float raycastLength = 10F;
@@ -22,7 +24,9 @@ public class ObstacleDetectionAI : MonoBehaviour
 	[SerializeField] private int collisionCounter;
 	private bool isTurnBack;
 
-	private CarDriverAI carDriverAI;
+	private ArenaCarDriverAI arenaCarDriverAI;
+	private RaceCarDriverAI raceCarDriverAI;
+	private bool isArenaCarDriverAI;
 	private WheelVehicle wheelVehicle;
 
 	private Coroutine _coroutine;
@@ -30,7 +34,14 @@ public class ObstacleDetectionAI : MonoBehaviour
 	private void Awake()
 	{
 		wheelVehicle = GetComponent<WheelVehicle>();
-		carDriverAI = GetComponent<CarDriverAI>();
+		arenaCarDriverAI = GetComponent<ArenaCarDriverAI>();
+
+		if (arenaCarDriverAI != null) isArenaCarDriverAI = true;
+        else
+        {
+			isArenaCarDriverAI = false;
+			raceCarDriverAI = GetComponent<RaceCarDriverAI>();
+		}
 	}
 
     private void OnEnable()
@@ -43,8 +54,10 @@ public class ObstacleDetectionAI : MonoBehaviour
         while (true)
         {
 			CheckObstacles();
-			yield return new WaitForSeconds(0.25f);
-        }
+
+			if(inUpdate) yield return new WaitForEndOfFrame();
+			else yield return new WaitForSeconds(0.25f);
+		}
     }
 
     private void OnDestroy()
@@ -127,7 +140,8 @@ public class ObstacleDetectionAI : MonoBehaviour
 
 		if (Obstacles != "Null")// если перед ботом есть препятсвие и он не сдает назад
 		{
-			carDriverAI.Obstacle = true;
+			if (isArenaCarDriverAI) arenaCarDriverAI.Obstacle = true;
+			else raceCarDriverAI.Obstacle = true;
 
 			if (isTurnBack)
 			{
@@ -141,7 +155,8 @@ public class ObstacleDetectionAI : MonoBehaviour
 		}
 		else
 		{
-			carDriverAI.Obstacle = false;
+			if (isArenaCarDriverAI) arenaCarDriverAI.Obstacle = false;
+			else raceCarDriverAI.Obstacle = false;
 
 			isTurnBack = false;
 			collisionCounter = 0;

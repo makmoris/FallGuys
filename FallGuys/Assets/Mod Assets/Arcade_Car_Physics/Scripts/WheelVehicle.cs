@@ -142,7 +142,7 @@ namespace VehicleBehaviour {
         }     
 
         // When IsPlayer is false you can use this to control the steering
-        float steering;
+        [SerializeField]float steering;
         public float Steering { get => steering;
             set => steering = Mathf.Clamp(value, -1f, 1f);
         } 
@@ -169,6 +169,13 @@ namespace VehicleBehaviour {
         // Use this to read the current car speed (you'll need this to make a speedometer)
         [SerializeField] float speed = 0.0f;
         public float Speed => speed;
+
+        [SerializeField] internal float maxSpeed = 200f;
+        public float MaxSpeed
+        {
+            get => maxSpeed;
+            set => maxSpeed = value;
+        }
 
         [Header("Particles")]
         // Exhaust fumes

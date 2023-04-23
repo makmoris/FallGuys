@@ -6,12 +6,12 @@ public class AttackTargetDetector : MonoBehaviour
     [SerializeField] private Weapon weapon;// ссылка на пушку, внутри которой находится детектор
 
     private bool isAI;
-    private CarDriverAI driverAI;
+    private ArenaCarDriverAI arenaDriverAI;
 
 
     private void Awake()
     {
-        driverAI = transform.GetComponentInParent<CarDriverAI>();
+        arenaDriverAI = transform.GetComponentInParent<ArenaCarDriverAI>();
     }
     private void Start()
     {
@@ -28,7 +28,7 @@ public class AttackTargetDetector : MonoBehaviour
                 currentTargetObject = other.gameObject;
 
                 if (!isAI) PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+                else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
         }
     }
@@ -38,7 +38,7 @@ public class AttackTargetDetector : MonoBehaviour
         if (other.gameObject == currentTargetObject && currentTargetObject != null)// если замеченный объект совпадает с выбранным объектом целью, то можем атаковать
         {
              if (!isAI) PointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
-            else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+            else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
 
             // разрешаем атаковать
             weapon.SetObjectForAttack(currentTargetObject.transform);
@@ -51,7 +51,7 @@ public class AttackTargetDetector : MonoBehaviour
                 currentTargetObject = other.gameObject;
 
                 if (!isAI) PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                else driverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+                else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
         }
         
@@ -62,7 +62,7 @@ public class AttackTargetDetector : MonoBehaviour
         if (other.gameObject == currentTargetObject)
         {
             if (!isAI) PointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
-            else driverAI.DetectorLostTarget();
+            else arenaDriverAI.DetectorLostTarget();
 
             currentTargetObject = null;
             weapon.ReturnWeaponToPosition();
@@ -74,7 +74,7 @@ public class AttackTargetDetector : MonoBehaviour
         if (objWithAttackPointer == currentTargetObject)
         {
             if (!isAI) PointerManager.Instance.ObjectWithAttackPointerWasDestroyed();
-            else driverAI.DetectorLostTarget();
+            else arenaDriverAI.DetectorLostTarget();
 
             weapon.ReturnWeaponToPosition();
             currentTargetObject = null;

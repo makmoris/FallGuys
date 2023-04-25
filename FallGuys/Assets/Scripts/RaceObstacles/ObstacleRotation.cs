@@ -17,7 +17,6 @@ public class ObstacleRotation : MonoBehaviour
     private void Start()
     {
         canMoving = true;
-        transform.localEulerAngles = startPosition.eulerAngles;
         targetPosition = endPosition.eulerAngles;
         goingToEndPosition = true;
     }

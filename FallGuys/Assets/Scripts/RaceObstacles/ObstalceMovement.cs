@@ -17,7 +17,6 @@ public class ObstalceMovement : MonoBehaviour
     private void Start()
     {
         canMoving = true;
-        transform.localPosition = startPosition;
         targetPosition = endPosition;
         goingToEndPosition = true;
     }

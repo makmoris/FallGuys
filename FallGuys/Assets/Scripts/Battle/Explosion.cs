@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosion : Bonus
+public class Explosion : Bonus, IExplosion
 {
-    
-
     [SerializeField] float value;
     public override float Value
     {
@@ -48,7 +46,7 @@ public class Explosion : Bonus
         //GetComponent<Renderer>().material.color = Color.red;
     }
 
-    private void Explode()
+    public void Explode()
     {
         Collider[] overLappedColliders = Physics.OverlapSphere(transform.position, radius);
 
@@ -97,8 +95,8 @@ public class Explosion : Bonus
 
         if (mineActivatedSoundCoroutine != null) StopCoroutine(mineActivatedSoundCoroutine);
 
-        Destroy(gameObject);
-        //gameObject.SetActive(false);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public override void Got()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosiveDuck : Bonus
+public class ExplosiveDuck : Bonus, IExplosion
 {
     [SerializeField] float value;
     public override float Value
@@ -83,7 +83,7 @@ public class ExplosiveDuck : Bonus
         StartCoroutine(StartExplosion(timeToExplosion));
     }
 
-    private void Explode()
+    public void Explode()
     {
         Collider[] overLappedColliders = Physics.OverlapSphere(duck.transform.position, radius);
 

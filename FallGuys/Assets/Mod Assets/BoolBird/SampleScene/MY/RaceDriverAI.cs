@@ -26,7 +26,7 @@ public class RaceDriverAI : MonoBehaviour
 
     #endregion
 
-    //public RaceAIInputs raceAIInputs;
+   // public RaceAIInputs raceAIInputs;
     public RaceAIWaipointTracker raceAIWaypointTracker;
 
     #region INPUTS
@@ -56,7 +56,7 @@ public class RaceDriverAI : MonoBehaviour
     #region PROGRESS TRACKER
 
     [SerializeField] internal ProgressStyle progressStyle = ProgressStyle.SmoothAlongRoute;
-    [SerializeField] public RaceWaypointsPath AIcircuit;
+    [SerializeField] public RaceWaypointsPath raceWaypointsPath;
     [SerializeField] [Range(5, 50)] public float lookAheadForTarget = 5;
     [SerializeField] public float lookAheadForTargetFactor = .1f;
     [SerializeField] public float lookAheadForSpeedOffset = 10;
@@ -105,5 +105,10 @@ public class RaceDriverAI : MonoBehaviour
     {
         wheelVehicle.Steering = steering;
         wheelVehicle.Throttle = accel;
+    }
+
+    public void SetNewWaypointsPath(RaceWaypointsPath newPath)
+    {
+        raceAIWaypointTracker.SetNewWaypointsPath(newPath);
     }
 }

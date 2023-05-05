@@ -131,8 +131,10 @@ public class RaceWaypointsPath : MonoBehaviour
 
     private void CachePositionsAndDistances()
     {
-        points = new Vector3[nodes.Count + 1];
-        distances = new float[nodes.Count + 1];
+        //points = new Vector3[nodes.Count + 1];
+        //distances = new float[nodes.Count + 1];
+        points = new Vector3[nodes.Count];
+        distances = new float[nodes.Count];
 
         float accumulateDistance = 0;
         for (int i = 0; i < points.Length; ++i)
@@ -172,7 +174,7 @@ public class RaceWaypointsPath : MonoBehaviour
             splineComputer = GetComponent<SplineComputer>();
             SplinePoint[] splinePoints = splineComputer.GetPoints(SplineComputer.Space.Local);
 
-            for (int i = 0; i < splinePoints.Length - 1; i++)
+            for (int i = 0; i < splinePoints.Length; i++)
             {
                 GameObject waypoint = new GameObject("Waypoint");
                 waypoint.transform.SetParent(this.transform);
@@ -198,13 +200,14 @@ public class RaceWaypointsPath : MonoBehaviour
             CachePositionsAndDistances();
             Length = distances[distances.Length - 1];
 
-            Gizmos.color = selected ? Color.yellow : new Color(1, 1, 0, 0.5f);
+            Gizmos.color = selected ? Color.red : new Color(1, 1, 0, 0.5f);
             Vector3 prev = nodes[0].position;
             if (smoothRoute)
             {
                 for (float dist = 0; dist < Length; dist += Length / editorVisualisationSubsteps)
                 {
-                    Vector3 next = GetRoutePosition(dist + 1);
+                    //Vector3 next = GetRoutePosition(dist + 1);
+                    Vector3 next = GetRoutePosition(dist);
                     Gizmos.DrawLine(prev, next);
                     prev = next;
                 }
@@ -214,7 +217,8 @@ public class RaceWaypointsPath : MonoBehaviour
             {
                 for (int n = 0; n < nodes.Count; ++n)
                 {
-                    Vector3 next = nodes[(n + 1) % nodes.Count].position;
+                    //Vector3 next = nodes[(n + 1) % nodes.Count].position;
+                    Vector3 next = nodes[(n) % nodes.Count].position;
                     Gizmos.DrawLine(prev, next);
                     prev = next;
                 }

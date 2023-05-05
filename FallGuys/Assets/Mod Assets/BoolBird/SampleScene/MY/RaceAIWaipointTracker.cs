@@ -7,7 +7,7 @@ public class RaceAIWaipointTracker : MonoBehaviour
     //[HideInInspector]
     public Transform target;
     //private WaypointsPath circuit;
-    [SerializeField] private RaceWaypointsPath circuit;
+    [SerializeField] private RaceWaypointsPath raceWaypointsPath;
     [SerializeField] private RaceDriverAI raceDriverAI;
 
     [SerializeField] private float lookAheadForTargetOffset = 5;
@@ -36,10 +36,9 @@ public class RaceAIWaipointTracker : MonoBehaviour
 
     private void Start()
     {
-        #region GET ACAI VALUES
 
         raceDriverAI = this.GetComponent<RaceDriverAI>();
-        circuit = raceDriverAI.AIcircuit;
+        raceWaypointsPath = raceDriverAI.raceWaypointsPath;
         lookAheadForTargetOffset = raceDriverAI.lookAheadForTarget;
         lookAheadForTargetFactor = raceDriverAI.lookAheadForTargetFactor;
         lookAheadForSpeedOffset = raceDriverAI.lookAheadForSpeedOffset;
@@ -47,7 +46,6 @@ public class RaceAIWaipointTracker : MonoBehaviour
         pointToPointThreshold = raceDriverAI.pointThreshold;
         progressStyle = (int)raceDriverAI.progressStyle;
 
-        #endregion
 
         if (target == null)
         {
@@ -64,11 +62,15 @@ public class RaceAIWaipointTracker : MonoBehaviour
 
         if (progressStyle == 1)
         {
-            target.position = circuit.nodes[progressNum].position;
-            target.rotation = circuit.nodes[progressNum].rotation;
+            target.position = raceWaypointsPath.nodes[progressNum].position;
+            target.rotation = raceWaypointsPath.nodes[progressNum].rotation;
         }
     }
 
+    public void SetNewWaypointsPath(RaceWaypointsPath newPath)
+    {
+        raceWaypointsPath = newPath;
+    }
 
     private void Update()
     {
@@ -101,7 +103,7 @@ public class RaceAIWaipointTracker : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, target.position);
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(circuit.GetRoutePosition(progressDistance), 1);
+            Gizmos.DrawWireSphere(raceWaypointsPath.GetRoutePosition(progressDistance), 1);
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(target.position, target.position + target.forward);
         }
@@ -119,10 +121,10 @@ public class RaceAIWaipointTracker : MonoBehaviour
             {
                 speed = Mathf.Lerp(speed, (lastPosition - transform.position).magnitude / Time.deltaTime, Time.deltaTime);
             }
-            target.position = circuit.GetRoutePoint(progressDistance + lookAheadForTargetOffset + lookAheadForTargetFactor * speed).position;
-            target.rotation = Quaternion.LookRotation(circuit.GetRoutePoint(progressDistance + lookAheadForSpeedOffset + lookAheadForSpeedFactor * speed).direction);
+            target.position = raceWaypointsPath.GetRoutePoint(progressDistance + lookAheadForTargetOffset + lookAheadForTargetFactor * speed).position;
+            target.rotation = Quaternion.LookRotation(raceWaypointsPath.GetRoutePoint(progressDistance + lookAheadForSpeedOffset + lookAheadForSpeedFactor * speed).direction);
 
-            progressPoint = circuit.GetRoutePoint(progressDistance);
+            progressPoint = raceWaypointsPath.GetRoutePoint(progressDistance);
             Vector3 progressDelta = progressPoint.position - transform.position;
             if (Vector3.Dot(progressDelta, progressPoint.direction) < 0)
             {
@@ -136,13 +138,13 @@ public class RaceAIWaipointTracker : MonoBehaviour
             Vector3 targetDelta = target.position - transform.position;
             if (targetDelta.magnitude < pointToPointThreshold)
             {
-                progressNum = (progressNum + 1) % circuit.nodes.Count;
+                progressNum = (progressNum + 1) % raceWaypointsPath.nodes.Count;
             }
 
-            target.position = circuit.nodes[progressNum].position;
-            target.rotation = circuit.nodes[progressNum].rotation;
+            target.position = raceWaypointsPath.nodes[progressNum].position;
+            target.rotation = raceWaypointsPath.nodes[progressNum].rotation;
 
-            progressPoint = circuit.GetRoutePoint(progressDistance);
+            progressPoint = raceWaypointsPath.GetRoutePoint(progressDistance);
             Vector3 progressDelta = progressPoint.position - transform.position;
             if (Vector3.Dot(progressDelta, progressPoint.direction) < 0)
             {

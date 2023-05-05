@@ -49,9 +49,6 @@ public class RaceAIInputs : MonoBehaviour
         #region REFERENCES
 
         carAIReference = GetComponent<RaceDriverAI>();
-        //frontSensor = this.transform.GetChild(1).GetChild(3).GetChild(0);
-        //rightSensor = this.transform.GetChild(1).GetChild(3).GetChild(1);
-        //leftSensor = this.transform.GetChild(1).GetChild(3).GetChild(2);
 
         persuitAiOn = carAIReference.persuitAiOn;
 

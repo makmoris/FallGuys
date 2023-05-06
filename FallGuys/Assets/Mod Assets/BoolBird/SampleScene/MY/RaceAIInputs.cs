@@ -68,7 +68,7 @@ public class RaceAIInputs : MonoBehaviour
             }
             else
             {
-                carAIReference.Move(0, 0, -1f, 1f);
+                carAIReference.Move(0, 0, -1f);
             }
         }
         else
@@ -206,16 +206,16 @@ public class RaceAIInputs : MonoBehaviour
 
             if (isBraking)
             {
-                carAIReference.Move(steer, 0f, -1f, 0f);
+                carAIReference.Move(steer, 0f, -1f);
             }
             else if (reverseGearOn)
             {
-                carAIReference.Move(-steer, -1f, -1f, 0f);
+                carAIReference.Move(-steer, -1f, -1f);
             }
             else
             {
-                if(!obstacle) carAIReference.Move(steer, accel, accel, 0f);
-                else carAIReference.Move(obstacleSteer, accel, accel, 0f);
+                if(!obstacle) carAIReference.Move(steer, accel, accel);
+                else carAIReference.Move(obstacleSteer, accel, accel);
             }
 
             #endregion

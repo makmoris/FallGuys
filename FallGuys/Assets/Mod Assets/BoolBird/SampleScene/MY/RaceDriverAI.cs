@@ -72,6 +72,20 @@ public class RaceDriverAI : MonoBehaviour
     public float currentSpeed;
     internal float maximumSteerAngle;
 
+    private bool isGround;
+    internal bool IsGround
+    {
+        get => isGround;
+        set => isGround = value;
+    }
+
+    private bool handbrake;
+    internal bool Handbrake
+    {
+        get => handbrake;
+        set => handbrake = value;
+    }
+
     private void Start()
     {
         wheelVehicle = GetComponent<WheelVehicle>();
@@ -94,6 +108,8 @@ public class RaceDriverAI : MonoBehaviour
         carAItarget = carAItargetObj.transform;
 
         #endregion
+
+        isGround = true;
     }
 
     private void Update()
@@ -101,10 +117,39 @@ public class RaceDriverAI : MonoBehaviour
         currentSpeed = rb.velocity.magnitude * 3.6f;
     }
 
-    public void Move(float steering, float accel, float footbrake, float handbrake)
+    public void Move(float steering, float accel, float footbrake)
     {
-        wheelVehicle.Steering = steering;
-        wheelVehicle.Throttle = accel;
+        if (!handbrake)
+        {
+            wheelVehicle.Steering = steering;
+            wheelVehicle.Throttle = accel;
+            wheelVehicle.Handbrake = false;
+        }
+        else
+        {
+            wheelVehicle.Steering = 0f;
+            wheelVehicle.Handbrake = true;
+        }
+    }
+
+    internal void StopInWaitZone()
+    {
+        StartCoroutine(FullStop());
+    }
+
+    private IEnumerator FullStop()
+    {
+        while (currentSpeed > 5f)
+        {
+            handbrake = true;
+            yield return null;
+        }
+
+        handbrake = false;
+
+        //yield return new WaitForSeconds(1.5f);
+        //wheelVehicle.Handbrake = false;
+        //handbrake = false;
     }
 
     public void SetNewWaypointsPath(RaceWaypointsPath newPath)

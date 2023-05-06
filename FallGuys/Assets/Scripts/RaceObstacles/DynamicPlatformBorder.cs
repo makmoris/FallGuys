@@ -7,6 +7,6 @@ public class DynamicPlatformBorder : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        CarLeftTheDynamicPlatformBorderEvent?.Invoke(other.gameObject);
+        if (other.CompareTag("Car")) CarLeftTheDynamicPlatformBorderEvent?.Invoke(other.gameObject);
     }
 }

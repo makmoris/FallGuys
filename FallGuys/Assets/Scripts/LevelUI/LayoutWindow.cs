@@ -96,8 +96,8 @@ public class LayoutWindow : MonoBehaviour
         arrows.SetActive(false);
         leftRightJoystick.SetActive(false);
         allJoystick.SetActive(true);
-        gasButton.SetActive(false);
-        backButton.SetActive(false);
+        gasButton.SetActive(true);
+        backButton.SetActive(true);
 
         DeactiveArrowsButton();
         DeactiveLeftRightJoysticButton();
@@ -141,7 +141,7 @@ public class LayoutWindow : MonoBehaviour
 
     public void ShowCurrentLayout()
     {
-        layoutIndex = PlayerPrefs.GetInt(key, 0);
+        layoutIndex = PlayerPrefs.GetInt(key, 2);
 
         switch (layoutIndex)
         {
@@ -161,7 +161,7 @@ public class LayoutWindow : MonoBehaviour
 
     private string GetCurrentLayout()
     {
-        int layoutIndex = PlayerPrefs.GetInt(key, 0);
+        int layoutIndex = PlayerPrefs.GetInt(key, 2);
 
         string layoutName = "";
 

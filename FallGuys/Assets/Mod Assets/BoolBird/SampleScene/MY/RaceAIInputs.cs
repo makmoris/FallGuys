@@ -155,13 +155,13 @@ public class RaceAIInputs : MonoBehaviour
 
             #region SENSITIVITY
 
-            float accelBrakeSensitivity = (desiredSpeed < carAIReference.currentSpeed)
+            float accelBrakeSensitivity = (desiredSpeed < carAIReference.CurrentSpeed)
                                               ? carAIReference.brakeSensitivity
                                               : carAIReference.accelSensitivity;
 
             
 
-            float accel = Mathf.Clamp((desiredSpeed - carAIReference.currentSpeed) * accelBrakeSensitivity, -1, 1);
+            float accel = Mathf.Clamp((desiredSpeed - carAIReference.CurrentSpeed) * accelBrakeSensitivity, -1, 1);
             //if (accel < 0)
             //{
             //    Debug.Log($" {accel} = (desiredSpeed {desiredSpeed} - carAIReference.currentSpeed {carAIReference.currentSpeed})" +
@@ -198,7 +198,7 @@ public class RaceAIInputs : MonoBehaviour
                 targetAngle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
             }
 
-            float steer = Mathf.Clamp(targetAngle * carAIReference.steerSensitivity, -1, 1) * Mathf.Sign(carAIReference.currentSpeed);
+            float steer = Mathf.Clamp(targetAngle * carAIReference.steerSensitivity, -1, 1) * Mathf.Sign(carAIReference.CurrentSpeed);
             MySteer = steer;
             #endregion
 

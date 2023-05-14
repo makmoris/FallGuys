@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class DynamicPlatformWaitZone : MonoBehaviour
 {
+    [SerializeField] private float desiredSpeedInZone = 30f;
+    [Space]
     [SerializeField] private RaceSectorWithDynamicPlatform raceSectorWithDynamicPlatform;
     [Space]
     [SerializeField] private List<ObstalceMovement> platforms;
@@ -75,8 +77,17 @@ public class DynamicPlatformWaitZone : MonoBehaviour
                 {
                     carAI.Handbrake = true;
                 }
-                else Debug.Log(carAI.name + " Сразу залетает на платформу"); // можно добавить какую-нибудь проверку на скорость. Если больше N, то тормоз
+                else
+                {
+                    Debug.Log(carAI.name + " Сразу залетает на платформу"); // можно добавить какую-нибудь проверку на скорость. Если больше N, то тормоз
+                    if (carAI.CurrentSpeed > desiredSpeedInZone)
+                    {
+                        Debug.Log($"Скорость {carAI.name} = {carAI.CurrentSpeed} больше чем допустимая {desiredSpeedInZone}");
+                        carAI.SlowDownToDesiredSpeed(desiredSpeedInZone);
+                    }
+                }
             }
+
         }
     }
 

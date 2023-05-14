@@ -5,12 +5,16 @@ using UnityEngine;
 
 public class RaceWaypointsPath : MonoBehaviour
 {
+    [SerializeField] private EnterSectorTrigger enterSector;
+    [SerializeField] private ExitSectorTrigger exitSector;
+    [Space]
+
     #region CREATE PATH
 
     public List<Transform> nodes = new List<Transform>();
     private int numPoints;
     private Vector3[] points;
-    private float[] distances;
+    [SerializeField] private float[] distances;
 
     [SerializeField] private float length;
     public float Length { get => length; private set => length = value; }
@@ -71,7 +75,7 @@ public class RaceWaypointsPath : MonoBehaviour
         }
 
         dist = Mathf.Repeat(dist, Length);
-
+        
         while (distances[point] < dist)
         {
             ++point;
@@ -79,6 +83,7 @@ public class RaceWaypointsPath : MonoBehaviour
 
         p1n = ((point - 1) + numPoints) % numPoints;
         p2n = point;
+
 
         i = Mathf.InverseLerp(distances[p1n], distances[p2n], dist);
 
@@ -172,7 +177,7 @@ public class RaceWaypointsPath : MonoBehaviour
             DestroyObjects(this.gameObject);
 
             splineComputer = GetComponent<SplineComputer>();
-            SplinePoint[] splinePoints = splineComputer.GetPoints(SplineComputer.Space.Local);
+            SplinePoint[] splinePoints = splineComputer.GetPoints(SplineComputer.Space.World);
 
             for (int i = 0; i < splinePoints.Length; i++)
             {
@@ -185,6 +190,8 @@ public class RaceWaypointsPath : MonoBehaviour
         Transform[] pathTransforms = GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
 
+        nodes.Add(enterSector.transform);
+
         for (int i = 0; i < pathTransforms.Length; i++)
         {
             if (pathTransforms[i] != transform)
@@ -192,6 +199,8 @@ public class RaceWaypointsPath : MonoBehaviour
                 nodes.Add(pathTransforms[i]);
             }
         }
+
+        nodes.Add(exitSector.transform);
 
         if (nodes.Count > 1)
         {

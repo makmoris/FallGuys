@@ -7,13 +7,30 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 	[SerializeField] private bool inUpdate = false;
 	[Space]
 	[SerializeField] private string Obstacles = "Null";
-	[SerializeField] private float ObstacleDistance = 0;
+    [SerializeField] private string ObstacleName = "Null";
+    [SerializeField] private float ObstacleDistance = 0;
 	[SerializeField] private float raycastLength = 10F;
 	[SerializeField] private float angleObstacle = 0;
 
 	public LayerMask obstacleLayerMask;
 
-	[Header("Raycast Directions")]
+    [Header("Raycast Directions")]
+    [SerializeField] private float sidesRayLength;
+    [SerializeField] private GameObject leftSideBack;
+    [SerializeField] private GameObject leftSideMiddle;
+    [SerializeField] private GameObject leftSideFront;
+    [Space]
+    [SerializeField] private GameObject rightSideBack;
+    [SerializeField] private GameObject rightSideMiddle;
+    [SerializeField] private GameObject rightSideFront;
+    [Space]
+    [SerializeField] private float frontSideRayLength;
+    [SerializeField] private GameObject frontSideMiddle;
+    [SerializeField] private GameObject frontSideLeft;
+    [SerializeField] private GameObject frontSideLeftMiddle;
+    [SerializeField] private GameObject frontSideRight;
+    [SerializeField] private GameObject frontSideRightMiddle;
+    [Space]
 	[SerializeField] private GameObject frontCapsuleCollider;
 	[SerializeField] private Transform frontLeftWheel;
 	[SerializeField] private Transform frontRightWheel;
@@ -57,9 +74,120 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 	public void CheckObstacles()
 	{
 		Obstacles = "Null";
-		RaycastHit hit;
+        ObstacleName = "XYI";
+        RaycastHit hit = new RaycastHit();
 
-		Vector3 PosCenter = frontCapsuleCollider.gameObject.transform.position;
+        if (Physics.Raycast(frontSideLeft.transform.position, frontSideLeft.transform.forward, out hit, frontSideRayLength * 0.7f, obstacleLayerMask))
+        {
+            Obstacles = "Front Side Left";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = 0.75f;
+        }
+        if (Physics.Raycast(frontSideLeftMiddle.transform.position, transform.forward, out hit, frontSideRayLength, obstacleLayerMask))
+        {
+            Obstacles = "front Side Left Middle";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = 1f;
+        }
+        if (Physics.Raycast(frontSideRight.transform.position, frontSideRight.transform.forward, out hit, frontSideRayLength * 0.7f, obstacleLayerMask))
+        {
+            Obstacles = "front Side Right";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = -0.75f;
+        }
+        if (Physics.Raycast(frontSideRightMiddle.transform.position, transform.forward, out hit, frontSideRayLength, obstacleLayerMask))
+        {
+            Obstacles = "front Side Right Middle";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = -1f;
+        }
+        if (Physics.Raycast(frontSideMiddle.transform.position, transform.forward, out hit, frontSideRayLength * 1.25f, obstacleLayerMask)
+            )
+        {                   // Center
+            Debug.DrawRay(hit.point, hit.normal, Color.cyan);
+
+            angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //угол между автомобилем и целевой траекторией
+                new Vector2(transform.forward.x, transform.forward.z));
+
+            if (angleObstacle < 0)
+            {
+                Obstacles = "front Side Middle To Left";
+
+                raceAIInputs.obstacleSteer = -1f;
+            }
+            else
+            {
+                Obstacles = "front Side Middle To Right";
+
+                raceAIInputs.obstacleSteer = 1f;
+            }
+            ObstacleDistance = hit.distance;
+        }
+
+        if (Physics.Raycast(leftSideBack.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "left Side Back";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = 0.75f;
+        }
+        if (Physics.Raycast(leftSideMiddle.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "left Side Middle";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = 0.75f;
+        }
+        if (Physics.Raycast(leftSideFront.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "left Side Front";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = 0.75f;
+        }
+
+        if (Physics.Raycast(rightSideBack.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "right Side Back";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = -0.75f;
+        }
+        if (Physics.Raycast(rightSideMiddle.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "right Side Middle";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = -0.75f;
+        }
+        if (Physics.Raycast(rightSideFront.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "right Side Front";
+            ObstacleDistance = hit.distance;
+
+            raceAIInputs.obstacleSteer = -0.75f;
+        }
+
+
+        Debug.DrawLine(frontSideMiddle.transform.position, frontSideMiddle.transform.position + transform.forward * frontSideRayLength * 1.25f, Color.red);
+        Debug.DrawLine(frontSideLeft.transform.position, frontSideLeft.transform.position + frontSideLeft.transform.forward * frontSideRayLength * 0.7f, Color.red);
+        Debug.DrawLine(frontSideLeftMiddle.transform.position, frontSideLeftMiddle.transform.position + transform.forward * frontSideRayLength, Color.red);
+        Debug.DrawLine(frontSideRight.transform.position, frontSideRight.transform.position + frontSideRight.transform.forward * frontSideRayLength * 0.7f, Color.red);
+        Debug.DrawLine(frontSideRightMiddle.transform.position, frontSideRightMiddle.transform.position + transform.forward * frontSideRayLength, Color.red);
+
+        Debug.DrawLine(leftSideBack.transform.position, leftSideBack.transform.position - transform.right * sidesRayLength, Color.red);
+        Debug.DrawLine(leftSideMiddle.transform.position, leftSideMiddle.transform.position - transform.right * sidesRayLength, Color.red);
+        Debug.DrawLine(leftSideFront.transform.position, leftSideFront.transform.position - transform.right * sidesRayLength, Color.red);
+
+        Debug.DrawLine(rightSideBack.transform.position, rightSideBack.transform.position + transform.right * sidesRayLength, Color.red);
+        Debug.DrawLine(rightSideMiddle.transform.position, rightSideMiddle.transform.position + transform.right * sidesRayLength, Color.red);
+        Debug.DrawLine(rightSideFront.transform.position, rightSideFront.transform.position + transform.right * sidesRayLength, Color.red);
+
+        Vector3 PosCenter = frontCapsuleCollider.gameObject.transform.position;
 		Vector3 DirCenter = frontCapsuleCollider.gameObject.transform.forward;
 
 		Vector3 DirAngleLeft = -leftAngle.forward;
@@ -68,58 +196,58 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 		Vector3 PosRight = frontLeftWheel.position;
 		Vector3 PosLeft = frontRightWheel.position;
 
-        if (Physics.Raycast(PosRight, -DirAngleRight, out hit, raycastLength * .7f, obstacleLayerMask))
-        {       // Right angle
-            Obstacles = "Right_3";
-            ObstacleDistance = hit.distance;
+        //if (Physics.Raycast(PosRight, -DirAngleRight, out hit, raycastLength * .7f, obstacleLayerMask))
+        //{       // Right angle
+        //    Obstacles = "Right_3";
+        //    ObstacleDistance = hit.distance;
 
-            raceAIInputs.obstacleSteer = 0.5f;
-        }
+        //    raceAIInputs.obstacleSteer = 0.5f;
+        //}
 
-        if (Physics.Raycast(PosLeft, -DirAngleLeft, out hit, raycastLength * .7f, obstacleLayerMask))
-        {           // Left angle
-            Obstacles = "Left_3";
-            ObstacleDistance = hit.distance;
+        //if (Physics.Raycast(PosLeft, -DirAngleLeft, out hit, raycastLength * .7f, obstacleLayerMask))
+        //{           // Left angle
+        //    Obstacles = "Left_3";
+        //    ObstacleDistance = hit.distance;
 
-            raceAIInputs.obstacleSteer = -0.5f;
-        }
+        //    raceAIInputs.obstacleSteer = -0.5f;
+        //}
 
-        if (Physics.Raycast(PosCenter, DirCenter, out hit, raycastLength, obstacleLayerMask)
-            )
-        {                   // Center
-            Debug.DrawRay(hit.point, hit.normal, Color.cyan);
+        //if (Physics.Raycast(PosCenter, DirCenter, out hit, raycastLength, obstacleLayerMask)
+        //    )
+        //{                   // Center
+        //    Debug.DrawRay(hit.point, hit.normal, Color.cyan);
 
-            angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //угол между автомобилем и целевой траекторией
-                new Vector2(DirCenter.x, DirCenter.z));
+        //    angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //угол между автомобилем и целевой траекторией
+        //        new Vector2(DirCenter.x, DirCenter.z));
 
-            if (angleObstacle < 0)
-            {
-                Obstacles = "Left_1";
+        //    if (angleObstacle < 0)
+        //    {
+        //        Obstacles = "Left_1";
 
-                raceAIInputs.obstacleSteer = -1f;
-            }
-            else
-            {
-                Obstacles = "Right_1";
+        //        raceAIInputs.obstacleSteer = -1f;
+        //    }
+        //    else
+        //    {
+        //        Obstacles = "Right_1";
 
-                raceAIInputs.obstacleSteer = 1f;
-            }
-            ObstacleDistance = hit.distance;
-        }
-        else if (Physics.Raycast(PosLeft, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
-        {                   // Left
-            Obstacles = "Left_2";
-            ObstacleDistance = hit.distance;
+        //        raceAIInputs.obstacleSteer = 1f;
+        //    }
+        //    ObstacleDistance = hit.distance;
+        //}
+        //else if (Physics.Raycast(PosLeft, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
+        //{                   // Left
+        //    Obstacles = "Left_2";
+        //    ObstacleDistance = hit.distance;
 
-            raceAIInputs.obstacleSteer = -1f;
-        }
-        else if (Physics.Raycast(PosRight, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
-        {               // Right
-            Obstacles = "Right_2";
-            ObstacleDistance = hit.distance;
+        //    raceAIInputs.obstacleSteer = -1f;
+        //}
+        //else if (Physics.Raycast(PosRight, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
+        //{               // Right
+        //    Obstacles = "Right_2";
+        //    ObstacleDistance = hit.distance;
 
-            raceAIInputs.obstacleSteer = 1f;
-        }
+        //    raceAIInputs.obstacleSteer = 1f;
+        //}
 
 
         //if (Physics.Raycast(PosRight, -DirAngleRight, out hit, raycastLength * .7f, obstacleLayerMask))
@@ -159,13 +287,6 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 			isTurnBack = false;
             collisionCounter = 0;
         }
-
-        Debug.DrawLine(PosCenter, PosCenter + DirCenter * raycastLength, Color.red);
-        Debug.DrawLine(PosLeft, PosLeft + DirCenter * raycastLength * .5f, Color.red);
-        Debug.DrawLine(PosRight, PosRight + DirCenter * raycastLength * .5f, Color.red);
-
-        Debug.DrawLine(PosLeft, PosLeft - DirAngleLeft * raycastLength * .7f, Color.blue);
-        Debug.DrawLine(PosRight, PosRight - DirAngleRight * raycastLength * .7f, Color.blue);
     }
 
 	private void OnCollisionStay(Collision collision)

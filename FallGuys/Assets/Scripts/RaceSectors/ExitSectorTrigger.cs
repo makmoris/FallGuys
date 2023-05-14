@@ -9,6 +9,12 @@ public class ExitSectorTrigger : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         WheelVehicle car = other.GetComponent<WheelVehicle>();
-        if (car != null) CarLeftTheSectorEvent?.Invoke(car);
+        if (car != null)
+        {
+            CarLeftTheSectorEvent?.Invoke(car);
+
+            RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+            if (raceDriverAI != null) raceDriverAI.MoveForward();
+        }
     }
 }

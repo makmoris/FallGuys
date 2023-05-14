@@ -69,8 +69,15 @@ public class RaceDriverAI : MonoBehaviour
     private WheelVehicle wheelVehicle;
     internal Rigidbody rb;
     internal float maxSpeed;
-    public float currentSpeed;
     internal float maximumSteerAngle;
+
+    [SerializeField]private bool moveForward;
+
+    private float currentSpeed;
+    internal float CurrentSpeed
+    {
+        get => currentSpeed;
+    }
 
     private bool isGround;
     internal bool IsGround
@@ -110,36 +117,52 @@ public class RaceDriverAI : MonoBehaviour
         #endregion
 
         isGround = true;
+
+        moveForward = true;
     }
 
     private void Update()
     {
         currentSpeed = rb.velocity.magnitude * 3.6f;
+
+        if (moveForward)
+        {
+            MoveForward();
+        }
+    }
+
+    internal void MoveForward()
+    {
+        wheelVehicle.Steering = 0f;
+        wheelVehicle.Throttle = 1f;
     }
 
     public void Move(float steering, float accel, float footbrake)
     {
-        if (!handbrake)
+        if (!moveForward)
         {
-            wheelVehicle.Steering = steering;
-            wheelVehicle.Throttle = accel;
-            wheelVehicle.Handbrake = false;
-        }
-        else
-        {
-            wheelVehicle.Steering = 0f;
-            wheelVehicle.Handbrake = true;
+            if (!handbrake)
+            {
+                wheelVehicle.Steering = steering;
+                wheelVehicle.Throttle = accel;
+                wheelVehicle.Handbrake = false;
+            }
+            else
+            {
+                wheelVehicle.Steering = 0f;
+                wheelVehicle.Handbrake = true;
+            }
         }
     }
 
-    internal void StopInWaitZone()
+    internal void SlowDownToDesiredSpeed(float desiredSpeed)
     {
-        StartCoroutine(FullStop());
+        StartCoroutine(SlowDown(desiredSpeed));
     }
 
-    private IEnumerator FullStop()
+    private IEnumerator SlowDown(float desiredSpeed)
     {
-        while (currentSpeed > 5f)
+        while (currentSpeed > desiredSpeed)
         {
             handbrake = true;
             yield return null;
@@ -155,5 +178,6 @@ public class RaceDriverAI : MonoBehaviour
     public void SetNewWaypointsPath(RaceWaypointsPath newPath)
     {
         raceAIWaypointTracker.SetNewWaypointsPath(newPath);
+        moveForward = false;
     }
 }

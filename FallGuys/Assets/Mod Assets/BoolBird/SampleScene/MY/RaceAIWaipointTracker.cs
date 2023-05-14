@@ -60,7 +60,7 @@ public class RaceAIWaipointTracker : MonoBehaviour
         progressDistance = 0;
         progressNum = 0;
 
-        if (progressStyle == 1)
+        if (progressStyle == 1 && raceWaypointsPath != null)
         {
             target.position = raceWaypointsPath.nodes[progressNum].position;
             target.rotation = raceWaypointsPath.nodes[progressNum].rotation;
@@ -70,35 +70,37 @@ public class RaceAIWaipointTracker : MonoBehaviour
     public void SetNewWaypointsPath(RaceWaypointsPath newPath)
     {
         raceWaypointsPath = newPath;
+        Reset();
     }
 
     private void Update()
     {
-        if (!this.transform.GetComponent<RaceDriverAI>().persuitAiOn)
-        {
-            this.transform.GetComponent<RaceDriverAI>().persuitAiOn = false;
-            FollowPath();
-        }
-        else
-        {
-            if (raceDriverAI.persuitTarget != null)
-            {
-                Transform tempPersuitCollider = raceDriverAI.persuitTarget.GetComponentInChildren<MeshCollider>().transform;
+        if(raceWaypointsPath != null) FollowPath();
+        //if (!this.transform.GetComponent<RaceDriverAI>().persuitAiOn)
+        //{
+        //    this.transform.GetComponent<RaceDriverAI>().persuitAiOn = false;
+        //    FollowPath();
+        //}
+        //else
+        //{
+        //    if (raceDriverAI.persuitTarget != null)
+        //    {
+        //        Transform tempPersuitCollider = raceDriverAI.persuitTarget.GetComponentInChildren<MeshCollider>().transform;
 
-                target = tempPersuitCollider;
-            }
-            else
-            {
-                FollowPath();
-            }
-        }
+        //        target = tempPersuitCollider;
+        //    }
+        //    else
+        //    {
+        //        FollowPath();
+        //    }
+        //}
     }
 
     #region DRAW DIRECTION
 
     private void OnDrawGizmos()
     {
-        if (Application.isPlaying)
+        if (Application.isPlaying && raceWaypointsPath != null)
         {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, target.position);

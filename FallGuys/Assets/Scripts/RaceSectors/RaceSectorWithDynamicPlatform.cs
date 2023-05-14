@@ -76,13 +76,16 @@ public class RaceSectorWithDynamicPlatform : MonoBehaviour
 
     private void CarEnteredTheSector(WheelVehicle car)
     {
-        carsInSector.Add(car);
-
-        RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
-        if (raceDriverAI != null)
+        if (!carsInSector.Contains(car))
         {
-            AddToRaceDriverAIWithPathAndPlatformDictionary(raceDriverAI);
-            raceDriverAI.SetNewWaypointsPath(GetWaypointsPath(raceDriverAI));
+            carsInSector.Add(car);
+
+            RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+            if (raceDriverAI != null)
+            {
+                AddToRaceDriverAIWithPathAndPlatformDictionary(raceDriverAI);
+                raceDriverAI.SetNewWaypointsPath(GetWaypointsPath(raceDriverAI));
+            }
         }
     }
 
@@ -99,9 +102,12 @@ public class RaceSectorWithDynamicPlatform : MonoBehaviour
 
     private void AddToRaceDriverAIWithPathAndPlatformDictionary(RaceDriverAI carAI)
     {
-        int i = Random.Range(0, pathAndPlatformList.Count);
+        if (!raceDriverAIWithPathAndPlatformDictionary.ContainsKey(carAI))
+        {
+            int i = Random.Range(0, pathAndPlatformList.Count);
 
-        raceDriverAIWithPathAndPlatformDictionary.Add(carAI, pathAndPlatformList[i]);
+            raceDriverAIWithPathAndPlatformDictionary.Add(carAI, pathAndPlatformList[i]);
+        }
     }
 
     private void CheckingNeedToWait(RaceDriverAI raceDriverAI)
@@ -111,7 +117,7 @@ public class RaceSectorWithDynamicPlatform : MonoBehaviour
         if (!canEnterToPlanform)
         {
             //raceDriverAI.EnteredTheBrakeZone();
-            raceDriverAI.Handbrake = true;
+            //raceDriverAI.Handbrake = true;
         }
     }
 

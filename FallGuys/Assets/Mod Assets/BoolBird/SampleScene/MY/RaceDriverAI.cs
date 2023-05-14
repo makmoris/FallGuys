@@ -177,7 +177,14 @@ public class RaceDriverAI : MonoBehaviour
 
     public void SetNewWaypointsPath(RaceWaypointsPath newPath)
     {
+        raceWaypointsPath = newPath;
         raceAIWaypointTracker.SetNewWaypointsPath(newPath);
+        moveForward = false;
+    }
+
+    public void ResetWaypointsPath()
+    {
+        raceAIWaypointTracker.SetNewWaypointsPath(raceWaypointsPath);
         moveForward = false;
     }
 }

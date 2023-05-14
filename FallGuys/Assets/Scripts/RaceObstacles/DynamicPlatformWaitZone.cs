@@ -34,12 +34,9 @@ public class DynamicPlatformWaitZone : MonoBehaviour
                 {
                     foreach (var car in raceDriversAIList)
                     {
-                        Debug.Log(car.name + "Can go to platform");
                         car.Handbrake = false;
                     }
                 }
-
-                Debug.Log(platform.name);
             }
         }
     }
@@ -79,10 +76,8 @@ public class DynamicPlatformWaitZone : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(carAI.name + " Сразу залетает на платформу"); // можно добавить какую-нибудь проверку на скорость. Если больше N, то тормоз
                     if (carAI.CurrentSpeed > desiredSpeedInZone)
                     {
-                        Debug.Log($"Скорость {carAI.name} = {carAI.CurrentSpeed} больше чем допустимая {desiredSpeedInZone}");
                         carAI.SlowDownToDesiredSpeed(desiredSpeedInZone);
                     }
                 }

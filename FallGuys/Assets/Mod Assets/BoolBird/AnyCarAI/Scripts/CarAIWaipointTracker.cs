@@ -4,8 +4,8 @@ public class CarAIWaipointTracker : MonoBehaviour
 {
     //[HideInInspector]
     public Transform target;
-    //private WaypointsPath circuit;
-    [SerializeField] private MYWayPointPath circuit;
+    private WaypointsPath circuit;
+    //[SerializeField] private MYWayPointPath circuit;
     [SerializeField] private AnyCarAI ACAI;
 
     [SerializeField] private float lookAheadForTargetOffset = 5;
@@ -27,14 +27,14 @@ public class CarAIWaipointTracker : MonoBehaviour
     public Transform[] pathTransform;
 
     //[HideInInspector]
-    //public WaypointsPath.RoutePoint targetPoint { get; private set; }
-    public MYWayPointPath.RoutePoint targetPoint { get; private set; }
+    public WaypointsPath.RoutePoint targetPoint { get; private set; }
+    //public MYWayPointPath.RoutePoint targetPoint { get; private set; }
     //[HideInInspector]
-    //public WaypointsPath.RoutePoint speedPoint { get; private set; }
-    public MYWayPointPath.RoutePoint speedPoint { get; private set; }
+    public WaypointsPath.RoutePoint speedPoint { get; private set; }
+    //public MYWayPointPath.RoutePoint speedPoint { get; private set; }
     //[HideInInspector]
-    //public WaypointsPath.RoutePoint progressPoint { get; private set; }
-    public MYWayPointPath.RoutePoint progressPoint { get; private set; }
+    public WaypointsPath.RoutePoint progressPoint { get; private set; }
+    //public MYWayPointPath.RoutePoint progressPoint { get; private set; }
 
     #endregion
 

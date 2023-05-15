@@ -429,8 +429,8 @@ public class AnyCarAI : MonoBehaviour
     #region PROGRESS TRACKER
 
     [SerializeField] public ProgressStyle progressStyle = ProgressStyle.SmoothAlongRoute;
-    //[SerializeField] public WaypointsPath AIcircuit;
-    [SerializeField] public MYWayPointPath AIcircuit;
+    [SerializeField] public WaypointsPath AIcircuit;
+    //[SerializeField] public MYWayPointPath AIcircuit;
     [SerializeField] [Range(5,50)]public float lookAheadForTarget = 5;
     [SerializeField] public float lookAheadForTargetFactor = .1f;
     [SerializeField] public float lookAheadForSpeedOffset = 10;

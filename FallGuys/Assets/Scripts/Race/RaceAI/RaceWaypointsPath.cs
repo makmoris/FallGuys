@@ -6,7 +6,7 @@ using UnityEngine;
 public class RaceWaypointsPath : MonoBehaviour
 {
     [SerializeField] private EnterSectorTrigger enterSector;
-    [SerializeField] private ExitSectorTrigger exitSector;
+    //[SerializeField] private ExitSectorTrigger exitSector;
     [Space]
 
     #region CREATE PATH
@@ -205,7 +205,7 @@ public class RaceWaypointsPath : MonoBehaviour
             }
         }
 
-        nodes.Add(exitSector.transform);
+        //nodes.Add(exitSector.transform);
 
         if (nodes.Count > 1)
         {

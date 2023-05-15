@@ -6,6 +6,7 @@ using VehicleBehaviour;
 [System.Serializable]
 internal class PathAndPlatform
 {
+    [SerializeField] private string name;
     [SerializeField] internal RaceWaypointsPath path;
     [SerializeField] internal ObstalceMovement platform;
 }
@@ -20,8 +21,8 @@ public class RaceSectorWithDynamicPlatform : MonoBehaviour
 
     [Header("Platforms")]
     [SerializeField] private List<PathAndPlatform> pathAndPlatformList;
-    [Space]
-    [SerializeField] private List<WheelVehicle> carsInSector = new List<WheelVehicle>();
+    
+    private List<WheelVehicle> carsInSector = new List<WheelVehicle>();
 
     private Dictionary<RaceDriverAI, PathAndPlatform> raceDriverAIWithPathAndPlatformDictionary = new Dictionary<RaceDriverAI, PathAndPlatform>();
 

@@ -8,8 +8,8 @@ public class DynamicPlatformWaitZone : MonoBehaviour
     [SerializeField] private RaceSectorWithDynamicPlatform raceSectorWithDynamicPlatform;
     [Space]
     [SerializeField] private List<ObstalceMovement> platforms;
-    [Space]
-    [SerializeField] private List<RaceDriverAI> carsAIInWaitZone = new List<RaceDriverAI>();
+    
+    private List<RaceDriverAI> carsAIInWaitZone = new List<RaceDriverAI>();
 
     private void OnEnable()
     {

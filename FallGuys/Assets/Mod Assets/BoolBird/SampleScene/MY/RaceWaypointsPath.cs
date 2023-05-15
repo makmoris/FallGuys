@@ -57,6 +57,11 @@ public class RaceWaypointsPath : MonoBehaviour
 
     #region GET ROUTE
 
+    public Vector3 GetFirstPointPosition()
+    {
+        return nodes[1].position;
+    }
+
     public RoutePoint GetRoutePoint(float dist)
     {
         Vector3 p1 = GetRoutePosition(dist);

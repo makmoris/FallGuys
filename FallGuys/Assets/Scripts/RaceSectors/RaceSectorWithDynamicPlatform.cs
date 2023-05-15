@@ -15,6 +15,9 @@ public class RaceSectorWithDynamicPlatform : MonoBehaviour
     [SerializeField] private EnterSectorTrigger enterSectorTrigger;
     [SerializeField] private ExitSectorTrigger exitSectorTrigger;
 
+    [Header("AI Behavior")]
+    [SerializeField] private BrakeCondition brakeCondition = BrakeCondition.TargetDirectionDifference;
+
     [Header("Platforms")]
     [SerializeField] private List<PathAndPlatform> pathAndPlatformList;
     [Space]
@@ -85,6 +88,7 @@ public class RaceSectorWithDynamicPlatform : MonoBehaviour
             {
                 AddToRaceDriverAIWithPathAndPlatformDictionary(raceDriverAI);
                 raceDriverAI.SetNewWaypointsPath(GetWaypointsPath(raceDriverAI));
+                raceDriverAI.brakeCondition = brakeCondition;
             }
         }
     }

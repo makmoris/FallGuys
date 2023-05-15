@@ -19,7 +19,7 @@ public class RaceRespawnController : MonoBehaviour
         RaceRespawnZone raceRespawnZone = GetNearestRespawnPoint(car.transform.position);
 
         car.transform.position = raceRespawnZone.GetRespawnPosition();
-        car.transform.rotation = raceRespawnZone.transform.rotation;
+        car.transform.rotation = raceRespawnZone.transform.rotation; 
         car.gameObject.SetActive(true);
 
         RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
@@ -32,18 +32,18 @@ public class RaceRespawnController : MonoBehaviour
 
     private RaceRespawnZone GetNearestRespawnPoint(Vector3 carPosition)
     {
-        float minDistance = Mathf.Infinity;
+        //float minDistance = Mathf.Infinity;
         int indexMinDistance = 0;
 
         for (int i = 0; i < raceRespawnZones.Count; i++)
         {
             Vector3 pointPosition = raceRespawnZones[i].transform.position;
 
-            float distance = Vector3.Distance(carPosition, pointPosition);
+            //float distance = Vector3.Distance(carPosition, pointPosition);
             
-            if (distance <= minDistance && carPosition.z >= pointPosition.z)
+            if (/*distance <= minDistance && */carPosition.z >= pointPosition.z)
             {
-                minDistance = distance;
+                //minDistance = distance;
                 indexMinDistance = i;
             }
             else break;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VehicleBehaviour;
 
 public class RaceRespawnController : MonoBehaviour
 {
@@ -8,10 +9,20 @@ public class RaceRespawnController : MonoBehaviour
     [Space]
     public List<RaceRespawnZone> raceRespawnZones;
 
+    private void OnEnable()
+    {
+        WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent += RespawnCarAfterStuck;
+    }
+
     internal void CarGotIntoRespawnZone(GameObject car)
     {
         car.SetActive(false);
         RespawnCar(car);
+    }
+
+    private void RespawnCarAfterStuck(WheelVehicle wheelVehicle)
+    {
+        RespawnCar(wheelVehicle.gameObject);
     }
 
     private void RespawnCar(GameObject car)
@@ -50,5 +61,10 @@ public class RaceRespawnController : MonoBehaviour
         }
 
         return raceRespawnZones[indexMinDistance];
+    }
+
+    private void OnDisable()
+    {
+        WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent -= RespawnCarAfterStuck;
     }
 }

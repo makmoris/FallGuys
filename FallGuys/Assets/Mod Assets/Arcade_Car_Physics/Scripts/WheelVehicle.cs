@@ -230,10 +230,18 @@ namespace VehicleBehaviour {
         // Init rigidbody, center of mass, wheels and more
 
         // Для проверки, что игрок не перевернулся
-        [SerializeField]private int immobilityValue;// сколько игрок провел в неподвижном состоянии
-        [SerializeField] private int immobilityValue2;
-        [SerializeField] private int immobilityValue3;
-        [SerializeField] private int immobilityValueOnlyForBot;
+        [Header("Stucking")]
+        [SerializeField] private float stuckTimeThreshold = 2f;
+        [Space]
+        [SerializeField] private float stuckTime_RolledOntoRoofOfSide;
+        [SerializeField] private float stuckTime_PlayerPressesOnGasButDoesntMove;
+        [SerializeField] private float stuckTime_StuckInSomething;
+        [SerializeField] private float stuckTime_BotAIPressesOnGasButDoesntMove;
+
+        //[SerializeField]private int immobilityValue;// сколько игрок провел в неподвижном состоянии
+        //[SerializeField] private int immobilityValue2;
+        //[SerializeField] private int immobilityValue3;
+        //[SerializeField] private int immobilityValueOnlyForBot;
 
         public static event Action<WheelVehicle> NotifyGetRespanwPositionForWheelVehicleEvent;
 
@@ -299,20 +307,21 @@ namespace VehicleBehaviour {
 
                     if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
                     {
-                        //Debug.Log("Жмем на газ. Застрял");
-                        immobilityValue2++;
+                        Debug.Log("Жмем на газ. Застрял");
+                        //immobilityValue2++;
+                        stuckTime_PlayerPressesOnGasButDoesntMove += Time.deltaTime;
 
-                        if (immobilityValue2 >= 100)
+                        if (stuckTime_PlayerPressesOnGasButDoesntMove >= stuckTimeThreshold)
                         {
-                            immobilityValue = 0;
-                            immobilityValue2 = 0;
-                            immobilityValue3 = 0;
+                            stuckTime_RolledOntoRoofOfSide = 0f;
+                            stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                            stuckTime_StuckInSomething = 0f;
                             RespanwAfterStuck();
                             //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
                             //transform.position = GetAppearPosition();
                         }
                     }
-                    else immobilityValue2 = 0;
+                    else stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
                 }
                 // Boost
                 boosting = (GetInput(boostInput) > 0.5f);
@@ -327,20 +336,21 @@ namespace VehicleBehaviour {
             {
                 steering = turnInputCurve.Evaluate(steering) * steerAngle;
 
-                if (throttle != 0 && Mathf.RoundToInt(speed) == 0)
+                if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && !handbrake)
                 {
-                    //Debug.Log("Газует бот, но застрял");
-                    immobilityValueOnlyForBot++;
+                    Debug.Log("Газует бот, но застрял");
+                    //immobilityValueOnlyForBot++;
+                    stuckTime_BotAIPressesOnGasButDoesntMove += Time.deltaTime;
 
-                    if (immobilityValueOnlyForBot >= 100)
+                    if (stuckTime_BotAIPressesOnGasButDoesntMove >= stuckTimeThreshold)
                     {
-                        immobilityValueOnlyForBot = 0;
+                        stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
                         RespanwAfterStuck();
                         //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
                         //transform.position = GetAppearPosition();
                     }
                 }
-                else immobilityValueOnlyForBot = 0;
+                else stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
             }
 
             // Direction
@@ -437,35 +447,52 @@ namespace VehicleBehaviour {
             // Проверка, что игрок не упал на бок или крышу
             if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
             {
-                immobilityValue++;
-                //Debug.Log("Перевернулся на крышу или на бок");
-                if (immobilityValue >= 100)
+                //immobilityValue++;
+                //if (immobilityValue >= 100)
+                //{
+                //    immobilityValue = 0;
+                //    immobilityValue2 = 0;
+                //    immobilityValue3 = 0;
+                //    RespanwAfterStuck();
+                //    //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                //    //transform.position = GetAppearPosition();
+                //}
+
+                Debug.Log("Перевернулся на крышу или на бок");
+
+                stuckTime_RolledOntoRoofOfSide += Time.deltaTime;
+
+                if (stuckTime_RolledOntoRoofOfSide >= stuckTimeThreshold)
                 {
-                    immobilityValue = 0;
-                    immobilityValue2 = 0;
-                    immobilityValue3 = 0;
+                    stuckTime_RolledOntoRoofOfSide = 0f;
+                    stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                    stuckTime_StuckInSomething = 0f;
                     RespanwAfterStuck();
                     //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
                     //transform.position = GetAppearPosition();
                 }
+
             }
-            else immobilityValue = 0;
+            else stuckTime_RolledOntoRoofOfSide = 0f;
 
             if (Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
             {
-                immobilityValue3++;
-                //Debug.Log("Просто застрял");
-                if (immobilityValue3 >= 100)
+                //immobilityValue3++;
+                Debug.Log("Просто застрял");
+
+                stuckTime_StuckInSomething += Time.deltaTime;
+
+                if (stuckTime_StuckInSomething >= stuckTimeThreshold)
                 {
-                    immobilityValue = 0;
-                    immobilityValue2 = 0;
-                    immobilityValue3 = 0;
+                    stuckTime_RolledOntoRoofOfSide = 0f;
+                    stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                    stuckTime_StuckInSomething = 0f;
                     RespanwAfterStuck();
                     //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
                     //transform.position = GetAppearPosition();
                 }
             }
-            else immobilityValue3 = 0;
+            else stuckTime_StuckInSomething = 0f;
 
             //if (Mathf.RoundToInt(speed) == 0)
             //{

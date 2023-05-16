@@ -11,7 +11,7 @@ internal class PathAndPlatform
     [SerializeField] internal ObstalceMovement platform;
 }
 
-public class RaceSectorWithDynamicPlatform : MonoBehaviour
+public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
 {
     [SerializeField] private EnterSectorTrigger enterSectorTrigger;
     [SerializeField] private ExitSectorTrigger exitSectorTrigger;

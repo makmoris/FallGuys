@@ -7,9 +7,7 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 	[SerializeField] private bool inUpdate = false;
 	[Space]
 	[SerializeField] private string Obstacles = "Null";
-    [SerializeField] private string ObstacleName = "Null";
     [SerializeField] private float ObstacleDistance = 0;
-	[SerializeField] private float raycastLength = 10F;
 	[SerializeField] private float angleObstacle = 0;
 
 	public LayerMask obstacleLayerMask;
@@ -74,7 +72,6 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 	public void CheckObstacles()
 	{
 		Obstacles = "Null";
-        ObstacleName = "XYI";
         RaycastHit hit = new RaycastHit();
 
         if (Physics.Raycast(frontSideLeft.transform.position, frontSideLeft.transform.forward, out hit, frontSideRayLength * 0.7f, obstacleLayerMask))
@@ -186,85 +183,6 @@ public class RaceObstacleDetectionAI : MonoBehaviour
         Debug.DrawLine(rightSideBack.transform.position, rightSideBack.transform.position + transform.right * sidesRayLength, Color.red);
         Debug.DrawLine(rightSideMiddle.transform.position, rightSideMiddle.transform.position + transform.right * sidesRayLength, Color.red);
         Debug.DrawLine(rightSideFront.transform.position, rightSideFront.transform.position + transform.right * sidesRayLength, Color.red);
-
-        Vector3 PosCenter = frontCapsuleCollider.gameObject.transform.position;
-		Vector3 DirCenter = frontCapsuleCollider.gameObject.transform.forward;
-
-		Vector3 DirAngleLeft = -leftAngle.forward;
-		Vector3 DirAngleRight = -rightAngle.forward;
-
-		Vector3 PosRight = frontLeftWheel.position;
-		Vector3 PosLeft = frontRightWheel.position;
-
-        //if (Physics.Raycast(PosRight, -DirAngleRight, out hit, raycastLength * .7f, obstacleLayerMask))
-        //{       // Right angle
-        //    Obstacles = "Right_3";
-        //    ObstacleDistance = hit.distance;
-
-        //    raceAIInputs.obstacleSteer = 0.5f;
-        //}
-
-        //if (Physics.Raycast(PosLeft, -DirAngleLeft, out hit, raycastLength * .7f, obstacleLayerMask))
-        //{           // Left angle
-        //    Obstacles = "Left_3";
-        //    ObstacleDistance = hit.distance;
-
-        //    raceAIInputs.obstacleSteer = -0.5f;
-        //}
-
-        //if (Physics.Raycast(PosCenter, DirCenter, out hit, raycastLength, obstacleLayerMask)
-        //    )
-        //{                   // Center
-        //    Debug.DrawRay(hit.point, hit.normal, Color.cyan);
-
-        //    angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //угол между автомобилем и целевой траекторией
-        //        new Vector2(DirCenter.x, DirCenter.z));
-
-        //    if (angleObstacle < 0)
-        //    {
-        //        Obstacles = "Left_1";
-
-        //        raceAIInputs.obstacleSteer = -1f;
-        //    }
-        //    else
-        //    {
-        //        Obstacles = "Right_1";
-
-        //        raceAIInputs.obstacleSteer = 1f;
-        //    }
-        //    ObstacleDistance = hit.distance;
-        //}
-        //else if (Physics.Raycast(PosLeft, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
-        //{                   // Left
-        //    Obstacles = "Left_2";
-        //    ObstacleDistance = hit.distance;
-
-        //    raceAIInputs.obstacleSteer = -1f;
-        //}
-        //else if (Physics.Raycast(PosRight, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
-        //{               // Right
-        //    Obstacles = "Right_2";
-        //    ObstacleDistance = hit.distance;
-
-        //    raceAIInputs.obstacleSteer = 1f;
-        //}
-
-
-        //if (Physics.Raycast(PosRight, -DirAngleRight, out hit, raycastLength * .7f, obstacleLayerMask))
-        //{       // Right angle
-        //    Obstacles = "Right_3";
-        //    ObstacleDistance = hit.distance;
-
-        //    raceAIInputs.obstacleSteer = 0.5f;
-        //}
-
-        //if (Physics.Raycast(PosLeft, -DirAngleLeft, out hit, raycastLength * .7f, obstacleLayerMask))
-        //{           // Left angle
-        //    Obstacles = "Left_3";
-        //    ObstacleDistance = hit.distance;
-
-        //    raceAIInputs.obstacleSteer = -0.5f;
-        //}
 
         if (Obstacles != "Null")// если перед ботом есть препятсвие и он не сдает назад
         {

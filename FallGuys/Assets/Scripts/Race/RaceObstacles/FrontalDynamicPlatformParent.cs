@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FrontalDynamicPlatformParent : MonoBehaviour
 {
-    private RaceSectorWithDynamicPlatform raceSectorWithDynamicPlatform;
+    private RaceSectorWithFrontalDynamicPlatform raceSectorWithDynamicPlatform;
     private ObstalceMovement platformMovementParent;
 
     [SerializeField] private List<GameObject> carsOnPlatform = new List<GameObject>();
@@ -17,7 +17,7 @@ public class FrontalDynamicPlatformParent : MonoBehaviour
 
     private void Awake()
     {
-        raceSectorWithDynamicPlatform = transform.GetComponentInParent<RaceSectorWithDynamicPlatform>();
+        raceSectorWithDynamicPlatform = transform.GetComponentInParent<RaceSectorWithFrontalDynamicPlatform>();
     }
 
     private void CheckCar(GameObject car)

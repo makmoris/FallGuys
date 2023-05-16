@@ -22071,7 +22071,7 @@ MonoBehaviour:
   centerOfMass: {fileID: 8857897023030472421}
   downforce: 8
   steering: 0
-  handbrake: 1
+  handbrake: 0
   allowDrift: 1
   speed: 0
   maxSpeed: 250
@@ -22091,10 +22091,11 @@ MonoBehaviour:
   boostClip: {fileID: 8300000, guid: 7c29c309722a2444582a425e8e6aeb77, type: 3}
   boostSource: {fileID: 2132878535335336456}
   rb: {fileID: 0}
-  immobilityValue: 0
-  immobilityValue2: 0
-  immobilityValue3: 0
-  immobilityValueOnlyForBot: 0
+  stuckTimeThreshold: 2
+  stuckTime_RolledOntoRoofOfSide: 0
+  stuckTime_PlayerPressesOnGasButDoesntMove: 0
+  stuckTime_StuckInSomething: 0
+  stuckTime_BotAIPressesOnGasButDoesntMove: 0
 --- !u!114 &796733223122724593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22371,9 +22372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inUpdate: 1
   Obstacles: Null
-  ObstacleName: Null
   ObstacleDistance: 0
-  raycastLength: 7
   angleObstacle: 0
   obstacleLayerMask:
     serializedVersion: 2
@@ -22429,9 +22428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6998227aec06b14499683c235edb1d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  persuitAiOn: 0
-  persuitTarget: {fileID: 0}
-  persuitDistance: 0
   raceAIWaypointTracker: {fileID: 0}
   brakeCondition: 1
   cautiousSpeedFactor: 0.05
@@ -22475,7 +22471,6 @@ MonoBehaviour:
   obstacle: 0
   obstacleSteer: 0
   reverseGearOn: 0
-  persuitAiOn: 0
 --- !u!1 &8733030737769107298
 GameObject:
   m_ObjectHideFlags: 0

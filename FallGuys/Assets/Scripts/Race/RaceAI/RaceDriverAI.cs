@@ -17,16 +17,7 @@ public enum ProgressStyle
 
 public class RaceDriverAI : MonoBehaviour
 {
-
-    #region PERSUIT AI
-
-    public bool persuitAiOn;
-    public GameObject persuitTarget;
-    public float persuitDistance;
-
-    #endregion
-
-   // public RaceAIInputs raceAIInputs;
+    private RaceAIInputs raceAIInputs;
     public RaceAIWaipointTracker raceAIWaypointTracker;
 
     #region INPUTS
@@ -103,7 +94,7 @@ public class RaceDriverAI : MonoBehaviour
 
         #region FEATURES SCRIPTS
 
-        //raceAIInputs = gameObject.AddComponent<RaceAIInputs>();
+        raceAIInputs = GetComponent<RaceAIInputs>();
         raceAIWaypointTracker = gameObject.AddComponent<RaceAIWaipointTracker>();
 
         #endregion
@@ -118,7 +109,7 @@ public class RaceDriverAI : MonoBehaviour
 
         isGround = true;
 
-        moveForward = true;
+        //moveForward = true;
     }
 
     private void Update()
@@ -131,13 +122,13 @@ public class RaceDriverAI : MonoBehaviour
         }
     }
 
-    internal void MoveForward()
+    public void MoveForward()
     {
         wheelVehicle.Steering = 0f;
         wheelVehicle.Throttle = 1f;
     }
 
-    public void Move(float steering, float accel, float footbrake)
+    public void Move(float steering, float accel)
     {
         if (!moveForward)
         {
@@ -155,9 +146,29 @@ public class RaceDriverAI : MonoBehaviour
         }
     }
 
-    internal void SlowDownToDesiredSpeed(float desiredSpeed)
+    public void SlowDownToDesiredSpeed(float desiredSpeed)
     {
         StartCoroutine(SlowDown(desiredSpeed));
+    }
+
+    public void SetNewWaypointsPath(RaceWaypointsPath newPath)
+    {
+        raceAIInputs.IsPathMovement = true;
+        raceWaypointsPath = newPath;
+        raceAIWaypointTracker.SetNewWaypointsPath(newPath);
+        moveForward = false;
+    }
+
+    public void ResetWaypointsPath()
+    {
+        raceAIWaypointTracker.SetNewWaypointsPath(raceWaypointsPath);
+        moveForward = false;
+    }
+
+    public void SetTargets(List<Transform> targets)// вызывается сектором с целями. Передает список платформ
+    {
+        raceAIInputs.SetTargets(targets);
+        raceAIInputs.IsPathMovement = false;
     }
 
     private IEnumerator SlowDown(float desiredSpeed)
@@ -169,22 +180,5 @@ public class RaceDriverAI : MonoBehaviour
         }
 
         handbrake = false;
-
-        //yield return new WaitForSeconds(1.5f);
-        //wheelVehicle.Handbrake = false;
-        //handbrake = false;
-    }
-
-    public void SetNewWaypointsPath(RaceWaypointsPath newPath)
-    {
-        raceWaypointsPath = newPath;
-        raceAIWaypointTracker.SetNewWaypointsPath(newPath);
-        moveForward = false;
-    }
-
-    public void ResetWaypointsPath()
-    {
-        raceAIWaypointTracker.SetNewWaypointsPath(raceWaypointsPath);
-        moveForward = false;
     }
 }

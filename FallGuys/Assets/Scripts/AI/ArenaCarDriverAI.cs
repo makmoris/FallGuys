@@ -39,7 +39,7 @@ public class ArenaCarDriverAI : MonoBehaviour
     {
         if(!obstacle) Moving();
     }
-
+    
     private void Moving()
     {
         if (targetPositionTransform != null) ChooseTargetPosition(targetPositionTransform.position);
@@ -213,13 +213,11 @@ public class ArenaCarDriverAI : MonoBehaviour
 
                         if (playerWasTargetCounter == 0)
                         {
-                            Debug.Log("»Ÿ≈“ »√–Œ ¿");
                             targetPositionTransform = playerTransform;
                             playerWasTargetCounter++;
                         }
                         else
                         {
-                            Debug.Log("»Ÿ≈“ ¡ŒÕ”—");
                             int rr = Random.Range(0, bonusBoxes.Count);
                             targetPositionTransform = bonusBoxes[rr];
 
@@ -233,8 +231,6 @@ public class ArenaCarDriverAI : MonoBehaviour
                         targetPositionTransform = playerTransform;
                         break;
                 }
-
-                Debug.Log("»˘ÂÏ Ë„ÓÍ‡");
             }
             else if(playerTransform == null)
             {

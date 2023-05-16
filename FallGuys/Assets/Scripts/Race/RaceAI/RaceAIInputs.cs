@@ -5,8 +5,8 @@ using Random = UnityEngine.Random;
 
 public class RaceAIInputs : MonoBehaviour
 {
-    public float MySteer;
-    public float MyAccel;
+    [SerializeField] private float currentSteer;
+    [SerializeField] private float currentAccel;
     
     private RaceDriverAI carAIReference;
 
@@ -24,6 +24,14 @@ public class RaceAIInputs : MonoBehaviour
         set => obstacleSteer = value;
     }
 
+    [Space]
+    [SerializeField] private bool isPathMovement;
+    public bool IsPathMovement
+    {
+        get => isPathMovement;
+        set => isPathMovement = value;
+    }
+
     #region UTILITY
 
     private float randomValue;
@@ -31,18 +39,14 @@ public class RaceAIInputs : MonoBehaviour
     private float avoidOtherCarSlowdown;
     private float avoidPathOffset;
 
-    [HideInInspector]
-    public bool reverseGearOn = false;
-    [HideInInspector]
-    public bool persuitAiOn = false;
-    private bool avoidingObstacle = false;
-    private bool isBraking = false;
-
-    private float avoidObstacleMultiplier;
-
     private float targetAngle;
 
     #endregion
+
+    [Header("Targets")]
+    [SerializeField] private List<Transform> targetsList = new List<Transform>();
+    [SerializeField] private Transform currentTarget;
+    private int currentTargetIndex;
 
     private void Awake()
     {
@@ -50,7 +54,6 @@ public class RaceAIInputs : MonoBehaviour
 
         carAIReference = GetComponent<RaceDriverAI>();
 
-        persuitAiOn = carAIReference.persuitAiOn;
 
         #endregion
 
@@ -60,175 +63,214 @@ public class RaceAIInputs : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (carAIReference.carAItarget == null || !carAIReference.isDriving)
+        if (isPathMovement)
         {
-            if (carAIReference.persuitTarget != null && carAIReference.persuitAiOn)
-            {
-                //PersuitSensors();
-            }
-            else
-            {
-                carAIReference.Move(0, 0, -1f);
-            }
+            PathMovement();
         }
         else
         {
-            if (carAIReference.persuitAiOn && carAIReference.persuitTarget != null)
+            MovementToTarget();
+        }
+    }
+
+    public void SetTargets(List<Transform> targets)
+    {
+        targetsList = targets;
+        currentTargetIndex = 0;
+    }
+
+    private void MovementToTarget()
+    {
+        currentTarget = targetsList[currentTargetIndex];
+
+        Vector3 targetPosition = currentTarget.position;
+
+        float forwardAmount;
+        float turnAmount;
+
+        float reachedTargetDistance = 6f;
+        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+
+        if (distanceToTarget > reachedTargetDistance)
+        {
+            // still too far, keep going
+
+            //определяем, цель перед машиной или сзади
+            Vector3 dirToMovePosition = (targetPosition - transform.position).normalized;
+            float dot = Vector3.Dot(transform.forward, dirToMovePosition);
+
+            if (dot > 0)
             {
-                //PersuitSensors();
-            }
-            else if (!carAIReference.persuitAiOn)
-            {
-                persuitAiOn = false;
-            }
-
-            //ReverseGearSensors();
-            if (!reverseGearOn)
-            {
-                //AvoidSensors();
-                //BrakeSensors();
-            }
-
-            #region MAX SPEED
-
-            Vector3 fwd = transform.forward;
-            if (carAIReference.rb.velocity.magnitude > carAIReference.maxSpeed * 0.1f)
-            {
-                fwd = carAIReference.rb.velocity;
-            }
-
-            float desiredSpeed = carAIReference.maxSpeed;
-
-            #endregion
-
-            #region BRAKE FOR PATH
-
-            switch (carAIReference.brakeCondition)
-            {
-                case BrakeCondition.TargetDirectionDifference:
-                    {
-                        float approachingCornerAngle = Vector3.Angle(carAIReference.carAItarget.forward, fwd);
-                        //Debug.Log($"approachingCornerAngle (приближающийся угловой угол) = {approachingCornerAngle}");
-                        float spinningAngle = carAIReference.rb.angularVelocity.magnitude * carAIReference.cautiousAngularVelocityFactor;
-                        //Debug.Log($"spinningAngle = {spinningAngle}");
-                        float cautiousnessRequired = Mathf.InverseLerp(0, carAIReference.cautiousAngle, Mathf.Max(spinningAngle, approachingCornerAngle));
-                        //Debug.Log($"cautiousnessRequired (требуется осторожность) = {cautiousnessRequired}");
-                        desiredSpeed = Mathf.Lerp(carAIReference.maxSpeed, carAIReference.maxSpeed * carAIReference.cautiousSpeedFactor, cautiousnessRequired);
-                        //Debug.Log($"desiredSpeed (желаемая скорость) = {desiredSpeed}");
-                        //Debug.Log("----------");
-                        break;
-                    }
-
-                case BrakeCondition.TargetDistance:
-                    {
-                        Vector3 delta = carAIReference.carAItarget.position - transform.position;
-                        float distanceCautiousFactor = Mathf.InverseLerp(carAIReference.cautiousDistance, 0, delta.magnitude);
-                        float spinningAngle = carAIReference.rb.angularVelocity.magnitude * carAIReference.cautiousAngularVelocityFactor;
-                        float cautiousnessRequired = Mathf.Max(Mathf.InverseLerp(0, carAIReference.cautiousAngle, spinningAngle), distanceCautiousFactor);
-                        desiredSpeed = Mathf.Lerp(carAIReference.maxSpeed, carAIReference.maxSpeed * carAIReference.cautiousSpeedFactor, cautiousnessRequired);
-                        //Debug.Log(desiredSpeed);
-                        break;
-                    }
-
-                case BrakeCondition.NeverBrake:
-                    break;
-            }
-
-            #endregion
-
-            #region EVASIVE ACTION
-
-            Vector3 offsetTargetPos = carAIReference.carAItarget.position;
-
-            if (Time.time < avoidOtherCarTime)
-            {
-                desiredSpeed *= avoidOtherCarSlowdown;
-                //Debug.Log($"desiredSpeed 2 = {desiredSpeed}");
-                offsetTargetPos += carAIReference.carAItarget.right * avoidPathOffset;
+                // target in front
+                forwardAmount = 1f;
             }
             else
             {
-                offsetTargetPos += carAIReference.carAItarget.right * (Mathf.PerlinNoise(Time.time * carAIReference.lateralWanderSpeed, randomValue) * 2 - 1) * carAIReference.lateralWander;
-            }
-
-            #endregion
-
-            #region SENSITIVITY
-
-            float accelBrakeSensitivity = (desiredSpeed < carAIReference.CurrentSpeed)
-                                              ? carAIReference.brakeSensitivity
-                                              : carAIReference.accelSensitivity;
-
-            
-
-            float accel = Mathf.Clamp((desiredSpeed - carAIReference.CurrentSpeed) * accelBrakeSensitivity, -1, 1);
-            //if (accel < 0)
-            //{
-            //    Debug.Log($" {accel} = (desiredSpeed {desiredSpeed} - carAIReference.currentSpeed {carAIReference.currentSpeed})" +
-            //        $"* accelBrakeSensitivity {accelBrakeSensitivity}");
-            //}
-
-            //Debug.Log($"desiredSpeed = {desiredSpeed}; carAIReference.currentSpeed = {carAIReference.currentSpeed};" +
-            //    $"accelBrakeSensitivity = {accelBrakeSensitivity}");
-            #endregion
-
-            #region STEER
-            accel *= carAIReference.wanderAmount + (Mathf.PerlinNoise(Time.time * carAIReference.accelWanderSpeed, randomValue) * carAIReference.wanderAmount);
-            
-            MyAccel = accel;
-            Vector3 localTarget;
-
-            localTarget = transform.InverseTransformPoint(offsetTargetPos);
-
-            if (avoidingObstacle)
-            {
-                targetAngle = carAIReference.maximumSteerAngle * avoidObstacleMultiplier;
-            }
-            else if (carAIReference.persuitAiOn)
-            {
-                if (carAIReference.persuitTarget != null)
+                // target in behind
+                float reverseDistance = 1f;// если дальше чем на N, то разворачиваемся, а не сдаем назад
+                if (distanceToTarget > reverseDistance)// 0 - без заднего хода. Всегда в разворот (Мог застрять, сдавая назад и утыкаясь в препятствие)
                 {
-                    Transform tempTarget = carAIReference.persuitTarget.GetComponentInChildren<MeshCollider>().transform;
-                    Vector3 relativeVector = transform.InverseTransformPoint(tempTarget.position);
-                    targetAngle = (relativeVector.x / relativeVector.magnitude) * carAIReference.maximumSteerAngle;
+                    // too far to reverse
+                    forwardAmount = 1f;
+                }
+                else
+                {
+                    forwardAmount = -1f;
                 }
             }
-            else
-            {
-                targetAngle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
-            }
 
-            float steer = Mathf.Clamp(targetAngle * carAIReference.steerSensitivity, -1, 1) * Mathf.Sign(carAIReference.CurrentSpeed);
-            MySteer = steer;
-            #endregion
+            // определяем сторону поворота 
+            float angleToDir = Vector3.SignedAngle(transform.forward, dirToMovePosition, Vector3.up);
 
-            #region MOVE CAR
-
-            if (isBraking)
+            if (angleToDir == 0 || (angleToDir > -15f && angleToDir < 15f))
             {
-                carAIReference.Move(steer, 0f, -1f);
-            }
-            else if (reverseGearOn)
-            {
-                carAIReference.Move(-steer, -1f, -1f);
+                turnAmount = 0;
             }
             else
             {
-                if(!obstacle) carAIReference.Move(steer, accel, accel);
-                else carAIReference.Move(obstacleSteer, accel, accel);
+                if (angleToDir > 0)
+                {
+                    turnAmount = 1f;
+                }
+                else
+                {
+                    turnAmount = -1f;
+                }
             }
-
-            #endregion
-
-            #region REACHED TARGET STOP
-
-            if (carAIReference.stopWhenTargetReached && localTarget.magnitude < carAIReference.reachTargetThreshold)
-            {
-                carAIReference.isDriving = false;
-            }
-
-            #endregion
+            //print(angleToDir);
+            //isTargetReachedFirst = true;
         }
+        else
+        {
+            // reached target
+
+            if (currentTargetIndex + 1 < targetsList.Count)
+            {
+                currentTargetIndex++;
+            }
+
+            if (carAIReference.CurrentSpeed > 1f)// если скорость больше 1, то тормозим 
+            {
+                forwardAmount = -1f;
+            }
+            else
+            {
+                forwardAmount = 0f;
+            }
+            turnAmount = 0f;
+
+            //if (isTargetReachedFirst)
+            //{
+            //    targetReached = true;
+            //    isTargetReachedFirst = false;
+
+            //    //print(gameObject.name + " догнал " + targetPositionTransform.name + "   - isTargetReachedFirst");
+            //}
+        }
+
+        currentAccel = forwardAmount;
+        currentSteer = turnAmount;
+
+        if (!obstacle) carAIReference.Move(turnAmount, forwardAmount);
+        else carAIReference.Move(obstacleSteer, forwardAmount);
+    }
+
+    private void PathMovement()
+    {
+        #region MAX SPEED
+
+        Vector3 fwd = transform.forward;
+        if (carAIReference.rb.velocity.magnitude > carAIReference.maxSpeed * 0.1f)
+        {
+            fwd = carAIReference.rb.velocity;
+        }
+
+        float desiredSpeed = carAIReference.maxSpeed;
+
+        #endregion
+
+        #region BRAKE FOR PATH
+
+        switch (carAIReference.brakeCondition)
+        {
+            case BrakeCondition.TargetDirectionDifference:
+                {
+                    float approachingCornerAngle = Vector3.Angle(carAIReference.carAItarget.forward, fwd);
+                    //Debug.Log($"approachingCornerAngle (приближающийся угловой угол) = {approachingCornerAngle}");
+                    float spinningAngle = carAIReference.rb.angularVelocity.magnitude * carAIReference.cautiousAngularVelocityFactor;
+                    //Debug.Log($"spinningAngle = {spinningAngle}");
+                    float cautiousnessRequired = Mathf.InverseLerp(0, carAIReference.cautiousAngle, Mathf.Max(spinningAngle, approachingCornerAngle));
+                    //Debug.Log($"cautiousnessRequired (требуется осторожность) = {cautiousnessRequired}");
+                    desiredSpeed = Mathf.Lerp(carAIReference.maxSpeed, carAIReference.maxSpeed * carAIReference.cautiousSpeedFactor, cautiousnessRequired);
+                    //Debug.Log($"desiredSpeed (желаемая скорость) = {desiredSpeed}");
+                    //Debug.Log("----------");
+                    break;
+                }
+
+            case BrakeCondition.TargetDistance:
+                {
+                    Vector3 delta = carAIReference.carAItarget.position - transform.position;
+                    float distanceCautiousFactor = Mathf.InverseLerp(carAIReference.cautiousDistance, 0, delta.magnitude);
+                    float spinningAngle = carAIReference.rb.angularVelocity.magnitude * carAIReference.cautiousAngularVelocityFactor;
+                    float cautiousnessRequired = Mathf.Max(Mathf.InverseLerp(0, carAIReference.cautiousAngle, spinningAngle), distanceCautiousFactor);
+                    desiredSpeed = Mathf.Lerp(carAIReference.maxSpeed, carAIReference.maxSpeed * carAIReference.cautiousSpeedFactor, cautiousnessRequired);
+                    //Debug.Log(desiredSpeed);
+                    break;
+                }
+
+            case BrakeCondition.NeverBrake:
+                break;
+        }
+
+        #endregion
+
+        #region EVASIVE ACTION
+
+        Vector3 offsetTargetPos = carAIReference.carAItarget.position;
+
+        if (Time.time < avoidOtherCarTime)
+        {
+            desiredSpeed *= avoidOtherCarSlowdown;
+            offsetTargetPos += carAIReference.carAItarget.right * avoidPathOffset;
+        }
+        else
+        {
+            offsetTargetPos += carAIReference.carAItarget.right * (Mathf.PerlinNoise(Time.time * carAIReference.lateralWanderSpeed, randomValue) * 2 - 1) * carAIReference.lateralWander;
+        }
+
+        #endregion
+
+        #region SENSITIVITY
+
+        float accelBrakeSensitivity = (desiredSpeed < carAIReference.CurrentSpeed)
+                                          ? carAIReference.brakeSensitivity
+                                          : carAIReference.accelSensitivity;
+
+
+
+        float accel = Mathf.Clamp((desiredSpeed - carAIReference.CurrentSpeed) * accelBrakeSensitivity, -1, 1);
+        #endregion
+
+        #region STEER
+        accel *= carAIReference.wanderAmount + (Mathf.PerlinNoise(Time.time * carAIReference.accelWanderSpeed, randomValue) * carAIReference.wanderAmount);
+
+        currentAccel = accel;
+        Vector3 localTarget;
+
+        localTarget = transform.InverseTransformPoint(offsetTargetPos);
+
+        targetAngle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
+
+        float steer = Mathf.Clamp(targetAngle * carAIReference.steerSensitivity, -1, 1) * Mathf.Sign(carAIReference.CurrentSpeed);
+        currentSteer = steer;
+        #endregion
+
+        #region MOVE CAR
+
+        if (!obstacle) carAIReference.Move(steer, accel);
+        else carAIReference.Move(obstacleSteer, accel);
+
+        #endregion
     }
 
     #region COLLISION WITH OTHER CARS
@@ -259,204 +301,4 @@ public class RaceAIInputs : MonoBehaviour
     }
 
     #endregion
-
-    #region AVOID SENSORS    
-    //private void AvoidSensors()
-    //{
-    //    RaycastHit hit;
-    //    avoidingObstacle = false;
-
-    //    // Right Sensor
-    //    if (Physics.Raycast(rightSensor.position, frontSensor.transform.forward, out hit, carAIReference.avoidDistance))
-    //    {
-    //        if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //        {
-    //            Debug.DrawLine(rightSensor.position, hit.point, Color.yellow);
-    //            avoidingObstacle = true;
-    //            avoidObstacleMultiplier -= 1f;
-    //        }
-    //    }
-
-    //    // Right Angle Sensor
-    //    else if (Physics.Raycast(rightSensor.position, Quaternion.AngleAxis(carAIReference.sensorsAngle, rightSensor.up) * rightSensor.forward, out hit, carAIReference.avoidDistance))
-    //    {
-    //        if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //        {
-    //            Debug.DrawLine(rightSensor.position, hit.point, Color.yellow);
-    //            avoidingObstacle = true;
-    //            avoidObstacleMultiplier -= 0.5f;
-    //        }
-    //    }
-
-    //    // Left Sensor
-    //    if (Physics.Raycast(leftSensor.position, frontSensor.forward, out hit, carAIReference.avoidDistance))
-    //    {
-    //        if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //        {
-    //            Debug.DrawLine(leftSensor.position, hit.point, Color.yellow);
-    //            avoidingObstacle = true;
-    //            avoidObstacleMultiplier += 1f;
-    //        }
-    //    }
-
-
-    //    // Left Angle Sensor
-    //    else if (Physics.Raycast(leftSensor.position, Quaternion.AngleAxis(-carAIReference.sensorsAngle, leftSensor.up) * leftSensor.forward, out hit, carAIReference.avoidDistance))
-    //    {
-    //        if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //        {
-    //            Debug.DrawLine(leftSensor.position, hit.point, Color.yellow);
-    //            avoidingObstacle = true;
-    //            avoidObstacleMultiplier += 0.5f;
-    //        }
-    //    }
-
-    //    if (avoidObstacleMultiplier == 0)
-    //    {
-    //        //front center sensor
-    //        if (Physics.Raycast(frontSensor.position, frontSensor.forward, out hit, carAIReference.avoidDistance))
-    //        {
-    //            if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //            {
-    //                Debug.DrawLine(frontSensor.position, hit.point, Color.yellow);
-    //                avoidingObstacle = true;
-    //                if (hit.normal.x < 0)
-    //                {
-    //                    avoidObstacleMultiplier = -1f;
-    //                }
-    //                else
-    //                {
-    //                    avoidObstacleMultiplier = 1f;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
-    #endregion
-
-    #region BRAKE SENSORS
-
-    //private void BrakeSensors()
-    //{
-    //    RaycastHit hit;
-    //    isBraking = false;
-
-    //    // Right Sensor
-    //    if (Physics.Raycast(rightSensor.position, frontSensor.forward, out hit, carAIReference.brakeDistance))
-    //    {
-    //        if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //        {
-    //            Debug.DrawLine(rightSensor.position, hit.point, Color.magenta);
-    //            isBraking = true;
-    //        }
-    //    }
-
-    //    // Left Sensor
-    //    if (Physics.Raycast(leftSensor.position, frontSensor.forward, out hit, carAIReference.brakeDistance))
-    //    {
-    //        if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //        {
-    //            Debug.DrawLine(leftSensor.position, hit.point, Color.magenta);
-    //            isBraking = true;
-    //        }
-    //    }
-    //}
-
-    #endregion
-
-    #region REVERSE GEAR SENSORS
-
-    //private void ReverseGearSensors()
-    //{
-    //    RaycastHit hit;
-    //    reverseGearOn = false;
-
-    //    // Right Sensor
-    //    if (Physics.Raycast(rightSensor.position, frontSensor.forward, out hit, carAIReference.reverseDistance))
-    //    {
-    //        if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //        {
-    //            Debug.DrawLine(rightSensor.position, hit.point, Color.blue);
-    //            reverseGearOn = true;
-    //        }
-    //    }
-
-    //    // Left Sensor
-    //    if (Physics.Raycast(leftSensor.position, frontSensor.forward, out hit, carAIReference.reverseDistance))
-    //    {
-    //        if (!hit.collider.GetComponent<CompetitiveDrivingCheck>() && !hit.collider.CompareTag("Terrain"))
-    //        {
-    //            Debug.DrawLine(leftSensor.position, hit.point, Color.blue);
-    //            reverseGearOn = true;
-    //        }
-    //    }
-    //}
-
-    #endregion
-
-    #region PERSUIT AI SENSORS
-
-    //private void PersuitSensors()
-    //{
-    //    RaycastHit hit;
-
-    //    // Right Sensor
-    //    if (Physics.Raycast(rightSensor.position, frontSensor.forward, out hit, carAIReference.persuitDistance))
-    //    {
-    //        if (hit.collider == carAIReference.persuitTarget.GetComponentInChildren<MeshCollider>())
-    //        {
-    //            Debug.DrawLine(rightSensor.position, hit.point, Color.white);
-    //            persuitAiOn = true;
-    //        }
-    //    }
-
-    //    // Right Angle Sensor
-    //    if (Physics.Raycast(rightSensor.position, Quaternion.AngleAxis(carAIReference.sensorsAngle, rightSensor.up) * rightSensor.forward, out hit, carAIReference.persuitDistance))
-    //    {
-    //        if (hit.collider == carAIReference.persuitTarget.GetComponentInChildren<MeshCollider>())
-    //        {
-    //            Debug.DrawLine(rightSensor.position, hit.point, Color.white);
-    //            persuitAiOn = true;
-    //        }
-    //    }
-
-    //    // Left Sensor
-    //    if (Physics.Raycast(leftSensor.position, frontSensor.forward, out hit, carAIReference.persuitDistance))
-    //    {
-    //        if (hit.collider == carAIReference.persuitTarget.GetComponentInChildren<MeshCollider>())
-    //        {
-    //            Debug.DrawLine(leftSensor.position, hit.point, Color.white);
-    //            persuitAiOn = true;
-    //        }
-    //    }
-
-
-    //    // Left Angle Sensor
-    //    if (Physics.Raycast(leftSensor.position, Quaternion.AngleAxis(-carAIReference.sensorsAngle, leftSensor.up) * leftSensor.forward, out hit, carAIReference.persuitDistance))
-    //    {
-    //        if (hit.collider == carAIReference.persuitTarget.GetComponentInChildren<MeshCollider>())
-    //        {
-    //            Debug.DrawLine(leftSensor.position, hit.point, Color.white);
-    //            persuitAiOn = true;
-    //        }
-    //    }
-
-    //    if (Physics.Raycast(frontSensor.position, frontSensor.forward, out hit, carAIReference.persuitDistance))
-    //    {
-    //        if (hit.collider == carAIReference.persuitTarget.GetComponentInChildren<MeshCollider>())
-    //        {
-    //            Debug.DrawLine(leftSensor.position, hit.point, Color.white);
-    //            persuitAiOn = true;
-    //        }
-    //    }
-    //}
-
-    #endregion
-
-    public void SetTarget(Transform target)
-    {
-        carAIReference.carAItarget = target;
-        carAIReference.isDriving = true;
-    }
 }

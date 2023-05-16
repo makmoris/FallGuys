@@ -5,7 +5,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
 {
     [SerializeField] private float desiredSpeedInZone = 30f;
     [Space]
-    [SerializeField] private RaceSectorWithDynamicPlatform raceSectorWithDynamicPlatform;
+    [SerializeField] private RaceSectorWithFrontalDynamicPlatform raceSectorWithDynamicPlatform;
     [Space]
     [SerializeField] private List<ObstalceMovement> platforms;
     

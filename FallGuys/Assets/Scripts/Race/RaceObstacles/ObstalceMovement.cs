@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ObstalceMovement : MonoBehaviour
 {
-    [SerializeField] private Vector3 enterPosition;
-    [SerializeField] private Vector3 exitPosition;
+    [SerializeField] private Vector3 startPosition;
+    [SerializeField] private Vector3 endPosition;
     private Vector3 targetPosition;
     [Space]
     [SerializeField] private float speed;
@@ -14,23 +14,23 @@ public class ObstalceMovement : MonoBehaviour
 
     [Space]
 
-    [SerializeField]private bool obstacleAnEntryPosition;
-    internal bool ObstacleAnEntryPosition
+    [SerializeField]private bool obstacleAnStartPosition;
+    internal bool ObstacleAnStartPosition
     {
-        get => obstacleAnEntryPosition;
-        private set => obstacleAnEntryPosition = value;
+        get => obstacleAnStartPosition;
+        private set => obstacleAnStartPosition = value;
     }
 
-    [SerializeField] private bool obstacleAnExitPosition;
-    internal bool ObstacleAnExitPosition
+    [SerializeField] private bool obstacleAnEndPosition;
+    internal bool ObstacleAnEndPosition
     {
-        get => obstacleAnExitPosition;
-        private set => obstacleAnExitPosition = value;
+        get => obstacleAnEndPosition;
+        private set => obstacleAnEndPosition = value;
     }
 
-    internal event System.Action<GameObject> ObstacleAnEnterPositionEvent;
+    internal event System.Action<GameObject> ObstacleAnStartPositionEvent;
 
-    internal event System.Action<GameObject> ObstacleAnExitPositionEvent;
+    internal event System.Action<GameObject> ObstacleAnEndPositionEvent;
 
     internal event System.Action<GameObject> ObstacleStartedMovingEvent;
 
@@ -41,7 +41,7 @@ public class ObstalceMovement : MonoBehaviour
     {
         canMoving = true;
         transform.localPosition = GetRandomPostion();
-        targetPosition = exitPosition;
+        targetPosition = endPosition;
         goingToEndPosition = true;
     }
 
@@ -63,9 +63,9 @@ public class ObstalceMovement : MonoBehaviour
 
     private Vector3 GetRandomPostion()
     {
-        float rX = Random.Range(enterPosition.x, exitPosition.x);
-        float rY = Random.Range(enterPosition.y, exitPosition.y);
-        float rZ = Random.Range(enterPosition.z, exitPosition.z);
+        float rX = Random.Range(startPosition.x, endPosition.x);
+        float rY = Random.Range(startPosition.y, endPosition.y);
+        float rZ = Random.Range(startPosition.z, endPosition.z);
 
         Vector3 rPos = new Vector3(rX, rY, rZ);
 
@@ -76,13 +76,13 @@ public class ObstalceMovement : MonoBehaviour
     {
         if (!goingToEndPosition)
         {
-            obstacleAnEntryPosition = true;
-            ObstacleAnEnterPositionEvent?.Invoke(this.gameObject);
+            obstacleAnStartPosition = true;
+            ObstacleAnStartPositionEvent?.Invoke(this.gameObject);
         }
         else
         {
-            obstacleAnExitPosition = true;
-            ObstacleAnExitPositionEvent?.Invoke(this.gameObject);
+            obstacleAnEndPosition = true;
+            ObstacleAnEndPositionEvent?.Invoke(this.gameObject);
         }
 
         float delayTime = Random.Range(minDelayTime, maxDelayTime);
@@ -93,18 +93,18 @@ public class ObstalceMovement : MonoBehaviour
 
         if (goingToEndPosition)
         {
-            targetPosition = enterPosition;
+            targetPosition = startPosition;
             goingToEndPosition = false;
         }
         else
         {
-            targetPosition = exitPosition;
+            targetPosition = endPosition;
             goingToEndPosition = true;
         }
 
         canMoving = true;
-        obstacleAnEntryPosition = false;
+        obstacleAnStartPosition = false;
 
-        obstacleAnExitPosition = false;
+        obstacleAnEndPosition = false;
     }
 }

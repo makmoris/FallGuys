@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DynamicPlatformWaitZone : MonoBehaviour
+public class FrontalDynamicPlatformWaitZone : MonoBehaviour
 {
     [SerializeField] private float desiredSpeedInZone = 30f;
     [Space]
@@ -15,7 +15,7 @@ public class DynamicPlatformWaitZone : MonoBehaviour
     {
         foreach (var platform in platforms)
         {
-            platform.ObstacleAnEnterPositionEvent += PlatformAnEnterPosition;
+            platform.ObstacleAnStartPositionEvent += PlatformAnEnterPosition;
             platform.ObstacleStartedMovingEvent += PlatformStartedMoving;
         }
     }
@@ -70,7 +70,7 @@ public class DynamicPlatformWaitZone : MonoBehaviour
 
                 ObstalceMovement platformForThisCar = raceSectorWithDynamicPlatform.GetPlatformForThisCar(carAI);
 
-                if (!platformForThisCar.ObstacleAnEntryPosition)
+                if (!platformForThisCar.ObstacleAnStartPosition)
                 {
                     carAI.Handbrake = true;
                 }
@@ -102,7 +102,7 @@ public class DynamicPlatformWaitZone : MonoBehaviour
     {
         foreach (var platform in platforms)
         {
-            platform.ObstacleAnEnterPositionEvent -= PlatformAnEnterPosition;
+            platform.ObstacleAnStartPositionEvent -= PlatformAnEnterPosition;
             platform.ObstacleStartedMovingEvent -= PlatformStartedMoving;
         }
     }

@@ -117,7 +117,7 @@ public class RaceSectorWithDynamicPlatform : MonoBehaviour
 
     private void CheckingNeedToWait(RaceDriverAI raceDriverAI)
     {
-        bool canEnterToPlanform = raceDriverAIWithPathAndPlatformDictionary[raceDriverAI].platform.ObstacleAnEntryPosition;
+        bool canEnterToPlanform = raceDriverAIWithPathAndPlatformDictionary[raceDriverAI].platform.ObstacleAnStartPosition;
 
         if (!canEnterToPlanform)
         {

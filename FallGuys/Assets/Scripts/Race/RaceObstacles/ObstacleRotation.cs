@@ -17,6 +17,7 @@ public class ObstacleRotation : MonoBehaviour
     private void Start()
     {
         canMoving = true;
+        transform.localEulerAngles = GetRandomRotation();
         targetPosition = endPosition.eulerAngles;
         goingToEndPosition = true;
     }
@@ -35,6 +36,17 @@ public class ObstacleRotation : MonoBehaviour
                 canMoving = false;
             }
         }
+    }
+
+    private Vector3 GetRandomRotation()
+    {
+        float rX = Random.Range(startPosition.eulerAngles.x, endPosition.eulerAngles.x);
+        float rY = Random.Range(startPosition.eulerAngles.y, endPosition.eulerAngles.y);
+        float rZ = Random.Range(startPosition.eulerAngles.z, endPosition.eulerAngles.z);
+
+        Vector3 rPos = new Vector3(rX, rY, rZ);
+
+        return rPos;
     }
 
     IEnumerator WaitAndGo()

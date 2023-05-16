@@ -1,7 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DynamicPlatform : MonoBehaviour
+public class FrontalDynamicPlatformParent : MonoBehaviour
 {
     private RaceSectorWithDynamicPlatform raceSectorWithDynamicPlatform;
     private ObstalceMovement platformMovementParent;
@@ -10,10 +11,8 @@ public class DynamicPlatform : MonoBehaviour
 
     private void OnEnable()
     {
-        DynamicPlatformBorder.CarLeftTheDynamicPlatformBorderEvent += CheckCar;
-
         platformMovementParent = transform.GetComponentInParent<ObstalceMovement>();
-        if (platformMovementParent != null) platformMovementParent.ObstacleAnExitPositionEvent += CarOnPlatformCanGo;
+        if (platformMovementParent != null) platformMovementParent.ObstacleAnEndPositionEvent += CarOnPlatformCanGo;
     }
 
     private void Awake()
@@ -28,7 +27,7 @@ public class DynamicPlatform : MonoBehaviour
             car.transform.SetParent(transform);
 
             // когда сделали дочерним, значит авто полноценно на платформе
-            raceSectorWithDynamicPlatform.CarEnteredThePlatform(car);
+            if (raceSectorWithDynamicPlatform != null) raceSectorWithDynamicPlatform.CarEnteredThePlatform(car);
         }
     }
 
@@ -53,6 +52,7 @@ public class DynamicPlatform : MonoBehaviour
         if (other.CompareTag("Car"))
         {
             carsOnPlatform.Add(other.gameObject);
+            CheckCar(other.gameObject);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -60,14 +60,11 @@ public class DynamicPlatform : MonoBehaviour
         if (other.CompareTag("Car"))
         {
             carsOnPlatform.Remove(other.gameObject);
-            other.gameObject.transform.SetParent(null);
         }
     }
 
     private void OnDisable()
     {
-        DynamicPlatformBorder.CarLeftTheDynamicPlatformBorderEvent -= CheckCar;
-
-        if (platformMovementParent != null) platformMovementParent.ObstacleAnExitPositionEvent -= CarOnPlatformCanGo;
+        if (platformMovementParent != null) platformMovementParent.ObstacleAnEndPositionEvent -= CarOnPlatformCanGo;
     }
 }

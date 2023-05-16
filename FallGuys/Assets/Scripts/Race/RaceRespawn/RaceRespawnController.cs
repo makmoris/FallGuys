@@ -31,6 +31,7 @@ public class RaceRespawnController : MonoBehaviour
 
         car.transform.position = raceRespawnZone.GetRespawnPosition();
         car.transform.rotation = raceRespawnZone.transform.rotation; 
+        car.transform.SetParent(null);
         car.gameObject.SetActive(true);
 
         RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();

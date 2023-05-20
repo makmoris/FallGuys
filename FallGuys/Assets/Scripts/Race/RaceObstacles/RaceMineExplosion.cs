@@ -1,49 +1,38 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosion : Bonus, IExplosion
+public class RaceMineExplosion : MonoBehaviour
 {
-    [SerializeField] float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    [Space]
     public LayerMask ignoreLayer; // ignore AttackPointer
     //public bool isBullet;
     [SerializeField] private float radius;
     [SerializeField] private float upwards;
     [SerializeField] private float force;
 
-    [SerializeField] private float timeBeforExplotion;
-
     [SerializeField] private GameObject explosionEffect;
 
     public ForceMode forceMode = ForceMode.VelocityChange;
 
-    private bool explosionDone;
-
-    [SerializeField]private int mineCounter;// если наехал 1 раз - активировал мину. 2 раз - мина взрываетс€
-
-    [Header("Mine or Bomb")]
-    [SerializeField] private bool isMine;
     [SerializeField] private ParticleSystem mineActiveEffect;
     private AudioSource audioSource;
-    [SerializeField] private AudioClip mineActivatedSound;
     [SerializeField] private AudioClip mineActiveSound;
-    private Coroutine mineActivatedSoundCoroutine = null;
 
-    // метод вызываетс€ пулей при соприкосновении коллайдеров. ≈сли это бочка, то можешь дать врем€ перед взырвом. ≈сли игрок - взрыв сразу
-    public void ExplodeWithDelay()
+    private RaceMine raceMine;
+
+    private void Awake()
     {
-        //if (explosionDone) return;
+        raceMine = GetComponentInParent<RaceMine>();
+        audioSource = GetComponent<AudioSource>();
+    }
 
-        //explosionDone = true;
-        Invoke("Explode", timeBeforExplotion);
-        //GetComponent<Renderer>().material.color = Color.red;
+    private void OnEnable()
+    {
+        mineActiveEffect.Simulate(1f, true, true);
+        mineActiveEffect.Play();
+
+        audioSource.clip = mineActiveSound;
+        audioSource.Play();
+        audioSource.loop = true;
     }
 
     public void Explode()
@@ -52,7 +41,7 @@ public class Explosion : Bonus, IExplosion
 
         List<Collider> collidersWithoutAttackPointers = new List<Collider>();
         List<Collider> collidersWithAttackPointers = new List<Collider>();
-        
+
         foreach (var overLappedCollider in overLappedColliders)
         {
             int _ignoreLayer = ignoreLayer.value;
@@ -76,11 +65,8 @@ public class Explosion : Bonus, IExplosion
             if (rigidbody != null)
             {
                 rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
-
-                Bumper bumper = collider.GetComponent<Bumper>();
-                if (bumper != null) bumper.GetBonus(this);
             }
-                
+
         }
 
         foreach (var collider in collidersWithAttackPointers)
@@ -93,15 +79,7 @@ public class Explosion : Bonus, IExplosion
 
         Instantiate(explosionEffect, transform.position, Quaternion.identity);
 
-        if (mineActivatedSoundCoroutine != null) StopCoroutine(mineActivatedSoundCoroutine);
-
-        //Destroy(gameObject);
-        gameObject.SetActive(false);
-    }
-
-    public override void Got()
-    {
-        // заглушка, чтобы не удал€ть объект
+        raceMine.ReloadMine(gameObject);
     }
 
     private void OnDrawGizmosSelected()
@@ -111,33 +89,9 @@ public class Explosion : Bonus, IExplosion
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isMine && other.CompareTag("Car"))
+        if (other.CompareTag("Car"))
         {
-            mineCounter++;
-
-            if (mineCounter == 1)
-            {
-                mineActiveEffect.Simulate(1f, true, true);
-                mineActiveEffect.Play();
-
-                audioSource = GetComponent<AudioSource>();
-                mineActivatedSoundCoroutine = StartCoroutine(MineActivatedSound());
-            }
-            
-            if (mineCounter >= 2) ExplodeWithDelay();
+            Explode();
         }
-    }
-
-    IEnumerator MineActivatedSound()
-    {
-        audioSource.clip = mineActivatedSound;
-        audioSource.Play();
-        audioSource.loop = false;
-
-        yield return new WaitForSeconds(mineActivatedSound.length);
-
-        audioSource.clip = mineActiveSound;
-        audioSource.Play();
-        audioSource.loop = true;
     }
 }

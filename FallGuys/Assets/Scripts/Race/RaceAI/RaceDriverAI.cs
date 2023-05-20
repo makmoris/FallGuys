@@ -64,21 +64,21 @@ public class RaceDriverAI : MonoBehaviour
 
     [SerializeField]private bool moveForward;
 
-    private float currentSpeed;
-    internal float CurrentSpeed
+    [SerializeField] private float currentSpeed;
+    public float CurrentSpeed
     {
         get => currentSpeed;
     }
 
     private bool isGround;
-    internal bool IsGround
+    public bool IsGround
     {
         get => isGround;
         set => isGround = value;
     }
 
     private bool handbrake;
-    internal bool Handbrake
+    public bool Handbrake
     {
         get => handbrake;
         set => handbrake = value;
@@ -109,7 +109,7 @@ public class RaceDriverAI : MonoBehaviour
 
         isGround = true;
 
-        //moveForward = true;
+        moveForward = true;
     }
 
     private void Update()
@@ -132,7 +132,7 @@ public class RaceDriverAI : MonoBehaviour
     {
         if (!moveForward)
         {
-            if (!handbrake)
+            if (!handbrake && isGround)
             {
                 wheelVehicle.Steering = steering;
                 wheelVehicle.Throttle = accel;
@@ -159,16 +159,28 @@ public class RaceDriverAI : MonoBehaviour
         moveForward = false;
     }
 
-    public void ResetWaypointsPath()
+    public void WasRespawn()
+    {
+        if (raceAIInputs.IsPathMovement) ResetWaypointsPath();
+        else ResetMovementToTarget();
+    }
+
+    private void ResetWaypointsPath()
     {
         raceAIWaypointTracker.SetNewWaypointsPath(raceWaypointsPath);
         moveForward = false;
+    }
+
+    private void ResetMovementToTarget()
+    {
+        raceAIInputs.ResetTargets();
     }
 
     public void SetTargets(List<Transform> targets)// вызывается сектором с целями. Передает список платформ
     {
         raceAIInputs.SetTargets(targets);
         raceAIInputs.IsPathMovement = false;
+        moveForward = false;
     }
 
     private IEnumerator SlowDown(float desiredSpeed)

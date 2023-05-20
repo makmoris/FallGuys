@@ -4,7 +4,7 @@ using VehicleBehaviour;
 
 public class EnterSectorTrigger : MonoBehaviour
 {
-    internal event Action<WheelVehicle> CarEnteredTheSectorEvent;
+    public event Action<WheelVehicle> CarEnteredTheSectorEvent;
 
     private void OnTriggerEnter(Collider other)
     {

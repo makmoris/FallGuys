@@ -37,13 +37,16 @@ public class RaceGroundDetectionAI : MonoBehaviour
         }
         else isGround = false;
 
-        if (Physics.Raycast(posLeft, dirTiltAngle, out hit, raycastLength, groundLayerMask))
+        if (isGround)
         {
-            //Obstacles = "Left_3";
-            isGround = true;
-            //raceAIInputs.obstacleSteer = -0.5f;
+            if (Physics.Raycast(posLeft, dirTiltAngle, out hit, raycastLength, groundLayerMask))
+            {
+                //Obstacles = "Left_3";
+                isGround = true;
+                //raceAIInputs.obstacleSteer = -0.5f;
+            }
+            else isGround = false;
         }
-        else isGround = false;
 
         raceDriverAI.IsGround = isGround;
 

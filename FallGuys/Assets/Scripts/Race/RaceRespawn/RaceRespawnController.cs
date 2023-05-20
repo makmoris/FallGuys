@@ -38,7 +38,7 @@ public class RaceRespawnController : MonoBehaviour
         if (raceDriverAI != null)
         {
             raceDriverAI.Handbrake = false;
-            raceDriverAI.ResetWaypointsPath();
+            raceDriverAI.WasRespawn();
         }
     }
 

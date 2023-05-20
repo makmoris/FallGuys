@@ -4,20 +4,17 @@ using UnityEngine;
 
 public class HorizontalDynamicPlatformParent : MonoBehaviour
 {
-    //private RaceSectorWithDynamicPlatform raceSectorWithDynamicPlatform; raceSectorWithHorizontalDynamicPlatform
-    private ObstalceMovement platformMovementParent;
+    private RaceSectorWithHorizontalDynamicPlatform raceSectorWithHorizontalDynamicPlatform;
+    private float desiredSpeed;
 
     [SerializeField] private List<GameObject> carsOnPlatform = new List<GameObject>();
+    private Dictionary<GameObject, RaceDriverAI> raceDriversDictionary = new Dictionary<GameObject, RaceDriverAI>();
 
-    private void OnEnable()
-    {
-        platformMovementParent = transform.GetComponentInParent<ObstalceMovement>();
-        if (platformMovementParent != null) platformMovementParent.ObstacleAnEndPositionEvent += CarOnPlatformCanGo;
-    }
 
     private void Awake()
     {
-        //raceSectorWithDynamicPlatform = transform.GetComponentInParent<RaceSectorWithDynamicPlatform>();
+        raceSectorWithHorizontalDynamicPlatform = transform.GetComponentInParent<RaceSectorWithHorizontalDynamicPlatform>();
+        desiredSpeed = raceSectorWithHorizontalDynamicPlatform.DesiredSpeedOnPlatform;
     }
 
     private void CheckCar(GameObject car)
@@ -47,12 +44,35 @@ public class HorizontalDynamicPlatformParent : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (raceDriversDictionary.ContainsKey(other.gameObject))
+        {
+            RaceDriverAI raceDriverAI = raceDriversDictionary[other.gameObject];
+            
+            if(raceDriverAI.CurrentSpeed > desiredSpeed)
+            {
+                raceDriverAI.SlowDownToDesiredSpeed(desiredSpeed);
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Car"))
         {
             carsOnPlatform.Add(other.gameObject);
             CheckCar(other.gameObject);
+
+            RaceDriverAI raceDriverAI = other.GetComponent<RaceDriverAI>();
+
+            if (raceDriverAI != null)
+            {
+                if (!raceDriversDictionary.ContainsKey(other.gameObject))
+                {
+                    raceDriversDictionary.Add(other.gameObject, raceDriverAI);
+                }
+            }
         }
     }
     private void OnTriggerExit(Collider other)
@@ -60,11 +80,12 @@ public class HorizontalDynamicPlatformParent : MonoBehaviour
         if (other.CompareTag("Car"))
         {
             carsOnPlatform.Remove(other.gameObject);
+
+            if (raceDriversDictionary.ContainsKey(other.gameObject))
+            {
+                raceDriversDictionary.Remove(other.gameObject);
+            }
         }
     }
 
-    private void OnDisable()
-    {
-        if (platformMovementParent != null) platformMovementParent.ObstacleAnEndPositionEvent -= CarOnPlatformCanGo;
-    }
 }

@@ -21055,14 +21055,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5725397337570077687}
-  m_LocalRotation: {x: 0.2588191, y: -0, z: -0, w: 0.9659258}
+  m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4865704175737274843}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
 --- !u!1 &5793086999982186356
 GameObject:
   m_ObjectHideFlags: 0
@@ -22466,11 +22466,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d419b9b01c5d1eb43b1de6a3db23ea2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MySteer: 0
-  MyAccel: 0
+  currentSteer: 0
+  currentAccel: 0
   obstacle: 0
   obstacleSteer: 0
-  reverseGearOn: 0
+  isPathMovement: 0
+  targetsList: []
+  currentTarget: {fileID: 0}
 --- !u!1 &8733030737769107298
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class RaceAIInputs : MonoBehaviour
 {
+    public float currentAngle;
+
     [SerializeField] private float currentSteer;
     [SerializeField] private float currentAccel;
     
@@ -79,100 +81,127 @@ public class RaceAIInputs : MonoBehaviour
         currentTargetIndex = 0;
     }
 
+    public void ResetTargets()
+    {
+        int index = 0;
+
+        for (int i = 0; i < targetsList.Count; i++)
+        {
+            Vector3 targetPosition = targetsList[i].transform.position;
+           
+            if (transform.position.z < targetPosition.z)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if(index > 0) index++;
+
+        if (index >= targetsList.Count) index = targetsList.Count - 1;
+
+        currentTargetIndex = index;
+    }
+
     private void MovementToTarget()
     {
-        currentTarget = targetsList[currentTargetIndex];
-
-        Vector3 targetPosition = currentTarget.position;
-
-        float forwardAmount;
-        float turnAmount;
-
-        float reachedTargetDistance = 6f;
-        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
-
-        if (distanceToTarget > reachedTargetDistance)
+        if (targetsList.Count > 0)
         {
-            // still too far, keep going
+            currentTarget = targetsList[currentTargetIndex];
 
-            //определяем, цель перед машиной или сзади
-            Vector3 dirToMovePosition = (targetPosition - transform.position).normalized;
-            float dot = Vector3.Dot(transform.forward, dirToMovePosition);
+            Vector3 targetPosition = currentTarget.position;
 
-            if (dot > 0)
+            float forwardAmount = 0f;
+            float turnAmount = 0f;
+
+            float reachedTargetDistance = 6f;
+            float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+
+            if (distanceToTarget > reachedTargetDistance)
             {
-                // target in front
-                forwardAmount = 1f;
-            }
-            else
-            {
-                // target in behind
-                float reverseDistance = 1f;// если дальше чем на N, то разворачиваемся, а не сдаем назад
-                if (distanceToTarget > reverseDistance)// 0 - без заднего хода. Всегда в разворот (Мог застрять, сдавая назад и утыкаясь в препятствие)
+                // still too far, keep going
+
+                //определяем, цель перед машиной или сзади
+                Vector3 dirToMovePosition = (targetPosition - transform.position).normalized;
+                float dot = Vector3.Dot(transform.forward, dirToMovePosition);
+
+                if (dot > 0)
                 {
-                    // too far to reverse
+                    // target in front
                     forwardAmount = 1f;
                 }
                 else
                 {
-                    forwardAmount = -1f;
+                    // target in behind
+                    float reverseDistance = 5f;// если дальше чем на N, то разворачиваемся, а не сдаем назад
+                    if (distanceToTarget > reverseDistance)// 0 - без заднего хода. Всегда в разворот (Мог застрять, сдавая назад и утыкаясь в препятствие)
+                    {
+                        // too far to reverse
+                        forwardAmount = 1f;
+                    }
+                    else
+                    {
+                        forwardAmount = -1f;
+                    }
                 }
-            }
 
-            // определяем сторону поворота 
-            float angleToDir = Vector3.SignedAngle(transform.forward, dirToMovePosition, Vector3.up);
+                // определяем сторону поворота 
+                float angleToDir = Vector3.SignedAngle(transform.forward, dirToMovePosition, Vector3.up);
 
-            if (angleToDir == 0 || (angleToDir > -15f && angleToDir < 15f))
-            {
-                turnAmount = 0;
-            }
-            else
-            {
-                if (angleToDir > 0)
+                currentAngle = angleToDir;
+
+                if (angleToDir == 0 || (angleToDir > -10f && angleToDir < 10f))
                 {
-                    turnAmount = 1f;
+                    turnAmount = 0f;
                 }
                 else
                 {
-                    turnAmount = -1f;
+                    if (angleToDir > 0f)
+                    {
+                        turnAmount = 1f;
+                    }
+                    else
+                    {
+                        turnAmount = -1f;
+                    }
                 }
-            }
-            //print(angleToDir);
-            //isTargetReachedFirst = true;
-        }
-        else
-        {
-            // reached target
-
-            if (currentTargetIndex + 1 < targetsList.Count)
-            {
-                currentTargetIndex++;
-            }
-
-            if (carAIReference.CurrentSpeed > 1f)// если скорость больше 1, то тормозим 
-            {
-                forwardAmount = -1f;
+                //print(angleToDir);
+                //isTargetReachedFirst = true;
             }
             else
             {
-                forwardAmount = 0f;
+                // reached target
+
+                if (currentTargetIndex + 1 < targetsList.Count)
+                {
+                    currentTargetIndex++;
+                }
+
+                //if (carAIReference.CurrentSpeed > 1f)// если скорость больше 1, то тормозим 
+                //{
+                //    forwardAmount = -1f;
+                //}
+                //else
+                //{
+                //    forwardAmount = 0f;
+                //}
+                turnAmount = 0f;
+
+                //if (isTargetReachedFirst)
+                //{
+                //    targetReached = true;
+                //    isTargetReachedFirst = false;
+
+                //    //print(gameObject.name + " догнал " + targetPositionTransform.name + "   - isTargetReachedFirst");
+                //}
             }
-            turnAmount = 0f;
+            
+            currentAccel = forwardAmount;
+            currentSteer = turnAmount;
 
-            //if (isTargetReachedFirst)
-            //{
-            //    targetReached = true;
-            //    isTargetReachedFirst = false;
-
-            //    //print(gameObject.name + " догнал " + targetPositionTransform.name + "   - isTargetReachedFirst");
-            //}
+            if (!obstacle) carAIReference.Move(turnAmount, forwardAmount);
+            else carAIReference.Move(obstacleSteer, forwardAmount);
         }
-
-        currentAccel = forwardAmount;
-        currentSteer = turnAmount;
-
-        if (!obstacle) carAIReference.Move(turnAmount, forwardAmount);
-        else carAIReference.Move(obstacleSteer, forwardAmount);
     }
 
     private void PathMovement()

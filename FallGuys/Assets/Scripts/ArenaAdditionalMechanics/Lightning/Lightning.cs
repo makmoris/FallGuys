@@ -45,7 +45,7 @@ public class Lightning : Bonus
         if (bumper != null)
         {
             bumper.GetBonus(this);
-            bumper.GetBonus(disableWeaponBonus, damagableObj);
+            bumper.GetBonusWithGameObject(disableWeaponBonus, damagableObj);
         }
     }
 

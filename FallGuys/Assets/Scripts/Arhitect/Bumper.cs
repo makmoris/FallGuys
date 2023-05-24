@@ -15,10 +15,21 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public static event Action PlayerSlowedEvent;
     public static event Action PlayerStoppedSlowingEvent;
     private Coroutine oilPuddleCoroutine = null;
-    private int coroutineCounter;
+    private int oilPuddleCoroutineCounter;
+
+    private Rigidbody _rb;
+    private float _defaultDragValue;
+
+    private int slowdownsCounter;
 
     public static event Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
     public static event Action<int> BonusBoxGiveHPEvent;
+
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _defaultDragValue = _rb.drag;
+    }
 
     private void Start()
     {
@@ -93,7 +104,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         bonus.Got();
     }
 
-    public void GetBonus(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера. Для молнии
+    public void GetBonusWithGameObject(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера. Для молнии
     {
         Debug.Log($"Public GetBonus - {bonus.Type}; {gameObject.name}");
         OnBonusGotWithGameObject?.Invoke(bonus, _gameObject);
@@ -106,7 +117,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         OnBonusGot?.Invoke(bonus);
         bonus.Got();
 
-        coroutineCounter++;
+        oilPuddleCoroutineCounter++;
 
         if (oilPuddleCoroutine == null)
         {
@@ -134,16 +145,15 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     {
         if (oilPuddleCoroutine != null)
         {
-            coroutineCounter--;
+            oilPuddleCoroutineCounter--;
 
-            if (coroutineCounter == 0)
+            if (oilPuddleCoroutineCounter == 0)
             {
                 StopCoroutine(oilPuddleCoroutine);
                 oilPuddleCoroutine = null;
                 Debug.Log($"STOP OIL COROUTINE");
 
-                Rigidbody _rb = GetComponent<Rigidbody>();
-                _rb.drag = 0.02f;
+                _rb.drag = _defaultDragValue;
 
                 if (isPlayer)
                 {
@@ -151,8 +161,40 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                     PlayerStoppedSlowingEvent?.Invoke();
                 }
             }
-            else if (coroutineCounter < 0) coroutineCounter = 0;
+            else if (oilPuddleCoroutineCounter < 0) oilPuddleCoroutineCounter = 0;
         }
+    }
+    #endregion
+
+    #region Slowdown
+    public void StartSlowdown(float slowdownValue)
+    {
+        _rb.drag = slowdownValue;
+
+        slowdownsCounter++;
+
+        if (isPlayer)
+        {
+            // нотификация
+            PlayerSlowedEvent?.Invoke();
+        }
+    }
+
+    public void StopSlowDown()
+    {
+        slowdownsCounter--;
+
+        if (slowdownsCounter == 0)
+        {
+            _rb.drag = _defaultDragValue;
+
+            if (isPlayer)
+            {
+                // нотификация стоп
+                PlayerStoppedSlowingEvent?.Invoke();
+            }
+        }
+        else if (slowdownsCounter < 0) slowdownsCounter = 0;
     }
     #endregion
 

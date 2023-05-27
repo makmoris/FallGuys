@@ -21902,7 +21902,7 @@ GameObject:
   - component: {fileID: 633446858019398645}
   - component: {fileID: 1168299745426089823}
   - component: {fileID: 8652055802965504805}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RaceDriverAI
   m_TagString: Car
   m_Icon: {fileID: 0}
@@ -22377,7 +22377,7 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  sidesRayLength: 2
+  sidesRayLength: 1
   leftSideBack: {fileID: 8733030737769107298}
   leftSideMiddle: {fileID: 8532701109117911188}
   leftSideFront: {fileID: 1630850557076255287}
@@ -22454,6 +22454,7 @@ MonoBehaviour:
   pointThreshold: 4
   AItarget: {fileID: 0}
   moveForward: 0
+  currentSpeed: 0
 --- !u!114 &8652055802965504805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22466,6 +22467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d419b9b01c5d1eb43b1de6a3db23ea2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAngle: 0
   currentSteer: 0
   currentAccel: 0
   obstacle: 0

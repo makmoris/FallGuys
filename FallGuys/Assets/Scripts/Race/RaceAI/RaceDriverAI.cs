@@ -128,6 +128,11 @@ public class RaceDriverAI : MonoBehaviour
         Debug.Log($"Авто {this.gameObject.name} начало движение MoveForward");
     }
 
+    public void StopMoveForward()
+    {
+        moveForward = false;
+    }
+
     private void MoveForward()
     {
         wheelVehicle.Steering = 0f;

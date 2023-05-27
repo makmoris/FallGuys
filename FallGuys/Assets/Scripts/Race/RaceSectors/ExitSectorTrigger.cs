@@ -6,7 +6,7 @@ public class ExitSectorTrigger : MonoBehaviour
 {
     public event Action<WheelVehicle> CarLeftTheSectorEvent;
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         WheelVehicle car = other.GetComponent<WheelVehicle>();
         if (car != null)

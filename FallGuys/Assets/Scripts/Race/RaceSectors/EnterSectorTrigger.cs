@@ -9,6 +9,12 @@ public class EnterSectorTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         WheelVehicle car = other.GetComponent<WheelVehicle>();
-        if(car != null) CarEnteredTheSectorEvent?.Invoke(car);
+        if (car != null)
+        {
+            RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+            if (raceDriverAI != null) raceDriverAI.StopMoveForward();
+
+            CarEnteredTheSectorEvent?.Invoke(car);
+        }
     }
 }

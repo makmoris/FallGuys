@@ -5,6 +5,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -548,6 +549,7 @@ namespace VehicleBehaviour {
         {
             NotifyGetRespanwPositionForWheelVehicleEvent?.Invoke(this);
         }
+
         public void GetRespawnTransform(Transform respTransform)
         {
             transform.rotation = respTransform.rotation;

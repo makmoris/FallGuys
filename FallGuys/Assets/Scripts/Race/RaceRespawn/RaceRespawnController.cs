@@ -5,16 +5,20 @@ using VehicleBehaviour;
 
 public class RaceRespawnController : MonoBehaviour
 {
-    public List<RaceRespawnDeadZone> raceRespawnDeadZones;
+    [SerializeField] private float pauseTimeAfterRespawnCarAfterStuck = 1f;
+    [SerializeField] private bool canRespawnCarAfterStuck = true;
     [Space]
-    public List<RaceRespawnZone> raceRespawnZones;
+    [SerializeField] private List<RaceRespawnDeadZone> raceRespawnDeadZones;
+    [Space]
+    [SerializeField] private List<RaceRespawnZone> raceRespawnZones;
 
     private void OnEnable()
     {
         WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent += RespawnCarAfterStuck;
+        canRespawnCarAfterStuck = true;
     }
 
-    internal void CarGotIntoRespawnZone(GameObject car)
+    public void CarGotIntoRespawnZone(GameObject car)
     {
         car.SetActive(false);
         RespawnCar(car);
@@ -22,7 +26,12 @@ public class RaceRespawnController : MonoBehaviour
 
     private void RespawnCarAfterStuck(WheelVehicle wheelVehicle)
     {
-        RespawnCar(wheelVehicle.gameObject);
+        if (canRespawnCarAfterStuck)
+        {
+            RespawnCar(wheelVehicle.gameObject);
+
+            StartCoroutine(PauseAfterRespawnCarAfterStuck());
+        }
     }
 
     private void RespawnCar(GameObject car)
@@ -62,6 +71,13 @@ public class RaceRespawnController : MonoBehaviour
         }
 
         return raceRespawnZones[indexMinDistance];
+    }
+
+    IEnumerator PauseAfterRespawnCarAfterStuck()
+    {
+        canRespawnCarAfterStuck = false;
+        yield return new WaitForSeconds(pauseTimeAfterRespawnCarAfterStuck);
+        canRespawnCarAfterStuck = true;
     }
 
     private void OnDisable()

@@ -122,7 +122,13 @@ public class RaceDriverAI : MonoBehaviour
         }
     }
 
-    public void MoveForward()
+    public void StartMoveForward()
+    {
+        moveForward = true;
+        Debug.Log($"Авто {this.gameObject.name} начало движение MoveForward");
+    }
+
+    private void MoveForward()
     {
         wheelVehicle.Steering = 0f;
         wheelVehicle.Throttle = 1f;
@@ -179,6 +185,7 @@ public class RaceDriverAI : MonoBehaviour
     public void SetTargets(List<Transform> targets)// вызывается сектором с целями. Передает список платформ
     {
         raceAIInputs.SetTargets(targets);
+        ResetMovementToTarget();
         raceAIInputs.IsPathMovement = false;
         moveForward = false;
     }

@@ -12,7 +12,7 @@ public class ContinueButton : MonoBehaviour
     {
         LobbyWindowsController.Instance.ShowLeagueWindowOnLobby();
 
-        MusicManager.Instance.ReturnPreviousSoundsValueInWinLose();
+        MusicManager.Instance.ReturnPreviousSoundsValue();
     }
 
     private void OnEnable()

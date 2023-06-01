@@ -34,7 +34,7 @@ public class MusicManager : MonoBehaviour
 
     private bool loadingComplete;
 
-    private float previousSoundsValueForWinLose;
+    private float previousSoundsValue;
 
     public static MusicManager Instance { get; private set; }
 
@@ -146,15 +146,15 @@ public class MusicManager : MonoBehaviour
         soundsAudioSource.Play();
     }
 
-    public void StopSoundsPlayingInWinLose()// при открытии вин луз окна
+    public void StopSoundsPlaying()// при открытии вин луз окна
     {
         soundMixer.audioMixer.GetFloat("SoundsVolume", out float value);
-        previousSoundsValueForWinLose = value;
+        previousSoundsValue = value;
         soundMixer.audioMixer.SetFloat("SoundsVolume", -80f);
     }
-    public void ReturnPreviousSoundsValueInWinLose()// вызывается кнопками перехода в лобби
+    public void ReturnPreviousSoundsValue()// вызывается кнопками перехода в лобби
     {
-        soundMixer.audioMixer.SetFloat("SoundsVolume", previousSoundsValueForWinLose);
+        soundMixer.audioMixer.SetFloat("SoundsVolume", previousSoundsValue);
     }
 
     private void PlayMusic(AudioClip audioClip, bool loop = true)

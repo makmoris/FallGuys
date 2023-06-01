@@ -71,7 +71,7 @@ public class Installer : MonoBehaviour
         camCinema.m_LookAt = _playerObj.transform;
 
         Vector3 pos = targetsController.GetStartSpawnPosition(0).position;
-        _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
+        _playerObj.transform.position = new Vector3(pos.x, 2f, pos.z);
         _playerObj.transform.rotation = targetsController.GetStartSpawnPosition(0).rotation;
 
         var playerEffector = new PlayerEffector(true, _player, _playerBumper, _playerLimitsData, _playerVisualIntermediary);
@@ -101,7 +101,7 @@ public class Installer : MonoBehaviour
             weaponAI.IsAI(true);
 
             Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1).position;
-            _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
+            _enemyObj.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
             _enemyObj.transform.rotation = targetsController.GetStartSpawnPosition(i + 1).rotation;
 
             var enemyPlayerEffector = new PlayerEffector(false, _enemy, enemySet._enemyBumper, enemySet._enemyLimitsData, enemySet._enemyVisualIntermediary);

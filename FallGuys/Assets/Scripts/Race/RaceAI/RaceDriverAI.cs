@@ -77,7 +77,7 @@ public class RaceDriverAI : MonoBehaviour
         set => isGround = value;
     }
 
-    private bool handbrake;
+    [SerializeField]private bool handbrake;
     public bool Handbrake
     {
         get => handbrake;
@@ -109,7 +109,7 @@ public class RaceDriverAI : MonoBehaviour
 
         isGround = true;
 
-        moveForward = true;
+        //moveForward = true;
     }
 
     private void Update()

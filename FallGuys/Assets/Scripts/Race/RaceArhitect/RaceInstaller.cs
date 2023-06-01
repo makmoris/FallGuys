@@ -44,7 +44,7 @@ public class RaceInstaller : MonoBehaviour
         camCinema.m_Follow = _playerObj.transform;
         camCinema.m_LookAt = _playerObj.transform;
 
-        Transform spawnPlace = raceStartSector.GetStartSpawnPlace();
+        Transform spawnPlace = raceStartSector.GetStartSpawnPlace(_playerObj);
         Vector3 pos = spawnPlace.position;
         _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
         _playerObj.transform.rotation = spawnPlace.rotation;
@@ -56,7 +56,7 @@ public class RaceInstaller : MonoBehaviour
 
             var _enemyObj = Instantiate(enemySet._enemyPrefab);
 
-            Transform enemySpawnPlace = raceStartSector.GetStartSpawnPlace();
+            Transform enemySpawnPlace = raceStartSector.GetStartSpawnPlace(_enemyObj);
             Vector3 posEnemy = enemySpawnPlace.position;
             _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
             _enemyObj.transform.rotation = enemySpawnPlace.rotation;

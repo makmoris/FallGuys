@@ -184,7 +184,7 @@ namespace SimpleInputNamespace
 			}
 
 			thumbTR.localPosition = direction;
-			Debug.Log($"X = {m_value.x}; Y = {m_value.y}");
+			
             if (!isCustomJoystic)
             {
 				xAxis.value = m_value.x;

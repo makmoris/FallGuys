@@ -11,15 +11,26 @@ public class RaceProgressController : MonoBehaviour
     [Header("Finish Sector")]
     [SerializeField] private RaceFinishSector raceFinishSector;
 
+    [Header("Race Settings")]
+    [SerializeField] private int numberOfWinners = 6;
+    private int currentNumberOfWinners;
+
     [Header("Race Progress UI Controller")]
     [SerializeField] private RaceProgressUIController raceProgressUIController;
 
     private List<WheelVehicle> raceDriversList = new List<WheelVehicle>();
-    private List<RaceDriverAI> raceDriversAIList = new List<RaceDriverAI>();
+    private Dictionary<WheelVehicle, RaceDriverAI> raceDriversAIDictionary = new Dictionary<WheelVehicle, RaceDriverAI>();
+    private List<WheelVehicle> winnersList = new List<WheelVehicle>();
 
     private void OnEnable()
     {
         raceProgressUIController.RaceCanStartEvent += StartRacing;
+        raceFinishSector.ThisDriverFinishedEvent += DriverFinished;
+    }
+
+    private void Awake()
+    {
+        raceProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
 
     public void AddPlayer(GameObject playerGO)
@@ -31,7 +42,7 @@ public class RaceProgressController : MonoBehaviour
         RaceDriverAI raceDriverAI = playerGO.GetComponent<RaceDriverAI>();
         if (raceDriverAI != null)
         {
-            raceDriversAIList.Add(raceDriverAI);
+            raceDriversAIDictionary.Add(wheelVehiclePlayer, raceDriverAI);
             raceDriverAI.Handbrake = true;
         }
 
@@ -48,17 +59,39 @@ public class RaceProgressController : MonoBehaviour
         foreach (var driver in raceDriversList)
         {
             driver.Handbrake = false;
+
+            if (raceDriversAIDictionary.ContainsKey(driver))
+            {
+                RaceDriverAI driverAI = raceDriversAIDictionary[driver];
+
+                driverAI.Handbrake = false;
+                driverAI.StartMoveForward();
+            }
+        }
+    }
+
+    private void DriverFinished(WheelVehicle wheelVehicleDriver)
+    {
+        // обновляем статистику по завершенным гонку игрокам
+        currentNumberOfWinners++;
+        if (currentNumberOfWinners <= numberOfWinners) raceProgressUIController.UpdateNumberOfWinners(currentNumberOfWinners);
+
+        if (raceDriversAIDictionary.ContainsKey(wheelVehicleDriver))
+        {
+            RaceDriverAI driverAI = raceDriversAIDictionary[wheelVehicleDriver];
+
+            driverAI.Handbrake = true;
         }
 
-        foreach (var driverAI in raceDriversAIList)
-        {
-            driverAI.Handbrake = false;
-            driverAI.StartMoveForward();
-        }
+        wheelVehicleDriver.Handbrake = true;
+
+        if (currentNumberOfWinners < numberOfWinners) winnersList.Add(wheelVehicleDriver);
+        else Debug.Log("Race ended");
     }
 
     private void OnDisable()
     {
         raceProgressUIController.RaceCanStartEvent -= StartRacing;
+        raceFinishSector.ThisDriverFinishedEvent -= DriverFinished;
     }
 }

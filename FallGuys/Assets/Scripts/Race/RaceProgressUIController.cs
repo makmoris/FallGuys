@@ -13,7 +13,7 @@ public class RaceProgressUIController : MonoBehaviour
     [SerializeField] private int time = 3;
 
     [Header("Passed")]
-    [SerializeField] private GameObject passedPanel;
+    [SerializeField] private RacePassedPanel passedPanel;
 
     public event System.Action RaceCanStartEvent;
 
@@ -26,7 +26,17 @@ public class RaceProgressUIController : MonoBehaviour
     private void Awake()
     {
         if (!startRaceUIPanel.activeSelf) startRaceUIPanel.SetActive(true);
-        if (passedPanel.activeSelf) passedPanel.SetActive(false);
+        if (passedPanel.gameObject.activeSelf) passedPanel.gameObject.SetActive(false);
+    }
+
+    public void SetNumberOfWinners(int numberOfWinners)
+    {
+        passedPanel.SetNumberOfWinners(numberOfWinners);
+    }
+
+    public void UpdateNumberOfWinners(int currentNumber)
+    {
+        passedPanel.UpdateNamberOfWinners(currentNumber);
     }
 
     private void StartShowingGoalAndTimer()
@@ -37,7 +47,7 @@ public class RaceProgressUIController : MonoBehaviour
     private void TimerBeforeStartFinished()
     {
         startRaceUIPanel.SetActive(false);
-        passedPanel.SetActive(true);
+        passedPanel.gameObject.SetActive(true);
 
         RaceCanStartEvent?.Invoke();
     }

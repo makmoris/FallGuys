@@ -490,7 +490,7 @@ GameObject:
   - component: {fileID: 115902032}
   - component: {fileID: 115902031}
   m_Layer: 5
-  m_Name: NeededPassedPlayersText
+  m_Name: NeededWinnersText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 6
+  m_text: 12
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 289f2011b8745444daae5dde097f6962, type: 2}
   m_sharedMaterial: {fileID: 4399114514050754195, guid: 289f2011b8745444daae5dde097f6962, type: 2}
@@ -4031,11 +4031,6 @@ Transform:
   m_Father: {fileID: 910724472}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &297417945 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3449016339965626239, guid: ecf5e8710e4d12a4ab6b6f4760aa2274, type: 3}
-  m_PrefabInstance: {fileID: 440992212}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &319700303
 GameObject:
   m_ObjectHideFlags: 0
@@ -6224,10 +6219,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 630523010}
+  - component: {fileID: 630523013}
   - component: {fileID: 630523012}
   - component: {fileID: 630523011}
   m_Layer: 5
-  m_Name: PassedPanel
+  m_Name: RacePassedPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6293,6 +6289,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630523009}
   m_CullTransparentMesh: 1
+--- !u!114 &630523013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630523009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3abce24cced1be344909f7de3a0235a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfWinnersText: {fileID: 115902032}
+  currentNumberOfWinnersText: {fileID: 1500829032}
 --- !u!1001 &660665419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6520,6 +6530,23 @@ Transform:
   m_Father: {fileID: 2519642099937822019}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &683198358 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1291689471150701321, guid: ecf5e8710e4d12a4ab6b6f4760aa2274, type: 3}
+  m_PrefabInstance: {fileID: 440992212}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &683198363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683198358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c965b966abe3a249894aadb2030a9dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &701815137
 GameObject:
   m_ObjectHideFlags: 0
@@ -9457,11 +9484,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508085, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000018754479
+      value: 0.000000018754479
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508085, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000004282978
+      value: -0.000000004282978
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508086, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_IgnoreTimeScale
@@ -9557,11 +9584,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000018754479
+      value: 0.000000018754479
       objectReference: {fileID: 0}
     - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000004282978
+      value: -0.000000004282978
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
@@ -11963,7 +11990,7 @@ MonoBehaviour:
   startRaceUIPanel: {fileID: 1002353639}
   timerBeforeStart: {fileID: 1511455174}
   time: 3
-  passedPanel: {fileID: 630523009}
+  passedPanel: {fileID: 630523013}
 --- !u!1001 &1129920500
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17088,13 +17115,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4874511790770359979, guid: ecf5e8710e4d12a4ab6b6f4760aa2274, type: 3}
   m_PrefabInstance: {fileID: 440992212}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1636510739
+--- !u!114 &1636510739 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1636510739, guid: ecf5e8710e4d12a4ab6b6f4760aa2274, type: 3}
+  m_PrefabInstance: {fileID: 440992212}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297417945}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aaf596f47eb91d44b8d1906ecf2858fe, type: 3}
@@ -20864,6 +20890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raceStartSector: {fileID: 1756498778}
   raceFinishSector: {fileID: 1636510739}
+  numberOfWinners: 6
   raceProgressUIController: {fileID: 1108522670}
 --- !u!4 &1859651032
 Transform:

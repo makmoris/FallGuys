@@ -62,7 +62,6 @@ public class Installer : MonoBehaviour
         PointerManager.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
 
-        // ������ �����
         Transform weaponPlace = _playerObj.transform.Find("WeaponPlace");
         Weapon weapon = Instantiate(_playerWeaon, weaponPlace);
         weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());

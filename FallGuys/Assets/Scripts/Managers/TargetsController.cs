@@ -15,7 +15,7 @@ public class TargetsController : MonoBehaviour
     [SerializeField] private List<Transform> spawnPoints;
 
     public static TargetsController Instance { get; private set; }
-    
+
     private void Awake()
     {
         if (Instance == null)

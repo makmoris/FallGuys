@@ -21,11 +21,12 @@ public class ShowTrackCutScene : MonoBehaviour
     public void CutSceneEnded()
     {
         Debug.Log("Cut Scene Ended");
+        
+        showTrackCutSceneCameras.SetActive(false);
+        gameCanvas.gameObject.SetActive(true);
+
         MusicManager.Instance.ReturnPreviousSoundsValue();
 
         ShowTrackCutSceneEndedEvent?.Invoke();
-
-        showTrackCutSceneCameras.SetActive(false);
-        gameCanvas.gameObject.SetActive(true);
     }
 }

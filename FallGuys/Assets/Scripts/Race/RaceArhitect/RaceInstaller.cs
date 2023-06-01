@@ -19,7 +19,7 @@ public class RaceInstaller : MonoBehaviour
     public static event Action<GameObject> IsCurrentPlayer;
 
     [Header("Scene Controllers")]
-    [SerializeField] private RaceStartSector raceStartSector;
+    [SerializeField] RaceProgressController raceProgressController;
     [SerializeField] private CinemachineVirtualCamera camCinema;
 
     [Space]
@@ -44,7 +44,9 @@ public class RaceInstaller : MonoBehaviour
         camCinema.m_Follow = _playerObj.transform;
         camCinema.m_LookAt = _playerObj.transform;
 
-        Transform spawnPlace = raceStartSector.GetStartSpawnPlace(_playerObj);
+        raceProgressController.AddPlayer(_playerObj);
+
+        Transform spawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
         Vector3 pos = spawnPlace.position;
         _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
         _playerObj.transform.rotation = spawnPlace.rotation;
@@ -56,7 +58,9 @@ public class RaceInstaller : MonoBehaviour
 
             var _enemyObj = Instantiate(enemySet._enemyPrefab);
 
-            Transform enemySpawnPlace = raceStartSector.GetStartSpawnPlace(_enemyObj);
+            raceProgressController.AddPlayer(_enemyObj);
+
+            Transform enemySpawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
             Vector3 posEnemy = enemySpawnPlace.position;
             _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
             _enemyObj.transform.rotation = enemySpawnPlace.rotation;

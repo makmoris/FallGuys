@@ -1,30 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VehicleBehaviour;
 
 public class RaceStartSector : MonoBehaviour
 {
     [SerializeField] private GameObject startPlacesGO;
     private List<Transform> startPlacesTransformList = new List<Transform>();
 
-
     private void Awake()
     {
         FillStartPlacesTransformList();
     }
 
-    public Transform GetStartSpawnPlace(GameObject car)
+    public Transform GetStartSpawnPlace()
     {
         if (startPlacesTransformList.Count > 0)
         {
             Transform trn = startPlacesTransformList[0];
             startPlacesTransformList.Remove(trn);
-
-            RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
-            if (raceDriverAI != null) raceDriverAI.Handbrake = true;
-
-            car.GetComponent<WheelVehicle>().Handbrake = true;
 
             return trn;
         }

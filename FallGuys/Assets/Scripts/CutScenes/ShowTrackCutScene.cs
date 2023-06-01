@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ShowTrackCutScene : MonoBehaviour
 {
-    [SerializeField] private GameObject gameCameraGO;
     [SerializeField] private GameObject showTrackCutSceneCameras;
     [SerializeField] private Canvas gameCanvas;// его тоже пр€чем
 
@@ -10,7 +9,6 @@ public class ShowTrackCutScene : MonoBehaviour
 
     private void Awake()
     {
-        if (gameCameraGO.activeSelf) gameCameraGO.SetActive(false);
         if (gameCanvas.gameObject.activeSelf) gameCanvas.gameObject.SetActive(false);
         if (!showTrackCutSceneCameras.activeSelf) showTrackCutSceneCameras.SetActive(true);
     }
@@ -28,7 +26,6 @@ public class ShowTrackCutScene : MonoBehaviour
         ShowTrackCutSceneEndedEvent?.Invoke();
 
         showTrackCutSceneCameras.SetActive(false);
-        gameCameraGO.SetActive(true);
         gameCanvas.gameObject.SetActive(true);
     }
 }

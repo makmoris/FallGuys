@@ -7,7 +7,7 @@ using VehicleBehaviour;
 public class RaceProgressController : MonoBehaviour
 {
     [Header("Camera")]
-    [SerializeField] private CinemachineVirtualCamera gameCamCinema;
+    [SerializeField] private CameraFollowingOnOtherPlayers gameCamCinema;
 
     [Header("Start Sector")]
     [SerializeField] private RaceStartSector raceStartSector;
@@ -62,6 +62,8 @@ public class RaceProgressController : MonoBehaviour
         }
 
         wheelVehiclePlayer.Handbrake = true;
+
+        gameCamCinema.AddDriver(playerGO);
     }
 
     public RaceStartSector GetRaceStartSector()
@@ -144,12 +146,15 @@ public class RaceProgressController : MonoBehaviour
 
                 Debug.Log("Race ended");// заканчиваем гонку. Переходим на следующий этап
             }
+
+            gameCamCinema.RemoveDriver(wheelVehicleDriver.gameObject);
         }
     }
 
     private void ShowPostRacingWindow()
     {
         Debug.Log("SHOW POST RACING WINDOW");
+        gameCamCinema.CanFollowOnOtherPlayers = false;
         raceProgressUIController.ShowPostRacingWindow();
     }
 
@@ -163,6 +168,11 @@ public class RaceProgressController : MonoBehaviour
         {
             // если гонка не окончена, то следим за другими
             Debug.Log("ZAPUSK CAMERY");
+
+            gameCamCinema.CanFollowOnOtherPlayers = true;
+            gameCamCinema.ChangeTarget();
+
+            raceProgressUIController.ShowCameraHintText();
         }
         else
         {

@@ -16,7 +16,7 @@ public class RaceInstaller : MonoBehaviour
     [Header("Start from lobby")]
     public bool startFromLobby;
 
-    public static event Action<GameObject> IsCurrentPlayer;
+    //public static event Action<GameObject> IsCurrentPlayer;
 
     [Header("Scene Controllers")]
     [SerializeField] RaceProgressController raceProgressController;
@@ -45,6 +45,7 @@ public class RaceInstaller : MonoBehaviour
         camCinema.m_LookAt = _playerObj.transform;
 
         raceProgressController.AddPlayer(_playerObj);
+        raceProgressController.SetCurrentPlayer(_playerObj);
 
         Transform spawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
         Vector3 pos = spawnPlace.position;
@@ -66,7 +67,7 @@ public class RaceInstaller : MonoBehaviour
             _enemyObj.transform.rotation = enemySpawnPlace.rotation;
         }
 
-        IsCurrentPlayer?.Invoke(_playerObj);    // раскидываем всем подпищикам игрока, чтобы знали, какая тачка игрок, а какая нет
+        //IsCurrentPlayer?.Invoke(_playerObj);    // раскидываем всем подпищикам игрока, чтобы знали, какая тачка игрок, а какая нет
         // для мультиплеера. Т.к. в мультиплеере все тачки будут тачкой Player и нужно понять, кто конкретный игрок, за которого Я играю
     }
 

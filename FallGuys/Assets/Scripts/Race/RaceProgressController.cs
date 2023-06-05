@@ -23,6 +23,9 @@ public class RaceProgressController : MonoBehaviour
     [Header("Race Progress UI Controller")]
     [SerializeField] private RaceProgressUIController raceProgressUIController;
 
+    [Header("Post Race Place Controller")]
+    [SerializeField] private PostRacePlaceController postRacePlaceController;
+
     private GameObject currentPlayer;
     private bool currentPlayerWasFinished;
 
@@ -40,6 +43,8 @@ public class RaceProgressController : MonoBehaviour
 
     private void Awake()
     {
+        if (!postRacePlaceController.gameObject.activeSelf) postRacePlaceController.gameObject.SetActive(true);
+
         raceProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
 
@@ -155,7 +160,39 @@ public class RaceProgressController : MonoBehaviour
     {
         Debug.Log("SHOW POST RACING WINDOW");
         gameCamCinema.CanFollowOnOtherPlayers = false;
-        raceProgressUIController.ShowPostRacingWindow();
+
+
+        List<WheelVehicle> losersList = new List<WheelVehicle>();
+
+        foreach (var driver in raceDriversList)
+        {
+            if (!winnersList.Contains(driver)) losersList.Add(driver);
+        }
+
+        foreach (var kvp in raceDriversAIDictionary)
+        {
+            GameObject aiDriver = kvp.Key.gameObject;
+
+            RaceObstacleDetectionAI raceObstacleDetectionAI = aiDriver.GetComponent<RaceObstacleDetectionAI>();
+            if (raceObstacleDetectionAI != null) raceObstacleDetectionAI.enabled = false;
+
+            RaceGroundDetectionAI raceGroundDetectionAI = aiDriver.GetComponent<RaceGroundDetectionAI>();
+            if (raceGroundDetectionAI != null) raceGroundDetectionAI.enabled = false;
+
+            RaceDriverAI raceDriverAI = kvp.Value;
+            raceDriverAI.enabled = false;
+
+            RaceAIInputs raceAIInputs = aiDriver.GetComponent<RaceAIInputs>();
+            if (raceAIInputs != null) raceAIInputs.enabled = false;
+
+            RaceAIWaipointTracker raceAIWaipointTracker = aiDriver.GetComponent<RaceAIWaipointTracker>();
+            if (raceAIWaipointTracker != null) raceAIWaipointTracker.enabled = false;
+
+            kvp.Key.Throttle = 0f;
+            kvp.Key.Steering = 0f;
+        }
+
+        postRacePlaceController.StartPostRacing(winnersList, losersList, numberOfWinners, currentPlayerWasFinished);
     }
 
     private void CongratulationsOver()

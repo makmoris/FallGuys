@@ -45,11 +45,6 @@ public class RaceProgressUIController : MonoBehaviour
         if (cameraHint.activeSelf) cameraHint.SetActive(false);
     }
 
-    public void ShowPostRacingWindow()
-    {
-
-    }
-
     public void ShowCameraHintText()
     {
         cameraHint.SetActive(true);

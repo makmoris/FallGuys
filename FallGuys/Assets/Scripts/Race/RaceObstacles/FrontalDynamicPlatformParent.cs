@@ -41,7 +41,7 @@ public class FrontalDynamicPlatformParent : MonoBehaviour
 
                 if (raceDriverAI != null)
                 {
-                    raceDriverAI.Handbrake = false;
+                    raceDriverAI.Brake = false;
                 }
             }
         }

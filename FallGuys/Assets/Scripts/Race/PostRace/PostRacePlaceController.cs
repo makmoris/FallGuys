@@ -44,12 +44,17 @@ public class PostRacePlaceController : MonoBehaviour
 
                 Transform placeTransform = postRacePlace.GetPlaceTransform();
 
+                winDriver.transform.SetParent(null);
+
                 winDriver.transform.position = placeTransform.position;
                 winDriver.transform.rotation = placeTransform.rotation;
 
                 winDriver.Handbrake = true;
 
+                winDriver.Throttle = 0f;
                 winDriver.Steering = 0f;
+
+                winDriver.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
                 postRacePlacesList.Remove(postRacePlace);
             }
@@ -63,10 +68,17 @@ public class PostRacePlaceController : MonoBehaviour
 
                 Transform placeTransform = postRacePlace.GetPlaceTransform();
 
+                loserDriver.transform.SetParent(null);
+
                 loserDriver.transform.position = placeTransform.position;
                 loserDriver.transform.rotation = placeTransform.rotation;
 
                 loserDriver.Handbrake = false;
+
+                loserDriver.Throttle = 0f;
+                loserDriver.Steering = 0f;
+
+                loserDriver.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
                 float timeBeforDump = Random.Range(minTimeBeforDump, maxTimeBeforDump);
 
@@ -84,14 +96,14 @@ public class PostRacePlaceController : MonoBehaviour
         postRaceCanvas.SetActive(true);
         gameRaceCanvas.SetActive(false);
 
-        if (currentPlayerIsWinner)
-        {
-            // загружаем арену
-        }
-        else
-        {
-            // показываем кнопку выхода в лобби
-        }
+        //if (currentPlayerIsWinner)
+        //{
+        //    postRaceCanvasUIController.ShowPlayerWinWindow();
+        //}
+        //else
+        //{
+        //    postRaceCanvasUIController.ShowPlayerLoseWindow();
+        //}
     }
 
     private void FillPostRacePlacesList()

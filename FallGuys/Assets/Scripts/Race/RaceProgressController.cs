@@ -63,7 +63,7 @@ public class RaceProgressController : MonoBehaviour
         if (raceDriverAI != null)
         {
             raceDriversAIDictionary.Add(wheelVehiclePlayer, raceDriverAI);
-            raceDriverAI.Handbrake = true;
+            raceDriverAI.Brake = true;
         }
 
         wheelVehiclePlayer.Handbrake = true;
@@ -86,7 +86,7 @@ public class RaceProgressController : MonoBehaviour
             {
                 RaceDriverAI driverAI = raceDriversAIDictionary[driver];
 
-                driverAI.Handbrake = false;
+                driverAI.Brake = false;
                 driverAI.StartMoveForward();
             }
         }
@@ -106,7 +106,7 @@ public class RaceProgressController : MonoBehaviour
             {
                 RaceDriverAI driverAI = raceDriversAIDictionary[wheelVehicleDriver];
 
-                driverAI.Handbrake = true;
+                driverAI.Brake = true;
             }
 
             wheelVehicleDriver.Handbrake = true;
@@ -187,9 +187,6 @@ public class RaceProgressController : MonoBehaviour
 
             RaceAIWaipointTracker raceAIWaipointTracker = aiDriver.GetComponent<RaceAIWaipointTracker>();
             if (raceAIWaipointTracker != null) raceAIWaipointTracker.enabled = false;
-
-            kvp.Key.Throttle = 0f;
-            kvp.Key.Steering = 0f;
         }
 
         postRacePlaceController.StartPostRacing(winnersList, losersList, numberOfWinners, currentPlayerWasFinished);
@@ -237,7 +234,7 @@ public class RaceProgressController : MonoBehaviour
             {
                 RaceDriverAI driverAI = raceDriversAIDictionary[driver];
 
-                driverAI.Handbrake = true;
+                driverAI.Brake = true;
             }
         }
     }

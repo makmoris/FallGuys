@@ -34,7 +34,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
                 {
                     foreach (var car in raceDriversAIList)
                     {
-                        car.Handbrake = false;
+                        car.Brake = false;
                     }
                 }
             }
@@ -53,7 +53,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
 
                 if (platformForThisCar == platform)
                 {
-                    carAI.Handbrake = true;
+                    carAI.Brake = true;
                 }
             }
         }
@@ -72,7 +72,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
 
                 if (!platformForThisCar.ObstacleAnStartPosition)
                 {
-                    carAI.Handbrake = true;
+                    carAI.Brake = true;
                 }
                 else
                 {

@@ -77,11 +77,11 @@ public class RaceDriverAI : MonoBehaviour
         set => isGround = value;
     }
 
-    [SerializeField]private bool handbrake;
-    public bool Handbrake
+    [SerializeField]private bool brake;
+    public bool Brake
     {
-        get => handbrake;
-        set => handbrake = value;
+        get => brake;
+        set => brake = value;
     }
 
     private void Start()
@@ -114,7 +114,7 @@ public class RaceDriverAI : MonoBehaviour
 
     private void Update()
     {
-        currentSpeed = rb.velocity.magnitude * 3.6f;
+        currentSpeed = wheelVehicle.Speed;
 
         if (moveForward)
         {
@@ -143,7 +143,7 @@ public class RaceDriverAI : MonoBehaviour
     {
         if (!moveForward)
         {
-            if (!handbrake && isGround)
+            if (!brake && isGround)
             {
                 wheelVehicle.Steering = steering;
                 wheelVehicle.Throttle = accel;
@@ -152,7 +152,12 @@ public class RaceDriverAI : MonoBehaviour
             else
             {
                 wheelVehicle.Steering = 0f;
-                wheelVehicle.Handbrake = true;
+
+                if (currentSpeed > 1f)
+                {
+                    wheelVehicle.Handbrake = true;
+                }
+                else wheelVehicle.Handbrake = false;
             }
         }
     }
@@ -199,10 +204,12 @@ public class RaceDriverAI : MonoBehaviour
     {
         while (currentSpeed > desiredSpeed)
         {
-            handbrake = true;
+            brake = true;
+            wheelVehicle.Throttle = -1f;
             yield return null;
         }
 
-        handbrake = false;
+        brake = false;
+        wheelVehicle.Throttle = 0f;
     }
 }

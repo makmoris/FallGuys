@@ -13,7 +13,7 @@ public class AttackBan : MonoBehaviour
 
     private GameObject currentPlayer;
 
-    private Coroutine fillingBunTimeCoroutine = null;
+    private Coroutine fillingBanTimeCoroutine = null;
 
     private void Awake()
     {
@@ -33,11 +33,11 @@ public class AttackBan : MonoBehaviour
             attackButton.gameObject.SetActive(false);
             banImage.gameObject.SetActive(true);
 
-            if(fillingBunTimeCoroutine != null)
+            if(fillingBanTimeCoroutine != null)
             {
-                StopCoroutine(fillingBunTimeCoroutine);
+                StopCoroutine(fillingBanTimeCoroutine);
             }
-            fillingBunTimeCoroutine = StartCoroutine(FillingBanScale(banTime));
+            fillingBanTimeCoroutine = StartCoroutine(FillingBanScale(banTime));
         }
     }
 

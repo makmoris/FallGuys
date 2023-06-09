@@ -46,7 +46,7 @@ public class RaceRespawnController : MonoBehaviour
         RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
         if (raceDriverAI != null)
         {
-            raceDriverAI.Handbrake = false;
+            raceDriverAI.Brake = false;
             raceDriverAI.WasRespawn();
         }
     }

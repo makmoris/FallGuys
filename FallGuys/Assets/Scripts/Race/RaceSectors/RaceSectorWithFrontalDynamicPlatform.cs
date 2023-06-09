@@ -38,7 +38,7 @@ public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
 
         if(raceDriverAI != null)
         {
-            raceDriverAI.Handbrake = true;
+            raceDriverAI.Brake = true;
         }
     }
 

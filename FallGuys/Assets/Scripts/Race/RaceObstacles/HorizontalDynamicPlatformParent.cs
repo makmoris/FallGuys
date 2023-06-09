@@ -38,7 +38,7 @@ public class HorizontalDynamicPlatformParent : MonoBehaviour
 
                 if (raceDriverAI != null)
                 {
-                    raceDriverAI.Handbrake = false;
+                    raceDriverAI.Brake = false;
                 }
             }
         }

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обьекте нашего игрока будет висеть этот скрипт
 {
-    private bool isPlayer;
+    [SerializeField]private bool isPlayer;
     private bool playerWasSetted;
 
     private AudioListener playerAudioListener;
@@ -25,6 +25,20 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
     public static event Action<int> BonusBoxGiveGoldEvent;// дл€ дополнительной нотификации на экране о подборе бонуса
     public static event Action<int> BonusBoxGiveHPEvent;
 
+
+    private void OnEnable()
+    {
+        if (playerWasSetted)
+        {
+            //включаем листенер на тачке, отключаем на камере
+            if (isPlayer)
+            {
+                GameCameraAudioListenerController.Instance.DeactivateAudioListener();
+                playerAudioListener.enabled = true;
+            }
+        }
+    }
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -34,6 +48,19 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
     private void Start()
     {
         // дл€ работы enabled = true/false
+    }
+
+    public void SetIsCurrentPlayer(GameObject playerObj)
+    {
+        if (playerObj == gameObject) isPlayer = true;
+        else isPlayer = false;
+
+        if (isPlayer)
+        {
+            playerAudioListener = GetComponent<AudioListener>();
+        }
+
+        playerWasSetted = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -206,7 +233,7 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = PointerManager.Instance.GetPlayerHealth();
+        int _player_hp_left = ArenaPointerManager.Instance.GetPlayerHealth();
 
         int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
 
@@ -226,7 +253,7 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = PointerManager.Instance.GetPlayerHealth();
+        int _player_hp_left = ArenaPointerManager.Instance.GetPlayerHealth();
 
         int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
 
@@ -238,37 +265,9 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
             _player_gold_earn, _enemies_left);
     }
 
-    private void SetIsPlayer(GameObject playerObj)
-    {
-        if (playerObj == gameObject) isPlayer = true;
-        else isPlayer = false;
-
-        if (isPlayer)
-        {
-            playerAudioListener = GetComponent<AudioListener>();
-        }
-
-        playerWasSetted = true;
-    }
-
-    private void OnEnable()
-    {
-        Installer.IsCurrentPlayer += SetIsPlayer;
-
-        if (playerWasSetted)
-        {
-            //включаем листенер на тачке, отключаем на камере
-            if (isPlayer)
-            {
-                GameCameraAudioListenerController.Instance.DeactivateAudioListener();
-                playerAudioListener.enabled = true;
-            }
-        }
-    }
+    
     private void OnDisable()
     {
-        Installer.IsCurrentPlayer -= SetIsPlayer;
-
         if (playerWasSetted)
         {
             //отключаем листенер на тачке, включаем на камере, чтобы проиграть взрыв игрока

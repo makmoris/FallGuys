@@ -88,7 +88,7 @@ public class LevelProgressController : MonoBehaviour
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = PointerManager.Instance.GetPlayerHealth();
+        int _player_hp_left = ArenaPointerManager.Instance.GetPlayerHealth();
 
         int _player_kills_amount = numberOfFrags;
 
@@ -190,7 +190,7 @@ public class LevelProgressController : MonoBehaviour
         }
     }
 
-    private void SetCurrentPlayer(GameObject playerObj)
+    public void SetCurrentPlayer(GameObject playerObj)
     {
         playerGO = playerObj;
     }
@@ -273,12 +273,10 @@ public class LevelProgressController : MonoBehaviour
 
     private void OnEnable()
     {
-        Installer.IsCurrentPlayer += SetCurrentPlayer;
         VisualIntermediary.PlayerWasDeadEvent += ReduceNumberOfPlayers;
     }
     private void OnDisable()
     {
-        Installer.IsCurrentPlayer -= SetCurrentPlayer;
         VisualIntermediary.PlayerWasDeadEvent -= ReduceNumberOfPlayers;
     }
 

@@ -25,30 +25,22 @@ public class BuffsDebuffsNotifications : MonoBehaviour
 
     private void OnEnable()
     {
-        Installer.IsCurrentPlayer += SetCurrentPlayer;
-
-        PlayerEffector.EnableShieldEvent += ShowShieldBuff;
-        PlayerEffector.DisableShieldEvent += HideShieldBuff;
-
         Bumper.PlayerSlowedEvent += ShowSlowDebuff;
         Bumper.PlayerStoppedSlowingEvent += HideSlowDebuff;
-
-        PlayerEffector.DisableWeaponEvent += ShowLightningDebuff;
-        PlayerEffector.EnableWeaponEvent += HideLightningDebuff;
     }
 
-    private void SetCurrentPlayer(GameObject gameObj)
+    public void SetCurrentPlayer(GameObject gameObj)
     {
         currentPlayer = gameObj;
     }
 
-    private void ShowShieldBuff()
+    public void ShowShieldBuff()
     {
         shieldBuff.gameObject.SetActive(true);
 
         if (slowDebuff.gameObject.activeSelf) HideSlowDebuff();
     }
-    private void HideShieldBuff()
+    public void HideShieldBuff()
     {
         shieldBuff.gameObject.SetActive(false);
 
@@ -70,26 +62,18 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         slowDebuff.gameObject.SetActive(false);
     }
 
-    private void ShowLightningDebuff(GameObject gameObject, float value)
+    public void ShowLightningDebuff(GameObject gameObject)
     {
         if (currentPlayer == gameObject) lightningDebuff.gameObject.SetActive(true);
     }
-    private void HideLightningDebuff(GameObject gameObject)
+    public void HideLightningDebuff(GameObject gameObject)
     {
         if (currentPlayer == gameObject) lightningDebuff.gameObject.SetActive(false);
     }
 
     private void OnDisable()
     {
-        Installer.IsCurrentPlayer -= SetCurrentPlayer;
-
-        PlayerEffector.EnableShieldEvent -= ShowShieldBuff;
-        PlayerEffector.DisableShieldEvent -= HideShieldBuff;
-
         Bumper.PlayerSlowedEvent -= ShowSlowDebuff;
         Bumper.PlayerStoppedSlowingEvent -= HideSlowDebuff;
-
-        PlayerEffector.DisableWeaponEvent -= ShowLightningDebuff;
-        PlayerEffector.EnableWeaponEvent -= HideLightningDebuff;
     }
 }

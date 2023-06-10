@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Player : IPlayer
 {
     private float _health;
@@ -21,12 +23,21 @@ public class Player : IPlayer
         private set { _damage = value; }
     }
 
+    private GameObject _vehicle;
+    public GameObject Vehicle => _vehicle;
 
-    public Player(PlayerDefaultData data)
+    private Weapon _weapon;
+    public Weapon Weapon => _weapon;
+
+    public Player(PlayerDefaultData data, GameObject vehiclePrefab, Weapon weapon)
     {
         _health = data.DefaultHP;
         _speed = data.DefaultSpeed;
         _damage = data.DefautDamage;
+
+        _vehicle = vehiclePrefab;
+
+        _weapon = weapon;
     }
 
     

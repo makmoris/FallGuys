@@ -44,7 +44,7 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         downShieldAlpha = 20f / 255f;
     }
 
-    private void SetIsPlayer(GameObject playerObj)
+    public void SetIsCurrentPlayer(GameObject playerObj)
     {
         if (playerObj == gameObject) isPlayer = true;
         else isPlayer = false;
@@ -54,15 +54,15 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     public void UpdateHealthInUI(float healthValue)
     {
-        if (enemyPointer != null) PointerManager.Instance.UpdateHealthInUI(enemyPointer, healthValue);
-        else PointerManager.Instance.UpdatePlayerHealthInUI(healthValue);
+        if (enemyPointer != null) ArenaPointerManager.Instance.UpdateHealthInUI(enemyPointer, healthValue);
+        else ArenaPointerManager.Instance.UpdatePlayerHealthInUI(healthValue);
     }
 
     public void DestroyCar()
     {
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
-        if (isPlayer) PointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
+        if (isPlayer) ArenaPointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
         else { }
 
         if(playerGO != null)
@@ -93,7 +93,7 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
-        if (isPlayer) PointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
+        if (isPlayer) ArenaPointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
         else { }
 
         PlayerWasDeadEvent?.Invoke(this.gameObject);
@@ -153,14 +153,4 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         }
     }
     #endregion
-
-
-    private void OnEnable()
-    {
-        Installer.IsCurrentPlayer += SetIsPlayer;
-    }
-    private void OnDisable()
-    {
-        Installer.IsCurrentPlayer -= SetIsPlayer;
-    }
 }

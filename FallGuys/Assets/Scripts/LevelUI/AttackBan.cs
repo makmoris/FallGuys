@@ -21,12 +21,12 @@ public class AttackBan : MonoBehaviour
         attackButton.gameObject.SetActive(true);
     }
 
-    private void SetCurrentPlayer(GameObject gameObj)
+    public void SetCurrentPlayer(GameObject gameObj)
     {
         currentPlayer = gameObj;
     }
 
-    private void ShowBanImage(GameObject gameObj, float banTime)
+    public void ShowBanImage(GameObject gameObj, float banTime)
     {
         if (currentPlayer == gameObj)
         {
@@ -41,7 +41,7 @@ public class AttackBan : MonoBehaviour
         }
     }
 
-    private void HideBanImage(GameObject gameObj)
+    public void HideBanImage(GameObject gameObj)
     {
         if (currentPlayer == gameObj)
         {
@@ -67,18 +67,5 @@ public class AttackBan : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private void OnEnable()
-    {
-        Installer.IsCurrentPlayer += SetCurrentPlayer;
-        PlayerEffector.EnableWeaponEvent += HideBanImage;
-        PlayerEffector.DisableWeaponEvent += ShowBanImage;
-    }
-    private void OnDisable()
-    {
-        Installer.IsCurrentPlayer -= SetCurrentPlayer;
-        PlayerEffector.EnableWeaponEvent -= HideBanImage;
-        PlayerEffector.DisableWeaponEvent -= ShowBanImage;
     }
 }

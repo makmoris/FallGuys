@@ -1,15 +1,7 @@
 using UnityEngine;
 
-public class EnemyPlayer : MonoBehaviour, IEnemyPlayer
+public class PlayerAI : MonoBehaviour, IPlayerAI
 {
-    // implement interfaces
-    private GameObject _enemyObject;
-    public GameObject EnemyObject
-    {
-        get { return _enemyObject; }
-        private set { _enemyObject = value; }
-    }
-
     private float _health;
     public float Health
     {
@@ -31,14 +23,21 @@ public class EnemyPlayer : MonoBehaviour, IEnemyPlayer
         private set { _damage = value; }
     }
 
+    private GameObject _vehicle;
+    public GameObject Vehicle => _vehicle;
 
-    public EnemyPlayer(PlayerDefaultData data, GameObject obj)
+    private Weapon _weapon;
+    public Weapon Weapon => _weapon;
+
+    public PlayerAI(PlayerDefaultData data, GameObject vehiclePrefab, Weapon weapon)
     {
-        EnemyObject = obj;
-
         _health = data.DefaultHP;
         _speed = data.DefaultSpeed;
         _damage = data.DefautDamage;
+
+        _vehicle = vehiclePrefab;
+
+        _weapon = weapon;
     }
 
 
@@ -59,6 +58,6 @@ public class EnemyPlayer : MonoBehaviour, IEnemyPlayer
 
     public void Destroy()
     {
-        Destroy(EnemyObject);
+        Destroy(_vehicle);
     }
 }

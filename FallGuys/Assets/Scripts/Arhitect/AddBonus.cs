@@ -53,7 +53,7 @@ public class AddBonus : Bonus
         {
             BonusType bonusType = (BonusType)Enum.GetValues(typeof(BonusType)).GetValue(i);
 
-            if (bonusType != BonusType.DisableWeapon)
+            if (bonusType != BonusType.DisableWeaponFromLightning && bonusType != BonusType.DisableWeapon)
             {
                 bonuses.Add(bonusType);
             }

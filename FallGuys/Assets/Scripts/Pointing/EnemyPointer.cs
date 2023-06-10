@@ -6,7 +6,7 @@ public class EnemyPointer : MonoBehaviour // кидаем на врагов
 
     private void Awake()
     {
-        PointerManager.Instance.AddToPositionList(this);
+        ArenaPointerManager.Instance.AddToPositionList(this);
     }
 
     //private void Start()
@@ -19,19 +19,19 @@ public class EnemyPointer : MonoBehaviour // кидаем на врагов
         if (!onStart)
         {
             //PointerManager.Instance.AddToPositionList(this);
-            PointerManager.Instance.ShowPositionPointer(this);
+            ArenaPointerManager.Instance.ShowPositionPointer(this);
         }
     }
 
     private void OnDisable()
     {
         //PointerManager.Instance.RemoveFromPositionList(this);
-        PointerManager.Instance.HidePositionPointer(this);
+        ArenaPointerManager.Instance.HidePositionPointer(this);
         onStart = false;
     }
 
     private void OnDestroy()
     {
-        PointerManager.Instance.RemoveFromPositionList(this);
+        ArenaPointerManager.Instance.RemoveFromPositionList(this);
     }
 }

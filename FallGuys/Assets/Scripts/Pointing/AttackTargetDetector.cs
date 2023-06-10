@@ -8,6 +8,8 @@ public class AttackTargetDetector : MonoBehaviour
     private bool isAI;
     private ArenaCarDriverAI arenaDriverAI;
 
+    [SerializeField]private bool isRace;
+    [SerializeField]private bool isArena;
 
     private void Awake()
     {
@@ -27,8 +29,15 @@ public class AttackTargetDetector : MonoBehaviour
             {
                 currentTargetObject = other.gameObject;
 
-                if (!isAI) PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+                if (isArena)
+                {
+                    if (!isAI) ArenaPointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                    else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+                }
+                else if (isRace)
+                {
+                    if (!isAI) RacePointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                }
             }
         }
     }
@@ -37,8 +46,20 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (other.gameObject == currentTargetObject && currentTargetObject != null)// если замеченный объект совпадает с выбранным объектом целью, то можем атаковать
         {
-             if (!isAI) PointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
-            else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+            if (isArena)
+            {
+                if (!isAI) ArenaPointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
+                else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+            }
+            else if (isRace)
+            {
+                Debug.Log("!!!!!!!!!!!");
+                if (!isAI)
+                {
+                    Debug.Log("8889238894823849");
+                    RacePointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
+                }
+            }
 
             // разрешаем атаковать
             weapon.SetObjectForAttack(currentTargetObject.transform);
@@ -50,8 +71,15 @@ public class AttackTargetDetector : MonoBehaviour
             {
                 currentTargetObject = other.gameObject;
 
-                if (!isAI) PointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+                if (isArena)
+                {
+                    if (!isAI) ArenaPointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                    else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+                }
+                else if (isRace)
+                {
+                    if (!isAI) RacePointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                }
             }
         }
         
@@ -61,8 +89,15 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (other.gameObject == currentTargetObject)
         {
-            if (!isAI) PointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
-            else arenaDriverAI.DetectorLostTarget();
+            if (isArena)
+            {
+                if (!isAI) ArenaPointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
+                else arenaDriverAI.DetectorLostTarget();
+            }
+            else if (isRace)
+            {
+                if (!isAI) RacePointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
+            }
 
             currentTargetObject = null;
             weapon.ReturnWeaponToPosition();
@@ -73,8 +108,15 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (objWithAttackPointer == currentTargetObject)
         {
-            if (!isAI) PointerManager.Instance.ObjectWithAttackPointerWasDestroyed();
-            else arenaDriverAI.DetectorLostTarget();
+            if (isArena)
+            {
+                if (!isAI) ArenaPointerManager.Instance.ObjectWithAttackPointerWasDestroyed();
+                else arenaDriverAI.DetectorLostTarget();
+            }
+            else if (isRace)
+            {
+                if (!isAI) RacePointerManager.Instance.ObjectWithAttackPointerWasDestroyed();
+            }
 
             weapon.ReturnWeaponToPosition();
             currentTargetObject = null;
@@ -84,6 +126,16 @@ public class AttackTargetDetector : MonoBehaviour
     public void IsAI(bool value)
     {
         isAI = value;
+    }
+
+    public void IsRace(bool value)
+    {
+        isRace = value;
+    }
+
+    public void IsArena(bool value)
+    {
+        isArena = value;
     }
 
     private void OnEnable()

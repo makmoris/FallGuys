@@ -42,6 +42,11 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] private bool disableWeaponEvent;
 
+    AttackTargetDetector attackTargetDetector;
+
+    [SerializeField] private bool isArena;
+    [SerializeField] private bool isRace;
+
     private void Awake()
     {
         //if (isLobby)// потом можно сделать на проверку сцены. Если активна лобби сцена, то true
@@ -55,6 +60,8 @@ public class Weapon : MonoBehaviour
         attackRange = characteristicsData.AttackRange;
 
         detectorTransform.GetComponent<AttackTargetDetector>().IsAI(isAI);
+
+        attackTargetDetector = detectorTransform.GetComponent<AttackTargetDetector>();
 
         // from Start
         bulletPool = new PoolMono<Bullet>(bulletPrefab, poolCount);
@@ -77,12 +84,6 @@ public class Weapon : MonoBehaviour
         ////CreateExampleBullet();
 
         ////defaultWeaponRotation = weaponTransform.localRotation;
-    }
-
-    private void OnEnable()
-    {
-        PlayerEffector.EnableWeaponEvent += EnableWeapon;
-        PlayerEffector.DisableWeaponEvent += DisableWeapon;
     }
 
     private void CreateExampleBullet()
@@ -112,7 +113,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void EnableWeapon(GameObject gameObj)
+    public void EnableWeapon(GameObject gameObj)
     {
         GameObject thisGO = parentBodyCollider.gameObject;
 
@@ -122,7 +123,7 @@ public class Weapon : MonoBehaviour
         }
         if (thisGO == gameObj && !isAI) canAttack = true;
     }
-    private void DisableWeapon(GameObject gameObj, float disableTime)
+    public void DisableWeapon(GameObject gameObj)
     {
         GameObject thisGO = parentBodyCollider.gameObject;
 
@@ -174,9 +175,28 @@ public class Weapon : MonoBehaviour
     public void IsAI(bool value)// вызывается в installer при создании бота
     {
         isAI = value;
-        detectorTransform.GetComponent<AttackTargetDetector>().IsAI(isAI);
+
+        attackTargetDetector.IsAI(isAI);
 
         shotDecisionSpeed = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>().GetShotDecisionSpeed();
+    }
+
+    public void IsArena()
+    {
+        isArena = true;
+        isRace = false;
+
+        attackTargetDetector.IsArena(isArena);
+    }
+
+    public void IsRace()
+    {
+        isRace = true;
+        isArena = false;
+
+        damage = 0f;
+
+        attackTargetDetector.IsRace(isRace);
     }
 
     IEnumerator Shot()
@@ -201,8 +221,5 @@ public class Weapon : MonoBehaviour
     {
         nextShot = true;
         ShowBulletExample();
-
-        PlayerEffector.EnableWeaponEvent -= EnableWeapon;
-        PlayerEffector.DisableWeaponEvent -= DisableWeapon;
     }
 }

@@ -10,6 +10,7 @@ public class RaceEnemiesSettings
 {
     public string _name;
     public GameObject _enemyPrefab;
+    public Weapon _enemyWeapon;
 }
 public class RaceInstaller : MonoBehaviour
 {
@@ -23,13 +24,11 @@ public class RaceInstaller : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera camCinema;
 
     [Space]
+    [SerializeField] private PlayerDefaultData _playerDefaultData;
     [SerializeField] private GameObject _playerPrefab;
-
+    [SerializeField] private Weapon _playerWeaon;
 
     [SerializeField] private List<RaceEnemiesSettings> _enemiesSettings;
-
-    //private readonly GameController _gameController;
-    private GameController _gameController;
 
     private int numberOfPlayers;
 
@@ -40,17 +39,26 @@ public class RaceInstaller : MonoBehaviour
         // Install player
         var _playerObj = Instantiate(_playerPrefab);
 
-        //Camera.main.GetComponent<CameraFollow>().SetTarget(_playerObj.transform);
+        RacePointerManager.Instance.SetPlayerTransform(_playerObj.transform);
+
+        Transform weaponPlace = _playerObj.transform.Find("WeaponPlace");
+        Weapon weapon = Instantiate(_playerWeaon, weaponPlace);
+        weapon.IsRace();
+        weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
+
+
+        IPlayer player = new Player(_playerDefaultData, _playerObj, weapon);
+
         camCinema.m_Follow = _playerObj.transform;
         camCinema.m_LookAt = _playerObj.transform;
 
-        raceProgressController.AddPlayer(_playerObj);
-        raceProgressController.SetCurrentPlayer(_playerObj);
+        raceProgressController.AddPlayer(_playerObj);//
+        raceProgressController.SetCurrentPlayer(_playerObj);//
 
-        Transform spawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
-        Vector3 pos = spawnPlace.position;
-        _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
-        _playerObj.transform.rotation = spawnPlace.rotation;
+        Transform spawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();//
+        Vector3 pos = spawnPlace.position;//
+        _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);//
+        _playerObj.transform.rotation = spawnPlace.rotation;//
 
         //Install enemies
         for (int i = 0; i < _enemiesSettings.Count; i++)
@@ -60,6 +68,12 @@ public class RaceInstaller : MonoBehaviour
             var _enemyObj = Instantiate(enemySet._enemyPrefab);
 
             raceProgressController.AddPlayer(_enemyObj);
+
+            Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
+            Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
+            weaponAI.IsRace();
+            weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
+            weaponAI.IsAI(true);
 
             Transform enemySpawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
             Vector3 posEnemy = enemySpawnPlace.position;
@@ -76,5 +90,6 @@ public class RaceInstaller : MonoBehaviour
         var characterManager = CharacterManager.Instance;
 
         _playerPrefab = characterManager.GetPlayerPrefab();
+        _playerWeaon = characterManager.GetPlayerWeapon();
     }
 }

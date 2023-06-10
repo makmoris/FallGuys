@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointerManager : MonoBehaviour
+public class ArenaPointerManager : MonoBehaviour
 {
 
     // Pool
@@ -25,7 +25,7 @@ public class PointerManager : MonoBehaviour
     [SerializeField] PointerIcon _attackPointerPrefab;
 
 
-    public static PointerManager Instance;
+    public static ArenaPointerManager Instance;
     private void Awake()
     {
         if (Instance == null)

@@ -14,8 +14,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
     private Coroutine waitShieldCoroutine = null;
     private Coroutine shieldCoroutine = null;
 
-    private EnemyPointer enemyPointer;
-
     private GameObject playerGO;
     private bool isPlayer;
 
@@ -26,12 +24,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     private void Awake()
     {
-        Transform enemyPointerTransform = transform.Find("EnemyPointer");
-        if (enemyPointerTransform != null)
-        {
-            enemyPointer = enemyPointerTransform.GetComponent<EnemyPointer>();
-        }
-
         if (shield.activeSelf) shield.SetActive(false);
         shieldMaterial = shield.GetComponent<MeshRenderer>().material;
 
@@ -52,18 +44,10 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         playerGO = playerObj;
     }
 
-    public void UpdateHealthInUI(float healthValue)
-    {
-        if (enemyPointer != null) ArenaPointerManager.Instance.UpdateHealthInUI(enemyPointer, healthValue);
-        else ArenaPointerManager.Instance.UpdatePlayerHealthInUI(healthValue);
-    }
-
     public void DestroyCar()
     {
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
-        if (isPlayer) ArenaPointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
-        else { }
 
         if(playerGO != null)
         {
@@ -93,8 +77,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
         Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
-        if (isPlayer) ArenaPointerManager.Instance.UpdatePlayerHealthInUI(-1000f);// как заглушка, чтобы счетчик хп показал 0
-        else { }
 
         PlayerWasDeadEvent?.Invoke(this.gameObject);
         //gameObject.SetActive(false);

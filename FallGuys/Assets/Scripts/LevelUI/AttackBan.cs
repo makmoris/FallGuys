@@ -21,6 +21,13 @@ public class AttackBan : MonoBehaviour
         attackButton.gameObject.SetActive(true);
     }
 
+    public void Jopa()
+    {
+        Debug.Log("Govno");
+    }
+
+    public int kal = 5;
+
     public void SetCurrentPlayer(GameObject gameObj)
     {
         currentPlayer = gameObj;

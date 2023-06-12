@@ -16,7 +16,7 @@ public class ArenaInstaller : Installer
 
         _playerObj.GetComponentInChildren<HitSidesController>().SetIsPlayer();
 
-        ArenaPointerManager.Instance.SetPlayerTransform(_playerObj.transform);
+        ArenaUIPointers.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
 
         Transform weaponPlace = _playerObj.transform.Find("WeaponPlace");
@@ -33,7 +33,7 @@ public class ArenaInstaller : Installer
         _playerObj.transform.position = new Vector3(pos.x, 2f, pos.z);
         _playerObj.transform.rotation = targetsController.GetStartSpawnPosition(0).rotation;
 
-        var playerEffector = new PlayerEffector(false, _player, _playerLimitsData, true, gameUIManager);
+        var playerEffector = new PlayerEffector(false, _player, _playerLimitsData, true, levelUINotifications, levelUI, null);
 
         GameObject playerObjectClone = Instantiate(_playerObj);
         endGameController.SetPlayerObjectClone(playerObjectClone);
@@ -63,12 +63,13 @@ public class ArenaInstaller : Installer
             _enemyObj.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
             _enemyObj.transform.rotation = targetsController.GetStartSpawnPosition(i + 1).rotation;
 
-            var enemyPlayerEffector = new PlayerEffector(true, _enemy, enemySet._enemyLimitsData, false, gameUIManager);
+            EnemyPointer enemyPointer = _enemyObj.AddComponent<EnemyPointer>();
+
+            var enemyPlayerEffector = new PlayerEffector(true, _enemy, enemySet._enemyLimitsData, false, levelUINotifications, levelUI, enemyPointer);
         }
 
         targetsController.SetTargetsForPlayers();
 
-        numberOfPlayers = enemies.Count + 1;// 1 - сам игрок
         LevelProgressController.Instance.SetNumberOfPlayers(numberOfPlayers);
 
         SendBattleStartAnalyticEvent();

@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArenaPointerManager : MonoBehaviour
+public class ArenaUIPointers : MonoBehaviour
 {
-
     // Pool
     private int poolCount = 3;
     private bool autoExpand = true;
@@ -17,15 +16,13 @@ public class ArenaPointerManager : MonoBehaviour
     [SerializeField] Camera _camera;
     [SerializeField] Transform _canvasTransform;
 
-    //[SerializeField] AttackPointer _attackPointer;
     [SerializeField] PlayerHealthUI _playerHealthUI;
     [Header("Prefabs")]
     [SerializeField] PointerIcon _positionPointerPrefab;
-    PointerIcon _pointerIcon;
     [SerializeField] PointerIcon _attackPointerPrefab;
 
 
-    public static ArenaPointerManager Instance;
+    public static ArenaUIPointers Instance;
     private void Awake()
     {
         if (Instance == null)
@@ -44,15 +41,13 @@ public class ArenaPointerManager : MonoBehaviour
         _positionPointersPool.autoExpand = autoExpand;
     }
 
-
     public void SetPlayerTransform(Transform transform)
     {
         _playerTransform = transform;
     }
 
-    public void AddToPositionList(EnemyPointer enemyPointer)
+    private void AddToPositionList(EnemyPointer enemyPointer)
     {
-        //PointerIcon newPointer = Instantiate(_positionPointerPrefab, _canvasTransform);
         PointerIcon newPointer = _positionPointersPool.GetFreeElement();
         _positionDictionary.Add(enemyPointer, newPointer);
         newPointer.Show();
@@ -60,8 +55,6 @@ public class ArenaPointerManager : MonoBehaviour
 
     public void RemoveFromPositionList(EnemyPointer enemyPointer)
     {
-        //Destroy(_dictionary[enemyPointer].gameObject);
-
         PointerIcon pointerIcon = _positionDictionary[enemyPointer];
         
         if(pointerIcon != null)
@@ -69,8 +62,6 @@ public class ArenaPointerManager : MonoBehaviour
             pointerIcon.Hide();
             pointerIcon.gameObject.SetActive(false);
         }
-        //pointerIcon.Hide();
-        //pointerIcon.gameObject.SetActive(false);
 
         _positionDictionary.Remove(enemyPointer);
     }
@@ -85,18 +76,22 @@ public class ArenaPointerManager : MonoBehaviour
     {
         PointerIcon newPointer = _positionDictionary[enemyPointer];
         if (newPointer != null) newPointer.Hide();
-        //newPointer.Hide();
     }
 
-    public void UpdateHealthInUI(EnemyPointer enemyPointer, float healthValue)
+    public void UpdateEnemyHP(float healthValue, EnemyPointer enemyPointer)
     {
-        PointerIcon pointerIcon = _positionDictionary[enemyPointer];
-        pointerIcon.UpdateHealthColor(healthValue);
-    }
+        if (_positionDictionary.ContainsKey(enemyPointer))
+        {
+            PointerIcon pointerIcon = _positionDictionary[enemyPointer];
+            pointerIcon.UpdateHealthColor(healthValue);
+        }
+        else
+        {
+            AddToPositionList(enemyPointer);
 
-    public void UpdatePlayerHealthInUI(float healthValue)
-    {
-        _playerHealthUI.UpdatePlayerHealthUI(healthValue);
+            PointerIcon pointerIcon = _positionDictionary[enemyPointer];
+            pointerIcon.UpdateHealthColor(healthValue);
+        }
     }
 
     public int GetPlayerHealth()// вызывается для аналитики, чтобы взять текущее здоровье игрока

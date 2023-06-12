@@ -3604,6 +3604,7 @@ MonoBehaviour:
   banImage: {fileID: 4773514680452865745}
   banScaleImage: {fileID: 1373944118216291459}
   banText: {fileID: 4149115394938690492}
+  kal: 5
 --- !u!1 &1201075283461174528
 GameObject:
   m_ObjectHideFlags: 0
@@ -7285,7 +7286,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7065353517509365830}
-  - component: {fileID: 5524094005824817470}
+  - component: {fileID: 678779117361073971}
+  - component: {fileID: 5665804130490997093}
   - component: {fileID: 2758518785976059859}
   - component: {fileID: 563515094243914550}
   - component: {fileID: 4187901657488183858}
@@ -7339,7 +7341,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &5524094005824817470
+--- !u!114 &678779117361073971
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7348,9 +7350,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 7065353517509365831}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14725cbe2848ebc41a639b9b1aa4bda0, type: 3}
+  m_Script: {fileID: 11500000, guid: da448cc87e21d3a4fa46107b2df04b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5665804130490997093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7065353517509365831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc9c5f526665bed44bc98a905f52a0f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffsDebuffsNotifications: {fileID: 61729556769380748}
+  gameUINotifications: {fileID: 7806487285128405906}
+  attackBan: {fileID: 1044419572582104950}
 --- !u!114 &2758518785976059859
 MonoBehaviour:
   m_ObjectHideFlags: 0

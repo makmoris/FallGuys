@@ -3,34 +3,47 @@ using UnityEngine;
 
 public class PlayerEffector
 {
-    private readonly IPlayer _player;
+    private readonly IPlayer player;
     private readonly PlayerLimitsData _limitsData;
     private Weapon _weapon;
 
-    private GameUIManager _gameUIManager;
+    private LevelUI levelUI;
+
+    private EnemyPointer enemyPointer;
+
+    private LevelUINotifications levelUINotifications;
 
     private readonly VisualIntermediary _intermediary;
 
     private bool isShieldActive;// когда щит активен, игрок не может получать урон
     private Coroutine shieldCoroutine = null;
 
-    private bool _isAI;
-    private bool _isCurrentPlayer;
+    private bool isAI;
+    private bool isCurrentPlayer;
 
     private float defaultHealth;// дл€ вибрации
 
     private Coroutine disableWeaponCoroutine = null;
 
-    public PlayerEffector(bool isAI, IPlayer player, PlayerLimitsData limitsData, bool isCurrentPlayer, GameUIManager gameUIManager)
+    public PlayerEffector(bool _isAI, IPlayer _player, PlayerLimitsData limitsData, bool _isCurrentPlayer, LevelUINotifications _levelUINotifications,
+        LevelUI _levelUI, EnemyPointer _enemyPointer)
     {
-        _isAI = isAI;
-        _player = player;
+        isAI = _isAI;
+        player = _player;
         _limitsData = limitsData;
 
-        Weapon weapon = _player.Weapon;
+        isCurrentPlayer = _isCurrentPlayer;
+
+        enemyPointer = _enemyPointer;
+
+        levelUI = _levelUI;
+        if (isCurrentPlayer) levelUI.UpdatePlayerHP(player.Health);
+        else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
+
+        Weapon weapon = player.Weapon;
         _weapon = weapon;
 
-        Bumper bumper = _player.Vehicle.GetComponent<Bumper>();
+        Bumper bumper = player.Vehicle.GetComponent<Bumper>();
         if(bumper != null)
         {
             bumper.OnBonusGot += ApplyBonus;
@@ -38,27 +51,27 @@ public class PlayerEffector
         }
         else Debug.LogError("Component Bumber not found");
 
-        VisualIntermediary intermediary = _player.Vehicle.GetComponent<VisualIntermediary>();
+        VisualIntermediary intermediary = player.Vehicle.GetComponent<VisualIntermediary>();
         if(intermediary != null)
         {
             _intermediary = intermediary;
-
-            _intermediary.UpdateHealthInUI(_player.Health);
         }
         else Debug.LogError("Component VisualIntermediary not found");
 
-        _isCurrentPlayer = isCurrentPlayer;
+        
 
-        if (_isCurrentPlayer)
+        if (isCurrentPlayer)
         {
-            _gameUIManager = gameUIManager;
+            levelUINotifications = _levelUINotifications;
 
-            _gameUIManager.SetCurrentPlayerGO(_player.Vehicle);
-            bumper.SetIsCurrentPlayer(_player.Vehicle);
-            _intermediary.SetIsCurrentPlayer(_player.Vehicle);
+            levelUINotifications.AttackBan.SetCurrentPlayer(player.Vehicle);
+            levelUINotifications.BuffsDebuffsNotifications.SetCurrentPlayer(player.Vehicle);
+
+            bumper.SetIsCurrentPlayer(player.Vehicle);
+            _intermediary.SetIsCurrentPlayer(player.Vehicle);
         }
 
-        defaultHealth = _player.Health;
+        defaultHealth = player.Health;
     }
 
     private void ApplyBonus(Bonus bonus)
@@ -75,8 +88,8 @@ public class PlayerEffector
                 }
                 else
                 {
-                    var resultHealth = _player.Health + bonus.Value;
-                    Debug.Log(resultHealth + " = " + _player.Health + " + " + bonus.Value);
+                    var resultHealth = player.Health + bonus.Value;
+                    Debug.Log(resultHealth + " = " + player.Health + " + " + bonus.Value);
                     if (resultHealth > _limitsData.MaxHP)
                     {
                         //resultHealth = _limitsData.MaxHP; // убрали лимит на хп
@@ -87,10 +100,12 @@ public class PlayerEffector
                     }
                     
                     
-                    _player.SetHealth(resultHealth);
-                    _intermediary.UpdateHealthInUI(_player.Health);
+                    player.SetHealth(resultHealth);
 
-                    if (_player.Health == 0)
+                    if (isCurrentPlayer) levelUI.UpdatePlayerHP(player.Health);
+                    else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
+
+                    if (player.Health == 0)
                     {
                         Bullet bullet = bonus.GetComponent<Bullet>();
 
@@ -104,12 +119,12 @@ public class PlayerEffector
                         }
                         //Debug.Log("Destroy in effector");
 
-                        if (_isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
+                        if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
                     }
 
-                    if (bonus.Value > 0 && _isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.Value);
+                    if (bonus.Value > 0 && isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.Value);
 
-                    if (bonus.Value < 0 && _isCurrentPlayer)
+                    if (bonus.Value < 0 && isCurrentPlayer)
                     {
                         float percent = ((bonus.Value * -1f) / defaultHealth) * 100f;
 
@@ -149,13 +164,13 @@ public class PlayerEffector
                 }
                 shieldCoroutine = CoroutineRunner.Run(ShieldActive(bonus.Value));
 
-                if(_isCurrentPlayer) SendPlayerGetShieldAnalyticEvent();
+                if(isCurrentPlayer) SendPlayerGetShieldAnalyticEvent();
 
                 break;
 
             case BonusType.AddGold:
 
-                if (_isCurrentPlayer)
+                if (isCurrentPlayer)
                 {
                     LevelProgressController.Instance.AddGold((int)bonus.Value);
                     SendPlayerGetGoldAnalyticEvent((int)bonus.Value);
@@ -181,9 +196,9 @@ public class PlayerEffector
 
                     _weapon.DisableWeapon(_gameObject);
 
-                    if (_isCurrentPlayer)
+                    if (isCurrentPlayer)
                     {
-                        _gameUIManager.ActivateAttackBan(_gameObject, bonus.Value);
+                        levelUINotifications.AttackBan.ShowBanImage(_gameObject, bonus.Value);
                     }
                 }
 
@@ -201,10 +216,10 @@ public class PlayerEffector
                     
                     _weapon.DisableWeapon(_gameObject);
                     
-                    if (_isCurrentPlayer)
+                    if (isCurrentPlayer)
                     {
-                        _gameUIManager.ShowLightningDebuffNotification(_gameObject);
-                        _gameUIManager.ActivateAttackBan(_gameObject, bonus.Value);
+                        levelUINotifications.BuffsDebuffsNotifications.ShowLightningDebuff(_gameObject);
+                        levelUINotifications.AttackBan.ShowBanImage(_gameObject, bonus.Value);
                     }
                 }
 
@@ -218,19 +233,19 @@ public class PlayerEffector
 
         _weapon.EnableWeapon(_gameObject);
 
-        if (_isCurrentPlayer)
+        if (isCurrentPlayer)
         {
-            _gameUIManager.HideLightningDebuffNotification(_gameObject);
-            _gameUIManager.DeactivateAttackBan(_gameObject);
+            levelUINotifications.BuffsDebuffsNotifications.HideLightningDebuff(_gameObject);
+            levelUINotifications.AttackBan.HideBanImage(_gameObject);
         }
     }
 
     IEnumerator ShieldActive(float time)
     {
-        if (_isCurrentPlayer)
+        if (isCurrentPlayer)
         {
             // notification
-            _gameUIManager.ShowShieldBuffNotification();
+            levelUINotifications.BuffsDebuffsNotifications.ShowShieldBuff();
         }
 
         isShieldActive = true;
@@ -241,10 +256,10 @@ public class PlayerEffector
         _intermediary.HideShield();
         Debug.Log("ўит отключен");
 
-        if (_isCurrentPlayer)
+        if (isCurrentPlayer)
         {
             // stop notification
-            _gameUIManager.HideShieldBuffNotification();
+            levelUINotifications.BuffsDebuffsNotifications.HideShieldBuff();
         }
     }
 
@@ -261,7 +276,7 @@ public class PlayerEffector
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = ArenaPointerManager.Instance.GetPlayerHealth();
+        int _player_hp_left = (int)player.Health;
 
         int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
 
@@ -283,7 +298,7 @@ public class PlayerEffector
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = ArenaPointerManager.Instance.GetPlayerHealth();
+        int _player_hp_left = (int)player.Health;
 
         int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
 
@@ -305,7 +320,7 @@ public class PlayerEffector
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = ArenaPointerManager.Instance.GetPlayerHealth();
+        int _player_hp_left = (int)player.Health;
 
         int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
 

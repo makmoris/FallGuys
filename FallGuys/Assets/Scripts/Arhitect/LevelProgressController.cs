@@ -88,7 +88,7 @@ public class LevelProgressController : MonoBehaviour
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = ArenaPointerManager.Instance.GetPlayerHealth();
+        int _player_hp_left = ArenaUIPointers.Instance.GetPlayerHealth();
 
         int _player_kills_amount = numberOfFrags;
 

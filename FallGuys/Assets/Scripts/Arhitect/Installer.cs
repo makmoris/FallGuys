@@ -18,7 +18,8 @@ public abstract class Installer : MonoBehaviour
     [SerializeField] protected bool startFromLobby;
 
     [Header("Scene Controllers")]
-    [SerializeField] protected GameUIManager gameUIManager;
+    [SerializeField] protected LevelUI levelUI;
+    [SerializeField] protected LevelUINotifications levelUINotifications;
     [SerializeField] protected CinemachineVirtualCamera camCinema;
 
     [Space]
@@ -40,6 +41,8 @@ public abstract class Installer : MonoBehaviour
     protected virtual void Initializing()
     {
         if (startFromLobby) LoadDataFromCharacterManager();// подгружаем инфу по игроку
+
+        numberOfPlayers = _enemiesSettings.Count + 1;
     }
 
     private void LoadDataFromCharacterManager()

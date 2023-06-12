@@ -31,7 +31,7 @@ public class AttackTargetDetector : MonoBehaviour
 
                 if (isArena)
                 {
-                    if (!isAI) ArenaPointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                    if (!isAI) ArenaUIPointers.Instance.StartShowingAttackPointer(currentTargetObject.transform);
                     else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
                 }
                 else if (isRace)
@@ -48,7 +48,7 @@ public class AttackTargetDetector : MonoBehaviour
         {
             if (isArena)
             {
-                if (!isAI) ArenaPointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
+                if (!isAI) ArenaUIPointers.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
                 else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
             else if (isRace)
@@ -73,7 +73,7 @@ public class AttackTargetDetector : MonoBehaviour
 
                 if (isArena)
                 {
-                    if (!isAI) ArenaPointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                    if (!isAI) ArenaUIPointers.Instance.StartShowingAttackPointer(currentTargetObject.transform);
                     else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
                 }
                 else if (isRace)
@@ -91,7 +91,7 @@ public class AttackTargetDetector : MonoBehaviour
         {
             if (isArena)
             {
-                if (!isAI) ArenaPointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
+                if (!isAI) ArenaUIPointers.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
                 else arenaDriverAI.DetectorLostTarget();
             }
             else if (isRace)
@@ -110,7 +110,7 @@ public class AttackTargetDetector : MonoBehaviour
         {
             if (isArena)
             {
-                if (!isAI) ArenaPointerManager.Instance.ObjectWithAttackPointerWasDestroyed();
+                if (!isAI) ArenaUIPointers.Instance.ObjectWithAttackPointerWasDestroyed();
                 else arenaDriverAI.DetectorLostTarget();
             }
             else if (isRace)

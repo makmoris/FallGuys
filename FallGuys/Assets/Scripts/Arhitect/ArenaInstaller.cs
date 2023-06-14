@@ -16,7 +16,6 @@ public class ArenaInstaller : Installer
 
         _playerObj.GetComponentInChildren<HitSidesController>().SetIsPlayer();
 
-        ArenaUIPointers.Instance.SetPlayerTransform(_playerObj.transform);
         targetsController.AddPlayerToTargets(_playerObj);
 
         Transform weaponPlace = _playerObj.transform.Find("WeaponPlace");
@@ -24,7 +23,11 @@ public class ArenaInstaller : Installer
         weapon.IsArena();
         weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
 
+        weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
+
         IPlayer _player = new Player(_playerDefaultData, _playerObj, weapon);
+
+        AnalyticsManager.Instance.SetCurrentPlayer(_player);
 
         camCinema.m_Follow = _playerObj.transform;
         camCinema.m_LookAt = _playerObj.transform;
@@ -33,7 +36,7 @@ public class ArenaInstaller : Installer
         _playerObj.transform.position = new Vector3(pos.x, 2f, pos.z);
         _playerObj.transform.rotation = targetsController.GetStartSpawnPosition(0).rotation;
 
-        var playerEffector = new PlayerEffector(false, _player, _playerLimitsData, true, levelUINotifications, levelUI, null);
+        var playerEffector = new PlayerEffector(_player, _playerLimitsData, levelUINotifications, levelUI);
 
         GameObject playerObjectClone = Instantiate(_playerObj);
         endGameController.SetPlayerObjectClone(playerObjectClone);
@@ -63,9 +66,11 @@ public class ArenaInstaller : Installer
             _enemyObj.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
             _enemyObj.transform.rotation = targetsController.GetStartSpawnPosition(i + 1).rotation;
 
-            EnemyPointer enemyPointer = _enemyObj.AddComponent<EnemyPointer>();
+            EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
+            if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
+            enemyPointer.LevelUI = levelUI;
 
-            var enemyPlayerEffector = new PlayerEffector(true, _enemy, enemySet._enemyLimitsData, false, levelUINotifications, levelUI, enemyPointer);
+            var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player);
         }
 
         targetsController.SetTargetsForPlayers();

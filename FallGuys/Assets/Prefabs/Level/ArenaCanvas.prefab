@@ -7287,6 +7287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7065353517509365830}
   - component: {fileID: 678779117361073971}
+  - component: {fileID: 7420793910227372630}
   - component: {fileID: 5665804130490997093}
   - component: {fileID: 2758518785976059859}
   - component: {fileID: 563515094243914550}
@@ -7353,6 +7354,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da448cc87e21d3a4fa46107b2df04b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHealthUI: {fileID: 0}
+  arenaUIPointers: {fileID: 0}
+--- !u!114 &7420793910227372630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7065353517509365831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f95b444ec28604147ba99c123f73ccab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 0}
+  _canvasTransform: {fileID: 0}
+  _playerHealthUI: {fileID: 0}
+  _positionPointerPrefab: {fileID: 0}
+  _attackPointerPrefab: {fileID: 0}
 --- !u!114 &5665804130490997093
 MonoBehaviour:
   m_ObjectHideFlags: 0

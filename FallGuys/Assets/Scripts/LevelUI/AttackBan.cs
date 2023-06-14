@@ -11,8 +11,6 @@ public class AttackBan : MonoBehaviour
     [SerializeField] private Image banScaleImage;
     [SerializeField] private TextMeshProUGUI banText;
 
-    private GameObject currentPlayer;
-
     private Coroutine fillingBanTimeCoroutine = null;
 
     private void Awake()
@@ -21,40 +19,22 @@ public class AttackBan : MonoBehaviour
         attackButton.gameObject.SetActive(true);
     }
 
-    public void Jopa()
+    public void ShowBanImage(float banTime)
     {
-        Debug.Log("Govno");
-    }
+        attackButton.gameObject.SetActive(false);
+        banImage.gameObject.SetActive(true);
 
-    public int kal = 5;
-
-    public void SetCurrentPlayer(GameObject gameObj)
-    {
-        currentPlayer = gameObj;
-    }
-
-    public void ShowBanImage(GameObject gameObj, float banTime)
-    {
-        if (currentPlayer == gameObj)
+        if (fillingBanTimeCoroutine != null)
         {
-            attackButton.gameObject.SetActive(false);
-            banImage.gameObject.SetActive(true);
-
-            if(fillingBanTimeCoroutine != null)
-            {
-                StopCoroutine(fillingBanTimeCoroutine);
-            }
-            fillingBanTimeCoroutine = StartCoroutine(FillingBanScale(banTime));
+            StopCoroutine(fillingBanTimeCoroutine);
         }
+        fillingBanTimeCoroutine = StartCoroutine(FillingBanScale(banTime));
     }
 
-    public void HideBanImage(GameObject gameObj)
+    public void HideBanImage()
     {
-        if (currentPlayer == gameObj)
-        {
-            banImage.gameObject.SetActive(false);
-            attackButton.gameObject.SetActive(true);
-        }
+        banImage.gameObject.SetActive(false);
+        attackButton.gameObject.SetActive(true);
     }
 
     IEnumerator FillingBanScale(float fillingTime)

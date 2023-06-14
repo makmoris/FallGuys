@@ -74,8 +74,8 @@ public class PositionsForAdditionalMechanics : MonoBehaviour
             }
         }
 
-        Debug.Log($"Objects count on x = {objectsCountOnX}; Object count on z = {objectsCountOnZ}");
-        Debug.Log($"spawn step x = {spawnStepX}; spawn step z = {spawnStepZ}");
+        //Debug.Log($"Objects count on x = {objectsCountOnX}; Object count on z = {objectsCountOnZ}");
+        //Debug.Log($"spawn step x = {spawnStepX}; spawn step z = {spawnStepZ}");
 
 
     }

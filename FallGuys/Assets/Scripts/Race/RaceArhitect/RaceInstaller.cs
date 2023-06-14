@@ -34,7 +34,7 @@ public class RaceInstaller : Installer
         _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
         _playerObj.transform.rotation = spawnPlace.rotation;
 
-        var playerEffector = new PlayerEffector(false, _player, _playerLimitsData, true, levelUINotifications, levelUI, null);
+        var playerEffector = new PlayerEffector(_player, _playerLimitsData, levelUINotifications, levelUI);
 
         //Install enemies
         List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);
@@ -63,7 +63,7 @@ public class RaceInstaller : Installer
 
             EnemyPointer enemyPointer = _enemyObj.AddComponent<EnemyPointer>();
 
-            var enemyPlayerEffector = new PlayerEffector(true, _enemy, enemySet._enemyLimitsData, false, levelUINotifications, levelUI, enemyPointer);
+            var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player);
         }
 
         SendBattleStartAnalyticEvent();

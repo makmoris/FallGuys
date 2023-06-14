@@ -4,22 +4,29 @@ public class EnemyPointer : MonoBehaviour // кидаем на врагов
 {
     private bool onStart = true;
 
+    private LevelUI levelUI;
+    public LevelUI LevelUI
+    {
+        set => levelUI = value;
+    }
+
+
     private void OnEnable()
     {
         if (!onStart)
         {
-            ArenaUIPointers.Instance.ShowPositionPointer(this);
+            levelUI.ShowEnemyPositionPointer(this);
         }
     }
 
     private void OnDisable()
     {
-        ArenaUIPointers.Instance.HidePositionPointer(this);
+        levelUI.HideEnemyPositionPointer(this, false);
         onStart = false;
     }
 
     private void OnDestroy()
     {
-        ArenaUIPointers.Instance.RemoveFromPositionList(this);
+        levelUI.HideEnemyPositionPointer(this, true);
     }
 }

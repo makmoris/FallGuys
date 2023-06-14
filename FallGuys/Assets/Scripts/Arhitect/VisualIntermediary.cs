@@ -14,7 +14,7 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
     private Coroutine waitShieldCoroutine = null;
     private Coroutine shieldCoroutine = null;
 
-    private GameObject playerGO;
+    [SerializeField]private GameObject playerGO;
     private bool isPlayer;
 
     private HitHistory hitHistory;

@@ -13,8 +13,6 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     private bool slowDebuffNeedToShow;
     [SerializeField] private Image lightningDebuff;
 
-    private GameObject currentPlayer;
-
     private void Awake()
     {
         shieldBuff.gameObject.SetActive(false);
@@ -27,11 +25,6 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     {
         Bumper.PlayerSlowedEvent += ShowSlowDebuff;
         Bumper.PlayerStoppedSlowingEvent += HideSlowDebuff;
-    }
-
-    public void SetCurrentPlayer(GameObject gameObj)
-    {
-        currentPlayer = gameObj;
     }
 
     public void ShowShieldBuff()
@@ -62,13 +55,13 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         slowDebuff.gameObject.SetActive(false);
     }
 
-    public void ShowLightningDebuff(GameObject gameObject)
+    public void ShowLightningDebuff()
     {
-        if (currentPlayer == gameObject) lightningDebuff.gameObject.SetActive(true);
+        lightningDebuff.gameObject.SetActive(true);
     }
-    public void HideLightningDebuff(GameObject gameObject)
+    public void HideLightningDebuff()
     {
-        if (currentPlayer == gameObject) lightningDebuff.gameObject.SetActive(false);
+        lightningDebuff.gameObject.SetActive(false);
     }
 
     private void OnDisable()

@@ -233,7 +233,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = ArenaUIPointers.Instance.GetPlayerHealth();
+        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
 
         int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
 
@@ -253,7 +253,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
         string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
 
-        int _player_hp_left = ArenaUIPointers.Instance.GetPlayerHealth();
+        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
 
         int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
 

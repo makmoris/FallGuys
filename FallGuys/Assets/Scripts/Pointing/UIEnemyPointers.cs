@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArenaUIPointers : MonoBehaviour
+public class UIEnemyPointers : MonoBehaviour
 {
     // Pool
     private int poolCount = 3;
@@ -22,26 +22,15 @@ public class ArenaUIPointers : MonoBehaviour
     [SerializeField] PointerIcon _attackPointerPrefab;
 
 
-    public static ArenaUIPointers Instance;
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-
-
         _attackPointerPrefab = Instantiate(_attackPointerPrefab, _canvasTransform);
 
         _positionPointersPool = new PoolMono<PointerIcon>(_positionPointerPrefab, poolCount, _canvasTransform);
         _positionPointersPool.autoExpand = autoExpand;
     }
 
-    public void SetPlayerTransform(Transform transform)
+    public void SetCurrentPlayerTransform(Transform transform)
     {
         _playerTransform = transform;
     }
@@ -53,7 +42,7 @@ public class ArenaUIPointers : MonoBehaviour
         newPointer.Show();
     }
 
-    public void RemoveFromPositionList(EnemyPointer enemyPointer)
+    private void RemoveFromPositionList(EnemyPointer enemyPointer)
     {
         PointerIcon pointerIcon = _positionDictionary[enemyPointer];
         
@@ -66,16 +55,23 @@ public class ArenaUIPointers : MonoBehaviour
         _positionDictionary.Remove(enemyPointer);
     }
 
-    public void ShowPositionPointer(EnemyPointer enemyPointer)
+    public void ShowEnemyPositionPointer(EnemyPointer enemyPointer)
     {
         PointerIcon newPointer = _positionDictionary[enemyPointer];
         newPointer.Show();
     }
 
-    public void HidePositionPointer(EnemyPointer enemyPointer)
+    public void HideEnemyPositionPointer(EnemyPointer enemyPointer, bool remove)
     {
-        PointerIcon newPointer = _positionDictionary[enemyPointer];
-        if (newPointer != null) newPointer.Hide();
+        if (!remove)
+        {
+            PointerIcon newPointer = _positionDictionary[enemyPointer];
+            if (newPointer != null) newPointer.Hide();
+        }
+        else
+        {
+            RemoveFromPositionList(enemyPointer);
+        }
     }
 
     public void UpdateEnemyHP(float healthValue, EnemyPointer enemyPointer)
@@ -159,16 +155,16 @@ public class ArenaUIPointers : MonoBehaviour
         }
     }
 
-    public void StartShowingAttackPointer(Transform transformToAttack)
+    public void ShowAttackPointer(Transform transformToAttack)
     {
         _attackPointerPrefab.Show();
         _attackPointerPrefab.SetIconPosition(GetAttackTargetPosition(transformToAttack), Quaternion.identity);
     }
-    public void ShowAttackPointer(Transform transformToAttack)
+    public void ShowingAttackPointer(Transform transformToAttack)
     {
         _attackPointerPrefab.SetIconPosition(GetAttackTargetPosition(transformToAttack), Quaternion.identity);
     }
-    public void FinishShowingAttackPointer(Transform transformToAttack)
+    public void HideAttackPointer(Transform transformToAttack)
     {
         _attackPointerPrefab.Hide();
         _attackPointerPrefab.SetIconPosition(GetAttackTargetPosition(transformToAttack), Quaternion.identity);

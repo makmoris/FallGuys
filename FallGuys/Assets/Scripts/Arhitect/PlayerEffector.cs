@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerEffector
 {
     private readonly IPlayer player;
-    private readonly PlayerLimitsData _limitsData;
+    private readonly PlayerLimitsData limitsData;
     private Weapon _weapon;
 
     private LevelUI levelUI;
@@ -25,20 +25,17 @@ public class PlayerEffector
 
     private Coroutine disableWeaponCoroutine = null;
 
-    public PlayerEffector(bool _isAI, IPlayer _player, PlayerLimitsData limitsData, bool _isCurrentPlayer, LevelUINotifications _levelUINotifications,
-        LevelUI _levelUI, EnemyPointer _enemyPointer)
+    public PlayerEffector(IPlayer _player, PlayerLimitsData _limitsData, LevelUINotifications _levelUINotifications, LevelUI _levelUI)
     {
-        isAI = _isAI;
+        isAI = false;
+        isCurrentPlayer = true;
+
         player = _player;
-        _limitsData = limitsData;
-
-        isCurrentPlayer = _isCurrentPlayer;
-
-        enemyPointer = _enemyPointer;
+        limitsData = _limitsData;
 
         levelUI = _levelUI;
-        if (isCurrentPlayer) levelUI.UpdatePlayerHP(player.Health);
-        else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
+
+        levelUI.UpdatePlayerHP(player.Health);
 
         Weapon weapon = player.Weapon;
         _weapon = weapon;
@@ -58,25 +55,61 @@ public class PlayerEffector
         }
         else Debug.LogError("Component VisualIntermediary not found");
 
-        
 
-        if (isCurrentPlayer)
+        bumper.SetIsCurrentPlayer(player.Vehicle);
+        _intermediary.SetIsCurrentPlayer(player.Vehicle);
+
+        levelUINotifications = _levelUINotifications;
+
+        levelUI.UIEnemyPointers.SetCurrentPlayerTransform(player.Vehicle.transform);
+
+
+        defaultHealth = player.Health;
+    }
+
+    public PlayerEffector(EnemyPointer _enemyPointer, IPlayerAI _playerAI, PlayerLimitsData _limitsData, LevelUI _levelUI,
+        IPlayer _currentPlayer) // enemyAI
+    {
+        enemyPointer = _enemyPointer;
+
+        isAI = true;
+        isCurrentPlayer = false;
+
+        player = _playerAI;
+        limitsData = _limitsData;
+
+        levelUI = _levelUI;
+
+        levelUI.UpdateEnemyHP(player.Health, enemyPointer);
+
+        Weapon weapon = player.Weapon;
+        _weapon = weapon;
+
+        Bumper bumper = player.Vehicle.GetComponent<Bumper>();
+        if (bumper != null)
         {
-            levelUINotifications = _levelUINotifications;
-
-            levelUINotifications.AttackBan.SetCurrentPlayer(player.Vehicle);
-            levelUINotifications.BuffsDebuffsNotifications.SetCurrentPlayer(player.Vehicle);
-
-            bumper.SetIsCurrentPlayer(player.Vehicle);
-            _intermediary.SetIsCurrentPlayer(player.Vehicle);
+            bumper.OnBonusGot += ApplyBonus;
+            bumper.OnBonusGotWithGameObject += ApplyBonus;
         }
+        else Debug.LogError("Component Bumber not found");
+
+        VisualIntermediary intermediary = player.Vehicle.GetComponent<VisualIntermediary>();
+        if (intermediary != null)
+        {
+            _intermediary = intermediary;
+        }
+        else Debug.LogError("Component VisualIntermediary not found");
+
+
+        bumper.SetIsCurrentPlayer(_currentPlayer.Vehicle);
+        _intermediary.SetIsCurrentPlayer(_currentPlayer.Vehicle);
 
         defaultHealth = player.Health;
     }
 
     private void ApplyBonus(Bonus bonus)
     {
-        Debug.Log($"PLAYER EFFECTOR {bonus.Type}");
+        //Debug.Log($"PLAYER EFFECTOR {bonus.Type}");
 
         switch (bonus.Type)
         {
@@ -90,7 +123,7 @@ public class PlayerEffector
                 {
                     var resultHealth = player.Health + bonus.Value;
                     Debug.Log(resultHealth + " = " + player.Health + " + " + bonus.Value);
-                    if (resultHealth > _limitsData.MaxHP)
+                    if (resultHealth > limitsData.MaxHP)
                     {
                         //resultHealth = _limitsData.MaxHP; // убрали лимит на хп
                     }
@@ -98,8 +131,8 @@ public class PlayerEffector
                     {
                         resultHealth = 0;
                     }
-                    
-                    
+
+
                     player.SetHealth(resultHealth);
 
                     if (isCurrentPlayer) levelUI.UpdatePlayerHP(player.Health);
@@ -107,10 +140,12 @@ public class PlayerEffector
 
                     if (player.Health == 0)
                     {
+                        Debug.Log("DA 1");
                         Bullet bullet = bonus.GetComponent<Bullet>();
 
                         if (bullet != null)
                         {
+                            Debug.Log("BULLET 1");
                             _intermediary.DestroyCar(bullet.GetParent());
                         }
                         else
@@ -198,7 +233,7 @@ public class PlayerEffector
 
                     if (isCurrentPlayer)
                     {
-                        levelUINotifications.AttackBan.ShowBanImage(_gameObject, bonus.Value);
+                        levelUINotifications.AttackBan.ShowBanImage(bonus.Value);
                     }
                 }
 
@@ -218,8 +253,8 @@ public class PlayerEffector
                     
                     if (isCurrentPlayer)
                     {
-                        levelUINotifications.BuffsDebuffsNotifications.ShowLightningDebuff(_gameObject);
-                        levelUINotifications.AttackBan.ShowBanImage(_gameObject, bonus.Value);
+                        levelUINotifications.BuffsDebuffsNotifications.ShowLightningDebuff();
+                        levelUINotifications.AttackBan.ShowBanImage(bonus.Value);
                     }
                 }
 
@@ -235,8 +270,8 @@ public class PlayerEffector
 
         if (isCurrentPlayer)
         {
-            levelUINotifications.BuffsDebuffsNotifications.HideLightningDebuff(_gameObject);
-            levelUINotifications.AttackBan.HideBanImage(_gameObject);
+            levelUINotifications.BuffsDebuffsNotifications.HideLightningDebuff();
+            levelUINotifications.AttackBan.HideBanImage();
         }
     }
 

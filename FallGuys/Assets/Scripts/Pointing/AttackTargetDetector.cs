@@ -11,6 +11,12 @@ public class AttackTargetDetector : MonoBehaviour
     [SerializeField]private bool isRace;
     [SerializeField]private bool isArena;
 
+    private LevelUI levelUI;
+    public LevelUI LevelUI
+    {
+        set => levelUI = value;
+    }
+
     private void Awake()
     {
         arenaDriverAI = transform.GetComponentInParent<ArenaCarDriverAI>();
@@ -31,7 +37,8 @@ public class AttackTargetDetector : MonoBehaviour
 
                 if (isArena)
                 {
-                    if (!isAI) ArenaUIPointers.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                    //if (!isAI) ArenaUIPointers.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                    if (!isAI) levelUI.ShowAttackPointer(currentTargetObject.transform);
                     else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
                 }
                 else if (isRace)
@@ -48,15 +55,14 @@ public class AttackTargetDetector : MonoBehaviour
         {
             if (isArena)
             {
-                if (!isAI) ArenaUIPointers.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
+                //if (!isAI) ArenaUIPointers.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
+                if (!isAI) levelUI.ShowingAttackPointer(currentTargetObject.transform);
                 else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
             else if (isRace)
             {
-                Debug.Log("!!!!!!!!!!!");
                 if (!isAI)
                 {
-                    Debug.Log("8889238894823849");
                     RacePointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
                 }
             }
@@ -73,7 +79,8 @@ public class AttackTargetDetector : MonoBehaviour
 
                 if (isArena)
                 {
-                    if (!isAI) ArenaUIPointers.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                    //if (!isAI) ArenaUIPointers.Instance.StartShowingAttackPointer(currentTargetObject.transform);
+                    if (!isAI) levelUI.ShowAttackPointer(currentTargetObject.transform);
                     else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
                 }
                 else if (isRace)
@@ -91,7 +98,8 @@ public class AttackTargetDetector : MonoBehaviour
         {
             if (isArena)
             {
-                if (!isAI) ArenaUIPointers.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
+                //if (!isAI) ArenaUIPointers.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
+                if (!isAI) levelUI.HideAttackPointer(currentTargetObject.transform);
                 else arenaDriverAI.DetectorLostTarget();
             }
             else if (isRace)
@@ -110,7 +118,8 @@ public class AttackTargetDetector : MonoBehaviour
         {
             if (isArena)
             {
-                if (!isAI) ArenaUIPointers.Instance.ObjectWithAttackPointerWasDestroyed();
+                //if (!isAI) ArenaUIPointers.Instance.ObjectWithAttackPointerWasDestroyed();
+                if (!isAI) levelUI.ObjectWithAttackPointerWasDestroyed();
                 else arenaDriverAI.DetectorLostTarget();
             }
             else if (isRace)

@@ -24,6 +24,8 @@ public class AnalyticsManager : MonoBehaviour
 
     private int responseCount;// количество ответов, что аналитика инициализирована
 
+    private IPlayer currentPlayer;
+
     public static AnalyticsManager Instance { get; private set; }
     private void Awake()
     {
@@ -44,6 +46,16 @@ public class AnalyticsManager : MonoBehaviour
     private void Start()
     {
         if (!initializeCompleted) Initialize();
+    }
+
+    public void SetCurrentPlayer(IPlayer player)
+    {
+        currentPlayer = player;
+    }
+
+    public int GetCurrentPlayerHealth()
+    {
+        return (int)currentPlayer.Health;
     }
 
     private void Initialize()

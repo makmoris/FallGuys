@@ -8,7 +8,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
 {
     private CinemachineVirtualCamera camCinema;
 
-    private List<GameObject> drivers = new List<GameObject>();
+    [SerializeField]private List<GameObject> drivers = new List<GameObject>();
     private GameObject currentDriver;
     private int targetIndex = 0;
 

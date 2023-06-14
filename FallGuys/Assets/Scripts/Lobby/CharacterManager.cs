@@ -17,7 +17,7 @@ public class WeaponCharacter
 {
     [SerializeField] private string name;
     [SerializeField] internal GameObject weaponPrefab;
-    [SerializeField] internal WeaponCharacteristicsData weaponData;
+    //[SerializeField] internal WeaponCharacteristicsData weaponData;
 }
 
 

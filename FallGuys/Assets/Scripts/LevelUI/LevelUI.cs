@@ -13,11 +13,10 @@ public abstract class LevelUI : MonoBehaviour, ILevelUI
 
 
     public abstract void ShowAttackPointer(Transform targetTransform);
-
     public abstract void ShowingAttackPointer(Transform targetTransform);
-
     public abstract void HideAttackPointer(Transform targetTransform);
     public abstract void ObjectWithAttackPointerWasDestroyed();
+
 
     public abstract void ShowEnemyPositionPointer(EnemyPointer enemyPointer);
     public abstract void HideEnemyPositionPointer(EnemyPointer enemyPointer, bool remove);

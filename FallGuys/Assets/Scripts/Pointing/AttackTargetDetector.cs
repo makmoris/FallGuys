@@ -8,9 +8,6 @@ public class AttackTargetDetector : MonoBehaviour
     private bool isAI;
     private ArenaCarDriverAI arenaDriverAI;
 
-    [SerializeField]private bool isRace;
-    [SerializeField]private bool isArena;
-
     private LevelUI levelUI;
     public LevelUI LevelUI
     {
@@ -35,16 +32,8 @@ public class AttackTargetDetector : MonoBehaviour
             {
                 currentTargetObject = other.gameObject;
 
-                if (isArena)
-                {
-                    //if (!isAI) ArenaUIPointers.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                    if (!isAI) levelUI.ShowAttackPointer(currentTargetObject.transform);
-                    else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
-                }
-                else if (isRace)
-                {
-                    if (!isAI) RacePointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                }
+                if (!isAI) levelUI.ShowAttackPointer(currentTargetObject.transform);
+                else if(arenaDriverAI != null) arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
         }
     }
@@ -53,19 +42,8 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (other.gameObject == currentTargetObject && currentTargetObject != null)// если замеченный объект совпадает с выбранным объектом целью, то можем атаковать
         {
-            if (isArena)
-            {
-                //if (!isAI) ArenaUIPointers.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
-                if (!isAI) levelUI.ShowingAttackPointer(currentTargetObject.transform);
-                else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
-            }
-            else if (isRace)
-            {
-                if (!isAI)
-                {
-                    RacePointerManager.Instance.ShowAttackPointer(currentTargetObject.transform);// отображаем иконку прицела на объекте
-                }
-            }
+            if (!isAI) levelUI.ShowingAttackPointer(currentTargetObject.transform);
+            else if (arenaDriverAI != null) arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
 
             // разрешаем атаковать
             weapon.SetObjectForAttack(currentTargetObject.transform);
@@ -77,16 +55,8 @@ public class AttackTargetDetector : MonoBehaviour
             {
                 currentTargetObject = other.gameObject;
 
-                if (isArena)
-                {
-                    //if (!isAI) ArenaUIPointers.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                    if (!isAI) levelUI.ShowAttackPointer(currentTargetObject.transform);
-                    else arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
-                }
-                else if (isRace)
-                {
-                    if (!isAI) RacePointerManager.Instance.StartShowingAttackPointer(currentTargetObject.transform);
-                }
+                if (!isAI) levelUI.ShowAttackPointer(currentTargetObject.transform);
+                else if (arenaDriverAI != null) arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
         }
         
@@ -96,16 +66,8 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (other.gameObject == currentTargetObject)
         {
-            if (isArena)
-            {
-                //if (!isAI) ArenaUIPointers.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
-                if (!isAI) levelUI.HideAttackPointer(currentTargetObject.transform);
-                else arenaDriverAI.DetectorLostTarget();
-            }
-            else if (isRace)
-            {
-                if (!isAI) RacePointerManager.Instance.FinishShowingAttackPointer(currentTargetObject.transform);
-            }
+            if (!isAI) levelUI.HideAttackPointer(currentTargetObject.transform);
+            else if (arenaDriverAI != null) arenaDriverAI.DetectorLostTarget();
 
             currentTargetObject = null;
             weapon.ReturnWeaponToPosition();
@@ -116,16 +78,8 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (objWithAttackPointer == currentTargetObject)
         {
-            if (isArena)
-            {
-                //if (!isAI) ArenaUIPointers.Instance.ObjectWithAttackPointerWasDestroyed();
-                if (!isAI) levelUI.ObjectWithAttackPointerWasDestroyed();
-                else arenaDriverAI.DetectorLostTarget();
-            }
-            else if (isRace)
-            {
-                if (!isAI) RacePointerManager.Instance.ObjectWithAttackPointerWasDestroyed();
-            }
+            if (!isAI) levelUI.ObjectWithAttackPointerWasDestroyed();
+            else if (arenaDriverAI != null) arenaDriverAI.DetectorLostTarget();
 
             weapon.ReturnWeaponToPosition();
             currentTargetObject = null;
@@ -135,16 +89,6 @@ public class AttackTargetDetector : MonoBehaviour
     public void IsAI(bool value)
     {
         isAI = value;
-    }
-
-    public void IsRace(bool value)
-    {
-        isRace = value;
-    }
-
-    public void IsArena(bool value)
-    {
-        isArena = value;
     }
 
     private void OnEnable()

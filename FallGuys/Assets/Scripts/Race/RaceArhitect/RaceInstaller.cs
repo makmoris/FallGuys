@@ -13,13 +13,12 @@ public class RaceInstaller : Installer
         // Install player
         var _playerObj = Instantiate(_playerPrefab);
 
-        RacePointerManager.Instance.SetPlayerTransform(_playerObj.transform);
-
         Transform weaponPlace = _playerObj.transform.Find("WeaponPlace");
         Weapon weapon = Instantiate(_playerWeapon, weaponPlace);
-        weapon.IsRace();
         weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
         weapon.DisableWeapon(_playerObj);
+
+        weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
         IPlayer _player = new Player(_playerDefaultData, _playerObj, weapon);
 
@@ -34,7 +33,7 @@ public class RaceInstaller : Installer
         _playerObj.transform.position = new Vector3(pos.x, 5f, pos.z);
         _playerObj.transform.rotation = spawnPlace.rotation;
 
-        var playerEffector = new PlayerEffector(_player, _playerLimitsData, levelUINotifications, levelUI);
+        var playerEffector = new PlayerEffector(_player, _playerLimitsData, levelUINotifications, levelUI, true);
 
         //Install enemies
         List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);
@@ -48,7 +47,6 @@ public class RaceInstaller : Installer
 
             Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
             Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
-            weaponAI.IsRace();
             weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
             weaponAI.IsAI(true);
             weaponAI.DisableWeapon(_enemyObj);
@@ -61,9 +59,11 @@ public class RaceInstaller : Installer
             _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
             _enemyObj.transform.rotation = enemySpawnPlace.rotation;
 
-            EnemyPointer enemyPointer = _enemyObj.AddComponent<EnemyPointer>();
+            EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
+            if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
+            enemyPointer.LevelUI = levelUI;
 
-            var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player);
+            var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player, true);
         }
 
         SendBattleStartAnalyticEvent();

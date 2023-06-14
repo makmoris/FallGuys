@@ -3510,7 +3510,6 @@ MonoBehaviour:
   banImage: {fileID: 8015165995595960730}
   banScaleImage: {fileID: 4473274733052050376}
   banText: {fileID: 1482219987780506871}
-  kal: 5
 --- !u!1 &3244132482583505637
 GameObject:
   m_ObjectHideFlags: 0
@@ -7765,6 +7764,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5694895020507340557}
+  - component: {fileID: 1352693049950757000}
+  - component: {fileID: 3915426907211163534}
   - component: {fileID: 2115728747716624547}
   - component: {fileID: 1664945447977000313}
   - component: {fileID: 5694895020507340544}
@@ -7813,6 +7814,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1352693049950757000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5694895020507340556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd896ad8a63da7c499d112ac3823d02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiEnemyPointers: {fileID: 0}
+--- !u!114 &3915426907211163534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5694895020507340556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f95b444ec28604147ba99c123f73ccab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 0}
+  _canvasTransform: {fileID: 5694895020507340557}
+  _positionPointerPrefab: {fileID: 3952700772836043846, guid: d8240c9f2c44cc54e99da01945626bfd, type: 3}
+  _attackPointerPrefab: {fileID: 6801002678196619788, guid: 40fe6c1670e39744fb93fd6532d215b5, type: 3}
 --- !u!114 &2115728747716624547
 MonoBehaviour:
   m_ObjectHideFlags: 0

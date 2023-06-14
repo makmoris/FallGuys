@@ -16,7 +16,6 @@ public class UIEnemyPointers : MonoBehaviour
     [SerializeField] Camera _camera;
     [SerializeField] Transform _canvasTransform;
 
-    [SerializeField] PlayerHealthUI _playerHealthUI;
     [Header("Prefabs")]
     [SerializeField] PointerIcon _positionPointerPrefab;
     [SerializeField] PointerIcon _attackPointerPrefab;
@@ -88,11 +87,6 @@ public class UIEnemyPointers : MonoBehaviour
             PointerIcon pointerIcon = _positionDictionary[enemyPointer];
             pointerIcon.UpdateHealthColor(healthValue);
         }
-    }
-
-    public int GetPlayerHealth()// вызывается для аналитики, чтобы взять текущее здоровье игрока
-    {
-        return _playerHealthUI.GetHealthValue();
     }
 
     void LateUpdate()

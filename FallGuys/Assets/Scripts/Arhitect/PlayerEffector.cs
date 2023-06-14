@@ -21,14 +21,19 @@ public class PlayerEffector
     private bool isAI;
     private bool isCurrentPlayer;
 
+    private bool isImmortal;
+
     private float defaultHealth;// для вибрации
 
     private Coroutine disableWeaponCoroutine = null;
 
-    public PlayerEffector(IPlayer _player, PlayerLimitsData _limitsData, LevelUINotifications _levelUINotifications, LevelUI _levelUI)
+    public PlayerEffector(IPlayer _player, PlayerLimitsData _limitsData, LevelUINotifications _levelUINotifications, LevelUI _levelUI,
+        bool _isImmortal = false)
     {
         isAI = false;
         isCurrentPlayer = true;
+
+        isImmortal = _isImmortal;
 
         player = _player;
         limitsData = _limitsData;
@@ -68,12 +73,14 @@ public class PlayerEffector
     }
 
     public PlayerEffector(EnemyPointer _enemyPointer, IPlayerAI _playerAI, PlayerLimitsData _limitsData, LevelUI _levelUI,
-        IPlayer _currentPlayer) // enemyAI
+        IPlayer _currentPlayer, bool _isImmortal = false) // enemyAI
     {
         enemyPointer = _enemyPointer;
 
         isAI = true;
         isCurrentPlayer = false;
+
+        isImmortal = _isImmortal;
 
         player = _playerAI;
         limitsData = _limitsData;
@@ -119,7 +126,7 @@ public class PlayerEffector
                 {
 
                 }
-                else
+                else if(!isImmortal)
                 {
                     var resultHealth = player.Health + bonus.Value;
                     Debug.Log(resultHealth + " = " + player.Health + " + " + bonus.Value);

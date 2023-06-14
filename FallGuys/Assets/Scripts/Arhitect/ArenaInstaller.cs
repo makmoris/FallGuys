@@ -20,7 +20,6 @@ public class ArenaInstaller : Installer
 
         Transform weaponPlace = _playerObj.transform.Find("WeaponPlace");
         Weapon weapon = Instantiate(_playerWeapon, weaponPlace);
-        weapon.IsArena();
         weapon.SetParentBodyCollider(_playerObj.GetComponent<Collider>());
 
         weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
@@ -55,7 +54,6 @@ public class ArenaInstaller : Installer
 
             Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
             Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
-            weaponAI.IsArena();
             weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
             weaponAI.IsAI(true);
 

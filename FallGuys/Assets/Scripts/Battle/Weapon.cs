@@ -24,6 +24,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Transform startBulletPosition;
     private Collider parentBodyCollider;// у каждой машинки свой // убрать —ерриализацию
     private GameObject parentShield;// щит этой машинки, чтобы игнорировать его при выстреле. „тобы пул€ пролетала через него // убрать
+    private Bumper parentBumper;
 
     //[Header("AI")]
     private bool isAI;
@@ -44,8 +45,7 @@ public class Weapon : MonoBehaviour
 
     AttackTargetDetector attackTargetDetector;
 
-    [SerializeField] private bool isArena;
-    [SerializeField] private bool isRace;
+    DisableWeaponBonus disableWeaponBonus;
 
     private void Awake()
     {
@@ -170,6 +170,11 @@ public class Weapon : MonoBehaviour
     {
         parentBodyCollider = bodyCollider;
         parentShield = parentBodyCollider.transform.GetComponentInChildren<Shield>(true).gameObject;
+        parentBumper = bodyCollider.gameObject.GetComponent<Bumper>();
+
+        disableWeaponBonus = new();
+        disableWeaponBonus.Type = BonusType.DisableWeapon;
+        disableWeaponBonus.Value = rechargeTime;
     }
 
     public void IsAI(bool value)// вызываетс€ в installer при создании бота
@@ -181,22 +186,9 @@ public class Weapon : MonoBehaviour
         shotDecisionSpeed = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>().GetShotDecisionSpeed();
     }
 
-    public void IsArena()
+    private void ApplyDisableBonus()
     {
-        isArena = true;
-        isRace = false;
-
-        attackTargetDetector.IsArena(isArena);
-    }
-
-    public void IsRace()
-    {
-        isRace = true;
-        isArena = false;
-
-        damage = 0f;
-
-        attackTargetDetector.IsRace(isRace);
+        parentBumper.GetBonusWithGameObject(disableWeaponBonus, parentBumper.gameObject);
     }
 
     IEnumerator Shot()
@@ -212,7 +204,11 @@ public class Weapon : MonoBehaviour
 
         bullet.transform.position = startBulletPosition.position;
         bullet.transform.rotation = startBulletPosition.rotation;
+
+        ApplyDisableBonus();
+
         yield return new WaitForSeconds(rechargeTime);
+
         nextShot = true;
         ShowBulletExample();
     }

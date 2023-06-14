@@ -11,6 +11,8 @@ public class RaceProgressController : MonoBehaviour
 
     [Header("Start Sector")]
     [SerializeField] private RaceStartSector raceStartSector;
+    [Space]
+    [SerializeField] private float disableWeaponTimeOnStart = 5f;
 
     [Header("Finish Sector")]
     [SerializeField] private RaceFinishSector raceFinishSector;
@@ -89,9 +91,21 @@ public class RaceProgressController : MonoBehaviour
                 driverAI.Brake = false;
                 driverAI.StartMoveForward();
             }
+
+            ApplyDisableBonusOnStartRacing(driver.gameObject, disableWeaponTimeOnStart);
         }
 
         raceNotOver = true;
+    }
+
+    private void ApplyDisableBonusOnStartRacing(GameObject driverGO, float disableTime)
+    {
+        DisableWeaponBonus disableWeaponBonus = new();
+        disableWeaponBonus.Type = BonusType.DisableWeapon;
+        disableWeaponBonus.Value = disableTime;
+
+        Bumper bumper = driverGO.GetComponent<Bumper>();
+        bumper.GetBonusWithGameObject(disableWeaponBonus, driverGO);
     }
 
     private void DriverFinished(WheelVehicle wheelVehicleDriver)
@@ -106,7 +120,8 @@ public class RaceProgressController : MonoBehaviour
             {
                 RaceDriverAI driverAI = raceDriversAIDictionary[wheelVehicleDriver];
 
-                driverAI.Brake = true;
+                //driverAI.Brake = true;
+                driverAI.SlowDownToDesiredSpeed(0f);
             }
 
             wheelVehicleDriver.Handbrake = true;
@@ -153,6 +168,8 @@ public class RaceProgressController : MonoBehaviour
             }
 
             gameCamCinema.RemoveDriver(wheelVehicleDriver.gameObject);
+
+            ApplyDisableBonusOnStartRacing(wheelVehicleDriver.gameObject, Mathf.Infinity);
         }
     }
 

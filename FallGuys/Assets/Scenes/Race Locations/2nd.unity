@@ -9725,11 +9725,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508085, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000016774521
+      value: 0.000000016774514
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508085, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000038308134
+      value: -0.000000003830812
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508086, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_IgnoreTimeScale
@@ -9829,11 +9829,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000016774521
+      value: 0.000000016774514
       objectReference: {fileID: 0}
     - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000038308134
+      value: -0.000000003830812
       objectReference: {fileID: 0}
     - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15694,6 +15694,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3666c7430c3526640a487aa0d0d81af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drivers: []
+  targetIndex: 0
   canFollowOnOtherPlayers: 0
 --- !u!4 &1612096759 stripped
 Transform:
@@ -18721,7 +18723,7 @@ MonoBehaviour:
   raceStartSector: {fileID: 1756498778}
   disableWeaponTimeOnStart: 5
   raceFinishSector: {fileID: 1636510739}
-  numberOfWinners: 6
+  numberOfWinners: 1
   raceProgressUIController: {fileID: 1108522670}
   postRacePlaceController: {fileID: 940267016}
   winnersList: []
@@ -21695,6 +21697,10 @@ PrefabInstance:
     - target: {fileID: 115902030, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 363217045, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1108522670, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
       propertyPath: trackCutScene

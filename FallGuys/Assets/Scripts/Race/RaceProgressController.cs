@@ -92,13 +92,13 @@ public class RaceProgressController : MonoBehaviour
                 driverAI.StartMoveForward();
             }
 
-            ApplyDisableBonusOnStartRacing(driver.gameObject, disableWeaponTimeOnStart);
+            ApplyDisableBonus(driver.gameObject, disableWeaponTimeOnStart);
         }
 
         raceNotOver = true;
     }
 
-    private void ApplyDisableBonusOnStartRacing(GameObject driverGO, float disableTime)
+    private void ApplyDisableBonus(GameObject driverGO, float disableTime)
     {
         DisableWeaponBonus disableWeaponBonus = new();
         disableWeaponBonus.Type = BonusType.DisableWeapon;
@@ -122,6 +122,8 @@ public class RaceProgressController : MonoBehaviour
 
                 //driverAI.Brake = true;
                 driverAI.SlowDownToDesiredSpeed(0f);
+
+                ApplyDisableBonus(wheelVehicleDriver.gameObject, Mathf.Infinity);
             }
 
             wheelVehicleDriver.Handbrake = true;
@@ -168,8 +170,6 @@ public class RaceProgressController : MonoBehaviour
             }
 
             gameCamCinema.RemoveDriver(wheelVehicleDriver.gameObject);
-
-            ApplyDisableBonusOnStartRacing(wheelVehicleDriver.gameObject, Mathf.Infinity);
         }
     }
 
@@ -183,7 +183,12 @@ public class RaceProgressController : MonoBehaviour
 
         foreach (var driver in raceDriversList)
         {
-            if (!winnersList.Contains(driver)) losersList.Add(driver);
+            if (!winnersList.Contains(driver))
+            {
+                losersList.Add(driver);
+
+                ApplyDisableBonus(driver.gameObject, Mathf.Infinity);
+            }
         }
 
         foreach (var kvp in raceDriversAIDictionary)

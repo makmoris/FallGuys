@@ -69,7 +69,7 @@ public class RaceSectorWithHorizontalDynamicPlatform : MonoBehaviour
         carsInSector.Remove(car);
 
         RaceGroundDetectionAI raceGroundDetectionAI = car.GetComponent<RaceGroundDetectionAI>();
-        raceGroundDetectionAI.enabled = false;
+        if(raceGroundDetectionAI != null) raceGroundDetectionAI.enabled = false;
 
     }
 

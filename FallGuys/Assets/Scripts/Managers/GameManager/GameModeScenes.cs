@@ -23,7 +23,7 @@ public class GameModeScenes : ScriptableObject
                 randomScene = sceneNamesList[r];
             }
         }
-        
+
         return randomScene;
     }
 }

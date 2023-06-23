@@ -26,8 +26,16 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private int vehicleIndex;// сейвим и загружаем эти данные. По ним находим актуальный вариант выбора игрока
     [SerializeField] private int weaponIndex;
 
-    [SerializeField] private List<VehicleCharacter> vehicles;// храним все доступные авто в игре
+    [Header("Player vehicles")]
+    [SerializeField] private List<VehicleCharacter> playerVehicles;// храним все доступные авто в игре
 
+    [Header("Race AI vehicles")]
+    [SerializeField] private List<VehicleCharacter> raceAIVehicles;
+
+    [Header("Arena AI vehicles")]
+    [SerializeField] private List<VehicleCharacter> arenaAIVehicles;
+
+    [Header("Weapons")]
     [SerializeField] private List<WeaponCharacter> weapons;// храним все доступные пушки в игре
 
 
@@ -56,7 +64,7 @@ public class CharacterManager : MonoBehaviour
     {
         int index = 0;
 
-        foreach (var vehicle in vehicles)
+        foreach (var vehicle in playerVehicles)
         {
             if (vehicle.vehiclePrefab == _vehiclePrefab)
             {
@@ -84,21 +92,50 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
+    public GameObject GetRandomRaceAIPrefab()
+    {
+        int randomIndex = UnityEngine.Random.Range(0, raceAIVehicles.Count);
+
+        GameObject raceAIPrefab = raceAIVehicles[randomIndex].vehiclePrefab;
+
+        return raceAIPrefab;
+    }
+
+    public Material GetRandomColorMaterial()
+    {
+        Material material = null; 
+
+        VehicleCustomizer raceAIVehicleCustomizer = playerVehicles[vehicleIndex].vehiclePrefab.GetComponent<VehicleCustomizer>();
+        if (raceAIVehicleCustomizer != null)
+        {
+             material = raceAIVehicleCustomizer.GetRandomColorMaterial();
+        }
+
+        return material;
+    }
+
+    public Weapon GetRandomWeapon()
+    {
+        int rIndex = UnityEngine.Random.Range(0, weapons.Count);
+
+        return weapons[rIndex].weaponPrefab.GetComponent<Weapon>();
+    }
+
     #region forInstaller
 
     public GameObject GetPlayerPrefab()
     {
-        return vehicles[vehicleIndex].vehiclePrefab;
+        return playerVehicles[vehicleIndex].vehiclePrefab;
     }
 
     public PlayerDefaultData GetPlayerDefaultData()
     {
-        return vehicles[vehicleIndex].defaultData;
+        return playerVehicles[vehicleIndex].defaultData;
     }
 
     public PlayerLimitsData GetPlayerLimitsData()
     {
-        return vehicles[vehicleIndex].limitsData;
+        return playerVehicles[vehicleIndex].limitsData;
     }
 
     public Weapon GetPlayerWeapon()

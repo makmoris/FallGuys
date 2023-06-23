@@ -21,7 +21,10 @@ public abstract class Installer : MonoBehaviour
     [SerializeField] protected LevelUI levelUI;
     [SerializeField] protected LevelUINotifications levelUINotifications;
     [SerializeField] protected CinemachineVirtualCamera camCinema;
+    protected GameManager gameManager;
 
+    [Space]
+    private PlayerSettingsGM _playerSettings;
     [Space]
     [SerializeField] protected GameObject _playerPrefab;
     [SerializeField] protected PlayerDefaultData _playerDefaultData;
@@ -29,7 +32,8 @@ public abstract class Installer : MonoBehaviour
     [SerializeField] protected Weapon _playerWeapon;
 
     [Space]
-    [SerializeField] protected List<EnemiesSettings> _enemiesSettings;
+    //[SerializeField] protected List<EnemiesSettings> _enemiesSettings;
+    [SerializeField] protected List<PlayerSettingsGM> _aiPlayerSettings = new List<PlayerSettingsGM>();
 
     protected int numberOfPlayers;
 
@@ -40,9 +44,24 @@ public abstract class Installer : MonoBehaviour
 
     protected virtual void Initializing()
     {
-        if (startFromLobby) LoadDataFromCharacterManager();// подгружаем инфу по игроку
+        // if (startFromLobby) LoadDataFromCharacterManager();// подгружаем инфу по игроку
 
-        numberOfPlayers = _enemiesSettings.Count + 1;
+        //numberOfPlayers = _enemiesSettings.Count + 1;
+        LoadDataFromGameManager();
+        numberOfPlayers = _aiPlayerSettings.Count + 1;
+    }
+
+    private void LoadDataFromGameManager()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+        _playerSettings = gameManager.PlayerSettings;
+
+        _playerPrefab = _playerSettings._prefab;
+        _playerDefaultData = _playerSettings._defaultData;
+        _playerLimitsData = _playerSettings._limitsData;
+        _playerWeapon = _playerSettings._weapon;
+
+        _aiPlayerSettings = gameManager.AIPlayerSettings;
     }
 
     private void LoadDataFromCharacterManager()

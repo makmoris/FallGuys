@@ -21889,6 +21889,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4093854774430178301}
   - component: {fileID: 3961592110472275594}
+  - component: {fileID: 7374721107117572368}
   - component: {fileID: 2212085073463317802}
   - component: {fileID: 7034435921101931304}
   - component: {fileID: 4542482480984559822}
@@ -21958,6 +21959,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vehicleId: bmw3_car
+--- !u!114 &7374721107117572368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8723274520982495796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b37cd89108ce2204a8fa3299be1e564c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleCustomizationData: {fileID: 11400000, guid: 4275e43a429ca6b4fae94772b6d43d97, type: 2}
+  meshRenderers:
+  - {fileID: 3140567426420886413}
+  - {fileID: 5510893642097159905}
+  - {fileID: 9111787944259142570}
+  - {fileID: 2029939796991909672}
+  - {fileID: 2248171171019770137}
+  - {fileID: 1820226919450221713}
+  - {fileID: 5976918812006128917}
 --- !u!114 &2212085073463317802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22332,6 +22354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e26477c32513d44b86b95f0a274cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 0
 --- !u!65 &7142409865407849473
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22359,6 +22382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyEffect: {fileID: 2557796309139896421, guid: a3613dd087ed87c4c932903a5a389c90, type: 3}
   shield: {fileID: 3509966215654717825}
+  playerGO: {fileID: 0}
 --- !u!114 &1525319633956711923
 MonoBehaviour:
   m_ObjectHideFlags: 0

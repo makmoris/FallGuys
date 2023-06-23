@@ -15,10 +15,8 @@ public class VehicleCustomizer : MonoBehaviour // кидаем на префаб LobbyVehicle 
     [SerializeField] private List<MeshRenderer> meshRenderers;
 
     [Header("Не трогать. Изменять через Data файл")]
-    [SerializeField] private int _activeMaterialIndex;
-    [SerializeField] private List<Material> _materials;
-
-
+    [SerializeField]private int _activeMaterialIndex;
+    [SerializeField]private List<Material> _materials;
 
     private void Awake()
     {
@@ -84,6 +82,34 @@ public class VehicleCustomizer : MonoBehaviour // кидаем на префаб LobbyVehicle 
 
         ShowActiveMaterial();
         SetNewDataOfMaterial();
+    }
+
+    public void SetColorMaterial(Material material)
+    {
+        int index = 0;
+
+        foreach (var mat in _materials)
+        {
+            if (material == mat)
+            {
+                _activeMaterialIndex = index;
+                break;
+            }
+
+            index++;
+        }
+
+        ShowActiveMaterial();
+    }
+
+    public Material GetRandomColorMaterial()
+    {
+        GetDataOfMaterial();
+
+        int randomIndex = Random.Range(0, _materials.Count);
+        Material rMaterial = _materials[randomIndex];
+
+        return rMaterial;
     }
 
     private void ShowActiveMaterial()

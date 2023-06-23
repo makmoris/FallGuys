@@ -183,7 +183,8 @@ public class Weapon : MonoBehaviour
 
         attackTargetDetector.IsAI(isAI);
 
-        shotDecisionSpeed = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>().GetShotDecisionSpeed();
+        ArenaDifficultyLevelsAI arenaDifficultyLevelsAI = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>();
+        if(arenaDifficultyLevelsAI != null) shotDecisionSpeed = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>().GetShotDecisionSpeed();
     }
 
     private void ApplyDisableBonus()

@@ -43,33 +43,33 @@ public class ArenaInstaller : Installer
         LevelProgressController.Instance.SetCurrentPlayer(_player.Vehicle);
 
         //Install enemies
-        List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);
-        for (int i = 0; i < _enemiesSettings.Count; i++)
-        {
-            var enemySet = _enemiesSettings[i];
+        //List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);
+        //for (int i = 0; i < _enemiesSettings.Count; i++)
+        //{
+        //    var enemySet = _enemiesSettings[i];
 
-            var _enemyObj = Instantiate(enemySet._enemyPrefab);
+        //    var _enemyObj = Instantiate(enemySet._enemyPrefab);
 
-            targetsController.AddPlayerToTargets(_enemyObj);
+        //    targetsController.AddPlayerToTargets(_enemyObj);
 
-            Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
-            Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
-            weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
-            weaponAI.IsAI(true);
+        //    Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
+        //    Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
+        //    weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
+        //    weaponAI.IsAI(true);
 
-            IPlayerAI _enemy = new PlayerAI(enemySet._enemyDefaultData, _enemyObj, weaponAI);
-            enemies.Add(_enemy);
+        //    IPlayerAI _enemy = new PlayerAI(enemySet._enemyDefaultData, _enemyObj, weaponAI);
+        //    enemies.Add(_enemy);
 
-            Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1).position;
-            _enemyObj.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
-            _enemyObj.transform.rotation = targetsController.GetStartSpawnPosition(i + 1).rotation;
+        //    Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1).position;
+        //    _enemyObj.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
+        //    _enemyObj.transform.rotation = targetsController.GetStartSpawnPosition(i + 1).rotation;
 
-            EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
-            if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-            enemyPointer.LevelUI = levelUI;
+        //    EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
+        //    if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
+        //    enemyPointer.LevelUI = levelUI;
 
-            var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player);
-        }
+        //    var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player);
+        //}
 
         targetsController.SetTargetsForPlayers();
 

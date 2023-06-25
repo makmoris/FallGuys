@@ -48,6 +48,7 @@ public abstract class Installer : MonoBehaviour
 
         //numberOfPlayers = _enemiesSettings.Count + 1;
         LoadDataFromGameManager();
+        gameManager.PrepareNextGameStage();
         numberOfPlayers = _aiPlayerSettings.Count + 1;
     }
 

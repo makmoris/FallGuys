@@ -7,7 +7,7 @@ public class NetworkChecker : MonoBehaviour
 {
     [SerializeField] private GameObject canvasInternetWindow;
     [Space]
-    [SerializeField] private string lobbySceneName;
+    [SerializeField] private SceneField lobbyScene;
 
     [SerializeField] private bool internetAvailable;
 
@@ -103,7 +103,7 @@ public class NetworkChecker : MonoBehaviour
 
                 internetAvailable = false;
 
-                if(SceneManager.GetActiveScene().name != lobbySceneName)
+                if(SceneManager.GetActiveScene().name != lobbyScene.SceneName)
                 {
                     Time.timeScale = 0f;// чтобы не стопить скролл поиска карты
                 }

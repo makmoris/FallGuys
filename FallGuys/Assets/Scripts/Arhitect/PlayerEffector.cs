@@ -214,7 +214,7 @@ public class PlayerEffector
 
                 if (isCurrentPlayer)
                 {
-                    LevelProgressController.Instance.AddGold((int)bonus.Value);
+                    ArenaProgressController.Instance.AddGold((int)bonus.Value);
                     SendPlayerGetGoldAnalyticEvent((int)bonus.Value);
                 }
 
@@ -320,11 +320,11 @@ public class PlayerEffector
 
         int _player_hp_left = (int)player.Health;
 
-        int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
+        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
 
-        int _player_gold_earn = LevelProgressController.Instance.GetCurrentAmountOfGoldReward();
+        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
 
-        int _enemies_left = LevelProgressController.Instance.GetCurrentEnemiesLeft();
+        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
 
         AnalyticsManager.Instance.PlayerGetShield(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
             _player_gold_earn, _enemies_left);
@@ -342,11 +342,11 @@ public class PlayerEffector
 
         int _player_hp_left = (int)player.Health;
 
-        int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
+        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
 
-        int _player_gold_earn = LevelProgressController.Instance.GetCurrentAmountOfGoldReward();
+        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
 
-        int _enemies_left = LevelProgressController.Instance.GetCurrentEnemiesLeft();
+        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
 
         AnalyticsManager.Instance.PlayerGetGold(_gold_amount, _battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
             _player_gold_earn, _enemies_left);
@@ -364,11 +364,11 @@ public class PlayerEffector
 
         int _player_hp_left = (int)player.Health;
 
-        int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
+        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
 
-        int _player_gold_earn = LevelProgressController.Instance.GetCurrentAmountOfGoldReward();
+        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
 
-        int _enemies_left = LevelProgressController.Instance.GetCurrentEnemiesLeft();
+        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
 
         AnalyticsManager.Instance.PlayerRecoverHP(_hp_amount, _battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
             _player_gold_earn, _enemies_left);
@@ -384,11 +384,11 @@ public class PlayerEffector
 
         int _player_hp_left = 0;
 
-        int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
+        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
 
-        int _player_gold_earn = LevelProgressController.Instance.GetCurrentAmountOfGoldReward();
+        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
 
-        int _enemies_left = LevelProgressController.Instance.GetCurrentEnemiesLeft() + 1;
+        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft() + 1;
 
         AnalyticsManager.Instance.PlayerDestroyed(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
             _player_gold_earn, _enemies_left);

@@ -44,8 +44,8 @@ namespace UnityEngine.UI.Extensions
         private float _recordOffsetX = 0;
         private float _recordOffsetY = 0;
 
-        [SerializeField] private Canvas _canvas;
-        [Space]
+        //[SerializeField] private Canvas _canvas;
+        //[Space]
         [Header("Speed")]
         [SerializeField] private float maxSpeed = 1000;
         [SerializeField] private float searchStartSpeed = 400;
@@ -74,10 +74,14 @@ namespace UnityEngine.UI.Extensions
 
         private MapSelector mapSelector;
 
+        Vector3 defaultScrollRectLocalPosition;
+
         protected virtual void Awake()
         {
             if (!InitByUser)
                 Init();
+
+            defaultScrollRectLocalPosition = _scrollRect.content.localPosition;
         }
 
 
@@ -172,6 +176,8 @@ namespace UnityEngine.UI.Extensions
 
         public void SetTargetIndex(GameObject _targetObj, MapSelector _mapSelector)// сюда из MapSelector приходит нужная сцена
         {
+            ResetScroll();
+
             for (int i = 0; i < items.Count; i++)
             {
                 if(items[i].gameObject == _targetObj)
@@ -184,6 +190,22 @@ namespace UnityEngine.UI.Extensions
             }
 
             mapSelector = _mapSelector;
+        }
+
+        private void ResetScroll()
+        {
+            isScrolling = false;
+            canStopScrolling = false;
+            isFullStop = false;
+
+            currentSpeed = 0f;
+
+            GameObject targetObject = items[targetIndex].gameObject;
+            targetObject.transform.localScale = Vector3.one;
+
+            targetObject.transform.GetChild(targetObject.transform.childCount - 1).gameObject.SetActive(false);
+
+            //_scrollRect.content.localPosition = defaultScrollRectLocalPosition;
         }
 
         private void SetElementsPositionsValue()

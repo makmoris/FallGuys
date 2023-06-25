@@ -54,8 +54,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
             if (hitHistory.GetLastShooter() == playerGO)
             {
                 Debug.Log($"игрока {gameObject.name} вытолкнул и убил {playerGO.name}");
-                LevelProgressController.Instance.AddFrag();
-                LevelProgressController.Instance.SendPlayerKillEnemyAnalyticEvent(gameObject);
+                ArenaProgressController.Instance.AddFrag();
+                ArenaProgressController.Instance.SendPlayerKillEnemyAnalyticEvent(gameObject);
             }
         }
 
@@ -70,8 +70,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
             Debug.Log($"игрока {gameObject.name} убил {killer.name}");
             if (killer == playerGO)
             {
-                LevelProgressController.Instance.AddFrag();
-                LevelProgressController.Instance.SendPlayerKillEnemyAnalyticEvent(gameObject);
+                ArenaProgressController.Instance.AddFrag();
+                ArenaProgressController.Instance.SendPlayerKillEnemyAnalyticEvent(gameObject);
             }
         }
 

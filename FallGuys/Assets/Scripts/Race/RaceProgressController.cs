@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class RaceProgressController : MonoBehaviour
+public class RaceProgressController : LevelProgressController
 {
     [Header("Camera")]
     [SerializeField] private CameraFollowingOnOtherPlayers gameCamCinema;
@@ -17,8 +17,8 @@ public class RaceProgressController : MonoBehaviour
     [Header("Finish Sector")]
     [SerializeField] private RaceFinishSector raceFinishSector;
     
-    [Header("Race Settings")]
-    [SerializeField] private int numberOfWinners = 6;
+    //[Header("Race Settings")]
+    private int numberOfWinners;
     private int currentNumberOfWinners;
     private bool raceNotOver;
 
@@ -47,6 +47,12 @@ public class RaceProgressController : MonoBehaviour
     {
         if (!postRacePlaceController.gameObject.activeSelf) postRacePlaceController.gameObject.SetActive(true);
 
+        //raceProgressUIController.SetNumberOfWinners(numberOfWinners);
+    }
+
+    public void SetNumberOfWinners(int _numberOfWinners)
+    {
+        numberOfWinners = _numberOfWinners;
         raceProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
 

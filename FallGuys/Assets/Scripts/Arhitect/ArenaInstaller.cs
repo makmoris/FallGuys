@@ -40,7 +40,7 @@ public class ArenaInstaller : Installer
         GameObject playerObjectClone = Instantiate(_playerObj);
         endGameController.SetPlayerObjectClone(playerObjectClone);
 
-        LevelProgressController.Instance.SetCurrentPlayer(_player.Vehicle);
+        ArenaProgressController.Instance.SetCurrentPlayer(_player.Vehicle);
 
         //Install enemies
         //List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);
@@ -73,7 +73,7 @@ public class ArenaInstaller : Installer
 
         targetsController.SetTargetsForPlayers();
 
-        LevelProgressController.Instance.SetNumberOfPlayers(numberOfPlayers);
+        ArenaProgressController.Instance.SetNumberOfPlayers(numberOfPlayers);
 
         SendBattleStartAnalyticEvent();
     }

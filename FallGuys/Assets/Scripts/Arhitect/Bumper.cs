@@ -235,11 +235,11 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
 
         int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
 
-        int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
+        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
 
-        int _player_gold_earn = LevelProgressController.Instance.GetCurrentAmountOfGoldReward();
+        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
 
-        int _enemies_left = LevelProgressController.Instance.GetCurrentEnemiesLeft();
+        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
 
         AnalyticsManager.Instance.PlayerPickMysteryBox(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
             _player_gold_earn, _enemies_left);
@@ -255,11 +255,11 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
 
         int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
 
-        int _player_kills_amount = LevelProgressController.Instance.GetCurrentNumberOfFrags();
+        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
 
-        int _player_gold_earn = LevelProgressController.Instance.GetCurrentAmountOfGoldReward();
+        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
 
-        int _enemies_left = LevelProgressController.Instance.GetCurrentEnemiesLeft();
+        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
 
         AnalyticsManager.Instance.PlayerFallsOutMap(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
             _player_gold_earn, _enemies_left);

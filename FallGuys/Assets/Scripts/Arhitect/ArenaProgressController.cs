@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using VehicleBehaviour;
 
-public class LevelProgressController : MonoBehaviour
+public class ArenaProgressController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI leftText;
     [SerializeField] private TextMeshProUGUI fragText;
@@ -41,7 +41,7 @@ public class LevelProgressController : MonoBehaviour
     private GameObject playerGO;
     private bool playerWasDead;
 
-    public static LevelProgressController Instance { get; private set; }
+    public static ArenaProgressController Instance { get; private set; }
     private void Awake()
     {
         if (Instance == null)

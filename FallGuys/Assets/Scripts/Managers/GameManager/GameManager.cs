@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
         public int numberOfWinners;
         public List<GameMode> gameModesList;
     }
+    [Header("SceneLoader")]
+    [SerializeField] private SceneLoader sceneLoader;
 
     [Header("Game Stages")]
     [SerializeField] private List<GameStage> gameStagesList;
@@ -40,7 +42,7 @@ public class GameManager : MonoBehaviour
         get => aiSettings;
     }
 
-    private bool isFirstStart = true;
+    [SerializeField]private bool isFirstStart = true;
     private readonly string previousGameModeSceneNameKey = "PreviousGameModeSceneName";
 
     private static GameManager Instance { get; set; }
@@ -54,9 +56,14 @@ public class GameManager : MonoBehaviour
         else Destroy(this.gameObject);
     }
 
+    private void OnEnable()
+    {
+        sceneLoader.lobbyOpenEvent += ResetValues;
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             StartGameStage();
         }
@@ -64,11 +71,12 @@ public class GameManager : MonoBehaviour
 
     public void StartGameStage()// начальна€ точка. ¬ызываетс€ по кнопке "Play"
     {
-        // получаем локацию дл€ загрузки, на которой будем играть
-        SceneField sceneToLoad = GetSceneToLoad();
-        
+        SceneField sceneToLoad;
+
         if (isFirstStart)
         {
+            // получаем локацию дл€ загрузки, на которой будем играть
+            sceneToLoad = GetSceneToLoad();
             // получаем игрока. ≈го данные по кастомизации и характеристикам.
             SetPlayerSettings();
             // получаем список данных ботов. ” каждого бота данные по кастомизации и харакетиристики. —охран€ем этот список и работаем с ним до конца сессии
@@ -89,12 +97,83 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
+        else
+        {
+            int nextStageIndex = currentGameStage + 1;
+            if (nextStageIndex < gameStagesList.Count)
+            {
+                currentGameStage = nextStageIndex;
+
+                sceneToLoad = GetSceneToLoad();
+
+                //sceneLoader.PrepareNextLevelScene(sceneToLoad);
+                //sceneLoader.PrepareLobbyScene();
+            }
+            else // значит текущий режим последний. ѕосле него переходить не надо, ничего не подгружаем
+            {
+                currentGameStage = 0;
+
+                //sceneLoader.PrepareLobbyScene();
+
+                return;
+            }
+        }
 
         // запускаем окно скролла выбора карты. ѕередаем в MapSelector нужную сцену дл€ визуального отображени€ sceneToLoad
 
         isFirstStart = false;
 
-        SceneManager.LoadScene(sceneToLoad);
+        sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
+    }
+
+
+    public void PrepareNextGameStage()
+    {
+        //int nextStageIndex = currentGameStage + 1;
+        //if (nextStageIndex < gameStagesList.Count)
+        //{
+        //    currentGameStage = nextStageIndex;
+
+        //    SceneField sceneToLoad = GetSceneToLoad();
+
+        //    sceneLoader.PrepareNextLevelScene(sceneToLoad);
+        //    sceneLoader.PrepareLobbyScene();
+        //}
+        //else // значит текущий режим последний. ѕосле него переходить не надо, ничего не подгружаем
+        //{
+        //    currentGameStage = 0;
+
+        //    sceneLoader.PrepareLobbyScene();
+
+        //    return;
+        //}
+        sceneLoader.PrepareLobbyScene();
+    }
+
+    public void ChangeGameStage(bool isPlayerPassed, List<GameObject> winners)
+    {
+        if (isPlayerPassed) // and stages not over
+        {
+            // next stage
+        }
+        else
+        {
+            // say SceneLoader to go to lobby
+        }
+    }
+
+    public int GetNumberOfWinners()
+    {
+        return gameStagesList[currentGameStage].numberOfWinners;
+    }
+
+    private void ResetValues()
+    {
+        isFirstStart = true;
+        currentGameStage = 0;
+
+        playerSettings = new();
+        aiSettings = new();
     }
 
     private PlayerSettingsGM SetAndGetRaceAISettings()
@@ -133,5 +212,10 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetString(previousGameModeSceneNameKey, scene.SceneName);
 
         return scene;
+    }
+
+    private void OnDisable()
+    {
+        sceneLoader.lobbyOpenEvent -= ResetValues;
     }
 }

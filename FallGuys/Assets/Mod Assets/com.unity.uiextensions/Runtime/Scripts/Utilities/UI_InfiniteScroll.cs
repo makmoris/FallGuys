@@ -159,6 +159,7 @@ namespace UnityEngine.UI.Extensions
 
         public void CanStopScrolling()// сюда из MapSelector
         {
+            Debug.Log("CanStopScrolling Scroll");
             float startTime = Time.time - startScrollingTime;
 
             if(startTime >= scrollingTime)// если уже прошло достаточно времени и сцена как раз загрузилась, то заканчиваем
@@ -176,6 +177,7 @@ namespace UnityEngine.UI.Extensions
 
         public void SetTargetIndex(GameObject _targetObj, MapSelector _mapSelector)// сюда из MapSelector приходит нужная сцена
         {
+            Debug.Log("Scroll SetTargetIndex");
             ResetScroll();
 
             for (int i = 0; i < items.Count; i++)
@@ -446,6 +448,7 @@ namespace UnityEngine.UI.Extensions
 
         IEnumerator Scaling(GameObject selectObj)
         {
+            Debug.Log("Scalling");
             Vector3 targetScale = new Vector3(1.1f, 1.1f, 1f);
 
             float elapsedTime = 0f;

@@ -125,7 +125,7 @@ public class RaceDriverAI : MonoBehaviour
     public void StartMoveForward()
     {
         moveForward = true;
-        Debug.Log($"Авто {this.gameObject.name} начало движение MoveForward");
+        //Debug.Log($"Авто {this.gameObject.name} начало движение MoveForward");
     }
 
     public void StopMoveForward()

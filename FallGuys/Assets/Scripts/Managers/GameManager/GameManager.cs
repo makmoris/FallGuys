@@ -22,14 +22,15 @@ public class GameManager : MonoBehaviour
     [Header("SceneLoader")]
     [SerializeField] private SceneLoader sceneLoader;
 
+    [Header("Player Character")]
+    [SerializeField] private CharacterManager characterManager;
+
     [Header("Game Stages")]
     [SerializeField] private List<GameStage> gameStagesList;
 
     private int currentGameStage;
     private int currentGameMode;
 
-    [Header("Player Character")]
-    [SerializeField] private CharacterManager characterManager;
     private PlayerSettingsGM playerSettings = new PlayerSettingsGM();
     public PlayerSettingsGM PlayerSettings
     {
@@ -127,27 +128,21 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void PrepareNextGameStage()
+    public void EliminateLosersFromList(List<GameObject> losers)
     {
-        //int nextStageIndex = currentGameStage + 1;
-        //if (nextStageIndex < gameStagesList.Count)
-        //{
-        //    currentGameStage = nextStageIndex;
+        for (int i = 0; i < losers.Count; i++)
+        {
+            foreach (var ai in aiSettings)
+            {
+                GameObject aiGO = ai._prefab;
 
-        //    SceneField sceneToLoad = GetSceneToLoad();
-
-        //    sceneLoader.PrepareNextLevelScene(sceneToLoad);
-        //    sceneLoader.PrepareLobbyScene();
-        //}
-        //else // значит текущий режим последний. ѕосле него переходить не надо, ничего не подгружаем
-        //{
-        //    currentGameStage = 0;
-
-        //    sceneLoader.PrepareLobbyScene();
-
-        //    return;
-        //}
-        sceneLoader.PrepareLobbyScene();
+                if(aiGO == losers[i])
+                {
+                    aiSettings.Remove(ai);
+                    break;
+                }
+            }
+        }
     }
 
     public int GetNumberOfWinners()

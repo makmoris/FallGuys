@@ -20,6 +20,7 @@ public class PostRacePlaceController : MonoBehaviour
     [Space]
     [SerializeField] private float minTimeBeforDump = 1f;
     [SerializeField] private float maxTimeBeforDump = 2f;
+    [SerializeField] private float timeBeforeLoadNextLevel = 4f;
 
     private List<PostRacePlace> postRacePlacesList = new List<PostRacePlace>();
 
@@ -102,7 +103,7 @@ public class PostRacePlaceController : MonoBehaviour
 
         if (currentPlayerIsWinner)
         {
-            postRaceCanvasUIController.ShowPlayerWinWindow(losers);
+            postRaceCanvasUIController.ShowPlayerWinWindow(losers, timeBeforeLoadNextLevel);
         }
         else
         {

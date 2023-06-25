@@ -308,7 +308,7 @@ namespace VehicleBehaviour {
 
                     if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
                     {
-                        Debug.Log("Жмем на газ. Застрял");
+                        //Debug.Log("Жмем на газ. Застрял");
                         //immobilityValue2++;
                         stuckTime_PlayerPressesOnGasButDoesntMove += Time.deltaTime;
 
@@ -339,7 +339,7 @@ namespace VehicleBehaviour {
 
                 if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && !handbrake)
                 {
-                    Debug.Log("Газует бот, но застрял");
+                    //Debug.Log("Газует бот, но застрял");
                     //immobilityValueOnlyForBot++;
                     stuckTime_BotAIPressesOnGasButDoesntMove += Time.deltaTime;
 
@@ -459,7 +459,7 @@ namespace VehicleBehaviour {
                 //    //transform.position = GetAppearPosition();
                 //}
 
-                Debug.Log("Перевернулся на крышу или на бок");
+                //Debug.Log("Перевернулся на крышу или на бок");
 
                 stuckTime_RolledOntoRoofOfSide += Time.deltaTime;
 
@@ -479,7 +479,7 @@ namespace VehicleBehaviour {
             if (Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
             {
                 //immobilityValue3++;
-                Debug.Log("Просто застрял");
+                //Debug.Log("Просто застрял");
 
                 stuckTime_StuckInSomething += Time.deltaTime;
 

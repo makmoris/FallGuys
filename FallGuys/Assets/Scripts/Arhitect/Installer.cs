@@ -51,7 +51,6 @@ public abstract class Installer : MonoBehaviour
         if (startFromLobby)
         {
             LoadDataFromGameManager();
-            gameManager.PrepareNextGameStage();
         }
         
         numberOfPlayers = _aiPlayerSettings.Count + 1;

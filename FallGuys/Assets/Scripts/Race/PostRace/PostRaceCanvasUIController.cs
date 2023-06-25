@@ -23,13 +23,21 @@ public class PostRaceCanvasUIController : PostLevelResultVisualization
         textWithNumberOfWinners.text = numberOfWinners.ToString();
     }
 
-    public override void ShowPlayerWinWindow(List<GameObject> losers)
+    public override void ShowPlayerWinWindow(List<GameObject> losers, float timeBeforeLoadNextScene)
     {
-        throw new System.NotImplementedException();
+        gameManager.EliminateLosersFromList(losers);
+
+        StartCoroutine(WaitAndLoadNextLevel(timeBeforeLoadNextScene));
     }
 
     public override void ShowPlayerLoseWindow()
     {
         backToLobbyButton.gameObject.SetActive(true);
+    }
+
+    IEnumerator WaitAndLoadNextLevel(float timeBeforeLoadNextScene)
+    {
+        yield return new WaitForSeconds(timeBeforeLoadNextScene);
+        gameManager.StartGameStage();
     }
 }

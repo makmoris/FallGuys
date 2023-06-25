@@ -45,6 +45,7 @@ public class MapSelector : MonoBehaviour
 
     public void StartLoading(SceneField loadingScene, SceneLoader sceneLoader)// вызывается по кнопке Play
     {
+        Debug.Log("MapSelector StartLoading");
         asyncOperation = null;
 
         if (this.sceneLoader == null) this.sceneLoader = sceneLoader;
@@ -83,6 +84,7 @@ public class MapSelector : MonoBehaviour
 
         while (!asyncOperation.isDone)
         {
+            Debug.Log($"asyncOperation.progress = {asyncOperation.progress}");
             if (asyncOperation.progress >= 0.9f)
             {
                 //isSceneLoaded = true;

@@ -60,10 +60,14 @@ public class PostRacePlaceController : MonoBehaviour
             }
         }
 
+        List<GameObject> losers = new List<GameObject>();
+
         foreach (var loserDriver in losersList)
         {
             if (postRacePlacesList.Count > 0)
             {
+                losers.Add(loserDriver.gameObject);
+
                 PostRacePlace postRacePlace = postRacePlacesList[0];
 
                 Transform placeTransform = postRacePlace.GetPlaceTransform();
@@ -96,14 +100,14 @@ public class PostRacePlaceController : MonoBehaviour
         postRaceCanvas.SetActive(true);
         gameRaceCanvas.SetActive(false);
 
-        //if (currentPlayerIsWinner)
-        //{
-        //    postRaceCanvasUIController.ShowPlayerWinWindow();
-        //}
-        //else
-        //{
-        //    postRaceCanvasUIController.ShowPlayerLoseWindow();
-        //}
+        if (currentPlayerIsWinner)
+        {
+            postRaceCanvasUIController.ShowPlayerWinWindow(losers);
+        }
+        else
+        {
+            postRaceCanvasUIController.ShowPlayerLoseWindow();
+        }
     }
 
     private void FillPostRacePlacesList()

@@ -17,8 +17,8 @@ public class RaceProgressController : LevelProgressController
     [Header("Finish Sector")]
     [SerializeField] private RaceFinishSector raceFinishSector;
     
-    //[Header("Race Settings")]
-    private int numberOfWinners;
+    [Header("Race Settings")]
+    [SerializeField]private int numberOfWinners;
     private int currentNumberOfWinners;
     private bool raceNotOver;
 
@@ -47,7 +47,7 @@ public class RaceProgressController : LevelProgressController
     {
         if (!postRacePlaceController.gameObject.activeSelf) postRacePlaceController.gameObject.SetActive(true);
 
-        //raceProgressUIController.SetNumberOfWinners(numberOfWinners);
+        raceProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
 
     public void SetNumberOfWinners(int _numberOfWinners)

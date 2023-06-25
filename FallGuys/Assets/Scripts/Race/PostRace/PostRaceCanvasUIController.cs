@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class PostRaceCanvasUIController : MonoBehaviour
+public class PostRaceCanvasUIController : PostLevelResultVisualization
 {
     [SerializeField] private TextMeshProUGUI textWithNumberOfWinners;
 
@@ -23,12 +23,12 @@ public class PostRaceCanvasUIController : MonoBehaviour
         textWithNumberOfWinners.text = numberOfWinners.ToString();
     }
 
-    public void ShowPlayerWinWindow()
+    public override void ShowPlayerWinWindow(List<GameObject> losers)
     {
-
+        throw new System.NotImplementedException();
     }
 
-    public void ShowPlayerLoseWindow()
+    public override void ShowPlayerLoseWindow()
     {
         backToLobbyButton.gameObject.SetActive(true);
     }

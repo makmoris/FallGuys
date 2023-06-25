@@ -25,8 +25,10 @@ public class RaceInstaller : Installer
         camCinema.m_Follow = _playerObj.transform;
         camCinema.m_LookAt = _playerObj.transform;
 
+        postLevelResultVisualization.GameManager = gameManager;
+
         raceProgressController.GameManager = gameManager;
-        raceProgressController.SetNumberOfWinners(gameManager.GetNumberOfWinners());
+        if(startFromLobby) raceProgressController.SetNumberOfWinners(gameManager.GetNumberOfWinners());
 
         raceProgressController.AddPlayer(_playerObj);
         raceProgressController.SetCurrentPlayer(_playerObj);
@@ -39,38 +41,74 @@ public class RaceInstaller : Installer
         var playerEffector = new PlayerEffector(_player, _playerLimitsData, levelUINotifications, levelUI, true);
 
         // Install enemies
-        List<IPlayerAI> enemies = new List<IPlayerAI>(_aiPlayerSettings.Count);
-        for (int i = 0; i < _aiPlayerSettings.Count; i++)
+        if (startFromLobby)
         {
-            var enemySet = _aiPlayerSettings[i];
+            List<IPlayerAI> enemies = new List<IPlayerAI>(_aiPlayerSettings.Count);
+            for (int i = 0; i < _aiPlayerSettings.Count; i++)
+            {
+                var enemySet = _aiPlayerSettings[i];
 
-            var _enemyObj = Instantiate(enemySet._prefab);
+                var _enemyObj = Instantiate(enemySet._prefab);
 
-            VehicleCustomizer vehicleCustomizer = _enemyObj.GetComponent<VehicleCustomizer>();
-            if (vehicleCustomizer != null) vehicleCustomizer.SetColorMaterial(enemySet._colorMaterial);
+                VehicleCustomizer vehicleCustomizer = _enemyObj.GetComponent<VehicleCustomizer>();
+                if (vehicleCustomizer != null) vehicleCustomizer.SetColorMaterial(enemySet._colorMaterial);
 
-            raceProgressController.AddPlayer(_enemyObj);
+                raceProgressController.AddPlayer(_enemyObj);
 
-            Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
-            Weapon weaponAI = Instantiate(enemySet._weapon, weaponPlaceAI);
-            weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
-            weaponAI.IsAI(true);
-            weaponAI.DisableWeapon(_enemyObj);
+                Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
+                Weapon weaponAI = Instantiate(enemySet._weapon, weaponPlaceAI);
+                weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
+                weaponAI.IsAI(true);
+                weaponAI.DisableWeapon(_enemyObj);
 
-            IPlayerAI _enemy = new PlayerAI(enemySet._defaultData, _enemyObj, weaponAI);
-            enemies.Add(_enemy);
+                IPlayerAI _enemy = new PlayerAI(enemySet._defaultData, _enemyObj, weaponAI);
+                enemies.Add(_enemy);
 
-            Transform enemySpawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
-            Vector3 posEnemy = enemySpawnPlace.position;
-            _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
-            _enemyObj.transform.rotation = enemySpawnPlace.rotation;
+                Transform enemySpawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
+                Vector3 posEnemy = enemySpawnPlace.position;
+                _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
+                _enemyObj.transform.rotation = enemySpawnPlace.rotation;
 
-            EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
-            if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-            enemyPointer.LevelUI = levelUI;
+                EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
+                if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
+                enemyPointer.LevelUI = levelUI;
 
-            var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player, true);
+                var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player, true);
+            }
         }
+        else
+        {
+            List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);
+            for (int i = 0; i < _enemiesSettings.Count; i++)
+            {
+                var enemySet = _enemiesSettings[i];
+
+                var _enemyObj = Instantiate(enemySet._enemyPrefab);
+
+                raceProgressController.AddPlayer(_enemyObj);
+
+                Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
+                Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
+                weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
+                weaponAI.IsAI(true);
+                weaponAI.DisableWeapon(_enemyObj);
+
+                IPlayerAI _enemy = new PlayerAI(enemySet._enemyDefaultData, _enemyObj, weaponAI);
+                enemies.Add(_enemy);
+
+                Transform enemySpawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
+                Vector3 posEnemy = enemySpawnPlace.position;
+                _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
+                _enemyObj.transform.rotation = enemySpawnPlace.rotation;
+
+                EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
+                if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
+                enemyPointer.LevelUI = levelUI;
+
+                var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player, true);
+            }
+        }
+        
 
         SendBattleStartAnalyticEvent();
     }

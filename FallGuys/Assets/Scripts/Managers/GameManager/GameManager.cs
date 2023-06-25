@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         get => aiSettings;
     }
 
-    [SerializeField]private bool isFirstStart = true;
+    private bool isFirstStart = true;
     private readonly string previousGameModeSceneNameKey = "PreviousGameModeSceneName";
 
     private static GameManager Instance { get; set; }
@@ -148,18 +148,6 @@ public class GameManager : MonoBehaviour
         //    return;
         //}
         sceneLoader.PrepareLobbyScene();
-    }
-
-    public void ChangeGameStage(bool isPlayerPassed, List<GameObject> winners)
-    {
-        if (isPlayerPassed) // and stages not over
-        {
-            // next stage
-        }
-        else
-        {
-            // say SceneLoader to go to lobby
-        }
     }
 
     public int GetNumberOfWinners()

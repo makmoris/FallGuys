@@ -21,6 +21,7 @@ public abstract class Installer : MonoBehaviour
     [SerializeField] protected LevelUI levelUI;
     [SerializeField] protected LevelUINotifications levelUINotifications;
     [SerializeField] protected CinemachineVirtualCamera camCinema;
+    [SerializeField] protected PostLevelResultVisualization postLevelResultVisualization;
     protected GameManager gameManager;
 
     [Space]
@@ -32,7 +33,7 @@ public abstract class Installer : MonoBehaviour
     [SerializeField] protected Weapon _playerWeapon;
 
     [Space]
-    //[SerializeField] protected List<EnemiesSettings> _enemiesSettings;
+    [SerializeField] protected List<EnemiesSettings> _enemiesSettings;
     [SerializeField] protected List<PlayerSettingsGM> _aiPlayerSettings = new List<PlayerSettingsGM>();
 
     protected int numberOfPlayers;
@@ -47,8 +48,12 @@ public abstract class Installer : MonoBehaviour
         // if (startFromLobby) LoadDataFromCharacterManager();// подгружаем инфу по игроку
 
         //numberOfPlayers = _enemiesSettings.Count + 1;
-        LoadDataFromGameManager();
-        gameManager.PrepareNextGameStage();
+        if (startFromLobby)
+        {
+            LoadDataFromGameManager();
+            gameManager.PrepareNextGameStage();
+        }
+        
         numberOfPlayers = _aiPlayerSettings.Count + 1;
     }
 

@@ -138,7 +138,7 @@ public class PointerIcon : MonoBehaviour
                 else _image.sprite = redPointerOffScreen;
             }
 
-            _healthValue = healthPercent;
+            _healthValue = healthValue;
         }
     }
 

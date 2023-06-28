@@ -102,42 +102,6 @@ public class RaceInstaller : Installer
                     // Player Effector
                     var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI, true);
                 }
-
-                if (startFromLobby)
-                {
-                    //List<IPlayerAI> enemies = new List<IPlayerAI>(_aiPlayerSettings.Count);
-                    //for (int i = 0; i < _aiPlayerSettings.Count; i++)
-                    //{
-                    //    //var enemySet = _aiPlayerSettings[i];
-
-                    //    //var _enemyObj = Instantiate(enemySet._prefab);
-
-                    //    //VehicleCustomizer vehicleCustomizer = _enemyObj.GetComponent<VehicleCustomizer>();
-                    //    //if (vehicleCustomizer != null) vehicleCustomizer.SetColorMaterial(enemySet._colorMaterial);
-
-                    //    //raceProgressController.AddPlayer(_enemyObj);
-
-                    //    //Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
-                    //    //Weapon weaponAI = Instantiate(enemySet._weapon, weaponPlaceAI);
-                    //    //weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
-                    //    //weaponAI.IsAI(true);
-                    //    //weaponAI.DisableWeapon(_enemyObj);
-
-                    //    //IPlayerAI _enemy = new PlayerAI(enemySet._defaultData, _enemyObj, weaponAI);
-                    //    //enemies.Add(_enemy);
-
-                    //    //Transform enemySpawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
-                    //    //Vector3 posEnemy = enemySpawnPlace.position;
-                    //    //_enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
-                    //    //_enemyObj.transform.rotation = enemySpawnPlace.rotation;
-
-                    //    //EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
-                    //    //if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-                    //    //enemyPointer.LevelUI = levelUI;
-
-                    //    var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player, true);
-                    //}
-                }
                 else
                 {
                     //List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);

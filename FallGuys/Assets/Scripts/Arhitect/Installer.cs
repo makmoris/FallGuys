@@ -19,7 +19,6 @@ public abstract class Installer : MonoBehaviour
     [Header("Scene Controllers")]
     [SerializeField] protected LevelUI levelUI;
     [SerializeField] protected LevelUINotifications levelUINotifications;
-    [SerializeField] protected Camera gameCamera;
     [SerializeField] protected CinemachineVirtualCamera camCinema;
     [SerializeField] protected PostLevelResultVisualization postLevelResultVisualization;
 

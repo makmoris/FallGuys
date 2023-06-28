@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
     public void StartGameStage()// начальная точка. Вызывается по кнопке "Play"
     {
         SceneField sceneToLoad;
-        
+       
         if (isFirstStart)
         {
             // получаем локацию для загрузки, на которой будем играть
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-
+        Debug.Log($"Количество игроков = {players.Count}");
         // запускаем окно скролла выбора карты. Передаем в MapSelector нужную сцену для визуального отображения sceneToLoad
         sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
     }
@@ -151,22 +151,22 @@ public class GameManager : MonoBehaviour
         return ai;
     }
 
-    public void EliminateLosersFromList(List<string> loserNames)
+    public void EliminateLosersFromList(List<string> losersNames)
     {
-        //Debug.Log("ELIMINATE");
-        //for (int i = 0; i < loserNames.Count; i++)
-        //{
-        //    foreach (var ai in aiSettings)
-        //    {
-        //        string aiName = ai._name;
+        Debug.Log("ELIMINATE");
+        for (int i = 0; i < losersNames.Count; i++)
+        {
+            foreach (var ai in players)
+            {
+                string aiName = ai.Name;
 
-        //        if(aiName == loserNames[i])
-        //        {
-        //            aiSettings.Remove(ai);
-        //            break;
-        //        }
-        //    }
-        //}
+                if (aiName == losersNames[i])
+                {
+                    players.Remove(ai);
+                    break;
+                }
+            }
+        }
     }
 
     public int GetNumberOfWinners()

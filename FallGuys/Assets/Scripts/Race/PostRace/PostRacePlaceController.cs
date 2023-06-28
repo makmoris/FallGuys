@@ -61,13 +61,15 @@ public class PostRacePlaceController : MonoBehaviour
             }
         }
 
-        List<GameObject> losers = new List<GameObject>();
+        List<string> losersNames = new List<string>();
 
         foreach (var loserDriver in losersList)
         {
             if (postRacePlacesList.Count > 0)
             {
-                losers.Add(loserDriver.gameObject);
+                PlayerName playerName = loserDriver.gameObject.GetComponent<PlayerName>();
+                if (playerName != null) losersNames.Add(playerName.Name);
+                else throw new System.Exception("GameObject have not PlayerName component");
 
                 PostRacePlace postRacePlace = postRacePlacesList[0];
 
@@ -103,7 +105,7 @@ public class PostRacePlaceController : MonoBehaviour
 
         if (currentPlayerIsWinner)
         {
-            postRaceCanvasUIController.ShowPlayerWinWindow(losers, timeBeforeLoadNextLevel);
+            postRaceCanvasUIController.ShowPlayerWinWindow(losersNames, timeBeforeLoadNextLevel);
         }
         else
         {

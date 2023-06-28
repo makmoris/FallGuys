@@ -40,7 +40,7 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
     {
         if (playerObj == gameObject) isPlayer = true;
         else isPlayer = false;
-
+        Debug.Log($"SET IS CURRENT PLAYER = {playerObj}");
         playerGO = playerObj;
     }
 

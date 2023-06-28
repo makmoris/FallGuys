@@ -23,9 +23,9 @@ public class PostRaceCanvasUIController : PostLevelResultVisualization
         textWithNumberOfWinners.text = numberOfWinners.ToString();
     }
 
-    public override void ShowPlayerWinWindow(List<GameObject> losers, float timeBeforeLoadNextScene)
+    public override void ShowPlayerWinWindow(List<string> losersNames, float timeBeforeLoadNextScene)
     {
-        //gameManager.EliminateLosersFromList(loserNames);
+        gameManager.EliminateLosersFromList(losersNames);
 
         StartCoroutine(WaitAndLoadNextLevel(timeBeforeLoadNextScene));
     }

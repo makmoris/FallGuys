@@ -9,7 +9,7 @@ public class PlayerName : MonoBehaviour
     private string playerName;
     public string Name => playerName;
 
-    private Transform gameCameraTransform;
+    private Transform target;
 
     private bool isInit;
 
@@ -18,7 +18,7 @@ public class PlayerName : MonoBehaviour
         playerName = _name;
         playerNameText.text = playerName;
 
-        gameCameraTransform = target;
+        this.target = target;
 
         isInit = true;
     }
@@ -27,7 +27,7 @@ public class PlayerName : MonoBehaviour
     {
         if (isInit)
         {
-            playerNameCanvas.transform.LookAt(gameCameraTransform);
+            playerNameCanvas.transform.LookAt(target);
         }
     }
 }

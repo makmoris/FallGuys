@@ -7,7 +7,7 @@ namespace Lexic
     public class NameGenerator
     {
 
-        private string namesSourceClass = "Lexic.KingNames";
+        private string namesSourceClass = "Lexic.CelticMaleNames";
         private System.Random rng;
 
         private List<string> rules;

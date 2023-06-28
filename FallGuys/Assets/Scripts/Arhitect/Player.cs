@@ -2,57 +2,63 @@ using UnityEngine;
 
 public class Player : IPlayer
 {
+    private bool _isAI;
+    public bool IsAI => _isAI;
+
     private float _health;
-    public float Health
-    {
-        get { return _health; }
-        private set { _health = value; }
-    }
+    public float Health => _health;
 
     private float _speed;
-    public float Speed
-    {
-        get { return _speed; }
-        private set { _speed = value; }
-    }
+    public float Speed => _speed;
 
     private float _damage;
-    public float Damage
-    {
-        get { return _damage; }
-        private set { _damage = value; }
-    }
+    public float Damage => _damage;
+
+
+    private string _name;
+    public string Name => _name;
+
 
     private GameObject _vehicle;
-    public GameObject Vehicle => _vehicle;
+    public GameObject VehiclePrefab => _vehicle;
+
+    private PlayerDefaultData _playerDefaultData;
+    public PlayerDefaultData PlayerDefaultData => _playerDefaultData;
 
     private Weapon _weapon;
     public Weapon Weapon => _weapon;
 
-    public Player(PlayerDefaultData data, GameObject vehiclePrefab, Weapon weapon)
+    public Player(string name, GameObject vehiclePrefab, PlayerDefaultData playerDefaultData, Weapon weapon)
     {
-        _health = data.DefaultHP;
-        _speed = data.DefaultSpeed;
-        _damage = data.DefautDamage;
+        _isAI = false;
+
+        _name = name;
 
         _vehicle = vehiclePrefab;
 
+        _playerDefaultData = playerDefaultData;
+
         _weapon = weapon;
+
+
+        _health = _playerDefaultData.DefaultHP;
+        _speed = _playerDefaultData.DefaultSpeed;
+        _damage = _playerDefaultData.DefautDamage;
     }
 
     
     public void SetHealth(float newValue)
     {
-        Health = newValue;
+        _health = newValue;
     }
 
     public void SetSpeed(float newValue)
     {
-        Speed = newValue;
+        _speed = newValue;
     }
 
     public void SetDamage(float newValue)
     {
-        Damage = newValue;
+        _damage = newValue;
     }
 }

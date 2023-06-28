@@ -84,7 +84,6 @@ public class MapSelector : MonoBehaviour
 
         while (!asyncOperation.isDone)
         {
-            Debug.Log($"asyncOperation.progress = {asyncOperation.progress}");
             if (asyncOperation.progress >= 0.9f)
             {
                 //isSceneLoaded = true;

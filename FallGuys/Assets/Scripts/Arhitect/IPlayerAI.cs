@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPlayerAI : IPlayer
+public interface IPlayerAI : IPlayerData
 {
-    void Destroy();
+    public Material VehicleColorMaterial { get; }
+    public Weapon Weapon { get; }
+
+    public void SetDefaultData(PlayerDefaultData playerDefaultData);
 }

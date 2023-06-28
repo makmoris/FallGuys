@@ -18,7 +18,8 @@ public enum ProgressStyle
 public class RaceDriverAI : MonoBehaviour
 {
     private RaceAIInputs raceAIInputs;
-    public RaceAIWaipointTracker raceAIWaypointTracker;
+    private RaceAIWaipointTracker raceAIWaypointTracker;
+    private RaceObstacleDetectionAI raceObstacleDetectionAI;
 
     #region INPUTS
 
@@ -94,8 +95,11 @@ public class RaceDriverAI : MonoBehaviour
 
         #region FEATURES SCRIPTS
 
-        raceAIInputs = GetComponent<RaceAIInputs>();
+        raceAIInputs = gameObject.AddComponent<RaceAIInputs>();
         raceAIWaypointTracker = gameObject.AddComponent<RaceAIWaipointTracker>();
+
+        raceObstacleDetectionAI = GetComponent<RaceObstacleDetectionAI>();
+        raceObstacleDetectionAI.Initialize(raceAIInputs);
 
         #endregion
 

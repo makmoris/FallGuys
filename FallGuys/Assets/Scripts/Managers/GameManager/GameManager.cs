@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Lexic;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,20 +31,13 @@ public class GameManager : MonoBehaviour
     private int currentGameStage;
     private int currentGameMode;
 
-    private PlayerSettingsGM playerSettings = new PlayerSettingsGM();
-    public PlayerSettingsGM PlayerSettings
-    {
-        get => playerSettings;
-    }
-
-    private List<PlayerSettingsGM> aiSettings = new List<PlayerSettingsGM>();
-    public List<PlayerSettingsGM> AIPlayerSettings
-    {
-        get => aiSettings;
-    }
+    [SerializeField]private List<IPlayerData> players = new List<IPlayerData>();
+    public List<IPlayerData> Players => players;
 
     private bool isFirstStart = true;
     private readonly string previousGameModeSceneNameKey = "PreviousGameModeSceneName";
+
+    private NameGenerator nameGenerator;
 
     private static GameManager Instance { get; set; }
     private void Awake()
@@ -55,6 +48,8 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
         else Destroy(this.gameObject);
+
+        nameGenerator = new NameGenerator();
     }
 
     private void OnEnable()
@@ -73,30 +68,15 @@ public class GameManager : MonoBehaviour
     public void StartGameStage()// начальна€ точка. ¬ызываетс€ по кнопке "Play"
     {
         SceneField sceneToLoad;
-
+        
         if (isFirstStart)
         {
             // получаем локацию дл€ загрузки, на которой будем играть
             sceneToLoad = GetSceneToLoad();
-            // получаем игрока. ≈го данные по кастомизации и характеристикам.
-            SetPlayerSettings();
-            // получаем список данных ботов. ” каждого бота данные по кастомизации и харакетиристики. —охран€ем этот список и работаем с ним до конца сессии
-            switch (gameStagesList[currentGameStage].gameModesList[currentGameMode].gameMode)
-            {
-                case GameModeEnum.Race:
 
-                    for (int i = 0; i < gameStagesList[currentGameStage].numberOfPlayers - 1; i++)
-                    {
-                        PlayerSettingsGM raceAIPlayerSettings = SetAndGetRaceAISettings();
-                        aiSettings.Add(raceAIPlayerSettings);
-                    }
+            CreatePlayersForOneGameSession();
 
-                    break;
-
-                case GameModeEnum.Arena:
-
-                    break;
-            }
+            isFirstStart = false;
         }
         else
         {
@@ -121,28 +101,72 @@ public class GameManager : MonoBehaviour
         }
 
         // запускаем окно скролла выбора карты. ѕередаем в MapSelector нужную сцену дл€ визуального отображени€ sceneToLoad
-
-        isFirstStart = false;
-
         sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
     }
 
-
-    public void EliminateLosersFromList(List<GameObject> losers)
+    private void CreatePlayersForOneGameSession()
     {
-        for (int i = 0; i < losers.Count; i++)
-        {
-            foreach (var ai in aiSettings)
-            {
-                GameObject aiGO = ai._prefab;
+        ClearPlayersForOneGameSession();
 
-                if(aiGO == losers[i])
-                {
-                    aiSettings.Remove(ai);
-                    break;
-                }
-            }
+        Player player = CreatePlayer();
+        players.Add(player);
+
+        for (int i = 0; i < gameStagesList[currentGameStage].numberOfPlayers - 1; i++)
+        {
+            PlayerAI aiPlayer = CreateAIPlayer();
+            players.Add(aiPlayer);
         }
+    }
+
+    private void ClearPlayersForOneGameSession()
+    {
+        players.Clear();
+    }
+
+    private Player CreatePlayer()
+    {
+        string playerName = "Player";
+
+        GameObject playerPrefab = characterManager.GetPlayerPrefab();
+
+        PlayerDefaultData playerDefaultData = characterManager.GetPlayerDefaultData();
+
+        Weapon playerWeapon = characterManager.GetPlayerWeapon();
+        
+        Player player = new Player(playerName, playerPrefab, playerDefaultData, playerWeapon);
+
+        return player;
+    }
+
+    private PlayerAI CreateAIPlayer()
+    {
+        string aiName = nameGenerator.GetNextRandomName();
+
+        Material aiColorMaterial = characterManager.GetRandomMaterial();
+
+        Weapon aiWeapon = characterManager.GetRandomWeapon();
+
+        PlayerAI ai = new PlayerAI(aiName, aiColorMaterial, aiWeapon);
+
+        return ai;
+    }
+
+    public void EliminateLosersFromList(List<string> loserNames)
+    {
+        //Debug.Log("ELIMINATE");
+        //for (int i = 0; i < loserNames.Count; i++)
+        //{
+        //    foreach (var ai in aiSettings)
+        //    {
+        //        string aiName = ai._name;
+
+        //        if(aiName == loserNames[i])
+        //        {
+        //            aiSettings.Remove(ai);
+        //            break;
+        //        }
+        //    }
+        //}
     }
 
     public int GetNumberOfWinners()
@@ -154,32 +178,8 @@ public class GameManager : MonoBehaviour
     {
         isFirstStart = true;
         currentGameStage = 0;
-
-        playerSettings = new();
-        aiSettings = new();
     }
 
-    private PlayerSettingsGM SetAndGetRaceAISettings()
-    {
-        PlayerSettingsGM raceAIPlayerSettings = new();
-        raceAIPlayerSettings._prefab = characterManager.GetRandomRaceAIPrefab();
-        raceAIPlayerSettings._defaultData = characterManager.GetPlayerDefaultData();
-        raceAIPlayerSettings._limitsData = characterManager.GetPlayerLimitsData();
-
-        raceAIPlayerSettings._weapon = characterManager.GetRandomWeapon();
-
-        raceAIPlayerSettings._colorMaterial = characterManager.GetRandomColorMaterial();
-
-        return raceAIPlayerSettings;
-    }
-
-    private void SetPlayerSettings()
-    {
-        playerSettings._prefab = characterManager.GetPlayerPrefab();
-        playerSettings._defaultData = characterManager.GetPlayerDefaultData();
-        playerSettings._limitsData = characterManager.GetPlayerLimitsData();
-        playerSettings._weapon = characterManager.GetPlayerWeapon();
-    }
 
     private SceneField GetSceneToLoad()
     {

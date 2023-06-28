@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PlayerEffector
 {
-    private readonly IPlayer player;
-    private readonly PlayerLimitsData limitsData;
+    private readonly IPlayerData player;
+    //private readonly PlayerLimitsData limitsData;
     private Weapon _weapon;
 
     private LevelUI levelUI;
@@ -27,7 +27,8 @@ public class PlayerEffector
 
     private Coroutine disableWeaponCoroutine = null;
 
-    public PlayerEffector(IPlayer _player, PlayerLimitsData _limitsData, LevelUINotifications _levelUINotifications, LevelUI _levelUI,
+
+    public PlayerEffector(Player _player, GameObject _playerGO, LevelUINotifications _levelUINotifications, LevelUI _levelUI, Weapon _playerWeapon,
         bool _isImmortal = false)
     {
         isAI = false;
@@ -36,44 +37,44 @@ public class PlayerEffector
         isImmortal = _isImmortal;
 
         player = _player;
-        limitsData = _limitsData;
 
         levelUI = _levelUI;
 
-        levelUI.UpdatePlayerHP(player.Health);
+        levelUI.UpdateCurrentPlayerHP(player.Health);
 
-        Weapon weapon = player.Weapon;
-        _weapon = weapon;
+        //Weapon weapon = _player.Weapon;
+        _weapon = _playerWeapon;
 
-        Bumper bumper = player.Vehicle.GetComponent<Bumper>();
-        if(bumper != null)
+        Bumper bumper = _playerGO.GetComponent<Bumper>();
+        if (bumper != null)
         {
             bumper.OnBonusGot += ApplyBonus;
             bumper.OnBonusGotWithGameObject += ApplyBonus;
         }
         else Debug.LogError("Component Bumber not found");
 
-        VisualIntermediary intermediary = player.Vehicle.GetComponent<VisualIntermediary>();
-        if(intermediary != null)
+        VisualIntermediary intermediary = _playerGO.GetComponent<VisualIntermediary>();
+        if (intermediary != null)
         {
             _intermediary = intermediary;
         }
         else Debug.LogError("Component VisualIntermediary not found");
 
 
-        bumper.SetIsCurrentPlayer(player.Vehicle);
-        _intermediary.SetIsCurrentPlayer(player.Vehicle);
+        bumper.SetIsCurrentPlayer(_playerGO);
+        _intermediary.SetIsCurrentPlayer(_playerGO);
 
         levelUINotifications = _levelUINotifications;
 
-        levelUI.UIEnemyPointers.SetCurrentPlayerTransform(player.Vehicle.transform);
+        levelUI.UIEnemyPointers.SetCurrentPlayerTransform(_playerGO.transform);
 
 
         defaultHealth = player.Health;
     }
 
-    public PlayerEffector(EnemyPointer _enemyPointer, IPlayerAI _playerAI, PlayerLimitsData _limitsData, LevelUI _levelUI,
-        IPlayer _currentPlayer, bool _isImmortal = false) // enemyAI
+    public PlayerEffector(EnemyPointer _enemyPointer, PlayerAI _playerAI, GameObject _playerAIGO, LevelUI _levelUI, GameObject _currentPlayerGO,
+        Weapon _aiWeapon,
+        bool _isImmortal = false) // enemyAI
     {
         enemyPointer = _enemyPointer;
 
@@ -83,16 +84,15 @@ public class PlayerEffector
         isImmortal = _isImmortal;
 
         player = _playerAI;
-        limitsData = _limitsData;
 
         levelUI = _levelUI;
 
         levelUI.UpdateEnemyHP(player.Health, enemyPointer);
 
-        Weapon weapon = player.Weapon;
-        _weapon = weapon;
+        //Weapon weapon = _playerAI.Weapon;
+        _weapon = _aiWeapon;
 
-        Bumper bumper = player.Vehicle.GetComponent<Bumper>();
+        Bumper bumper = _playerAIGO.GetComponent<Bumper>();
         if (bumper != null)
         {
             bumper.OnBonusGot += ApplyBonus;
@@ -100,7 +100,7 @@ public class PlayerEffector
         }
         else Debug.LogError("Component Bumber not found");
 
-        VisualIntermediary intermediary = player.Vehicle.GetComponent<VisualIntermediary>();
+        VisualIntermediary intermediary = _playerAIGO.GetComponent<VisualIntermediary>();
         if (intermediary != null)
         {
             _intermediary = intermediary;
@@ -108,8 +108,8 @@ public class PlayerEffector
         else Debug.LogError("Component VisualIntermediary not found");
 
 
-        bumper.SetIsCurrentPlayer(_currentPlayer.Vehicle);
-        _intermediary.SetIsCurrentPlayer(_currentPlayer.Vehicle);
+        bumper.SetIsCurrentPlayer(_currentPlayerGO);
+        _intermediary.SetIsCurrentPlayer(_currentPlayerGO);
 
         defaultHealth = player.Health;
     }
@@ -130,11 +130,11 @@ public class PlayerEffector
                 {
                     var resultHealth = player.Health + bonus.Value;
                     Debug.Log(resultHealth + " = " + player.Health + " + " + bonus.Value);
-                    if (resultHealth > limitsData.MaxHP)
-                    {
-                        //resultHealth = _limitsData.MaxHP; // убрали лимит на хп
-                    }
-                    else if (resultHealth <= 0)
+                    //if (resultHealth > limitsData.MaxHP)
+                    //{
+                    //    //resultHealth = _limitsData.MaxHP; // убрали лимит на хп
+                    //}
+                    if (resultHealth <= 0)
                     {
                         resultHealth = 0;
                     }
@@ -142,7 +142,7 @@ public class PlayerEffector
 
                     player.SetHealth(resultHealth);
 
-                    if (isCurrentPlayer) levelUI.UpdatePlayerHP(player.Health);
+                    if (isCurrentPlayer) levelUI.UpdateCurrentPlayerHP(player.Health);
                     else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
 
                     if (player.Health == 0)
@@ -236,6 +236,7 @@ public class PlayerEffector
                     }
                     disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.Value, _gameObject));
 
+                    Debug.Log($"DisableWeapon = {_gameObject}");
                     _weapon.DisableWeapon(_gameObject);
 
                     if (isCurrentPlayer)
@@ -272,7 +273,7 @@ public class PlayerEffector
     IEnumerator WaitAndEnableWeapon(float time, GameObject _gameObject)
     {
         yield return new WaitForSeconds(time);
-
+        Debug.Log($"Enable = {_gameObject}");
         _weapon.EnableWeapon(_gameObject);
 
         if (isCurrentPlayer)

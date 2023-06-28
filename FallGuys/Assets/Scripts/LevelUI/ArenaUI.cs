@@ -47,7 +47,7 @@ public class ArenaUI : LevelUI
         uiEnemyPointers.UpdateEnemyHP(hpValue, enemyPointer);
     }
 
-    public override void UpdatePlayerHP(float hpValue)
+    public override void UpdateCurrentPlayerHP(float hpValue)
     {
         playerHealthUI.UpdatePlayerHealthUI(hpValue);
     }

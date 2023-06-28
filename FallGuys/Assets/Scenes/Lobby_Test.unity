@@ -40082,9 +40082,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneLoader: {fileID: 1261008356}
+  characterManager: {fileID: 2067186478}
   gameStagesList:
   - numberOfPlayers: 12
-    numberOfWinners: 6
+    numberOfWinners: 2
     gameModesList:
     - gameMode: 0
       gameModeScenes: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
@@ -40093,7 +40094,6 @@ MonoBehaviour:
     gameModesList:
     - gameMode: 1
       gameModeScenes: {fileID: 11400000, guid: 8ee1e040721b4cc43b4088fab76031f1, type: 2}
-  characterManager: {fileID: 2067186478}
 --- !u!4 &2066765927
 Transform:
   m_ObjectHideFlags: 0
@@ -42119,46 +42119,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: playerVehicles.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: raceAIVehicles.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: playerVehicles.Array.data[0].name
-      value: Player bmw
-      objectReference: {fileID: 0}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: raceAIVehicles.Array.data[0].name
-      value: Racer
-      objectReference: {fileID: 0}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: playerVehicles.Array.data[0].limitsData
-      value: 
-      objectReference: {fileID: 11400000, guid: aa050a70c8b4fc74488bf20cfcfbfe06, type: 2}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: raceAIVehicles.Array.data[0].limitsData
-      value: 
-      objectReference: {fileID: 11400000, guid: 6f58f00d08feda041a74d7bf564022d7, type: 2}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: playerVehicles.Array.data[0].defaultData
-      value: 
-      objectReference: {fileID: 11400000, guid: 5b42e11ed02c3224e8b5ace27041ffa4, type: 2}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: raceAIVehicles.Array.data[0].defaultData
-      value: 
-      objectReference: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: playerVehicles.Array.data[0].vehiclePrefab
-      value: 
-      objectReference: {fileID: 7434162804505329504, guid: ae2fbac953aaaf44c8ca9c224139eefe, type: 3}
-    - target: {fileID: 5528954116696143450, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
-      propertyPath: raceAIVehicles.Array.data[0].vehiclePrefab
-      value: 
-      objectReference: {fileID: 8723274520982495796, guid: 99fa67b2fa6c5b144b80ef74f222b01b, type: 3}
     - target: {fileID: 5528954116696143451, guid: 35d8692585e241c42961af79c9ee4625, type: 3}
       propertyPath: m_RootOrder
       value: 10

@@ -37,6 +37,6 @@ public class RaceUI : LevelUI
     #region HP
     public override void UpdateEnemyHP(float hpValue, EnemyPointer enemyPointer) { }
 
-    public override void UpdatePlayerHP(float hpValue) { }
+    public override void UpdateCurrentPlayerHP(float hpValue) { }
     #endregion
 }

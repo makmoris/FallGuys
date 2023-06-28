@@ -4,7 +4,7 @@ public interface ILevelUI
 {
     public UIEnemyPointers UIEnemyPointers { get; }
 
-    public void UpdatePlayerHP(float hpValue);
+    public void UpdateCurrentPlayerHP(float hpValue);
     public void UpdateEnemyHP(float hpValue, EnemyPointer enemyPointer);
 
     public void ShowAttackPointer(Transform targetTransform);

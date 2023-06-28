@@ -1,41 +1,36 @@
 using UnityEngine;
 
-public class PlayerAI : MonoBehaviour, IPlayerAI
+public class PlayerAI : IPlayerAI
 {
+    private bool _isAI;
+    public bool IsAI => _isAI;
+
     private float _health;
-    public float Health
-    {
-        get { return _health; }
-        private set { _health = value; }
-    }
+    public float Health => _health;
 
     private float _speed;
-    public float Speed
-    {
-        get { return _speed; }
-        private set { _speed = value; }
-    }
+    public float Speed => _speed;
 
     private float _damage;
-    public float Damage
-    {
-        get { return _damage; }
-        private set { _damage = value; }
-    }
+    public float Damage => _damage;
 
-    private GameObject _vehicle;
-    public GameObject Vehicle => _vehicle;
+    private string _name;
+    public string Name => _name;
+
+
+    private Material _vehicleColorMaterial;
+    public Material VehicleColorMaterial => _vehicleColorMaterial;
 
     private Weapon _weapon;
     public Weapon Weapon => _weapon;
 
-    public PlayerAI(PlayerDefaultData data, GameObject vehiclePrefab, Weapon weapon)
+    public PlayerAI(string name, Material vehicleColorMaterial, Weapon weapon)
     {
-        _health = data.DefaultHP;
-        _speed = data.DefaultSpeed;
-        _damage = data.DefautDamage;
+        _isAI = true;
 
-        _vehicle = vehiclePrefab;
+        _name = name;
+
+        _vehicleColorMaterial = vehicleColorMaterial;
 
         _weapon = weapon;
     }
@@ -43,21 +38,23 @@ public class PlayerAI : MonoBehaviour, IPlayerAI
 
     public void SetHealth(float newValue)
     {
-        Health = newValue;
+        _health = newValue;
     }
 
     public void SetSpeed(float newValue)
     {
-        Speed = newValue;
+        _speed = newValue;
     }
 
     public void SetDamage(float newValue)
     {
-        Damage = newValue;
+        _damage = newValue;
     }
 
-    public void Destroy()
+    public void SetDefaultData(PlayerDefaultData playerDefaultData)
     {
-        Destroy(_vehicle);
+        _health = playerDefaultData.DefaultHP;
+        _speed = playerDefaultData.DefaultSpeed;
+        _damage = playerDefaultData.DefautDamage;
     }
 }

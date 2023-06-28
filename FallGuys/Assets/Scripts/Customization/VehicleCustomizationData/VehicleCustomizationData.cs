@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-[Serializable]
+[System.Serializable]
 public class VehicleCustomization_Material
 {
     [SerializeField] internal int materialActiveIndex;// индекс выбранного материала
@@ -38,5 +37,12 @@ public class VehicleCustomizationData : ScriptableObject
         ElementsSelectedData.Instance.SaveElevemtSelectedIndex(name, vehicleCustomization_Material.materialActiveIndex);
 
         Debug.Log(name + " сохранил activeIndex");
+    }
+
+    public Material GetRandomMaterial()
+    {
+        int randIndex = Random.Range(0, vehicleCustomization_Material.materials.Count);
+
+        return vehicleCustomization_Material.materials[randIndex];
     }
 }

@@ -43,15 +43,12 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 
 	private Coroutine _coroutine;
 
-	private void Awake()
-	{
-		raceAIInputs = GetComponent<RaceAIInputs>();
-	}
+    public void Initialize(RaceAIInputs _raceAIInputs)
+    {
+        raceAIInputs = _raceAIInputs;
 
-	private void OnEnable()
-	{
-		_coroutine = StartCoroutine(WaitAndCheckObstacles());
-	}
+        _coroutine = StartCoroutine(WaitAndCheckObstacles());
+    }
 
 	private IEnumerator WaitAndCheckObstacles()
 	{

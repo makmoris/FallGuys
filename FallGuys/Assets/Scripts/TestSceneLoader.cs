@@ -12,4 +12,11 @@ public class TestSceneLoader : MonoBehaviour
     {
         SceneManager.LoadScene(ind);
     }
+
+    public void TestLoad()
+    {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
+        gameManager.StartGameStage();
+    }
 }

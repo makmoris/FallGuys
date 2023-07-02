@@ -62,6 +62,7 @@ public class LobbyWindowsController : MonoBehaviour
 
         if (next.name == lobbySceneName) MusicManager.Instance.PlayLobbyMusic();
         if(next.name.EndsWith("Arena")) MusicManager.Instance.PlayArenaMusic();
+        if (next.name.EndsWith("Race")) MusicManager.Instance.PlayArenaMusic();
     }
 
     public void ShowLeagueWindowOnLobby()// вызывают кнопки win lose окон

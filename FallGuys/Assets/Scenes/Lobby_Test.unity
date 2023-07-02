@@ -14979,17 +14979,17 @@ MonoBehaviour:
   - name: Race 2nd
     scene:
       m_SceneAsset: {fileID: 102900000, guid: 40dd60d0b3188304aa95d4aa8fa8d4b8, type: 3}
-      m_SceneName: 2nd
+      m_SceneName: 2nd_Race
     levelImage: {fileID: 1202022375}
   - name: Race 3d
     scene:
       m_SceneAsset: {fileID: 102900000, guid: 70e7dd091c111474a937f89a15b64aab, type: 3}
-      m_SceneName: 3d
+      m_SceneName: 3d_Race
     levelImage: {fileID: 1892785905}
   - name: Race 1st
     scene:
       m_SceneAsset: {fileID: 102900000, guid: ecf8d070f72cd534fa27ca0b2a1be36e, type: 3}
-      m_SceneName: 1st
+      m_SceneName: 1st_Race
     levelImage: {fileID: 1832094245}
   internetConnectionIsActive: 0
 --- !u!1 &719178931
@@ -18010,6 +18010,18 @@ MonoBehaviour:
       - m_Target: {fileID: 159518536}
         m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
         m_MethodName: SetCharacter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 862299132}
+        m_TargetAssemblyTypeName: TestSceneLoader, Assembly-CSharp
+        m_MethodName: TestLoad
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -40095,11 +40107,11 @@ MonoBehaviour:
   characterManager: {fileID: 2067186478}
   gameStagesList:
   - numberOfPlayers: 12
-    numberOfWinners: 3
+    numberOfWinners: 6
     gameModesList:
     - gameMode: 0
       gameModeScenes: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
-  - numberOfPlayers: 3
+  - numberOfPlayers: 6
     numberOfWinners: 1
     gameModesList:
     - gameMode: 1

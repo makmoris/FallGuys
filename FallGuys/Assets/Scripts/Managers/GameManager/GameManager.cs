@@ -77,6 +77,8 @@ public class GameManager : MonoBehaviour
             CreatePlayersForOneGameSession();
 
             isFirstStart = false;
+
+            sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
         }
         else
         {
@@ -87,21 +89,20 @@ public class GameManager : MonoBehaviour
 
                 sceneToLoad = GetSceneToLoad();
 
-                //sceneLoader.PrepareNextLevelScene(sceneToLoad);
-                //sceneLoader.PrepareLobbyScene();
+                sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
             }
             else // значит текущий режим последний. После него переходить не надо, ничего не подгружаем
             {
                 currentGameStage = 0;
 
-                //sceneLoader.PrepareLobbyScene();
+                sceneLoader.PrepareLobbyScene();
 
                 return;
             }
         }
         Debug.Log($"Количество игроков = {players.Count}");
         // запускаем окно скролла выбора карты. Передаем в MapSelector нужную сцену для визуального отображения sceneToLoad
-        sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
+        
     }
 
     private void CreatePlayersForOneGameSession()

@@ -4,8 +4,9 @@ using UnityEngine;
 public class ArenaInstaller : Installer
 {
     [Header("Arena Controllers")]
-    public TargetsController targetsController;
-    public EndGameController endGameController;
+    [SerializeField] private TargetsController targetsController;
+    [SerializeField] private EndGameController endGameController;
+    [SerializeField] private ArenaProgressController arenaProgressController;
 
     [Header("Arena AI")]
     [SerializeField] ArenaCarDriverAI arenaCarDriverAI;
@@ -47,6 +48,12 @@ public class ArenaInstaller : Installer
                 // Cinemachine
                 camCinema.m_Follow = playerGO.transform;
                 camCinema.m_LookAt = playerGO.transform;
+
+                // ArenaLevelResultVisualization
+                postLevelResultVisualization.GameManager = gameManager;
+
+                // ArenaProgressController
+                arenaProgressController.SetNumberOfPlayers(numberOfPlayers);
 
                 // Spawn Place
                 Vector3 pos = targetsController.GetStartSpawnPosition(spawnCounter).position;
@@ -141,7 +148,5 @@ public class ArenaInstaller : Installer
         }
 
         targetsController.SetTargetsForPlayers();
-
-        ArenaProgressController.Instance.SetNumberOfPlayers(numberOfPlayers);
     }
 }

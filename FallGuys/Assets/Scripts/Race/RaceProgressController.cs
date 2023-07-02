@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class RaceProgressController : LevelProgressController
+public class RaceProgressController : MonoBehaviour
 {
     [Header("Camera")]
     [SerializeField] private CameraFollowingOnOtherPlayers gameCamCinema;

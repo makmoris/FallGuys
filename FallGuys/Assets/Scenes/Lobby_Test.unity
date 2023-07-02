@@ -11746,7 +11746,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Clouds
+  m_text: race 3d
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea64f64850cf5394584a94d5749dafba, type: 2}
   m_sharedMaterial: {fileID: 4870716944627888722, guid: ea64f64850cf5394584a94d5749dafba, type: 2}
@@ -14981,6 +14981,16 @@ MonoBehaviour:
       m_SceneAsset: {fileID: 102900000, guid: 40dd60d0b3188304aa95d4aa8fa8d4b8, type: 3}
       m_SceneName: 2nd
     levelImage: {fileID: 1202022375}
+  - name: Race 3d
+    scene:
+      m_SceneAsset: {fileID: 102900000, guid: 70e7dd091c111474a937f89a15b64aab, type: 3}
+      m_SceneName: 3d
+    levelImage: {fileID: 1892785905}
+  - name: Race 1st
+    scene:
+      m_SceneAsset: {fileID: 102900000, guid: ecf8d070f72cd534fa27ca0b2a1be36e, type: 3}
+      m_SceneName: 1st
+    levelImage: {fileID: 1832094245}
   internetConnectionIsActive: 0
 --- !u!1 &719178931
 GameObject:
@@ -28743,7 +28753,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Beach
+  m_text: Race 1st
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea64f64850cf5394584a94d5749dafba, type: 2}
   m_sharedMaterial: {fileID: 4870716944627888722, guid: ea64f64850cf5394584a94d5749dafba, type: 2}
@@ -34991,7 +35001,7 @@ GameObject:
   - component: {fileID: 1832094246}
   - component: {fileID: 1832094245}
   m_Layer: 5
-  m_Name: Map_Beach (1)
+  m_Name: Race_1st
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35034,7 +35044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.12763119, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -36135,7 +36145,7 @@ GameObject:
   - component: {fileID: 1892785906}
   - component: {fileID: 1892785905}
   m_Layer: 5
-  m_Name: Map_Clouds (1)
+  m_Name: Race_3d
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36178,7 +36188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.24588966, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -40084,16 +40094,16 @@ MonoBehaviour:
   sceneLoader: {fileID: 1261008356}
   characterManager: {fileID: 2067186478}
   gameStagesList:
+  - numberOfPlayers: 12
+    numberOfWinners: 3
+    gameModesList:
+    - gameMode: 0
+      gameModeScenes: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
   - numberOfPlayers: 3
     numberOfWinners: 1
     gameModesList:
     - gameMode: 1
       gameModeScenes: {fileID: 11400000, guid: 8ee1e040721b4cc43b4088fab76031f1, type: 2}
-  - numberOfPlayers: 12
-    numberOfWinners: 2
-    gameModesList:
-    - gameMode: 0
-      gameModeScenes: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
 --- !u!4 &2066765927
 Transform:
   m_ObjectHideFlags: 0

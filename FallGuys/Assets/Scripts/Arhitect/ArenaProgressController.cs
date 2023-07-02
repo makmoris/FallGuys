@@ -1,41 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using VehicleBehaviour;
 
 public class ArenaProgressController : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI leftText;
-    [SerializeField] private TextMeshProUGUI fragText;
+    [Header("Arena progress UI Controller")]
+    [SerializeField] private ArenaProgressUIController arenaProgressUIController;
 
-    [SerializeField]private int numberOfPlayers;
-    [SerializeField]private int numberOfFrags;
+    [Header("Arena Post Place Controller")]
+    [SerializeField] private ArenaPostPlaceController arenaPostPlaceController;
 
-    [SerializeField]private int amountOfGoldReward;
-    [SerializeField]private int amountOfCupReward;
+    [Header("Cameras")]
+    [SerializeField] Camera gameCamera;
+    [SerializeField] Camera postPlaceCamera;
+
+    [Header("Win")]
+    [SerializeField] private float pauseBeforShowingWinWindow;
+
+    [Header("Lose")]
+    [SerializeField] private float pauseBeforShowingLoseWindow;
+
+    [Space]
+    [SerializeField] private int numberOfPlayers;
+    [SerializeField] private int numberOfFrags;
+
+    [SerializeField] private int amountOfGoldReward;
+    [SerializeField] private int amountOfCupReward;
 
     private int playerFinishPlace;
     private int startNumberOfPlayers;
-
-    [Header("Win/Lose")]
-    [SerializeField] Camera gameCamera;
-    [SerializeField] Camera endGameCamera;
-    [Header("End Game Controller")]
-    [SerializeField] private EndGameController endGameController;
-    [Header("Win window")]
-    [SerializeField] private float pauseBeforShowingWinWindow;
-    [SerializeField] private GameObject winWindow;
-    [SerializeField] private TextMeshProUGUI fragWWText;
-    [SerializeField] private TextMeshProUGUI goldWWText;
-    [SerializeField] private TextMeshProUGUI cupsWWText;
-    [Header("Lose Window")]
-    [SerializeField] private float pauseBeforShowingLoseWindow;
-    [SerializeField] private GameObject loseWindow;
-    [SerializeField] private TextMeshProUGUI fragLWText;
-    [SerializeField] private TextMeshProUGUI goldLWText;
-    [SerializeField] private TextMeshProUGUI cupsLWText;
 
 
     private GameObject playerGO;
@@ -54,7 +48,7 @@ public class ArenaProgressController : MonoBehaviour
         }
 
         if (!gameCamera.gameObject.activeSelf) gameCamera.gameObject.SetActive(true);
-        if (endGameCamera.gameObject.activeSelf) endGameCamera.gameObject.SetActive(false);
+        if (postPlaceCamera.gameObject.activeSelf) postPlaceCamera.gameObject.SetActive(false);
 
         //GameCameraAudioListenerController.Instance.DeactivateAudioListener();// изначально листенер только на самом авто игрока, чтобы правильно слышать звуки
     }
@@ -197,12 +191,14 @@ public class ArenaProgressController : MonoBehaviour
 
     private void UpdateLeftText()
     {
-        leftText.text = $"LEFT: {numberOfPlayers}";
+        //leftText.text = $"LEFT: {numberOfPlayers}";
+        arenaProgressUIController.UpdateLeftText(numberOfPlayers);
     }
 
     private void UpdateFragText()
     {
-        fragText.text = $"{numberOfFrags}";
+        //fragText.text = $"{numberOfFrags}";
+        arenaProgressUIController.UpdateFragText(numberOfFrags);
     }
 
     public int GetCurrentNumberOfFrags()
@@ -222,20 +218,16 @@ public class ArenaProgressController : MonoBehaviour
     {
         if(playerGO.GetComponent<WheelVehicle>() != null) playerGO.GetComponent<WheelVehicle>().Handbrake = true;
 
-        if (!winWindow.activeSelf) winWindow.SetActive(true);
-        if (loseWindow.activeSelf) loseWindow.SetActive(false);
-
-        fragWWText.text = $"{numberOfFrags}";
-        goldWWText.text = $"{amountOfGoldReward}";
-        cupsWWText.text = $"{amountOfCupReward}";
+        arenaProgressUIController.HideGameCanvas();
+        arenaPostPlaceController.PlayerWin(numberOfFrags, amountOfGoldReward, amountOfCupReward);
 
         yield return new WaitForSeconds(pauseBeforShowingWinWindow);
 
         gameCamera.gameObject.SetActive(false);
         GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
 
-        endGameController.EnabledAudioListener();// подрубаем листенер на финишной тачке
-        endGameCamera.gameObject.SetActive(true);
+        arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
+        postPlaceCamera.gameObject.SetActive(true);
         playerGO.SetActive(false);
 
         //MusicManager.Instance.StopMusicPlaying();
@@ -250,20 +242,16 @@ public class ArenaProgressController : MonoBehaviour
 
     IEnumerator WaitAndShowLoseWindow()
     {
-        if (!loseWindow.activeSelf) loseWindow.SetActive(true);
-        if (winWindow.activeSelf) winWindow.SetActive(false);
-
-        fragLWText.text = $"{numberOfFrags}";
-        goldLWText.text = $"{amountOfGoldReward}";
-        cupsLWText.text = $"{amountOfCupReward}";
+        arenaProgressUIController.HideGameCanvas();
+        arenaPostPlaceController.PlayerLose(numberOfFrags, amountOfGoldReward, amountOfCupReward);
 
         yield return new WaitForSeconds(pauseBeforShowingLoseWindow);
 
         gameCamera.gameObject.SetActive(false);
         GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
 
-        endGameController.EnabledAudioListener();// подрубаем листенер на финишной тачке
-        endGameCamera.gameObject.SetActive(true);
+        arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
+        postPlaceCamera.gameObject.SetActive(true);
 
         MusicManager.Instance.StopMusicPlaying();
         MusicManager.Instance.StopSoundsPlaying();

@@ -1530,7 +1530,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2758518785976059859}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LobbyLoader, Assembly-CSharp
         m_MethodName: ExitToLobby
         m_Mode: 1
@@ -2786,7 +2786,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0.00012207031}
   m_SizeDelta: {x: 64, y: 37}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1887050037
@@ -3604,7 +3604,6 @@ MonoBehaviour:
   banImage: {fileID: 4773514680452865745}
   banScaleImage: {fileID: 1373944118216291459}
   banText: {fileID: 4149115394938690492}
-  kal: 5
 --- !u!1 &1201075283461174528
 GameObject:
   m_ObjectHideFlags: 0
@@ -7289,8 +7288,6 @@ GameObject:
   - component: {fileID: 678779117361073971}
   - component: {fileID: 7420793910227372630}
   - component: {fileID: 5665804130490997093}
-  - component: {fileID: 2758518785976059859}
-  - component: {fileID: 563515094243914550}
   - component: {fileID: 4187901657488183858}
   - component: {fileID: 7065353517509365835}
   - component: {fileID: 7065353517509365828}
@@ -7354,8 +7351,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da448cc87e21d3a4fa46107b2df04b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealthUI: {fileID: 0}
-  arenaUIPointers: {fileID: 0}
+  uiEnemyPointers: {fileID: 7420793910227372630}
+  playerHealthUI: {fileID: 7065353517445447130}
 --- !u!114 &7420793910227372630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7369,10 +7366,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
-  _canvasTransform: {fileID: 0}
-  _playerHealthUI: {fileID: 0}
-  _positionPointerPrefab: {fileID: 0}
-  _attackPointerPrefab: {fileID: 0}
+  _canvasTransform: {fileID: 7065353517509365830}
+  _positionPointerPrefab: {fileID: 3952700772836043846, guid: d8240c9f2c44cc54e99da01945626bfd, type: 3}
+  _attackPointerPrefab: {fileID: 6801002678196619788, guid: 40fe6c1670e39744fb93fd6532d215b5, type: 3}
 --- !u!114 &5665804130490997093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7388,50 +7384,6 @@ MonoBehaviour:
   buffsDebuffsNotifications: {fileID: 61729556769380748}
   gameUINotifications: {fileID: 7806487285128405906}
   attackBan: {fileID: 1044419572582104950}
---- !u!114 &2758518785976059859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7065353517509365831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e08698cb10069a4a86d55a28f76bda7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lobbySceneName: Lobby_Test
---- !u!114 &563515094243914550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7065353517509365831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d10913a9e97ce2b4b877e1ad1a2525cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftText: {fileID: 7065353517234206581}
-  fragText: {fileID: 7065353517719279300}
-  numberOfPlayers: 0
-  numberOfFrags: 0
-  amountOfGoldReward: 0
-  amountOfCupReward: 0
-  gameCamera: {fileID: 0}
-  endGameCamera: {fileID: 0}
-  endGameController: {fileID: 0}
-  pauseBeforShowingWinWindow: 2
-  winWindow: {fileID: 0}
-  fragWWText: {fileID: 0}
-  goldWWText: {fileID: 0}
-  cupsWWText: {fileID: 0}
-  pauseBeforShowingLoseWindow: 2
-  loseWindow: {fileID: 0}
-  fragLWText: {fileID: 0}
-  goldLWText: {fileID: 0}
-  cupsLWText: {fileID: 0}
 --- !u!114 &4187901657488183858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9335,7 +9287,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -355.77423, y: -51.200012}
+  m_AnchoredPosition: {x: -355.77417, y: -51.200073}
   m_SizeDelta: {x: 200, y: 70}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &7065353518540651501

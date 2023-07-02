@@ -41,7 +41,7 @@ public class RaceInstaller : Installer
                 postLevelResultVisualization.GameManager = gameManager;
 
                 // RaceProgressController
-                raceProgressController.GameManager = gameManager;
+                //raceProgressController.GameManager = gameManager;
                 if (startFromLobby) raceProgressController.SetNumberOfWinners(gameManager.GetNumberOfWinners());
 
                 raceProgressController.AddPlayer(playerGO);

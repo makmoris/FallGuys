@@ -41,6 +41,8 @@ public class PostRacePlaceController : MonoBehaviour
         {
             if(postRacePlacesList.Count > 0)
             {
+                winDriver.gameObject.SetActive(true);
+
                 PostRacePlace postRacePlace = postRacePlacesList[0];
 
                 Transform placeTransform = postRacePlace.GetPlaceTransform();
@@ -67,6 +69,8 @@ public class PostRacePlaceController : MonoBehaviour
         {
             if (postRacePlacesList.Count > 0)
             {
+                loserDriver.gameObject.SetActive(true);
+
                 PlayerName playerName = loserDriver.gameObject.GetComponent<PlayerName>();
                 if (playerName != null) losersNames.Add(playerName.Name);
                 else throw new System.Exception("GameObject have not PlayerName component");

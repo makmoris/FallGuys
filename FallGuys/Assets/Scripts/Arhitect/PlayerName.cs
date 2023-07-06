@@ -23,6 +23,11 @@ public class PlayerName : MonoBehaviour
         isInit = true;
     }
 
+    public void HideNameDisplay()
+    {
+        playerNameCanvas.gameObject.SetActive(false);
+    }
+
     private void LateUpdate()
     {
         if (isInit)

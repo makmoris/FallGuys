@@ -68,7 +68,14 @@ public class SceneLoader : MonoBehaviour
         {
             if (mapSelectionCanvas.gameObject.activeSelf) mapSelectionCanvas.gameObject.SetActive(false);
         }
-        else lobbyOpenEvent?.Invoke();
+        else
+        {
+            lobbyOpenEvent?.Invoke();
+
+            //Canvas lobbyCanvas = FindObjectOfType<Canvas>();
+            //GameObject leagueWindow = lobbyCanvas.transform.Find("Lobby").transform.Find("LeagueWindow").gameObject;
+            //leagueWindow.SetActive(true);
+        }
     }
 
     private void OnDisable()

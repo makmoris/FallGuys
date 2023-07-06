@@ -16,6 +16,8 @@ public class RaceFinishSector : MonoBehaviour
             finishedDriversList.Add(wheelVehicleDriver);
 
             ThisDriverFinishedEvent?.Invoke(wheelVehicleDriver);
+
+            wheelVehicleDriver.gameObject.SetActive(false);
         }
     }
 }

@@ -8,7 +8,7 @@ public class LobbyWindowsController : MonoBehaviour
     public delegate void ShowLeagueProgressAnimation(int previousCupValue);
     public static event ShowLeagueProgressAnimation ShowLeagueProgressAnimationEvent;
 
-    [SerializeField] private string lobbySceneName;
+    [SerializeField] private SceneField lobbyScene;
     private string currentScene;
     private string previousScene;
 
@@ -38,10 +38,12 @@ public class LobbyWindowsController : MonoBehaviour
 
     private void SceneWasChanged(Scene current, Scene next)
     {
-        if (next.name != lobbySceneName) previousCupValue = CurrencyManager.Instance.Cups;
+        if (next.name != lobbyScene.SceneName) previousCupValue = CurrencyManager.Instance.Cups;
 
         if (showLeagueWindow && !IsFirstLobbyEnterFromLocation())
         {
+            Debug.Log("ПОКАЗ В ЛОББИ");
+
             Canvas lobbyCanvas = FindObjectOfType<Canvas>();
 
             GameObject leagueWindow = lobbyCanvas.transform.Find("Lobby").transform.Find("LeagueWindow").gameObject;
@@ -60,14 +62,18 @@ public class LobbyWindowsController : MonoBehaviour
             showLeagueWindow = false;
         }
 
-        if (next.name == lobbySceneName) MusicManager.Instance.PlayLobbyMusic();
+        if (next.name == lobbyScene.SceneName) MusicManager.Instance.PlayLobbyMusic();
         if(next.name.EndsWith("Arena")) MusicManager.Instance.PlayArenaMusic();
         if (next.name.EndsWith("Race")) MusicManager.Instance.PlayArenaMusic();
     }
 
     public void ShowLeagueWindowOnLobby()// вызывают кнопки win lose окон
     {   // если это не первый вход в лобби из локации
-        if(!IsFirstLobbyEnterFromLocation()) showLeagueWindow = true;
+        if (!IsFirstLobbyEnterFromLocation())
+        {
+            showLeagueWindow = true;
+            Debug.Log("SHOW LEAGUE WINDOW TRUE");
+        }
     }
 
     private bool IsFirstLobbyEnterFromLocation()

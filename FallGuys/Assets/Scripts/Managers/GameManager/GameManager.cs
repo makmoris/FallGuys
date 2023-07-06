@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
         public int numberOfWinners;
         public List<GameMode> gameModesList;
     }
+
     [Header("SceneLoader")]
     [SerializeField] private SceneLoader sceneLoader;
 
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
     private readonly string previousGameModeSceneNameKey = "PreviousGameModeSceneName";
 
     private NameGenerator nameGenerator;
+    private List<string> namesList = new List<string>();
 
     private static GameManager Instance { get; set; }
     private void Awake()
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour
             {
                 currentGameStage = 0;
 
-                sceneLoader.PrepareLobbyScene();
+                //sceneLoader.PrepareLobbyScene(); // сделать загрузку через окно
 
                 return;
             }
@@ -128,6 +130,8 @@ public class GameManager : MonoBehaviour
     {
         string playerName = "Player";
 
+        namesList.Add(playerName);
+
         GameObject playerPrefab = characterManager.GetPlayerPrefab();
 
         PlayerDefaultData playerDefaultData = characterManager.GetPlayerDefaultData();
@@ -142,6 +146,15 @@ public class GameManager : MonoBehaviour
     private PlayerAI CreateAIPlayer()
     {
         string aiName = nameGenerator.GetNextRandomName();
+
+        if (namesList.Contains(aiName))
+        {
+            int randomNumber = Random.Range(1, 10);
+
+            aiName = aiName.Insert(aiName.Length, randomNumber.ToString());
+        }
+
+        namesList.Add(aiName);
 
         Material aiColorMaterial = characterManager.GetRandomMaterial();
 
@@ -179,6 +192,8 @@ public class GameManager : MonoBehaviour
     {
         isFirstStart = true;
         currentGameStage = 0;
+
+        namesList.Clear();
     }
 
 

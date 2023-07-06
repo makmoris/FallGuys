@@ -36,13 +36,13 @@ public class LobbyWindowsController : MonoBehaviour
         //Debug.Log("WINDOWCONTROLLER AWAKE");
     }
 
-    private void SceneWasChanged(Scene current, Scene next)
+    private void SceneWasChanged(Scene s, Scene next)
     {
         if (next.name != lobbyScene.SceneName) previousCupValue = CurrencyManager.Instance.Cups;
 
         if (showLeagueWindow && !IsFirstLobbyEnterFromLocation())
         {
-            Debug.Log("ПОКАЗ В ЛОББИ");
+            showLeagueWindow = false;
 
             Canvas lobbyCanvas = FindObjectOfType<Canvas>();
 
@@ -52,14 +52,15 @@ public class LobbyWindowsController : MonoBehaviour
             GameObject homeButton = leagueWindow.transform.Find("HomeButton").gameObject;
             GameObject continueButton = leagueWindow.transform.Find("ContinueButton").gameObject;
 
+            Debug.Log($"Лига окно = {leagueWindow.activeSelf}");
             leagueWindow.SetActive(true);
+            Debug.Log($"Лига окно = {leagueWindow.activeSelf}");
 
             backToLobbyButton.SetActive(false);
             homeButton.SetActive(false);
             continueButton.SetActive(true);
 
             ShowLeagueProgressAnimationEvent?.Invoke(previousCupValue);
-            showLeagueWindow = false;
         }
 
         if (next.name == lobbyScene.SceneName) MusicManager.Instance.PlayLobbyMusic();

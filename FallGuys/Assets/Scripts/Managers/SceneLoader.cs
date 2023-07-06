@@ -70,6 +70,8 @@ public class SceneLoader : MonoBehaviour
         }
         else
         {
+            Debug.Log("LOBBY SCENE");
+
             lobbyOpenEvent?.Invoke();
 
             //Canvas lobbyCanvas = FindObjectOfType<Canvas>();

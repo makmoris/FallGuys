@@ -25000,6 +25000,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1261008357}
   - component: {fileID: 1261008356}
+  - component: {fileID: 1261008358}
   m_Layer: 0
   m_Name: SceneLoader
   m_TagString: Untagged
@@ -25039,6 +25040,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1261008358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261008355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5083fb583b2844c95164d326a5668c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1261408392
 GameObject:
   m_ObjectHideFlags: 0
@@ -40108,7 +40121,12 @@ MonoBehaviour:
   sceneLoader: {fileID: 1261008356}
   characterManager: {fileID: 2067186478}
   gameStagesList:
-  - numberOfPlayers: 2
+  - numberOfPlayers: 12
+    numberOfWinners: 6
+    gameModesList:
+    - gameMode: 0
+      gameModeScenes: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
+  - numberOfPlayers: 6
     numberOfWinners: 1
     gameModesList:
     - gameMode: 1

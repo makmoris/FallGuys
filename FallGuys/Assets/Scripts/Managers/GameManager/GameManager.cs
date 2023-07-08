@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
     public List<IPlayerData> Players => players;
 
     private bool isFirstStart = true;
-    private readonly string previousGameModeSceneNameKey = "PreviousGameModeSceneName";
 
     private NameGenerator nameGenerator;
     private List<string> namesList = new List<string>();
@@ -105,6 +104,13 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Количество игроков = {players.Count}");
         // запускаем окно скролла выбора карты. Передаем в MapSelector нужную сцену для визуального отображения sceneToLoad
         
+    }
+
+    public void StartGameStageFromTutorialWindow()
+    {
+        CreatePlayersForOneGameSession();
+
+        isFirstStart = false;
     }
 
     private void CreatePlayersForOneGameSession()
@@ -204,11 +210,7 @@ public class GameManager : MonoBehaviour
 
         currentGameMode = randomGameModeIndex;
 
-        string previousSceneName = PlayerPrefs.GetString(previousGameModeSceneNameKey, "null");
-
-        SceneField scene = gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameModeScenes.GetRandomScene(previousSceneName);
-
-        PlayerPrefs.SetString(previousGameModeSceneNameKey, scene.SceneName);
+        SceneField scene = gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameModeScenes.GetRandomScene();
 
         return scene;
     }

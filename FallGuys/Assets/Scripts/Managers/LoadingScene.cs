@@ -7,17 +7,20 @@ using TMPro;
 
 public class LoadingScene : MonoBehaviour
 {
+    [SerializeField] private GameManager gameManager;
+    [Space]
     [SerializeField] private Image loadingImage;
     [SerializeField] private TextMeshProUGUI progressText;
 
     [Header("Scene Names")]
-    [SerializeField] private string lobbySceneName;
+    [SerializeField] private SceneField lobbyScene;
     [Space]
-    [SerializeField] private List<string> locationNamesForFirstLaunch;
+    [SerializeField] private GameModeScenes gameModeScenesAfterTutorial;
 
     private string key = "IsFirstGameLaunch"; 
     private bool isFirstGameLaunch;
 
+    [Space]
     [SerializeField] private GameObject gameTutorialWindow;
     private string gameTutorialKey = "TutorialWindowWasShown";
     private bool tutorialWindowWasShown;
@@ -47,20 +50,15 @@ public class LoadingScene : MonoBehaviour
 
         if (isFirstGameLaunch)
         {
-            if(locationNamesForFirstLaunch.Count != 0)
-            {
-                int rand = Random.Range(0, locationNamesForFirstLaunch.Count);
-                string sceneName = locationNamesForFirstLaunch[rand];
-                StartCoroutine(LoadScene(sceneName));
-            }
-            else
-            {
-                Debug.LogError("LocationNamesForFirstLaunch list is empty");
-            }
+            gameManager.StartGameStageFromTutorialWindow();
+
+            string sceneName = gameModeScenesAfterTutorial.GetRandomScene();
+
+            StartCoroutine(LoadScene(sceneName));
         }
         else
         {
-            StartCoroutine(LoadScene(lobbySceneName));
+            StartCoroutine(LoadScene(lobbyScene.SceneName));
         }
     }
 

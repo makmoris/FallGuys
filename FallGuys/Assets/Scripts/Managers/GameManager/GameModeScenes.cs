@@ -7,8 +7,10 @@ public class GameModeScenes : ScriptableObject
 {
     [SerializeField] private List<SceneField> sceneNamesList;
 
-    public SceneField GetRandomScene(string previousSceneName)
+    public SceneField GetRandomScene()
     {
+        string previousSceneName = PlayerPrefs.GetString(name, "null");
+
         int r = Random.Range(0, sceneNamesList.Count);
         SceneField randomScene = sceneNamesList[r];
 
@@ -23,6 +25,10 @@ public class GameModeScenes : ScriptableObject
                 randomScene = sceneNamesList[r];
             }
         }
+
+        PlayerPrefs.SetString(name, randomScene.SceneName);
+
+        Debug.Log($"—Œ’–¿Õ»À» ¬ œ¿Ãﬂ“» {name} ÒˆÂÌÛ {randomScene.SceneName}");
 
         return randomScene;
     }

@@ -22539,6 +22539,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2236340137218483030}
     m_Modifications:
+    - target: {fileID: 954293577, guid: f1ee4b0060e7749419f54ade8746a8d1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2198673283239958681}
+    - target: {fileID: 954293577, guid: f1ee4b0060e7749419f54ade8746a8d1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToLobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 954293577, guid: f1ee4b0060e7749419f54ade8746a8d1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GoToLobbyButton, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 122630589349913334, guid: f1ee4b0060e7749419f54ade8746a8d1, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -22713,3 +22725,20 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 7065353517509365835, guid: f1ee4b0060e7749419f54ade8746a8d1, type: 3}
   m_PrefabInstance: {fileID: 9161177978576465505}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9161177978452783911 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 954293574, guid: f1ee4b0060e7749419f54ade8746a8d1, type: 3}
+  m_PrefabInstance: {fileID: 9161177978576465505}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2198673283239958681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9161177978452783911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3525d3c4b125a0f419dc722a5ee110da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -48,11 +48,11 @@ public class SceneLoader : MonoBehaviour
         Debug.Log("Load Anim Finished");
     }
 
-    public void PrepareLobbyScene()
-    {
-        asyncOperationToLobby = SceneManager.LoadSceneAsync(lobbyScene);
-        asyncOperationToLobby.allowSceneActivation = false;
-    }
+    //public void PrepareLobbyScene()
+    //{
+    //    asyncOperationToLobby = SceneManager.LoadSceneAsync(lobbyScene);
+    //    asyncOperationToLobby.allowSceneActivation = false;
+    //}
 
     public void LoadLobbyScene()
     {

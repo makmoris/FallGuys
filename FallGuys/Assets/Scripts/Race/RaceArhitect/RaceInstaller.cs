@@ -24,6 +24,7 @@ public class RaceInstaller : Installer
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
                 playerName.Initialize(player.Name, camCinema.transform);
+                playerName.HideNameDisplay();
 
                 // Weapon
                 Transform weaponPlace = playerGO.transform.Find("WeaponPlace");

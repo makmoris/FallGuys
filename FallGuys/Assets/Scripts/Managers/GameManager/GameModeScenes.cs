@@ -28,8 +28,6 @@ public class GameModeScenes : ScriptableObject
 
         PlayerPrefs.SetString(name, randomScene.SceneName);
 
-        Debug.Log($"ÑÎÕĞÀÍÈËÈ Â ÏÀÌßÒÈ {name} ñöåíó {randomScene.SceneName}");
-
         return randomScene;
     }
 }

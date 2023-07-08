@@ -41,6 +41,7 @@ public class PostRacePlaceController : MonoBehaviour
         {
             if(postRacePlacesList.Count > 0)
             {
+                Debug.Log($"JOPA Winner {winDriver.name} active");
                 winDriver.gameObject.SetActive(true);
 
                 PostRacePlace postRacePlace = postRacePlacesList[0];

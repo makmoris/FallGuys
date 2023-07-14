@@ -24,9 +24,6 @@ public class ObstacleDetectionAI : MonoBehaviour
 	[SerializeField] private int collisionCounter;
 	private bool isTurnBack;
 
-	private ArenaCarDriverAI arenaCarDriverAI;
-	private RaceCarDriverAI raceCarDriverAI;
-	private bool isArenaCarDriverAI;
 	private WheelVehicle wheelVehicle;
 
 	private Coroutine _coroutine;
@@ -34,14 +31,6 @@ public class ObstacleDetectionAI : MonoBehaviour
 	private void Awake()
 	{
 		wheelVehicle = GetComponent<WheelVehicle>();
-		arenaCarDriverAI = GetComponent<ArenaCarDriverAI>();
-
-		if (arenaCarDriverAI != null) isArenaCarDriverAI = true;
-        else
-        {
-			isArenaCarDriverAI = false;
-			raceCarDriverAI = GetComponent<RaceCarDriverAI>();
-		}
 	}
 
     private void OnEnable()
@@ -140,9 +129,6 @@ public class ObstacleDetectionAI : MonoBehaviour
 
 		if (Obstacles != "Null")// если перед ботом есть препятсвие и он не сдает назад
 		{
-			if (isArenaCarDriverAI) arenaCarDriverAI.Obstacle = true;
-			else raceCarDriverAI.Obstacle = true;
-
 			if (isTurnBack)
 			{
 				wheelVehicle.Throttle = -1f;
@@ -155,9 +141,6 @@ public class ObstacleDetectionAI : MonoBehaviour
 		}
 		else
 		{
-			if (isArenaCarDriverAI) arenaCarDriverAI.Obstacle = false;
-			else raceCarDriverAI.Obstacle = false;
-
 			isTurnBack = false;
 			collisionCounter = 0;
 		}

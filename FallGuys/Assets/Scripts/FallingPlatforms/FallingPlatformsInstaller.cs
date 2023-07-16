@@ -17,9 +17,13 @@ public class FallingPlatformsInstaller : Installer
         {
             GameObject aiPlayerGO = Instantiate(fallingPlatformsDriverAIPrefab.gameObject);
 
-            aiPlayerGO.transform.position = new Vector3(1 + 3 * i, 5f, 1 + 3 * i);
-
             aiPlayerGO.GetComponent<FallingPlatformsDriverAI>().SetTargetController(fallingPlatformTargetsController);
+
+            // Spawn Place
+            Transform spawnPlace = fallingPlatformTargetsController.GetSpawnPlace();
+            Vector3 pos = spawnPlace.position;
+            aiPlayerGO.transform.position = new Vector3(pos.x, 5f, pos.z);
+            aiPlayerGO.transform.rotation = spawnPlace.rotation;
         }
     }
 }

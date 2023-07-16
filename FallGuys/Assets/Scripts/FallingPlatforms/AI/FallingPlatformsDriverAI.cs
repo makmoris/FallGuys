@@ -34,6 +34,13 @@ public class FallingPlatformsDriverAI : MonoBehaviour
     private void Update()
     {
         if (!obstacle) Moving();
+        else
+        {
+            targetReached = true;
+        }
+        // если есть препятствие, то надо взять другую цель
+
+        // поставить ограничение по скорости, а то улетают сильно. Мб кинуть замедление при соприкосновении с препятсвием
     }
 
     public void SetTargetController(FallingPlatformTargetsController fallingPlatformTargetsController)// from installer

@@ -1,4 +1,4 @@
-using System.Collections;
+п»їusing System.Collections;
 using UnityEngine;
 using VehicleBehaviour;
 
@@ -24,6 +24,8 @@ public class ObstacleDetectionAI : MonoBehaviour
 	[SerializeField] private int collisionCounter;
 	private bool isTurnBack;
 
+	private ArenaCarDriverAI arenaCarDriverAI;
+	private FallingPlatformsDriverAI fallingPlatformsDriverAI;
 	private WheelVehicle wheelVehicle;
 
 	private Coroutine _coroutine;
@@ -31,35 +33,35 @@ public class ObstacleDetectionAI : MonoBehaviour
 	private void Awake()
 	{
 		wheelVehicle = GetComponent<WheelVehicle>();
+		arenaCarDriverAI = GetComponent<ArenaCarDriverAI>();
+		fallingPlatformsDriverAI = GetComponent<FallingPlatformsDriverAI>();
 	}
 
-    private void OnEnable()
-    {
-        _coroutine = StartCoroutine(WaitAndCheckObstacles());
-    }
+	private void OnEnable()
+	{
+		_coroutine = StartCoroutine(WaitAndCheckObstacles());
+	}
 
-    private IEnumerator WaitAndCheckObstacles()
-    {
-        while (true)
-        {
+	private IEnumerator WaitAndCheckObstacles()
+	{
+		while (true)
+		{
 			CheckObstacles();
-
-			if(inUpdate) yield return new WaitForEndOfFrame();
-			else yield return new WaitForSeconds(0.25f);
+			yield return new WaitForSeconds(0.25f);
 		}
-    }
+	}
 
-    private void OnDestroy()
-    {
+	private void OnDestroy()
+	{
 		if (_coroutine != null) StopCoroutine(_coroutine);
-    }
+	}
 
-    //private void Update()
-    //{
-    //    CheckObstacles();
-    //}
+	//private void Update()
+	//{
+	//    CheckObstacles();
+	//}
 
-    public void CheckObstacles()
+	public void CheckObstacles()
 	{
 		Obstacles = "Null";
 		RaycastHit hit;
@@ -78,7 +80,7 @@ public class ObstacleDetectionAI : MonoBehaviour
 		{                   // Center
 			Debug.DrawRay(hit.point, hit.normal, Color.cyan);
 
-			angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //угол между автомобилем и целевой траекторией
+			angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //ГіГЈГ®Г« Г¬ГҐГ¦Г¤Гі Г ГўГІГ®Г¬Г®ГЎГЁГ«ГҐГ¬ ГЁ Г¶ГҐГ«ГҐГўГ®Г© ГІГ°Г ГҐГЄГІГ®Г°ГЁГҐГ©
 				new Vector2(DirCenter.x, DirCenter.z));
 
 			if (angleObstacle < 0)
@@ -127,8 +129,11 @@ public class ObstacleDetectionAI : MonoBehaviour
 			wheelVehicle.Steering = -1f;
 		}
 
-		if (Obstacles != "Null")// если перед ботом есть препятсвие и он не сдает назад
+		if (Obstacles != "Null")// ГҐГ±Г«ГЁ ГЇГҐГ°ГҐГ¤ ГЎГ®ГІГ®Г¬ ГҐГ±ГІГј ГЇГ°ГҐГЇГїГІГ±ГўГЁГҐ ГЁ Г®Г­ Г­ГҐ Г±Г¤Г ГҐГІ Г­Г Г§Г Г¤
 		{
+			if(arenaCarDriverAI != null) arenaCarDriverAI.Obstacle = true;
+			if (fallingPlatformsDriverAI != null) fallingPlatformsDriverAI.Obstacle = true;
+
 			if (isTurnBack)
 			{
 				wheelVehicle.Throttle = -1f;
@@ -141,6 +146,9 @@ public class ObstacleDetectionAI : MonoBehaviour
 		}
 		else
 		{
+			if (arenaCarDriverAI != null) arenaCarDriverAI.Obstacle = false;
+			if (fallingPlatformsDriverAI != null) fallingPlatformsDriverAI.Obstacle = false;
+
 			isTurnBack = false;
 			collisionCounter = 0;
 		}

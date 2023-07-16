@@ -26,9 +26,9 @@ public class FallingPlatform : MonoBehaviour
     [SerializeField] private List<State> StatesList;
     private int stateNumber;
 
-    private Coroutine waitAndChangeStateCoroutine = null;
+    private bool isPlatformNotFell = true;
 
-    
+    private Coroutine waitAndChangeStateCoroutine = null;
 
     [System.Serializable]
     public class Info
@@ -63,86 +63,9 @@ public class FallingPlatform : MonoBehaviour
 
     private void Update()
     {
-        //Ray ray = new Ray(transform.position, transform.position - direction * 5f);
-
-        //float radianDelta = Mathf.PI * 2f / 6f;
-
-        //for (int i = 0; i < 6; i++)
-        //{
-        //    float radian = i * radianDelta;
-        //    Vector3 direction = new Vector3(Mathf.Cos(radian), 0f, Mathf.Sin(radian));
-
-        //    RaycastHit hit;
-        //    if (!Physics.Raycast(transform.position, transform.position - direction, out hit, 5f, layerMask))
-        //    {
-        //        if (hit.transform != transform)
-        //        {
-        //            Debug.DrawLine(transform.position, transform.position - direction * 5f, Color.red);
-
-        //            Renderer renderer = GetComponentInChildren<Renderer>();
-        //            renderer.material.SetColor("_Color", Color.black);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (hit.transform != transform)
-        //        {
-        //            Debug.DrawLine(transform.position, transform.position - direction * 5f, Color.blue);
-
-        //            Renderer renderer = GetComponentInChildren<Renderer>();
-        //            renderer.material.SetColor("_Color", Color.red);
-
-        //            //peresechenia.Add(hit.transform.gameObject);
-        //        }
-        //    }
-
-        //    //Debug.DrawLine(transform.position, transform.position - direction * 5f, Color.red);
-        //}
-
-
-
-
-        RaycastHit hit;
-
-        foreach (var pos in rayPlacesTransformsList)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (!Physics.Raycast(pos.position, pos.position + pos.forward, out hit, 2f, layerMask))
-            {
-                Renderer renderer = pos.GetComponentInChildren<Renderer>();
-                renderer.material.SetColor("_Color", Color.black);
-            }
-            else
-            {
-                Renderer renderer = pos.GetComponentInChildren<Renderer>();
-                renderer.material.SetColor("_Color", Color.red);
-            }
-
-            Debug.DrawLine(pos.position, pos.position + pos.forward * 2f, Color.red);
-        }
-
-
-        //if (Input.GetKeyDown(KeyCode.T)) Test();
-    }
-
-    private void Test()
-    {
-        RaycastHit hit;
-
-        foreach (var pos in rayPlacesTransformsList)
-        {
-            if (!Physics.Raycast(pos.position, pos.position + pos.forward, out hit, 2f, layerMask))
-            {
-                Renderer renderer = pos.GetComponentInChildren<Renderer>();
-                renderer.material.SetColor("_Color", Color.black);
-            }
-            else
-            {
-                Debug.Log($"HIT {hit.transform.name}");
-                Renderer renderer = pos.GetComponentInChildren<Renderer>();
-                renderer.material.SetColor("_Color", Color.red);
-            }
-
-            Debug.DrawLine(pos.position, pos.position + pos.forward * 2f, Color.red);
+            bool b = IsItNotAnEdgePlatform();
         }
     }
 
@@ -150,16 +73,28 @@ public class FallingPlatform : MonoBehaviour
     {
         bool isItNotAnEdgePlatform = true;
 
+        RaycastHit hit;
 
-        float radianDelta = Mathf.PI * 2f / 6f;
-        var hits = new RaycastHit2D[6];
-        for (int i = 0; i < 6; i++)
+        foreach (var pos in rayPlacesTransformsList)
         {
-            float radian = i * radianDelta;
-            Vector2 direction = new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
-            hits[i] = Physics2D.Raycast(transform.position, direction, 5f);
+            if (!Physics.Raycast(pos.position, pos.forward, out hit, 2f, layerMask))
+            {
+                //Renderer renderer = GetComponentInChildren<Renderer>();
+                ////Renderer renderer = pos.GetComponentInChildren<Renderer>();
+                //renderer.material.SetColor("_Color", Color.black);
 
-            Debug.DrawRay(hits[i].point, hits[i].normal, Color.red);
+                isItNotAnEdgePlatform = false;
+
+                break;
+            }
+            else
+            {
+                //Renderer renderer = GetComponentInChildren<Renderer>();
+                ////Renderer renderer = pos.GetComponentInChildren<Renderer>();
+                //renderer.material.SetColor("_Color", Color.red);
+            }
+
+            //Debug.DrawLine(pos.position, pos.position + pos.forward * 2f, Color.red);
         }
 
         return isItNotAnEdgePlatform;
@@ -167,23 +102,26 @@ public class FallingPlatform : MonoBehaviour
 
     public void ChangeState()
     {
-        StatesList[stateNumber].stateGO.SetActive(false);
-
-        stateNumber++;
-
-        if (waitAndChangeStateCoroutine != null && stateNumber < StatesList.Count) StopCoroutine(waitAndChangeStateCoroutine);
-
-        if (stateNumber < StatesList.Count - 1)
+        if (isPlatformNotFell)
         {
-            StatesList[stateNumber].stateGO.SetActive(true);
+            StatesList[stateNumber].stateGO.SetActive(false);
 
-            waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(false));
-        }
-        else if (stateNumber < StatesList.Count)
-        {
-            StatesList[stateNumber].stateGO.SetActive(true);
+            stateNumber++;
 
-            waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(true));
+            if (waitAndChangeStateCoroutine != null && stateNumber < StatesList.Count) StopCoroutine(waitAndChangeStateCoroutine);
+
+            if (stateNumber < StatesList.Count - 1)
+            {
+                StatesList[stateNumber].stateGO.SetActive(true);
+
+                waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(false));
+            }
+            else if (stateNumber < StatesList.Count)
+            {
+                StatesList[stateNumber].stateGO.SetActive(true);
+
+                waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(true));
+            }
         }
     }
 
@@ -193,6 +131,8 @@ public class FallingPlatform : MonoBehaviour
 
         if (isLastState)
         {
+            isPlatformNotFell = false;
+
             platformStates.SetActive(false);
             platformTrigger.gameObject.layer = 6;
 

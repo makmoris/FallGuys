@@ -298,6 +298,7 @@ namespace VehicleBehaviour {
         void FixedUpdate () {
             // Mesure current speed
             speed = transform.InverseTransformDirection(rb.velocity).z * 3.6f;
+            speed = Math.Clamp(speed, -maxSpeed, maxSpeed);
 
             // Get all the inputs!
             if (isPlayer) {

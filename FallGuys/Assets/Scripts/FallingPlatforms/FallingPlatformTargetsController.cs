@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class FallingPlatformTargetsController : MonoBehaviour
 {
-    [SerializeField] private List<Transform> targetsList = new List<Transform>();
+    [SerializeField] private List<Transform> spawnPlaces;
+
+    private List<Transform> targetsList = new List<Transform>();
 
     public event System.Action<Transform> PlatformFellEvent;
 
@@ -25,5 +27,20 @@ public class FallingPlatformTargetsController : MonoBehaviour
     public List<Transform> GetTargets()
     {
         return targetsList;
+    }
+
+    public Transform GetSpawnPlace()
+    {
+        if (spawnPlaces.Count > 0)
+        {
+            int rand = Random.Range(0, spawnPlaces.Count);
+
+            Transform spawnPlace = spawnPlaces[rand];
+
+            spawnPlaces.Remove(spawnPlace);
+
+            return spawnPlace;
+        }
+        else return null;
     }
 }

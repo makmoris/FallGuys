@@ -2,24 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RaceUI : LevelUI
+public class HoneycombUI : LevelUI
 {
     #region Attack Pointer
     public override void ShowAttackPointer(Transform targetTransform)
     {
-        uiEnemyPointers.ShowAttackPointer(targetTransform);
+        //uiEnemyPointers.ShowAttackPointer(targetTransform);
     }
     public override void ShowingAttackPointer(Transform targetTransform)
     {
-        uiEnemyPointers.ShowingAttackPointer(targetTransform);
+        //uiEnemyPointers.ShowingAttackPointer(targetTransform);
     }
     public override void HideAttackPointer(Transform targetTransform)
     {
-        uiEnemyPointers.HideAttackPointer(targetTransform);
+        //uiEnemyPointers.HideAttackPointer(targetTransform);
     }
     public override void ObjectWithAttackPointerWasDestroyed()
     {
-        uiEnemyPointers.ObjectWithAttackPointerWasDestroyed();
+        //uiEnemyPointers.ObjectWithAttackPointerWasDestroyed();
     }
     #endregion
 

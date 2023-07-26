@@ -19,7 +19,7 @@ public class FallingPlatform : MonoBehaviour
     [SerializeField] private GameObject rayPlaces;
     private List<Transform> rayPlacesTransformsList = new List<Transform>();
 
-    private FallingPlatformTargetsController fallingPlatformTargetsController;
+    private TargetsControllerHoneycomb targetsControllerHoneycomb;
 
     [Space]
     [SerializeField] private float changeStateTime = 1f;
@@ -30,22 +30,9 @@ public class FallingPlatform : MonoBehaviour
 
     private Coroutine waitAndChangeStateCoroutine = null;
 
-    [System.Serializable]
-    public class Info
-    {
-        public Info(GameObject peres, GameObject sharik)
-        {
-            gameObjectPeresechenie = peres;
-            shar = sharik;
-        }
-
-        public GameObject gameObjectPeresechenie;
-        public GameObject shar;
-    }
-
     private void Awake()
     {
-        fallingPlatformTargetsController = transform.GetComponentInParent<FallingPlatformTargetsController>();
+        targetsControllerHoneycomb = transform.GetComponentInParent<TargetsControllerHoneycomb>();
 
         Transform[] rayPlacesTransforms = rayPlaces.GetComponentsInChildren<Transform>();
         for (int i = 0; i < rayPlacesTransforms.Length; i++)
@@ -136,7 +123,7 @@ public class FallingPlatform : MonoBehaviour
             platformStates.SetActive(false);
             platformTrigger.gameObject.layer = 6;
 
-            fallingPlatformTargetsController.PlatformFell(transform);
+            targetsControllerHoneycomb.PlatformFell(transform);
         }
         else
         {

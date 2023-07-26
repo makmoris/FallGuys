@@ -25,7 +25,7 @@ public class ObstacleDetectionAI : MonoBehaviour
 	private bool isTurnBack;
 
 	private ArenaCarDriverAI arenaCarDriverAI;
-	private FallingPlatformsDriverAI fallingPlatformsDriverAI;
+	private HoneycombDriverAI honeycombPlatformsDriverAI;
 	private WheelVehicle wheelVehicle;
 
 	private Coroutine _coroutine;
@@ -34,7 +34,7 @@ public class ObstacleDetectionAI : MonoBehaviour
 	{
 		wheelVehicle = GetComponent<WheelVehicle>();
 		arenaCarDriverAI = GetComponent<ArenaCarDriverAI>();
-		fallingPlatformsDriverAI = GetComponent<FallingPlatformsDriverAI>();
+		honeycombPlatformsDriverAI = GetComponent<HoneycombDriverAI>();
 	}
 
 	private void OnEnable()
@@ -132,7 +132,7 @@ public class ObstacleDetectionAI : MonoBehaviour
 		if (Obstacles != "Null")// åñëè ïåðåä áîòîì åñòü ïðåïÿòñâèå è îí íå ñäàåò íàçàä
 		{
 			if(arenaCarDriverAI != null) arenaCarDriverAI.Obstacle = true;
-			if (fallingPlatformsDriverAI != null) fallingPlatformsDriverAI.Obstacle = true;
+			if (honeycombPlatformsDriverAI != null) honeycombPlatformsDriverAI.Obstacle = true;
 
 			if (isTurnBack)
 			{
@@ -147,7 +147,7 @@ public class ObstacleDetectionAI : MonoBehaviour
 		else
 		{
 			if (arenaCarDriverAI != null) arenaCarDriverAI.Obstacle = false;
-			if (fallingPlatformsDriverAI != null) fallingPlatformsDriverAI.Obstacle = false;
+			if (honeycombPlatformsDriverAI != null) honeycombPlatformsDriverAI.Obstacle = false;
 
 			isTurnBack = false;
 			collisionCounter = 0;

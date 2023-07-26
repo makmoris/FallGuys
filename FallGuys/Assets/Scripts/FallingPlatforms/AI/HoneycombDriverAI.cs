@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class FallingPlatformsDriverAI : MonoBehaviour
+public class HoneycombDriverAI : MonoBehaviour
 {
     [Header("Точки Интереса")]
     public List<Transform> targets;
@@ -24,7 +24,7 @@ public class FallingPlatformsDriverAI : MonoBehaviour
         set => obstacle = value;
     }
 
-    private FallingPlatformTargetsController fallingPlatformTargetsController;
+    private TargetsControllerHoneycomb targetsControllerHoneycomb;
 
     private void Awake()
     {
@@ -43,13 +43,13 @@ public class FallingPlatformsDriverAI : MonoBehaviour
         // поставить ограничение по скорости, а то улетают сильно. Мб кинуть замедление при соприкосновении с препятсвием
     }
 
-    public void SetTargetController(FallingPlatformTargetsController fallingPlatformTargetsController)// from installer
+    public void SetTargetController(TargetsControllerHoneycomb fallingPlatformTargetsController)// from installer
     {
-        this.fallingPlatformTargetsController = fallingPlatformTargetsController;
+        this.targetsControllerHoneycomb = fallingPlatformTargetsController;
 
-        this.fallingPlatformTargetsController.PlatformFellEvent += RemoveFromTargetsList;
+        this.targetsControllerHoneycomb.PlatformFellEvent += RemoveFromTargetsList;
 
-        targets = this.fallingPlatformTargetsController.GetTargets();
+        targets = this.targetsControllerHoneycomb.GetTargets();
 
         targetReached = true;
         ChooseTargetPosition(targets[0].position);
@@ -158,7 +158,6 @@ public class FallingPlatformsDriverAI : MonoBehaviour
             // вместо target[rand] обращаемся к TargetController и у него берем цель для следования. Т.к. цели удаляются 
 
             int rand = Random.Range(0, targets.Count);
-            Debug.Log($"Random form 0 to {targets.Count} = {rand}");
 
             if (targetPositionTransform != targets[rand])
             {
@@ -219,6 +218,6 @@ public class FallingPlatformsDriverAI : MonoBehaviour
 
     private void OnDisable()
     {
-        fallingPlatformTargetsController.PlatformFellEvent -= RemoveFromTargetsList;
+        targetsControllerHoneycomb.PlatformFellEvent -= RemoveFromTargetsList;
     }
 }

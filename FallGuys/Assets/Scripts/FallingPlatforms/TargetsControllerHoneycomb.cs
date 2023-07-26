@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FallingPlatformTargetsController : MonoBehaviour
+public class TargetsControllerHoneycomb : MonoBehaviour
 {
     [SerializeField] private List<Transform> spawnPlaces;
 

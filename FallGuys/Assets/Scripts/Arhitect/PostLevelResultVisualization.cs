@@ -7,7 +7,7 @@ public abstract class PostLevelResultVisualization : MonoBehaviour
     protected GameManager gameManager;
     public GameManager GameManager { set => gameManager = value; }
 
-    public abstract void ShowPlayerWinWindow(List<string> losersNames, float timeBeforeLoadNextLevel);
+    public abstract void ShowPlayerWinWindow(float timeBeforeLoadNextLevel);
 
     public abstract void ShowPlayerLoseWindow();
 }

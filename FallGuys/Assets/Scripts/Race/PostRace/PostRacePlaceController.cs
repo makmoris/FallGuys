@@ -41,7 +41,6 @@ public class PostRacePlaceController : MonoBehaviour
         {
             if(postRacePlacesList.Count > 0)
             {
-                Debug.Log($"JOPA Winner {winDriver.name} active");
                 winDriver.gameObject.SetActive(true);
 
                 PostRacePlace postRacePlace = postRacePlacesList[0];
@@ -64,17 +63,11 @@ public class PostRacePlaceController : MonoBehaviour
             }
         }
 
-        List<string> losersNames = new List<string>();
-
         foreach (var loserDriver in losersList)
         {
             if (postRacePlacesList.Count > 0)
             {
                 loserDriver.gameObject.SetActive(true);
-
-                PlayerName playerName = loserDriver.gameObject.GetComponent<PlayerName>();
-                if (playerName != null) losersNames.Add(playerName.Name);
-                else throw new System.Exception("GameObject have not PlayerName component");
 
                 PostRacePlace postRacePlace = postRacePlacesList[0];
 
@@ -110,7 +103,7 @@ public class PostRacePlaceController : MonoBehaviour
 
         if (currentPlayerIsWinner)
         {
-            postRaceCanvasUIController.ShowPlayerWinWindow(losersNames, timeBeforeLoadNextLevel);
+            postRaceCanvasUIController.ShowPlayerWinWindow(timeBeforeLoadNextLevel);
         }
         else
         {

@@ -41,12 +41,9 @@ public class RaceInstaller : Installer
                 // PostLevelResultVisualization
                 postLevelResultVisualization.GameManager = gameManager;
 
-                // RaceProgressController
-                //raceProgressController.GameManager = gameManager;
-                if (startFromLobby) raceProgressController.SetNumberOfWinners(gameManager.GetNumberOfWinners());
-
-                raceProgressController.AddPlayer(playerGO);
-                raceProgressController.SetCurrentPlayer(playerGO);
+                // levelProgressController
+                levelProgressController.AddPlayer(playerGO);
+                levelProgressController.SetCurrentPlayer(playerGO);
 
                 // Spawn Place
                 Transform spawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();

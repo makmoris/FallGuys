@@ -41,7 +41,7 @@ public class ArenaPostPlaceUIController : PostLevelResultVisualization
         gameManager.StartGameStage();
     }
 
-    public override void ShowPlayerWinWindow(List<string> losersNames, float timeBeforeLoadNextLevel)
+    public override void ShowPlayerWinWindow(float timeBeforeLoadNextLevel)
     {
         throw new System.NotImplementedException();
     }

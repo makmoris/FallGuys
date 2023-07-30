@@ -13,6 +13,7 @@ public class PostRaceCanvasUIController : PostLevelResultVisualization
     [Header("Lose Window")]
     [SerializeField] private Button backToLobbyButton;
 
+
     private void Awake()
     {
         if (backToLobbyButton.gameObject.activeSelf) backToLobbyButton.gameObject.SetActive(false);
@@ -23,10 +24,8 @@ public class PostRaceCanvasUIController : PostLevelResultVisualization
         textWithNumberOfWinners.text = numberOfWinners.ToString();
     }
 
-    public override void ShowPlayerWinWindow(List<string> losersNames, float timeBeforeLoadNextScene)
+    public override void ShowPlayerWinWindow(float timeBeforeLoadNextScene)
     {
-        gameManager.EliminateLosersFromList(losersNames);
-
         StartCoroutine(WaitAndLoadNextLevel(timeBeforeLoadNextScene));
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class ArenaProgressController : MonoBehaviour
+public class ArenaProgressController : LevelProgressController
 {
     [Header("Arena progress UI Controller")]
     [SerializeField] private ArenaProgressUIController arenaProgressUIController;
@@ -53,8 +53,7 @@ public class ArenaProgressController : MonoBehaviour
         //GameCameraAudioListenerController.Instance.DeactivateAudioListener();// изначально листенер только на самом авто игрока, чтобы правильно слышать звуки
     }
 
-
-    public void SetNumberOfPlayers(int _numberOfPlayers)// стартовая точка
+    public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
     {
         numberOfPlayers = _numberOfPlayers;
         numberOfFrags = 0;
@@ -62,6 +61,15 @@ public class ArenaProgressController : MonoBehaviour
 
         UpdateLeftText();
         UpdateFragText();
+    }
+
+    public override void SetCurrentPlayer(GameObject currentPlayerGO)
+    {
+        playerGO = currentPlayerGO;
+    }
+    public override void AddPlayer(GameObject playerGO)
+    {
+        
     }
 
     public void AddFrag()// вызывается из VisualIntermediary
@@ -182,11 +190,6 @@ public class ArenaProgressController : MonoBehaviour
             GameObject chield = transform.GetChild(i).gameObject;
             if (chield.activeSelf) chield.SetActive(false);
         }
-    }
-
-    public void SetCurrentPlayer(GameObject playerObj)
-    {
-        playerGO = playerObj;
     }
 
     private void UpdateLeftText()

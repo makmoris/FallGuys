@@ -19,7 +19,10 @@ public abstract class Installer : MonoBehaviour
     [Header("Scene Controllers")]
     [SerializeField] protected LevelUI levelUI;
     [SerializeField] protected LevelUINotifications levelUINotifications;
+    [Space]
     [SerializeField] protected CinemachineVirtualCamera camCinema;
+    [Space]
+    [SerializeField] protected LevelProgressController levelProgressController;
     [SerializeField] protected PostLevelResultVisualization postLevelResultVisualization;
 
     protected GameManager gameManager;
@@ -51,6 +54,9 @@ public abstract class Installer : MonoBehaviour
         {
             LoadDataFromGameManager();
             numberOfPlayers = playersData.Count;
+
+            levelProgressController.SetNumberOfPlayersAndWinners(playersData.Count, gameManager.GetNumberOfWinners());
+            levelProgressController.GameManager = gameManager;
         }
         //else numberOfPlayers = _enemiesSettings.Count + 1;
 

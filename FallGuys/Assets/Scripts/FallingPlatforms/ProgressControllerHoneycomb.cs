@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProgressControllerHoneycomb : MonoBehaviour
+public class ProgressControllerHoneycomb : LevelProgressController
 {
     [Header("Camera")]
     [SerializeField] private CameraFollowingOnOtherPlayers gameCamCinema;
@@ -11,37 +11,37 @@ public class ProgressControllerHoneycomb : MonoBehaviour
     [SerializeField] private ProgressUIControllerHoneycomb progressUIControllerHoneycomb;
 
     [Header("Falling Platform Settings")]
-    [SerializeField] private int numberOfWinners;// сколько должно пройти
+    private int numberOfWinners;
     private int numberOfFallens;// сколько должно упасть
     private int currentNumberOfFallens;
 
     private GameObject currentPlayer;
 
     [SerializeField]private List<GameObject> playersList = new List<GameObject>();
-    [SerializeField]private List<GameObject> losersList = new List<GameObject>();
 
-    public void SetNumberOfWinners(int _numberOfWinners, int _numberOfPlayers)
+
+    public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
     {
         numberOfWinners = _numberOfWinners;
         numberOfFallens = _numberOfPlayers - _numberOfWinners;
         progressUIControllerHoneycomb.SetNumberOfFallens(numberOfFallens);
     }
 
-    public void AddPlayer(GameObject playerGO)
+    public override void AddPlayer(GameObject playerGO)
     {
         playersList.Add(playerGO);
 
         gameCamCinema.AddDriver(playerGO);
     }
 
-    public void SetCurrentPlayer(GameObject player)
+    public override void SetCurrentPlayer(GameObject currentPlayerGO)
     {
-        currentPlayer = player;
+        currentPlayer = currentPlayerGO;
     }
 
     public void PlayerOut(GameObject playerGO)
     {
-        losersList.Add(playerGO);
+        _losersList.Add(playerGO);
         playersList.Remove(playerGO);
 
         currentNumberOfFallens++;

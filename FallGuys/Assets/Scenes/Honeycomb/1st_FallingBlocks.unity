@@ -1970,13 +1970,13 @@ MonoBehaviour:
   levelUI: {fileID: 536583278}
   levelUINotifications: {fileID: 881110525}
   camCinema: {fileID: 1664892953}
+  levelProgressController: {fileID: 1732549574}
   postLevelResultVisualization: {fileID: 506349698}
   _playerPrefab: {fileID: 7434162804505329504, guid: ae2fbac953aaaf44c8ca9c224139eefe, type: 3}
   _playerDefaultData: {fileID: 11400000, guid: 5b42e11ed02c3224e8b5ace27041ffa4, type: 2}
   _playerLimitsData: {fileID: 11400000, guid: aa050a70c8b4fc74488bf20cfcfbfe06, type: 2}
   _playerWeapon: {fileID: 7192854324361368598, guid: 6a3b0bab3080b7f49b210d1b8f972cb4, type: 3}
   targetsControllerHoneycomb: {fileID: 1577890072}
-  progressControllerHoneycomb: {fileID: 1732549574}
   honeycombDriverAIPrefab: {fileID: 3572686995064496998, guid: 1edcd73bc094dbe4d825b6a49918368c, type: 3}
   fallingPlatformsAIDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
 --- !u!4 &209433301
@@ -6483,6 +6483,7 @@ MonoBehaviour:
   levelUI: {fileID: 0}
   levelUINotifications: {fileID: 0}
   camCinema: {fileID: 1664892953}
+  levelProgressController: {fileID: 0}
   postLevelResultVisualization: {fileID: 506349698}
   _playerPrefab: {fileID: 7434162804505329504, guid: ae2fbac953aaaf44c8ca9c224139eefe, type: 3}
   _playerDefaultData: {fileID: 11400000, guid: 5b42e11ed02c3224e8b5ace27041ffa4, type: 2}
@@ -15382,11 +15383,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508085, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1.5980174e-15
+      value: 1.5980174e-15
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508085, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 6.937669e-16
+      value: -6.937669e-16
       objectReference: {fileID: 0}
     - target: {fileID: 2868099996627508086, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_IgnoreTimeScale
@@ -15494,11 +15495,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1.5980174e-15
+      value: 1.5980174e-15
       objectReference: {fileID: 0}
     - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 6.937669e-16
+      value: -6.937669e-16
       objectReference: {fileID: 0}
     - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -16309,7 +16310,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameCamCinema: {fileID: 1664892955}
   progressUIControllerHoneycomb: {fileID: 230963136}
-  numberOfFallens: 0
+  playersList: []
+  losersList: []
 --- !u!4 &1751003440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8085637636619316828, guid: b25aa2adffb113041abf7b7695b49f3b, type: 3}

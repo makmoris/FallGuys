@@ -6,7 +6,6 @@ public class HoneycombInstaller : Installer
 {
     [Header("Falling Platform Controllers")]
     [SerializeField] TargetsControllerHoneycomb targetsControllerHoneycomb;
-    [SerializeField] ProgressControllerHoneycomb progressControllerHoneycomb;
 
     [Header("Falling Platform AI")]
     [SerializeField] HoneycombDriverAI honeycombDriverAIPrefab;
@@ -14,11 +13,6 @@ public class HoneycombInstaller : Installer
 
     protected override void InitializePlayers()
     {
-        Debug.Log(playersData.Count);
-
-        // RaceProgressController
-        if (startFromLobby) progressControllerHoneycomb.SetNumberOfWinners(gameManager.GetNumberOfWinners(), playersData.Count);
-
         foreach (var _player in playersData)
         {
             if (!_player.IsAI)
@@ -48,11 +42,9 @@ public class HoneycombInstaller : Installer
                 // PostLevelResultVisualization
                 postLevelResultVisualization.GameManager = gameManager;
 
-                //// RaceProgressController
-                //if (startFromLobby) progressControllerHoneycomb.SetNumberOfWinners(gameManager.GetNumberOfWinners(), playersData.Count);
-
-                progressControllerHoneycomb.AddPlayer(playerGO);
-                progressControllerHoneycomb.SetCurrentPlayer(playerGO);
+                //// levelProgressController
+                levelProgressController.AddPlayer(playerGO);
+                levelProgressController.SetCurrentPlayer(playerGO);
 
                 // Spawn Place
                 Transform spawnPlace = targetsControllerHoneycomb.GetSpawnPlace();
@@ -89,8 +81,8 @@ public class HoneycombInstaller : Installer
                     weaponAI.IsAI(true);
                     weaponAI.DisableWeapon(aiPlayerGO);
 
-                    // RaceProgressController
-                    progressControllerHoneycomb.AddPlayer(aiPlayerGO);
+                    // levelProgressController
+                    levelProgressController.AddPlayer(aiPlayerGO);
 
                     // Targets Controller
                     aiPlayerGO.GetComponent<HoneycombDriverAI>().SetTargetController(targetsControllerHoneycomb);

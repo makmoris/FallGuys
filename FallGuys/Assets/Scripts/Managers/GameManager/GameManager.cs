@@ -32,8 +32,13 @@ public class GameManager : MonoBehaviour
     private int currentGameStage;
     private int currentGameMode;
 
-    [SerializeField]private List<IPlayerData> players = new List<IPlayerData>();
+    private List<IPlayerData> players = new List<IPlayerData>();
     public List<IPlayerData> Players => players;
+
+    [Space]
+    [SerializeField] private List<string> testLosersNames;
+    private List<IPlayerData> losersList = new List<IPlayerData>();// first in list - last in award
+    private IPlayerData currentPlayer;
 
     private bool isFirstStart = true;
 
@@ -113,12 +118,16 @@ public class GameManager : MonoBehaviour
         isFirstStart = false;
     }
 
+    
+
     private void CreatePlayersForOneGameSession()
     {
         ClearPlayersForOneGameSession();
 
         Player player = CreatePlayer();
         players.Add(player);
+
+        currentPlayer = player;
 
         for (int i = 0; i < gameStagesList[currentGameStage].numberOfPlayers - 1; i++)
         {
@@ -130,6 +139,7 @@ public class GameManager : MonoBehaviour
     private void ClearPlayersForOneGameSession()
     {
         players.Clear();
+        losersList.Clear();
     }
 
     private Player CreatePlayer()
@@ -176,13 +186,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("ELIMINATE");
         for (int i = 0; i < losersNames.Count; i++)
         {
-            foreach (var ai in players)
+            foreach (var player in players)
             {
-                string aiName = ai.Name;
+                string aiName = player.Name;
 
                 if (aiName == losersNames[i])
                 {
-                    players.Remove(ai);
+                    players.Remove(player);
+                    losersList.Add(player);
+                    testLosersNames.Add(player.Name);
                     break;
                 }
             }

@@ -54,7 +54,6 @@ public class ArenaInstaller : Installer
                 postLevelResultVisualization.GameManager = gameManager;
 
                 // ArenaProgressController
-                arenaProgressController.SetNumberOfPlayers(numberOfPlayers);
 
                 // Spawn Place
                 Vector3 pos = targetsController.GetStartSpawnPosition(spawnCounter).position;

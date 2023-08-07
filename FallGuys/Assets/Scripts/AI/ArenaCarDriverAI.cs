@@ -29,6 +29,7 @@ public class ArenaCarDriverAI : MonoBehaviour
     [SerializeField]private int playerWasTargetCounter;
     [SerializeField] private int bonusWasTargetCounter;
     private Transform playerTransform;
+    private Transform targetForDuelTransform;
 
     private void Awake()
     {
@@ -159,7 +160,7 @@ public class ArenaCarDriverAI : MonoBehaviour
                 }
             }
 
-            if (isDuel && playerTransform != null)// для дуэли. Выбираем только между игроком и бонусами
+            if (isDuel && targetForDuelTransform != null)// для дуэли. Выбираем только между игроком и бонусами
             {
                 //difficultyLevelAI.
                 //int randomDuel = Random.Range(0, сложность бота, как часто он выбирает игрока на дуели);
@@ -172,7 +173,7 @@ public class ArenaCarDriverAI : MonoBehaviour
 
                         if(randVal == 0)
                         {
-                            targetPositionTransform = playerTransform;
+                            targetPositionTransform = targetForDuelTransform;
                         }
                         else
                         {
@@ -186,7 +187,7 @@ public class ArenaCarDriverAI : MonoBehaviour
 
                         if(playerWasTargetCounter == 0)
                         {
-                            targetPositionTransform = playerTransform;
+                            targetPositionTransform = targetForDuelTransform;
                             playerWasTargetCounter++;
                         }
                         else
@@ -213,7 +214,7 @@ public class ArenaCarDriverAI : MonoBehaviour
 
                         if (playerWasTargetCounter == 0)
                         {
-                            targetPositionTransform = playerTransform;
+                            targetPositionTransform = targetForDuelTransform;
                             playerWasTargetCounter++;
                         }
                         else
@@ -228,11 +229,11 @@ public class ArenaCarDriverAI : MonoBehaviour
 
                     case DuelType.playerOnly:
 
-                        targetPositionTransform = playerTransform;
+                        targetPositionTransform = targetForDuelTransform;
                         break;
                 }
             }
-            else if(playerTransform == null)
+            else if(targetForDuelTransform == null)
             {
                 isDuel = false;
                 targetPositionTransform = targets[0];
@@ -306,12 +307,14 @@ public class ArenaCarDriverAI : MonoBehaviour
         isTargetReachedFirst = true;
     }
 
-    public void StartDuel()// вызывается LevelProgressController, когда остается один бот и игрок
+    public void StartDuel(Transform _targetDuelTransform)// вызывается LevelProgressController, когда остается один бот и игрок
     {
         isDuel = true;
 
         targetReached = true;
-        ChooseTargetPosition(playerTransform.position);
+
+        targetForDuelTransform = _targetDuelTransform;
+        ChooseTargetPosition(targetForDuelTransform.position);
     }
 
     public void SetNewPlayerTargetFromDetector(Transform transform)

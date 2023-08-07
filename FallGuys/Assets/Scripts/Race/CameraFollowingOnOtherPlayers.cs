@@ -6,20 +6,19 @@ using UnityEngine.EventSystems;
 
 public class CameraFollowingOnOtherPlayers : MonoBehaviour
 {
+    [SerializeField] private UIEnemyPointers uIEnemyPointers;
+
     private CinemachineVirtualCamera camCinema;
 
-    [SerializeField]private List<GameObject> drivers = new List<GameObject>();
-    private GameObject currentDriver;
-    [SerializeField]private int targetIndex = 0;
+    private List<GameObject> drivers = new List<GameObject>();
+    [SerializeField]private GameObject currentDriver;
+    private int targetIndex = 0;
 
     private bool isMobile;
 
-    [SerializeField]private bool canFollowOnOtherPlayers;
-    public bool CanFollowOnOtherPlayers
-    {
-        get => canFollowOnOtherPlayers;
-        set => canFollowOnOtherPlayers = value;
-    }
+    private bool canFollowOnOtherPlayers;
+
+    private string key = "LastObservableName";
 
     private void Awake()
     {
@@ -54,9 +53,31 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
         }
     }
 
-    public void AddDriver(GameObject driver)
+    public void EnableObserverMode()
+    {
+        canFollowOnOtherPlayers = true;
+
+        SetTarget();
+    }
+
+    public void EnablePlayerMode()
+    {
+        canFollowOnOtherPlayers = false;
+    }
+
+    public void AddDriver(GameObject driver, bool isCurrentPlayer)
     {
         drivers.Add(driver);
+
+        if (isCurrentPlayer)
+        {
+            currentDriver = driver;
+
+            camCinema.m_Follow = currentDriver.transform;
+            camCinema.m_LookAt = currentDriver.transform;
+
+            uIEnemyPointers.ChangeCurrentTransform(currentDriver.transform);
+        }
     }
 
     public void RemoveDriver(GameObject driver)
@@ -66,7 +87,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
         drivers.Remove(driver);
     }
 
-    public void ChangeTarget()
+    private void ChangeTarget()
     {
         if(drivers.Count > 0)
         {
@@ -79,9 +100,37 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
 
             currentDriver = drivers[targetIndex];
 
-            //int nextIndex = targetIndex + 1;
-            //if (nextIndex < drivers.Count) targetIndex = nextIndex;
-            //else targetIndex = 0;
+            uIEnemyPointers.ChangeCurrentTransform(currentDriver.transform);
+
+            PlayerName currentDriverName = currentDriver.GetComponent<PlayerName>();
+            if(currentDriverName != null)
+            {
+                string currentName = currentDriverName.Name;
+                PlayerPrefs.SetString(key, currentName);
+            }
         }
+    }
+
+    private void SetTarget()
+    {
+        string lastObservableName = PlayerPrefs.GetString(key, "default");
+
+        bool continueInObserverMode = false;
+
+        foreach (var driver in drivers)
+        {
+            PlayerName playerName = driver.GetComponent<PlayerName>();
+            if(playerName != null)
+            {
+                if(lastObservableName == playerName.Name)
+                {
+                    currentDriver = driver;
+                    continueInObserverMode = true;
+                    break;
+                }
+            }
+        }
+
+        if (!continueInObserverMode) ChangeTarget();
     }
 }

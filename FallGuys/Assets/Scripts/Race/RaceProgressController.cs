@@ -75,8 +75,6 @@ public class RaceProgressController : LevelProgressController
         }
 
         wheelVehiclePlayer.Handbrake = true;
-
-        gameCamCinema.AddDriver(playerGO);
     }
 
     public RaceStartSector GetRaceStartSector()
@@ -141,7 +139,7 @@ public class RaceProgressController : LevelProgressController
                 if (wheelVehicleDriver.gameObject == currentPlayer)
                 {
                     currentPlayerWasFinished = true;
-                    raceProgressUIController.ShowPlayerCongratulations();
+                    raceProgressUIController.ShowCongratilations();
 
                     raceProgressUIController.CongratulationsOverEvent += CongratulationsOver;
                 }
@@ -153,7 +151,7 @@ public class RaceProgressController : LevelProgressController
                 if (wheelVehicleDriver.gameObject == currentPlayer)
                 {
                     currentPlayerWasFinished = true;
-                    raceProgressUIController.ShowPlayerCongratulations();
+                    raceProgressUIController.ShowCongratilations();
 
                     raceProgressUIController.CongratulationsOverEvent += CongratulationsOver;
                 }
@@ -161,7 +159,7 @@ public class RaceProgressController : LevelProgressController
                 // если гонка завершилась, а игрок не дошел до финиша, значит он проиграл
                 if (!currentPlayerWasFinished)
                 {
-                    raceProgressUIController.ShowPlayerLose();
+                    raceProgressUIController.ShowLosingPanel();
 
                     raceProgressUIController.LoseShowingOverEvent += LoseShowingOver;
                 }
@@ -182,7 +180,7 @@ public class RaceProgressController : LevelProgressController
     private void ShowPostRacingWindow()
     {
         Debug.Log("SHOW POST RACING WINDOW");
-        gameCamCinema.CanFollowOnOtherPlayers = false;
+        //gameCamCinema.EnablePlayerMode();
 
         List<WheelVehicle> losersListWheelVehicle = new List<WheelVehicle>();
 
@@ -220,7 +218,7 @@ public class RaceProgressController : LevelProgressController
         SortLosersByPosition();
         SendListOfLosersNamesToGameManager();
 
-        postRacePlaceController.StartPostRacing(winnersList, losersListWheelVehicle, numberOfWinners, currentPlayerWasFinished);
+        postRacePlaceController.StartPostRacing(winnersList, losersListWheelVehicle, numberOfWinners);
     }
 
     private void SortLosersByPosition()
@@ -251,10 +249,9 @@ public class RaceProgressController : LevelProgressController
             // если гонка не окончена, то следим за другими
             Debug.Log("ZAPUSK CAMERY");
 
-            gameCamCinema.CanFollowOnOtherPlayers = true;
-            gameCamCinema.ChangeTarget();
+            gameCamCinema.EnableObserverMode();
 
-            raceProgressUIController.ShowCameraHintText();
+            raceProgressUIController.ShowCameraHint();
         }
         else
         {
@@ -265,6 +262,8 @@ public class RaceProgressController : LevelProgressController
     private void LoseShowingOver()
     {
         raceProgressUIController.LoseShowingOverEvent -= LoseShowingOver;
+
+        raceProgressUIController.ShowObserverUI();
 
         // гонка окончена. Показ сплющивания 
         ShowPostRacingWindow();

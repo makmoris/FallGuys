@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ArenaPostPlaceUIController : PostLevelResultVisualization
+public class ArenaPostPlaceUIController : PostLevelUIController
 {
     [Header("Win window")]
     [SerializeField] private GameObject winWindow;
@@ -26,7 +26,7 @@ public class ArenaPostPlaceUIController : PostLevelResultVisualization
         goldWWText.text = $"{amountOfGoldReward}";
         cupsWWText.text = $"{amountOfCupReward}";
 
-        gameManager.StartGameStage();
+        _gameManager.StartGameStage();
     }
 
     public void ShowPlayerLoseWindow(int numberOfFrags, int amountOfGoldReward, int amountOfCupReward)
@@ -38,16 +38,6 @@ public class ArenaPostPlaceUIController : PostLevelResultVisualization
         goldLWText.text = $"{amountOfGoldReward}";
         cupsLWText.text = $"{amountOfCupReward}";
 
-        gameManager.StartGameStage();
-    }
-
-    public override void ShowPlayerWinWindow(float timeBeforeLoadNextLevel)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void ShowPlayerLoseWindow()
-    {
-        throw new System.NotImplementedException();
+        _gameManager.StartGameStage();
     }
 }

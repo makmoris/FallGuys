@@ -40,6 +40,9 @@ public class GameManager : MonoBehaviour
     private List<IPlayerData> losersList = new List<IPlayerData>();// first in list - last in award
     private IPlayerData currentPlayer;
 
+    private bool isObserverMode;
+    public bool IsObserverMode => isObserverMode;
+
     private bool isFirstStart = true;
 
     private NameGenerator nameGenerator;
@@ -83,6 +86,7 @@ public class GameManager : MonoBehaviour
             CreatePlayersForOneGameSession();
 
             isFirstStart = false;
+            isObserverMode = false;
 
             sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
         }
@@ -195,6 +199,9 @@ public class GameManager : MonoBehaviour
                     players.Remove(player);
                     losersList.Add(player);
                     testLosersNames.Add(player.Name);
+
+                    if (aiName == currentPlayer.Name) isObserverMode = true;
+
                     break;
                 }
             }

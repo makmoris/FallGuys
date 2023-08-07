@@ -51,7 +51,7 @@ public class PlayerEffector
             bumper.OnBonusGot += ApplyBonus;
             bumper.OnBonusGotWithGameObject += ApplyBonus;
         }
-        else Debug.LogError("Component Bumber not found");
+        else Debug.LogError("Component Bumper not found");
 
         VisualIntermediary intermediary = _playerGO.GetComponent<VisualIntermediary>();
         if (intermediary != null)
@@ -98,7 +98,7 @@ public class PlayerEffector
             bumper.OnBonusGot += ApplyBonus;
             bumper.OnBonusGotWithGameObject += ApplyBonus;
         }
-        else Debug.LogError("Component Bumber not found");
+        else Debug.LogError("Component Bumper not found");
 
         VisualIntermediary intermediary = _playerAIGO.GetComponent<VisualIntermediary>();
         if (intermediary != null)

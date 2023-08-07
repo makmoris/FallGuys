@@ -4,39 +4,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class PostRaceCanvasUIController : PostLevelResultVisualization
+public class PostRaceCanvasUIController : PostLevelUIController
 {
     [SerializeField] private TextMeshProUGUI textWithNumberOfWinners;
-
-    [Header("Win Window")]
-
-    [Header("Lose Window")]
-    [SerializeField] private Button backToLobbyButton;
-
-
-    private void Awake()
-    {
-        if (backToLobbyButton.gameObject.activeSelf) backToLobbyButton.gameObject.SetActive(false);
-    }
 
     public void SetNumberOfWinnersText(int numberOfWinners)
     {
         textWithNumberOfWinners.text = numberOfWinners.ToString();
-    }
-
-    public override void ShowPlayerWinWindow(float timeBeforeLoadNextScene)
-    {
-        StartCoroutine(WaitAndLoadNextLevel(timeBeforeLoadNextScene));
-    }
-
-    public override void ShowPlayerLoseWindow()
-    {
-        backToLobbyButton.gameObject.SetActive(true);
-    }
-
-    IEnumerator WaitAndLoadNextLevel(float timeBeforeLoadNextScene)
-    {
-        yield return new WaitForSeconds(timeBeforeLoadNextScene);
-        gameManager.StartGameStage();
     }
 }

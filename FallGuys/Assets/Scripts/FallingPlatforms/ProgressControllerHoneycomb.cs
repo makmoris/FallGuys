@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class ProgressControllerHoneycomb : LevelProgressController
 {
-    [Header("Camera")]
-    [SerializeField] private CameraFollowingOnOtherPlayers gameCamCinema;
-
     [Header("Falling Platform Progress UI Controller")]
     [SerializeField] private ProgressUIControllerHoneycomb progressUIControllerHoneycomb;
 
@@ -30,8 +27,6 @@ public class ProgressControllerHoneycomb : LevelProgressController
     public override void AddPlayer(GameObject playerGO)
     {
         playersList.Add(playerGO);
-
-        gameCamCinema.AddDriver(playerGO);
     }
 
     public override void SetCurrentPlayer(GameObject currentPlayerGO)

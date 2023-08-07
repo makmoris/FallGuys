@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class PostRacePlaceController : MonoBehaviour
+public class PostRacePlaceController : PostLevelPlaceController
 {
     [Header("Cameras")]
     [SerializeField] private GameObject gameRaceCamera;
@@ -34,7 +34,7 @@ public class PostRacePlaceController : MonoBehaviour
         FillPostRacePlacesList();
     }
 
-    public void StartPostRacing(List<WheelVehicle> winnersList, List<WheelVehicle> losersList, int numberOfWinners, bool currentPlayerIsWinner)
+    public void StartPostRacing(List<WheelVehicle> winnersList, List<WheelVehicle> losersList, int numberOfWinners)
     {
         //размещаем тачки
         foreach (var winDriver in winnersList)
@@ -99,16 +99,9 @@ public class PostRacePlaceController : MonoBehaviour
         gameRaceCamera.SetActive(false);
 
         postRaceCanvas.SetActive(true);
-        gameRaceCanvas.SetActive(false);
+        //gameRaceCanvas.SetActive(false);
 
-        if (currentPlayerIsWinner)
-        {
-            postRaceCanvasUIController.ShowPlayerWinWindow(timeBeforeLoadNextLevel);
-        }
-        else
-        {
-            postRaceCanvasUIController.ShowPlayerLoseWindow();
-        }
+        StartCoroutine(WaitAndLoadNextLevel());
     }
 
     private void FillPostRacePlacesList()
@@ -128,5 +121,11 @@ public class PostRacePlaceController : MonoBehaviour
             postRacePlacesList[j] = postRacePlacesList[i];
             postRacePlacesList[i] = tmp;
         }
+    }
+
+    IEnumerator WaitAndLoadNextLevel()
+    {
+        yield return new WaitForSeconds(timeBeforeLoadNextLevel);
+        _gameManager.StartGameStage();
     }
 }

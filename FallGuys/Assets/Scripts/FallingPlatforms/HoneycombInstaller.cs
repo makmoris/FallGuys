@@ -24,7 +24,7 @@ public class HoneycombInstaller : Installer
 
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
-                playerName.Initialize(player.Name, camCinema.transform);
+                playerName.Initialize(player.Name, cameraFollowingOnOtherPlayers.transform);
                 playerName.HideNameDisplay();
 
                 // Weapon
@@ -35,12 +35,9 @@ public class HoneycombInstaller : Installer
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
-                // Cinemachine
-                camCinema.m_Follow = playerGO.transform;
-                camCinema.m_LookAt = playerGO.transform;
+                // Camera
+                cameraFollowingOnOtherPlayers.AddDriver(playerGO, true);
 
-                // PostLevelResultVisualization
-                postLevelResultVisualization.GameManager = gameManager;
 
                 //// levelProgressController
                 levelProgressController.AddPlayer(playerGO);
@@ -68,7 +65,7 @@ public class HoneycombInstaller : Installer
 
                     // Set Name
                     PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
-                    playerName.Initialize(playerAI.Name, camCinema.transform);
+                    playerName.Initialize(playerAI.Name, cameraFollowingOnOtherPlayers.transform);
 
                     // VehicleCustomizer
                     VehicleCustomizer aiVehicleCustomizer = aiPlayerGO.GetComponent<VehicleCustomizer>();
@@ -80,6 +77,9 @@ public class HoneycombInstaller : Installer
                     weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
                     weaponAI.IsAI(true);
                     weaponAI.DisableWeapon(aiPlayerGO);
+
+                    // Camera
+                    cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);
 
                     // levelProgressController
                     levelProgressController.AddPlayer(aiPlayerGO);

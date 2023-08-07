@@ -7,7 +7,9 @@ public abstract class LevelProgressController : MonoBehaviour, IProgressControll
     protected GameManager _gameManager;
     public GameManager GameManager { set => _gameManager = value; }
 
-    [SerializeField]protected List<GameObject> _losersList = new List<GameObject>();
+    [SerializeField]protected List<GameObject> _playersList = new List<GameObject>();
+    [SerializeField]protected List<GameObject> _winnersList = new List<GameObject>();
+    [SerializeField] protected List<GameObject> _losersList = new List<GameObject>();
 
     protected void SendListOfLosersNamesToGameManager()
     {

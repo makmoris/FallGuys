@@ -60,8 +60,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         }
 
         PlayerWasDeadEvent?.Invoke(this.gameObject);
-        //gameObject.SetActive(false);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
     public void DestroyCar(GameObject killer)// смотрим, если киллер игрок (есть нужный скрипт)
     {
@@ -79,8 +79,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
 
         PlayerWasDeadEvent?.Invoke(this.gameObject);
-        //gameObject.SetActive(false);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        //Destroy(gameObject);
     }
 
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArenaPostPlaceController : MonoBehaviour
+public class ArenaPostPlaceController : PostLevelPlaceController
 {
     [Header("Arena Post Place UI Controller")]
     [SerializeField] private ArenaPostPlaceUIController arenaPostPlaceUIController;

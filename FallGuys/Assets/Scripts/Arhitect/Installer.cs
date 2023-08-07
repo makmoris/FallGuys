@@ -19,11 +19,13 @@ public abstract class Installer : MonoBehaviour
     [Header("Scene Controllers")]
     [SerializeField] protected LevelUI levelUI;
     [SerializeField] protected LevelUINotifications levelUINotifications;
-    [Space]
-    [SerializeField] protected CinemachineVirtualCamera camCinema;
-    [Space]
+    [Header("Camera")]
+    [SerializeField] protected CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
+    [Header("Level Controllers")]
     [SerializeField] protected LevelProgressController levelProgressController;
-    [SerializeField] protected PostLevelResultVisualization postLevelResultVisualization;
+    [SerializeField] protected LevelProgressUIController levelProgressUIController;
+    [SerializeField] protected PostLevelPlaceController postLevelPlaceController;
+    [SerializeField] protected PostLevelUIController postLevelUIController;
 
     protected GameManager gameManager;
     protected List<IPlayerData> playersData;
@@ -37,7 +39,7 @@ public abstract class Installer : MonoBehaviour
 
     //[Space]
     //[SerializeField] protected List<EnemiesSettings> _enemiesSettings;
-    
+
 
     protected int numberOfPlayers;
 
@@ -55,12 +57,22 @@ public abstract class Installer : MonoBehaviour
             LoadDataFromGameManager();
             numberOfPlayers = playersData.Count;
 
-            levelProgressController.SetNumberOfPlayersAndWinners(playersData.Count, gameManager.GetNumberOfWinners());
             levelProgressController.GameManager = gameManager;
+            postLevelPlaceController.GameManager = gameManager;
+            postLevelUIController.GameManager = gameManager;
+
+            levelProgressController.SetNumberOfPlayersAndWinners(playersData.Count, gameManager.GetNumberOfWinners());
         }
-        //else numberOfPlayers = _enemiesSettings.Count + 1;
 
         InitializePlayers();
+
+        if (gameManager.IsObserverMode)
+        {
+            levelProgressUIController.ShowObserverUI();
+            cameraFollowingOnOtherPlayers.EnableObserverMode();
+            levelProgressUIController.ShowCameraHint();
+        }
+        else levelProgressUIController.ShowPlayerUI();
 
         SendBattleStartAnalyticEvent();
     }

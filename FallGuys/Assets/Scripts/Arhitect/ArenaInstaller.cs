@@ -27,7 +27,7 @@ public class ArenaInstaller : Installer
 
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
-                playerName.Initialize(player.Name, camCinema.transform);
+                playerName.Initialize(player.Name, cameraFollowingOnOtherPlayers.transform);
                 playerName.HideNameDisplay();
 
                 // Hit Sides
@@ -46,14 +46,14 @@ public class ArenaInstaller : Installer
                 //
                 AnalyticsManager.Instance.SetCurrentPlayer(player);
 
-                // Cinemachine
-                camCinema.m_Follow = playerGO.transform;
-                camCinema.m_LookAt = playerGO.transform;
+                // Camera
+                cameraFollowingOnOtherPlayers.AddDriver(playerGO, true);
 
                 // ArenaLevelResultVisualization
-                postLevelResultVisualization.GameManager = gameManager;
+
 
                 // ArenaProgressController
+                levelProgressController.AddPlayer(playerGO);
 
                 // Spawn Place
                 Vector3 pos = targetsController.GetStartSpawnPosition(spawnCounter).position;
@@ -81,7 +81,7 @@ public class ArenaInstaller : Installer
 
                     // Set Name
                     PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
-                    playerName.Initialize(playerAI.Name, camCinema.transform);
+                    playerName.Initialize(playerAI.Name, cameraFollowingOnOtherPlayers.transform);
 
                     // VehicleCustomizer
                     VehicleCustomizer aiVehicleCustomizer = aiPlayerGO.GetComponent<VehicleCustomizer>();
@@ -95,6 +95,12 @@ public class ArenaInstaller : Installer
                     Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
                     weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
                     weaponAI.IsAI(true);
+
+                    // Camera
+                    cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);
+
+                    // ArenaProgressController
+                    levelProgressController.AddPlayer(aiPlayerGO);
 
                     // Spawn Place
                     Vector3 posEnemy = targetsController.GetStartSpawnPosition(spawnCounter).position;

@@ -19,7 +19,8 @@ public class DeadZone : Bonus
     [Space]
     public float respawnTime;
 
-    [SerializeField]private List<GameObject> destroyedObjects;
+    [SerializeField] private List<GameObject> waitRespawnCars = new List<GameObject>();
+    [SerializeField]private List<GameObject> destroyedObjects = new List<GameObject>();
 
 
     private void OnTriggerEnter(Collider other)
@@ -29,6 +30,7 @@ public class DeadZone : Bonus
         {
             bumper.gameObject.SetActive(false);
             StartCoroutine(WaitAndResp(bumper));
+            waitRespawnCars.Add(bumper.gameObject);
             Debug.Log("DeadZone");
         }
     }
@@ -41,6 +43,8 @@ public class DeadZone : Bonus
     private void PlayerWasDestroy(GameObject playerGO)
     {
         destroyedObjects.Add(playerGO);
+
+        if (waitRespawnCars.Contains(playerGO)) waitRespawnCars.Remove(playerGO);
     }
 
     private bool IsPlayerDead(GameObject playerGO)
@@ -57,7 +61,7 @@ public class DeadZone : Bonus
     {
         yield return new WaitForSeconds(respawnTime);
 
-        if(bumper != null)
+        if(bumper != null && waitRespawnCars.Contains(bumper.gameObject))
         {
             GameObject car = bumper.gameObject;
             
@@ -67,6 +71,8 @@ public class DeadZone : Bonus
             car.SetActive(true);
             bumper.enabled = true;// отключился при входе в зону из Bumper
             bumper.GetBonus(shieldBonus);
+
+            waitRespawnCars.Remove(bumper.gameObject);
         }
     }
 

@@ -24,6 +24,7 @@ public class ArenaProgressController : LevelProgressController
     [Space]
     [SerializeField] private int numberOfPlayers;
     [SerializeField] private int numberOfFrags;
+    private int numberOfWinners;
 
     [SerializeField] private int amountOfGoldReward;
     [SerializeField] private int amountOfCupReward;
@@ -59,6 +60,8 @@ public class ArenaProgressController : LevelProgressController
         numberOfFrags = 0;
         startNumberOfPlayers = _numberOfPlayers;
 
+        numberOfWinners = _numberOfWinners;
+
         UpdateLeftText();
         UpdateFragText();
     }
@@ -69,7 +72,7 @@ public class ArenaProgressController : LevelProgressController
     }
     public override void AddPlayer(GameObject playerGO)
     {
-        
+        _playersList.Add(playerGO);
     }
 
     public void AddFrag()// вызывается из VisualIntermediary
@@ -80,30 +83,6 @@ public class ArenaProgressController : LevelProgressController
         amountOfCupReward += LeagueManager.Instance.GetCupRewardForFrag();
         Debug.Log("Add FRAG");
         UpdateFragText();
-    }
-
-    public void SendPlayerKillEnemyAnalyticEvent(GameObject killedEnemyObj)// вызывается из VisualIntermediary после AddFrag()
-    {
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
-
-        int _player_kills_amount = numberOfFrags;
-
-        int _player_gold_earn = amountOfGoldReward;
-
-        int _enemies_left = numberOfPlayers - 2;
-
-        string _killed_enemy_car_id = killedEnemyObj.GetComponent<VehicleId>().VehicleID;
-
-        string _killed_enemy_gun_id = killedEnemyObj.transform.GetComponentInChildren<Weapon>().GetComponent<WeaponId>().WeaponID;
-
-        AnalyticsManager.Instance.PlayerKillEnemy(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left, _killed_enemy_car_id, _killed_enemy_gun_id);
     }
 
     public void AddGold(int value)// вызывается из PlayerEffector за подбор бонуса
@@ -118,18 +97,21 @@ public class ArenaProgressController : LevelProgressController
 
         UpdateLeftText();
 
+        _losersList.Add(deadPlayer);
+        _playersList.Remove(deadPlayer);
+
         if(deadPlayer == playerGO)
         {
-            GameCameraAudioListenerController.Instance.ActivateAudioListener();// включаем на игровой камере, чтобы услышать звук взрыва авто. Т.к. листенер на авто уничтожается
-            // значит окно поражения. Игра закончена
-            Debug.Log($"GameOver. Занял {numberOfPlayers + 1} место");
+            //GameCameraAudioListenerController.Instance.ActivateAudioListener();// включаем на игровой камере, чтобы услышать звук взрыва авто. Т.к. листенер на авто уничтожается
+            //// значит окно поражения. Игра закончена
+            //Debug.Log($"GameOver. Занял {numberOfPlayers + 1} место");
 
-            DisabledAllChildElements();
-            CalculateReward(numberOfPlayers + 1);
-            StartCoroutine(WaitAndShowLoseWindow());
+            //DisabledAllChildElements();
+            //CalculateReward(numberOfPlayers + 1);
+            //StartCoroutine(WaitAndShowLoseWindow());
             playerWasDead = true;
         }
-        else if (numberOfPlayers == 1 && !playerWasDead)
+        else if (numberOfPlayers == numberOfWinners)
         {
             // если остался один игрок, т.е. numberOfPlayers = 1, то кидаем окно победы
             Debug.Log($"Win. Занял {numberOfPlayers} место");
@@ -139,27 +121,32 @@ public class ArenaProgressController : LevelProgressController
             StartCoroutine(WaitAndShowWinWindow());
         }
 
-        if (numberOfPlayers == 2 && !playerWasDead)
+        if (numberOfPlayers == 2)   // сделать список игроков и брать оттуда двух оставшихся
         {
-            GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
-            
-            ArenaCarDriverAI carDriverAI = null;
+            ArenaCarDriverAI carDriverAIFirst = _playersList[0].GetComponent<ArenaCarDriverAI>();
+            if (carDriverAIFirst != null) carDriverAIFirst.StartDuel(_playersList[1].transform);
 
-            foreach(var car in cars)
-            {
-                var _carAI = car.GetComponent<ArenaCarDriverAI>();
-                if (_carAI != null && car != deadPlayer)
-                {
-                    carDriverAI = _carAI;
-                    Debug.Log($"Duel with {carDriverAI.name}");
-                    break;
-                }
-            }
+            ArenaCarDriverAI carDriverAISecond = _playersList[1].GetComponent<ArenaCarDriverAI>();
+            if (carDriverAISecond != null) carDriverAISecond.StartDuel(_playersList[0].transform);
 
-            if(carDriverAI != null)
-            {
-                carDriverAI.StartDuel();
-            }
+            //ArenaCarDriverAI carDriverAI = null;
+
+            //foreach(var car in cars)
+            //{
+            //    var _carAI = car.GetComponent<ArenaCarDriverAI>();
+            //    if (_carAI != null && car != deadPlayer)
+            //    {
+            //        carDriverAI = _carAI;
+            //        Debug.Log($"Duel with {carDriverAI.name}");
+            //        carDriverAI.StartDuel();
+            //        //break;
+            //    }
+            //}
+
+            //if(carDriverAI != null)
+            //{
+            //    carDriverAI.StartDuel();
+            //}
         }
     }
     
@@ -298,5 +285,29 @@ public class ArenaProgressController : LevelProgressController
 
         _battle_id++;
         PlayerPrefs.SetInt(_battle_id_key, _battle_id);
+    }
+
+    public void SendPlayerKillEnemyAnalyticEvent(GameObject killedEnemyObj)// вызывается из VisualIntermediary после AddFrag()
+    {
+        string _battle_id_key = AnalyticsManager.battle_id_key;
+        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
+
+        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
+        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
+
+        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
+
+        int _player_kills_amount = numberOfFrags;
+
+        int _player_gold_earn = amountOfGoldReward;
+
+        int _enemies_left = numberOfPlayers - 2;
+
+        string _killed_enemy_car_id = killedEnemyObj.GetComponent<VehicleId>().VehicleID;
+
+        string _killed_enemy_gun_id = killedEnemyObj.transform.GetComponentInChildren<Weapon>().GetComponent<WeaponId>().WeaponID;
+
+        AnalyticsManager.Instance.PlayerKillEnemy(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
+            _player_gold_earn, _enemies_left, _killed_enemy_car_id, _killed_enemy_gun_id);
     }
 }

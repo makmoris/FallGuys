@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ArenaProgressUIController : MonoBehaviour
+public class ArenaProgressUIController : LevelProgressUIController
 {
+    [Header("-----")]
     [SerializeField] private Canvas gameCanvas;
     [Space]
     [SerializeField] private TextMeshProUGUI leftText;

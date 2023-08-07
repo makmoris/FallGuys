@@ -12,7 +12,8 @@ public class UIEnemyPointers : MonoBehaviour
     //
     
     private Dictionary<EnemyPointer, PointerIcon> _positionDictionary = new Dictionary<EnemyPointer, PointerIcon>();
-    private Transform _playerTransform;// сделать передачу из Installer-a
+    //private Transform _playerTransform;// сделать передачу из Installer-a
+    private Transform currentTransform;// передавать из камеры текущую цель слежки
     [SerializeField] Camera _camera;
     [SerializeField] Transform _canvasTransform;
 
@@ -29,9 +30,14 @@ public class UIEnemyPointers : MonoBehaviour
         _positionPointersPool.autoExpand = autoExpand;
     }
 
-    public void SetCurrentPlayerTransform(Transform transform)
+    public void SetCurrentPlayerTransform(Transform transform)// убрать вообще 
     {
-        _playerTransform = transform;
+        //_playerTransform = transform;
+    }
+
+    public void ChangeCurrentTransform(Transform _currentTransform)
+    {
+        currentTransform = _currentTransform;
     }
 
     private void AddToPositionList(EnemyPointer enemyPointer)
@@ -99,9 +105,10 @@ public class UIEnemyPointers : MonoBehaviour
             EnemyPointer enemyPointer = kvp.Key;
             PointerIcon pointerIcon = kvp.Value;
 
-            Vector3 toEnemy = enemyPointer.transform.position - _playerTransform.position;
-            Ray ray = new Ray(_playerTransform.position, toEnemy);
-            //Debug.DrawRay(_playerTransform.position, toEnemy);
+            //Vector3 toEnemy = enemyPointer.transform.position - _playerTransform.position;
+            //Ray ray = new Ray(_playerTransform.position, toEnemy);
+            Vector3 toEnemy = enemyPointer.transform.position - currentTransform.position;
+            Ray ray = new Ray(currentTransform.position, toEnemy);
 
             float rayMinDistance = Mathf.Infinity;
 
@@ -125,8 +132,10 @@ public class UIEnemyPointers : MonoBehaviour
             {
                 pointerIcon.OffScreenPointer();
 
-                float angle = Vector3.Angle((enemyPointer.transform.position - _playerTransform.position), _playerTransform.forward);
-                float angle2 = Vector3.Angle((enemyPointer.transform.position - _playerTransform.position), _playerTransform.right);
+                //float angle = Vector3.Angle((enemyPointer.transform.position - _playerTransform.position), _playerTransform.forward);
+                //float angle2 = Vector3.Angle((enemyPointer.transform.position - _playerTransform.position), _playerTransform.right);
+                float angle = Vector3.Angle((enemyPointer.transform.position - currentTransform.position), currentTransform.forward);
+                float angle2 = Vector3.Angle((enemyPointer.transform.position - currentTransform.position), currentTransform.right);
 
                 if (angle2 > 90)
                 {
@@ -170,9 +179,12 @@ public class UIEnemyPointers : MonoBehaviour
 
     private Vector3 GetAttackTargetPosition(Transform transform)
     {
-        Vector3 toAttackTarget = transform.position - _playerTransform.position;
-        Ray ray = new Ray(_playerTransform.position, toAttackTarget);
-        Debug.DrawRay(_playerTransform.position, toAttackTarget);
+        //Vector3 toAttackTarget = transform.position - _playerTransform.position;
+        //Ray ray = new Ray(_playerTransform.position, toAttackTarget);
+        //Debug.DrawRay(_playerTransform.position, toAttackTarget);
+        Vector3 toAttackTarget = transform.position - currentTransform.position;
+        Ray ray = new Ray(currentTransform.position, toAttackTarget);
+        Debug.DrawRay(currentTransform.position, toAttackTarget);
 
         float distance = toAttackTarget.magnitude;
         Vector3 worldPosition = ray.GetPoint(distance);
@@ -183,7 +195,8 @@ public class UIEnemyPointers : MonoBehaviour
 
     private void GameOwer(GameObject gameObject)
     {
-        if(gameObject.transform == _playerTransform) this.enabled = false;
+        //if(gameObject.transform == _playerTransform) this.enabled = false;
+        if (gameObject.transform == currentTransform) this.enabled = false;
     }
 
     private void OnEnable()

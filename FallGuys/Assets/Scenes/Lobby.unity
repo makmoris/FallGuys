@@ -25120,7 +25120,7 @@ MonoBehaviour:
   mapSelectionCanvas: {fileID: 1708068854}
   lobbyScene:
     m_SceneAsset: {fileID: 102900000, guid: 5a1fda2d24c3d9b4995960265b53922e, type: 3}
-    m_SceneName: Lobby_Test
+    m_SceneName: Lobby
 --- !u!4 &1261008357
 Transform:
   m_ObjectHideFlags: 0
@@ -29765,7 +29765,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lobbyScene:
     m_SceneAsset: {fileID: 102900000, guid: 5a1fda2d24c3d9b4995960265b53922e, type: 3}
-    m_SceneName: Lobby_Test
+    m_SceneName: Lobby
 --- !u!4 &1537957175
 Transform:
   m_ObjectHideFlags: 0
@@ -40206,7 +40206,12 @@ MonoBehaviour:
   sceneLoader: {fileID: 1261008356}
   characterManager: {fileID: 2067186478}
   gameStagesList:
-  - numberOfPlayers: 6
+  - numberOfPlayers: 12
+    numberOfWinners: 3
+    gameModesList:
+    - gameMode: 0
+      gameModeScenes: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
+  - numberOfPlayers: 3
     numberOfWinners: 1
     gameModesList:
     - gameMode: 1
@@ -40216,11 +40221,6 @@ MonoBehaviour:
     gameModesList:
     - gameMode: 2
       gameModeScenes: {fileID: 11400000, guid: e749de1a212519244991b7714bac177c, type: 2}
-  - numberOfPlayers: 12
-    numberOfWinners: 6
-    gameModesList:
-    - gameMode: 0
-      gameModeScenes: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
   testLosersNames: []
 --- !u!4 &2066765927
 Transform:

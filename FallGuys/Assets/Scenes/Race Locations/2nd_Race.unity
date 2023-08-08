@@ -2303,7 +2303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a085792d1e572419f5e7c78dde7932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startFromLobby: 1
   levelUI: {fileID: 6733512053703664808}
   levelUINotifications: {fileID: 6733512053703664811}
   cameraFollowingOnOtherPlayers: {fileID: 1604081817}
@@ -2311,11 +2310,6 @@ MonoBehaviour:
   levelProgressUIController: {fileID: 6733512053703664809}
   postLevelPlaceController: {fileID: 940267016}
   postLevelUIController: {fileID: 5480626728576555306}
-  _playerPrefab: {fileID: 7434162804505329504, guid: ae2fbac953aaaf44c8ca9c224139eefe, type: 3}
-  _playerDefaultData: {fileID: 11400000, guid: 5b42e11ed02c3224e8b5ace27041ffa4, type: 2}
-  _playerLimitsData: {fileID: 11400000, guid: aa050a70c8b4fc74488bf20cfcfbfe06, type: 2}
-  _playerWeapon: {fileID: 7192854324361368598, guid: 6a3b0bab3080b7f49b210d1b8f972cb4, type: 3}
-  raceProgressController: {fileID: 1859651031}
   raceDriverAIPrefab: {fileID: 1168299745426089823, guid: 99fa67b2fa6c5b144b80ef74f222b01b, type: 3}
   playerAIDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
 --- !u!4 &272510131
@@ -6600,6 +6594,14 @@ PrefabInstance:
       propertyPath: uIEnemyPointers
       value: 
       objectReference: {fileID: 6733512053703664810}
+    - target: {fileID: 2868099996627508085, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.000000016774514
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868099996627508085, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000003830812
+      objectReference: {fileID: 0}
     - target: {fileID: 2868099997127116194, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
       propertyPath: m_Name
       value: Game Camera
@@ -6656,6 +6658,14 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 1612096759}
+    - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.000000016774514
+      objectReference: {fileID: 0}
+    - target: {fileID: 5241360172793806436, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000003830812
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6565833ac5c07054c9eebfd1c1b4c789, type: 3}
 --- !u!20 &976984403 stripped
@@ -13188,7 +13198,7 @@ MonoBehaviour:
   _playersList: []
   _winnersList: []
   _losersList: []
-  gameCamCinema: {fileID: 1604081817}
+  cameraFollowingOnOtherPlayers: {fileID: 1604081817}
   raceStartSector: {fileID: 1756498778}
   disableWeaponTimeOnStart: 5
   raceFinishSector: {fileID: 1636510739}

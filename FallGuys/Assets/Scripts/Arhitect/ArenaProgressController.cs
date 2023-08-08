@@ -11,6 +11,9 @@ public class ArenaProgressController : LevelProgressController
     [Header("Arena Post Place Controller")]
     [SerializeField] private ArenaPostPlaceController arenaPostPlaceController;
 
+    [Header("Camera")]
+    [SerializeField] private CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
+
     [Header("Cameras")]
     [SerializeField] Camera gameCamera;
     [SerializeField] Camera postPlaceCamera;
@@ -33,7 +36,7 @@ public class ArenaProgressController : LevelProgressController
     private int startNumberOfPlayers;
 
 
-    private GameObject playerGO;
+    private GameObject currentPlayer;
     private bool playerWasDead;
 
     public static ArenaProgressController Instance { get; private set; }
@@ -66,13 +69,11 @@ public class ArenaProgressController : LevelProgressController
         UpdateFragText();
     }
 
-    public override void SetCurrentPlayer(GameObject currentPlayerGO)
-    {
-        playerGO = currentPlayerGO;
-    }
-    public override void AddPlayer(GameObject playerGO)
+    public override void AddPlayer(GameObject playerGO, bool isCurrentPlayer)
     {
         _playersList.Add(playerGO);
+
+        if (isCurrentPlayer) currentPlayer = playerGO;
     }
 
     public void AddFrag()// вызываетс€ из VisualIntermediary
@@ -100,7 +101,9 @@ public class ArenaProgressController : LevelProgressController
         _losersList.Add(deadPlayer);
         _playersList.Remove(deadPlayer);
 
-        if(deadPlayer == playerGO)
+        cameraFollowingOnOtherPlayers.RemoveDriver(deadPlayer);
+
+        if(deadPlayer == currentPlayer)
         {
             //GameCameraAudioListenerController.Instance.ActivateAudioListener();// включаем на игровой камере, чтобы услышать звук взрыва авто. “.к. листенер на авто уничтожаетс€
             //// значит окно поражени€. »гра закончена
@@ -128,25 +131,6 @@ public class ArenaProgressController : LevelProgressController
 
             ArenaCarDriverAI carDriverAISecond = _playersList[1].GetComponent<ArenaCarDriverAI>();
             if (carDriverAISecond != null) carDriverAISecond.StartDuel(_playersList[0].transform);
-
-            //ArenaCarDriverAI carDriverAI = null;
-
-            //foreach(var car in cars)
-            //{
-            //    var _carAI = car.GetComponent<ArenaCarDriverAI>();
-            //    if (_carAI != null && car != deadPlayer)
-            //    {
-            //        carDriverAI = _carAI;
-            //        Debug.Log($"Duel with {carDriverAI.name}");
-            //        carDriverAI.StartDuel();
-            //        //break;
-            //    }
-            //}
-
-            //if(carDriverAI != null)
-            //{
-            //    carDriverAI.StartDuel();
-            //}
         }
     }
     
@@ -206,7 +190,7 @@ public class ArenaProgressController : LevelProgressController
 
     IEnumerator WaitAndShowWinWindow()
     {
-        if(playerGO.GetComponent<WheelVehicle>() != null) playerGO.GetComponent<WheelVehicle>().Handbrake = true;
+        if(currentPlayer.GetComponent<WheelVehicle>() != null) currentPlayer.GetComponent<WheelVehicle>().Handbrake = true;
 
         arenaProgressUIController.HideGameCanvas();
         arenaPostPlaceController.PlayerWin(numberOfFrags, amountOfGoldReward, amountOfCupReward);
@@ -218,7 +202,7 @@ public class ArenaProgressController : LevelProgressController
 
         arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
         postPlaceCamera.gameObject.SetActive(true);
-        playerGO.SetActive(false);
+        currentPlayer.SetActive(false);
 
         //MusicManager.Instance.StopMusicPlaying();
         MusicManager.Instance.StopSoundsPlaying();

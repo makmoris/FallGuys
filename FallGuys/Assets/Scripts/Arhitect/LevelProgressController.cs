@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class LevelProgressController : MonoBehaviour, IProgressController
+public abstract class LevelProgressController : MonoBehaviour
 {
     protected GameManager _gameManager;
     public GameManager GameManager { set => _gameManager = value; }
@@ -23,9 +23,7 @@ public abstract class LevelProgressController : MonoBehaviour, IProgressControll
         _gameManager.EliminateLosersFromList(losersNameList);
     }
     
-    public abstract void AddPlayer(GameObject playerGO);
-
-    public abstract void SetCurrentPlayer(GameObject currentPlayerGO);
+    public abstract void AddPlayer(GameObject playerGO, bool isCurrentPlayer);
 
     public abstract void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners);
 }

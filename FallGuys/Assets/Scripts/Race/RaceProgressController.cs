@@ -7,7 +7,7 @@ using VehicleBehaviour;
 public class RaceProgressController : LevelProgressController
 {
     [Header("Camera")]
-    [SerializeField] private CameraFollowingOnOtherPlayers gameCamCinema;
+    [SerializeField] private CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
 
     [Header("Start Sector")]
     [SerializeField] private RaceStartSector raceStartSector;
@@ -56,12 +56,7 @@ public class RaceProgressController : LevelProgressController
         raceProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
 
-    public override void SetCurrentPlayer(GameObject currentPlayerGO)
-    {
-        currentPlayer = currentPlayerGO;
-    }
-
-    public override void AddPlayer(GameObject playerGO)
+    public override void AddPlayer(GameObject playerGO, bool isCurrentPlayer)
     {
         WheelVehicle wheelVehiclePlayer = playerGO.GetComponent<WheelVehicle>();
 
@@ -75,6 +70,8 @@ public class RaceProgressController : LevelProgressController
         }
 
         wheelVehiclePlayer.Handbrake = true;
+
+        if (isCurrentPlayer) currentPlayer = playerGO;
     }
 
     public RaceStartSector GetRaceStartSector()
@@ -173,7 +170,7 @@ public class RaceProgressController : LevelProgressController
                 Debug.Log("Race ended");// заканчиваем гонку. Переходим на следующий этап
             }
 
-            gameCamCinema.RemoveDriver(wheelVehicleDriver.gameObject);
+            cameraFollowingOnOtherPlayers.RemoveDriver(wheelVehicleDriver.gameObject);
         }
     }
 
@@ -218,6 +215,8 @@ public class RaceProgressController : LevelProgressController
         SortLosersByPosition();
         SendListOfLosersNamesToGameManager();
 
+        raceProgressUIController.HideCameraHint();
+
         postRacePlaceController.StartPostRacing(winnersList, losersListWheelVehicle, numberOfWinners);
     }
 
@@ -249,7 +248,7 @@ public class RaceProgressController : LevelProgressController
             // если гонка не окончена, то следим за другими
             Debug.Log("ZAPUSK CAMERY");
 
-            gameCamCinema.EnableObserverMode();
+            cameraFollowingOnOtherPlayers.EnableObserverMode();
 
             raceProgressUIController.ShowCameraHint();
         }

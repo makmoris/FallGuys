@@ -24,14 +24,11 @@ public class ProgressControllerHoneycomb : LevelProgressController
         progressUIControllerHoneycomb.SetNumberOfFallens(numberOfFallens);
     }
 
-    public override void AddPlayer(GameObject playerGO)
+    public override void AddPlayer(GameObject playerGO, bool isCurrentPlayer)
     {
         playersList.Add(playerGO);
-    }
 
-    public override void SetCurrentPlayer(GameObject currentPlayerGO)
-    {
-        currentPlayer = currentPlayerGO;
+        if (isCurrentPlayer) currentPlayer = playerGO;
     }
 
     public void PlayerOut(GameObject playerGO)

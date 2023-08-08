@@ -25603,7 +25603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952e272234f178045b306389d2b6db59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startFromLobby: 1
   levelUI: {fileID: 1415024844}
   levelUINotifications: {fileID: 1415024843}
   cameraFollowingOnOtherPlayers: {fileID: 1858392600}
@@ -25611,13 +25610,8 @@ MonoBehaviour:
   levelProgressUIController: {fileID: 1415024842}
   postLevelPlaceController: {fileID: 700490741}
   postLevelUIController: {fileID: 700490740}
-  _playerPrefab: {fileID: 7434162804505329504, guid: ae2fbac953aaaf44c8ca9c224139eefe, type: 3}
-  _playerDefaultData: {fileID: 11400000, guid: 5b42e11ed02c3224e8b5ace27041ffa4, type: 2}
-  _playerLimitsData: {fileID: 11400000, guid: aa050a70c8b4fc74488bf20cfcfbfe06, type: 2}
-  _playerWeapon: {fileID: 7192854324361368598, guid: 6a3b0bab3080b7f49b210d1b8f972cb4, type: 3}
   targetsController: {fileID: 690294568}
   endGameController: {fileID: 9161177977849093801}
-  arenaProgressController: {fileID: 2041292886}
   arenaCarDriverAI: {fileID: 8900470938014827711, guid: 39b038446e15f754bbf0f9852753cb40, type: 3}
   playerAIDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
 --- !u!4 &1207122342
@@ -43757,6 +43751,7 @@ MonoBehaviour:
   _losersList: []
   arenaProgressUIController: {fileID: 1415024842}
   arenaPostPlaceController: {fileID: 700490741}
+  cameraFollowingOnOtherPlayers: {fileID: 1858392600}
   gameCamera: {fileID: 1858392602}
   postPlaceCamera: {fileID: 9161177978791868490}
   pauseBeforShowingWinWindow: 2

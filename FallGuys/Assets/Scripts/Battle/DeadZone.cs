@@ -17,10 +17,10 @@ public class DeadZone : Bonus
     [SerializeField] private ShieldDeadZone shieldBonus;
 
     [Space]
-    public float respawnTime;
+    [SerializeField] private float respawnTime;
 
-    [SerializeField] private List<GameObject> waitRespawnCars = new List<GameObject>();
-    [SerializeField]private List<GameObject> destroyedObjects = new List<GameObject>();
+    private List<GameObject> waitRespawnCars = new List<GameObject>();
+    private List<GameObject> destroyedObjects = new List<GameObject>();
 
 
     private void OnTriggerEnter(Collider other)

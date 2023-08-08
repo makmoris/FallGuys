@@ -39,11 +39,18 @@ public abstract class LevelProgressUIController : MonoBehaviour
         defaultUI.SetActive(false);
         additionalUI.SetActive(true);
         leaveButton.SetActive(true);
+
+        ShowCameraHint();
     }
 
     public void ShowCameraHint()
     {
         cameraHint.SetActive(true);
+    }
+
+    public void HideCameraHint()
+    {
+        cameraHint.SetActive(false);
     }
 
     public void ShowCongratilations()

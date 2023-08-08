@@ -40,8 +40,7 @@ public class HoneycombInstaller : Installer
 
 
                 //// levelProgressController
-                levelProgressController.AddPlayer(playerGO);
-                levelProgressController.SetCurrentPlayer(playerGO);
+                levelProgressController.AddPlayer(playerGO, true);
 
                 // Spawn Place
                 Transform spawnPlace = targetsControllerHoneycomb.GetSpawnPlace();
@@ -56,100 +55,52 @@ public class HoneycombInstaller : Installer
             }
             else
             {
-                if (startFromLobby)
-                {
-                    PlayerAI playerAI = _player as PlayerAI;
+                PlayerAI playerAI = _player as PlayerAI;
 
-                    // Instantiate AI 
-                    GameObject aiPlayerGO = Instantiate(honeycombDriverAIPrefab.gameObject);
+                // Instantiate AI 
+                GameObject aiPlayerGO = Instantiate(honeycombDriverAIPrefab.gameObject);
 
-                    // Set Name
-                    PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
-                    playerName.Initialize(playerAI.Name, cameraFollowingOnOtherPlayers.transform);
+                // Set Name
+                PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
+                playerName.Initialize(playerAI.Name, cameraFollowingOnOtherPlayers.transform);
 
-                    // VehicleCustomizer
-                    VehicleCustomizer aiVehicleCustomizer = aiPlayerGO.GetComponent<VehicleCustomizer>();
-                    if (aiVehicleCustomizer != null) aiVehicleCustomizer.SetColorMaterial(playerAI.VehicleColorMaterial);
+                // VehicleCustomizer
+                VehicleCustomizer aiVehicleCustomizer = aiPlayerGO.GetComponent<VehicleCustomizer>();
+                if (aiVehicleCustomizer != null) aiVehicleCustomizer.SetColorMaterial(playerAI.VehicleColorMaterial);
 
-                    // Weapon
-                    Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
-                    Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                    weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
-                    weaponAI.IsAI(true);
-                    weaponAI.DisableWeapon(aiPlayerGO);
+                // Weapon
+                Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
+                Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
+                weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
+                weaponAI.IsAI(true);
+                weaponAI.DisableWeapon(aiPlayerGO);
 
-                    // Camera
-                    cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);
+                // Camera
+                cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);
 
-                    // levelProgressController
-                    levelProgressController.AddPlayer(aiPlayerGO);
+                // levelProgressController
+                levelProgressController.AddPlayer(aiPlayerGO, false);
 
-                    // Targets Controller
-                    aiPlayerGO.GetComponent<HoneycombDriverAI>().SetTargetController(targetsControllerHoneycomb);
+                // Targets Controller
+                aiPlayerGO.GetComponent<HoneycombDriverAI>().SetTargetController(targetsControllerHoneycomb);
 
-                    // Spawn Place
-                    Transform spawnPlace = targetsControllerHoneycomb.GetSpawnPlace();
-                    Vector3 pos = spawnPlace.position;
-                    aiPlayerGO.transform.position = new Vector3(pos.x, 5f, pos.z);
-                    aiPlayerGO.transform.rotation = spawnPlace.rotation;
+                // Spawn Place
+                Transform spawnPlace = targetsControllerHoneycomb.GetSpawnPlace();
+                Vector3 pos = spawnPlace.position;
+                aiPlayerGO.transform.position = new Vector3(pos.x, 5f, pos.z);
+                aiPlayerGO.transform.rotation = spawnPlace.rotation;
 
-                    // Enemy Pointer
-                    EnemyPointer enemyPointer = aiPlayerGO.GetComponentInChildren<EnemyPointer>(true);
-                    if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-                    enemyPointer.LevelUI = levelUI;
+                // Enemy Pointer
+                EnemyPointer enemyPointer = aiPlayerGO.GetComponentInChildren<EnemyPointer>(true);
+                if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
+                enemyPointer.LevelUI = levelUI;
 
-                    // Set default data
-                    playerAI.SetDefaultData(fallingPlatformsAIDefaultData);
+                // Set default data
+                playerAI.SetDefaultData(fallingPlatformsAIDefaultData);
 
-                    // Player Effector
-                    var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI, true);
-                }
-                else
-                {
-                    //List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);
-                    //for (int i = 0; i < _enemiesSettings.Count; i++)
-                    //{
-                    //    var enemySet = _enemiesSettings[i];
-
-                    //    var _enemyObj = Instantiate(enemySet._enemyPrefab);
-
-                    //    raceProgressController.AddPlayer(_enemyObj);
-
-                    //    Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
-                    //    Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
-                    //    weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
-                    //    weaponAI.IsAI(true);
-                    //    weaponAI.DisableWeapon(_enemyObj);
-
-                    //    IPlayerAI _enemy = new PlayerAI(enemySet._enemyDefaultData, _enemyObj, weaponAI);
-                    //    enemies.Add(_enemy);
-
-                    //    Transform enemySpawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
-                    //    Vector3 posEnemy = enemySpawnPlace.position;
-                    //    _enemyObj.transform.position = new Vector3(posEnemy.x, 5f, posEnemy.z);
-                    //    _enemyObj.transform.rotation = enemySpawnPlace.rotation;
-
-                    //    EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
-                    //    if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-                    //    enemyPointer.LevelUI = levelUI;
-
-                    //    var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player, true);
-                    //}
-                }
+                // Player Effector
+                var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI, true);
             }
         }
-
-        //    for (int i = 0; i < 6; i++)
-        //{
-        //    GameObject aiPlayerGO = Instantiate(fallingPlatformsDriverAIPrefab.gameObject);
-
-        //    aiPlayerGO.GetComponent<FallingPlatformsDriverAI>().SetTargetController(targetsControllerHoneycomb);
-
-        //    // Spawn Place
-        //    Transform spawnPlace = targetsControllerHoneycomb.GetSpawnPlace();
-        //    Vector3 pos = spawnPlace.position;
-        //    aiPlayerGO.transform.position = new Vector3(pos.x, 5f, pos.z);
-        //    aiPlayerGO.transform.rotation = spawnPlace.rotation;
-        //}
     }
 }

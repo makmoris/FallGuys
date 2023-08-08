@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class ArenaInstaller : Installer
 {
+    [Header("-----")]
     [Header("Arena Controllers")]
     [SerializeField] private TargetsController targetsController;
     [SerializeField] private EndGameController endGameController;
-    [SerializeField] private ArenaProgressController arenaProgressController;
 
     [Header("Arena AI")]
     [SerializeField] ArenaCarDriverAI arenaCarDriverAI;
@@ -43,17 +43,14 @@ public class ArenaInstaller : Installer
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
-                //
-                AnalyticsManager.Instance.SetCurrentPlayer(player);
+                // Analytics
+                //AnalyticsManager.Instance.SetCurrentPlayer(player);
 
                 // Camera
                 cameraFollowingOnOtherPlayers.AddDriver(playerGO, true);
 
-                // ArenaLevelResultVisualization
-
-
                 // ArenaProgressController
-                levelProgressController.AddPlayer(playerGO);
+                levelProgressController.AddPlayer(playerGO, true);
 
                 // Spawn Place
                 Vector3 pos = targetsController.GetStartSpawnPosition(spawnCounter).position;
@@ -67,87 +64,52 @@ public class ArenaInstaller : Installer
 
                 GameObject playerObjectClone = Instantiate(playerGO);
                 endGameController.SetPlayerObjectClone(playerObjectClone);
-
-                ArenaProgressController.Instance.SetCurrentPlayer(playerGO);
             }
             else
             {
-                if (startFromLobby)
-                {
-                    PlayerAI playerAI = _player as PlayerAI;
+                PlayerAI playerAI = _player as PlayerAI;
 
-                    // Instantiate AI 
-                    GameObject aiPlayerGO = Instantiate(arenaCarDriverAI.gameObject);
+                // Instantiate AI 
+                GameObject aiPlayerGO = Instantiate(arenaCarDriverAI.gameObject);
 
-                    // Set Name
-                    PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
-                    playerName.Initialize(playerAI.Name, cameraFollowingOnOtherPlayers.transform);
+                // Set Name
+                PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
+                playerName.Initialize(playerAI.Name, cameraFollowingOnOtherPlayers.transform);
 
-                    // VehicleCustomizer
-                    VehicleCustomizer aiVehicleCustomizer = aiPlayerGO.GetComponent<VehicleCustomizer>();
-                    if (aiVehicleCustomizer != null) aiVehicleCustomizer.SetColorMaterial(playerAI.VehicleColorMaterial);
+                // VehicleCustomizer
+                VehicleCustomizer aiVehicleCustomizer = aiPlayerGO.GetComponent<VehicleCustomizer>();
+                if (aiVehicleCustomizer != null) aiVehicleCustomizer.SetColorMaterial(playerAI.VehicleColorMaterial);
 
-                    // TargetsController
-                    targetsController.AddPlayerToTargets(aiPlayerGO);
+                // TargetsController
+                targetsController.AddPlayerToTargets(aiPlayerGO);
 
-                    // Weapon
-                    Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
-                    Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                    weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
-                    weaponAI.IsAI(true);
+                // Weapon
+                Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
+                Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
+                weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
+                weaponAI.IsAI(true);
 
-                    // Camera
-                    cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);
+                // Camera
+                cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);
 
-                    // ArenaProgressController
-                    levelProgressController.AddPlayer(aiPlayerGO);
+                // ArenaProgressController
+                levelProgressController.AddPlayer(aiPlayerGO, false);
 
-                    // Spawn Place
-                    Vector3 posEnemy = targetsController.GetStartSpawnPosition(spawnCounter).position;
-                    aiPlayerGO.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
-                    aiPlayerGO.transform.rotation = targetsController.GetStartSpawnPosition(spawnCounter).rotation;
+                // Spawn Place
+                Vector3 posEnemy = targetsController.GetStartSpawnPosition(spawnCounter).position;
+                aiPlayerGO.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
+                aiPlayerGO.transform.rotation = targetsController.GetStartSpawnPosition(spawnCounter).rotation;
 
-                    // Enemy Pointer
-                    EnemyPointer enemyPointer = aiPlayerGO.GetComponentInChildren<EnemyPointer>(true);
-                    if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-                    enemyPointer.LevelUI = levelUI;
+                // Enemy Pointer
+                EnemyPointer enemyPointer = aiPlayerGO.GetComponentInChildren<EnemyPointer>(true);
+                if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
+                enemyPointer.LevelUI = levelUI;
 
-                    // Set default data
-                    playerAI.SetDefaultData(playerAIDefaultData);
+                // Set default data
+                playerAI.SetDefaultData(playerAIDefaultData);
 
-                    // Player Effector
-                    var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI);
-                }
-                //else
-                //{
-                //    List<IPlayerAI> enemies = new List<IPlayerAI>(_enemiesSettings.Count);
-                //    for (int i = 0; i < _enemiesSettings.Count; i++)
-                //    {
-                //        var enemySet = _enemiesSettings[i];
-
-                //        var _enemyObj = Instantiate(enemySet._enemyPrefab);
-
-                //        targetsController.AddPlayerToTargets(_enemyObj);
-
-                //        Transform weaponPlaceAI = _enemyObj.transform.Find("WeaponPlace");
-                //        Weapon weaponAI = Instantiate(enemySet._enemyWeapon, weaponPlaceAI);
-                //        weaponAI.SetParentBodyCollider(_enemyObj.GetComponent<Collider>());
-                //        weaponAI.IsAI(true);
-
-                //        IPlayerAI _enemy = new PlayerAI(enemySet._enemyDefaultData, _enemyObj, weaponAI);
-                //        enemies.Add(_enemy);
-
-                //        Vector3 posEnemy = targetsController.GetStartSpawnPosition(i + 1).position;
-                //        _enemyObj.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
-                //        _enemyObj.transform.rotation = targetsController.GetStartSpawnPosition(i + 1).rotation;
-
-                //        EnemyPointer enemyPointer = _enemyObj.GetComponentInChildren<EnemyPointer>(true);
-                //        if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-                //        enemyPointer.LevelUI = levelUI;
-
-                //        var enemyPlayerEffector = new PlayerEffector(enemyPointer, _enemy, _playerLimitsData, levelUI, _player);
-                //    }
-                //}
+                // Player Effector
+                var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI);
             }
 
             spawnCounter++;

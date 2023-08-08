@@ -60,14 +60,10 @@ public class PlayerEffector
         }
         else Debug.LogError("Component VisualIntermediary not found");
 
-
         bumper.SetIsCurrentPlayer(_playerGO);
         _intermediary.SetIsCurrentPlayer(_playerGO);
 
         levelUINotifications = _levelUINotifications;
-
-        levelUI.UIEnemyPointers.SetCurrentPlayerTransform(_playerGO.transform);
-
 
         defaultHealth = player.Health;
     }
@@ -106,7 +102,6 @@ public class PlayerEffector
             _intermediary = intermediary;
         }
         else Debug.LogError("Component VisualIntermediary not found");
-
 
         bumper.SetIsCurrentPlayer(_currentPlayerGO);
         _intermediary.SetIsCurrentPlayer(_currentPlayerGO);

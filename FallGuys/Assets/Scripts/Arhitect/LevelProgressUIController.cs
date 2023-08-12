@@ -53,7 +53,7 @@ public abstract class LevelProgressUIController : MonoBehaviour
         cameraHint.SetActive(false);
     }
 
-    public void ShowCongratilations()
+    public void ShowCongratilationsPanel()
     {
         layouts.SetActive(false);
         congratulationsPanel.SetActive(true);

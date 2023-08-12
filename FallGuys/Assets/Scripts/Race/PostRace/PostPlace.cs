@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PostRacePlace : MonoBehaviour
+public class PostPlace : MonoBehaviour
 {
     [SerializeField] private Transform carPlace;
     [SerializeField] private PostRaceBackMovingWall backMovingWall;

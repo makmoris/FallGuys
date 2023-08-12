@@ -6,6 +6,7 @@ using VehicleBehaviour;
 
 public class RaceProgressController : LevelProgressController
 {
+   [Header("-----")]
     [Header("Camera")]
     [SerializeField] private CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
 
@@ -22,11 +23,8 @@ public class RaceProgressController : LevelProgressController
     private int currentNumberOfWinners;
     private bool raceNotOver;
 
-    [Header("Race Progress UI Controller")]
-    [SerializeField] private RaceProgressUIController raceProgressUIController;
-
-    [Header("Post Race Place Controller")]
-    [SerializeField] private PostRacePlaceController postRacePlaceController;
+    private RaceProgressUIController raceProgressUIController;
+    private PostRacePlaceController postRacePlaceController;
 
     private GameObject currentPlayer;
     private bool currentPlayerWasFinished;
@@ -45,6 +43,9 @@ public class RaceProgressController : LevelProgressController
 
     private void Awake()
     {
+        raceProgressUIController = levelProgressUIController as RaceProgressUIController;
+        postRacePlaceController = postLevelPlaceController as PostRacePlaceController;
+
         if (!postRacePlaceController.gameObject.activeSelf) postRacePlaceController.gameObject.SetActive(true);
 
         raceProgressUIController.SetNumberOfWinners(numberOfWinners);
@@ -61,6 +62,7 @@ public class RaceProgressController : LevelProgressController
         WheelVehicle wheelVehiclePlayer = playerGO.GetComponent<WheelVehicle>();
 
         raceDriversList.Add(wheelVehiclePlayer);
+        _playersList.Add(playerGO);
 
         RaceDriverAI raceDriverAI = playerGO.GetComponent<RaceDriverAI>();
         if (raceDriverAI != null)
@@ -132,11 +134,12 @@ public class RaceProgressController : LevelProgressController
             if (currentNumberOfWinners < numberOfWinners)
             {
                 winnersList.Add(wheelVehicleDriver);
+                _winnersList.Add(wheelVehicleDriver.gameObject);
 
                 if (wheelVehicleDriver.gameObject == currentPlayer)
                 {
                     currentPlayerWasFinished = true;
-                    raceProgressUIController.ShowCongratilations();
+                    raceProgressUIController.ShowCongratilationsPanel();
 
                     raceProgressUIController.CongratulationsOverEvent += CongratulationsOver;
                 }
@@ -144,11 +147,12 @@ public class RaceProgressController : LevelProgressController
             else
             {
                 winnersList.Add(wheelVehicleDriver);
+                _winnersList.Add(wheelVehicleDriver.gameObject);
 
                 if (wheelVehicleDriver.gameObject == currentPlayer)
                 {
                     currentPlayerWasFinished = true;
-                    raceProgressUIController.ShowCongratilations();
+                    raceProgressUIController.ShowCongratilationsPanel();
 
                     raceProgressUIController.CongratulationsOverEvent += CongratulationsOver;
                 }
@@ -177,7 +181,6 @@ public class RaceProgressController : LevelProgressController
     private void ShowPostRacingWindow()
     {
         Debug.Log("SHOW POST RACING WINDOW");
-        //gameCamCinema.EnablePlayerMode();
 
         List<WheelVehicle> losersListWheelVehicle = new List<WheelVehicle>();
 
@@ -187,6 +190,8 @@ public class RaceProgressController : LevelProgressController
             {
                 _losersList.Add(driver.gameObject);
                 losersListWheelVehicle.Add(driver);
+
+                driver.Handbrake = true;
 
                 ApplyDisableBonus(driver.gameObject, Mathf.Infinity);
             }
@@ -216,8 +221,8 @@ public class RaceProgressController : LevelProgressController
         SendListOfLosersNamesToGameManager();
 
         raceProgressUIController.HideCameraHint();
-
-        postRacePlaceController.StartPostRacing(winnersList, losersListWheelVehicle, numberOfWinners);
+        
+        postRacePlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
     }
 
     private void SortLosersByPosition()
@@ -239,6 +244,8 @@ public class RaceProgressController : LevelProgressController
 
     private void CongratulationsOver()
     {
+        _isCurrentPlayerWinner = true;
+
         raceProgressUIController.CongratulationsOverEvent -= CongratulationsOver;
 
         congratulationWasShowing = true;

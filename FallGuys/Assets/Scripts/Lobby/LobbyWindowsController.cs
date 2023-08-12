@@ -18,7 +18,7 @@ public class LobbyWindowsController : MonoBehaviour
 
     private bool showLeagueWindow = false;
 
-    public static LobbyWindowsController Instance { get; private set; }
+    private static LobbyWindowsController Instance { get; set; }
 
     private void Awake()
     {
@@ -27,10 +27,7 @@ public class LobbyWindowsController : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        else Destroy(this.gameObject);
 
         SceneManager.activeSceneChanged += SceneWasChanged;
         //Debug.Log("WINDOWCONTROLLER AWAKE");

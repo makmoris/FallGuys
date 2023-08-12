@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
     private bool isObserverMode;
     public bool IsObserverMode => isObserverMode;
 
+    private int currentPlayerPlaceIndex;
+
     private bool isFirstStart = true;
 
     private NameGenerator nameGenerator;
@@ -74,7 +76,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void StartGameStage()// начальная точка. Вызывается по кнопке "Play"
+    public bool StartGameStage()// начальная точка. Вызывается по кнопке "Play"
     {
         SceneField sceneToLoad;
        
@@ -107,12 +109,11 @@ public class GameManager : MonoBehaviour
 
                 //sceneLoader.PrepareLobbyScene(); // сделать загрузку через окно
 
-                return;
+                return false;// return false if the current game stage is the last one
             }
         }
-        Debug.Log($"Количество игроков = {players.Count}");
-        // запускаем окно скролла выбора карты. Передаем в MapSelector нужную сцену для визуального отображения sceneToLoad
-        
+
+        return true;// return true if there is a next game stage
     }
 
     public void StartGameStageFromTutorialWindow()
@@ -187,22 +188,29 @@ public class GameManager : MonoBehaviour
 
     public void EliminateLosersFromList(List<string> losersNames)
     {
-        Debug.Log("ELIMINATE");
         for (int i = 0; i < losersNames.Count; i++)
         {
             foreach (var player in players)
             {
-                string aiName = player.Name;
+                string loserName = player.Name;
 
-                if (aiName == losersNames[i])
+                if (!losersList.Contains(player))// чтобы избежать повторов
                 {
-                    players.Remove(player);
-                    losersList.Add(player);
-                    testLosersNames.Add(player.Name);
+                    if (loserName == losersNames[i])
+                    {
+                        players.Remove(player);
+                        losersList.Add(player);
+                        testLosersNames.Add(player.Name);
 
-                    if (aiName == currentPlayer.Name) isObserverMode = true;
+                        if (loserName == currentPlayer.Name)
+                        {
+                            isObserverMode = true;
 
-                    break;
+                            currentPlayerPlaceIndex = losersList.Count - 1;
+                        }
+
+                        break;
+                    }
                 }
             }
         }

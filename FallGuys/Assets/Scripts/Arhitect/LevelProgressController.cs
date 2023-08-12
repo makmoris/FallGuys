@@ -4,12 +4,19 @@ using UnityEngine;
 
 public abstract class LevelProgressController : MonoBehaviour
 {
+    [Header("Progress UI Controller")]
+    [SerializeField] protected LevelProgressUIController levelProgressUIController;
+    [Header("Post Level Place Controller")]
+    [SerializeField] protected PostLevelPlaceController postLevelPlaceController;
+
     protected GameManager _gameManager;
     public GameManager GameManager { set => _gameManager = value; }
 
-    [SerializeField]protected List<GameObject> _playersList = new List<GameObject>();
-    [SerializeField]protected List<GameObject> _winnersList = new List<GameObject>();
-    [SerializeField] protected List<GameObject> _losersList = new List<GameObject>();
+    protected List<GameObject> _playersList = new List<GameObject>();
+    protected List<GameObject> _winnersList = new List<GameObject>();
+    protected List<GameObject> _losersList = new List<GameObject>();
+
+    protected bool _isCurrentPlayerWinner;
 
     protected void SendListOfLosersNamesToGameManager()
     {
@@ -19,6 +26,8 @@ public abstract class LevelProgressController : MonoBehaviour
             PlayerName playerName = loser.GetComponent<PlayerName>();
             if (playerName != null) losersNameList.Add(playerName.Name);
         }
+
+        //_losersList.Clear();
 
         _gameManager.EliminateLosersFromList(losersNameList);
     }

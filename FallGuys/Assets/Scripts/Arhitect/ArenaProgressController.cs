@@ -5,24 +5,12 @@ using VehicleBehaviour;
 
 public class ArenaProgressController : LevelProgressController
 {
-    [Header("Arena progress UI Controller")]
-    [SerializeField] private ArenaProgressUIController arenaProgressUIController;
-
-    [Header("Arena Post Place Controller")]
-    [SerializeField] private ArenaPostPlaceController arenaPostPlaceController;
-
+    [Header("-----")]
     [Header("Camera")]
     [SerializeField] private CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
 
-    [Header("Cameras")]
-    [SerializeField] Camera gameCamera;
-    [SerializeField] Camera postPlaceCamera;
-
-    [Header("Win")]
-    [SerializeField] private float pauseBeforShowingWinWindow;
-
-    [Header("Lose")]
-    [SerializeField] private float pauseBeforShowingLoseWindow;
+    private ArenaProgressUIController arenaProgressUIController;
+    private ArenaPostPlaceController arenaPostPlaceController;
 
     [Space]
     [SerializeField] private int numberOfPlayers;
@@ -37,11 +25,14 @@ public class ArenaProgressController : LevelProgressController
 
 
     private GameObject currentPlayer;
-    private bool playerWasDead;
+    private bool currentPlayerIsWinner;
 
     public static ArenaProgressController Instance { get; private set; }
     private void Awake()
     {
+        arenaProgressUIController = levelProgressUIController as ArenaProgressUIController;
+        arenaPostPlaceController = postLevelPlaceController as ArenaPostPlaceController;
+
         if (Instance == null)
         {
             Instance = this;
@@ -50,11 +41,6 @@ public class ArenaProgressController : LevelProgressController
         {
             Destroy(this.gameObject);
         }
-
-        if (!gameCamera.gameObject.activeSelf) gameCamera.gameObject.SetActive(true);
-        if (postPlaceCamera.gameObject.activeSelf) postPlaceCamera.gameObject.SetActive(false);
-
-        //GameCameraAudioListenerController.Instance.DeactivateAudioListener();// изначально листенер только на самом авто игрока, чтобы правильно слышать звуки
     }
 
     public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
@@ -101,30 +87,41 @@ public class ArenaProgressController : LevelProgressController
         _losersList.Add(deadPlayer);
         _playersList.Remove(deadPlayer);
 
-        cameraFollowingOnOtherPlayers.RemoveDriver(deadPlayer);
-
         if(deadPlayer == currentPlayer)
         {
-            //GameCameraAudioListenerController.Instance.ActivateAudioListener();// включаем на игровой камере, чтобы услышать звук взрыва авто. Т.к. листенер на авто уничтожается
-            //// значит окно поражения. Игра закончена
-            //Debug.Log($"GameOver. Занял {numberOfPlayers + 1} место");
+            // показываем луз окно игроку
+            arenaProgressUIController.LoseShowingOverEvent += LoseShowingOver;
+            arenaProgressUIController.ShowLosingPanel();
+        }
+        else
+        {
+            cameraFollowingOnOtherPlayers.RemoveDriver(deadPlayer);
+        }
+
+        if (numberOfPlayers == numberOfWinners)
+        {
+            foreach (var player in _playersList)
+            {
+                if(player == currentPlayer)
+                {
+                    currentPlayerIsWinner = true;
+
+                    // показываем окно победы игроку
+                    arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
+                    arenaProgressUIController.ShowCongratilationsPanel();
+                }
+            }
+
+            if (!currentPlayerIsWinner)
+            {
+                ShowPostWindow();
+            }
 
             //DisabledAllChildElements();
-            //CalculateReward(numberOfPlayers + 1);
-            //StartCoroutine(WaitAndShowLoseWindow());
-            playerWasDead = true;
+            //CalculateReward(numberOfPlayers);
+            //StartCoroutine(WaitAndShowWinWindow());
         }
-        else if (numberOfPlayers == numberOfWinners)
-        {
-            // если остался один игрок, т.е. numberOfPlayers = 1, то кидаем окно победы
-            Debug.Log($"Win. Занял {numberOfPlayers} место");
-
-            DisabledAllChildElements();
-            CalculateReward(numberOfPlayers);
-            StartCoroutine(WaitAndShowWinWindow());
-        }
-
-        if (numberOfPlayers == 2)   // сделать список игроков и брать оттуда двух оставшихся
+        else if (numberOfPlayers == 2)   // сделать список игроков и брать оттуда двух оставшихся
         {
             ArenaCarDriverAI carDriverAIFirst = _playersList[0].GetComponent<ArenaCarDriverAI>();
             if (carDriverAIFirst != null) carDriverAIFirst.StartDuel(_playersList[1].transform);
@@ -165,13 +162,11 @@ public class ArenaProgressController : LevelProgressController
 
     private void UpdateLeftText()
     {
-        //leftText.text = $"LEFT: {numberOfPlayers}";
         arenaProgressUIController.UpdateLeftText(numberOfPlayers);
     }
 
     private void UpdateFragText()
     {
-        //fragText.text = $"{numberOfFrags}";
         arenaProgressUIController.UpdateFragText(numberOfFrags);
     }
 
@@ -188,50 +183,78 @@ public class ArenaProgressController : LevelProgressController
         return numberOfPlayers - 1;
     }
 
-    IEnumerator WaitAndShowWinWindow()
+    private void CongratulationsOver()
     {
-        if(currentPlayer.GetComponent<WheelVehicle>() != null) currentPlayer.GetComponent<WheelVehicle>().Handbrake = true;
+        arenaProgressUIController.CongratulationsOverEvent -= CongratulationsOver;
 
-        arenaProgressUIController.HideGameCanvas();
-        arenaPostPlaceController.PlayerWin(numberOfFrags, amountOfGoldReward, amountOfCupReward);
-
-        yield return new WaitForSeconds(pauseBeforShowingWinWindow);
-
-        gameCamera.gameObject.SetActive(false);
-        GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
-
-        arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
-        postPlaceCamera.gameObject.SetActive(true);
-        currentPlayer.SetActive(false);
-
-        //MusicManager.Instance.StopMusicPlaying();
-        MusicManager.Instance.StopSoundsPlaying();
-        MusicManager.Instance.PlayWinMusic();
-
-        // запуск окна оценки
-        InAppReviewsManager.Instance.ShowReviewWindow();
-
-        SendBattleFinishAnalyticEvent();
+        if (currentPlayerIsWinner)
+        {
+            ShowPostWindow();
+        }
     }
 
-    IEnumerator WaitAndShowLoseWindow()
+    private void LoseShowingOver()
     {
-        arenaProgressUIController.HideGameCanvas();
-        arenaPostPlaceController.PlayerLose(numberOfFrags, amountOfGoldReward, amountOfCupReward);
+        SendListOfLosersNamesToGameManager();
 
-        yield return new WaitForSeconds(pauseBeforShowingLoseWindow);
+        arenaProgressUIController.LoseShowingOverEvent -= LoseShowingOver;
 
-        gameCamera.gameObject.SetActive(false);
-        GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
+        cameraFollowingOnOtherPlayers.RemoveDriver(currentPlayer);
 
-        arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
-        postPlaceCamera.gameObject.SetActive(true);
-
-        MusicManager.Instance.StopMusicPlaying();
-        MusicManager.Instance.StopSoundsPlaying();
-
-        SendBattleFinishAnalyticEvent();
+        arenaProgressUIController.ShowObserverUI();
+        cameraFollowingOnOtherPlayers.EnableObserverMode();
     }
+
+    private void ShowPostWindow()
+    {
+        Debug.Log("Post Window");
+        SendListOfLosersNamesToGameManager();
+    }
+
+    //IEnumerator WaitAndShowWinWindow()
+    //{
+    //    if(currentPlayer.GetComponent<WheelVehicle>() != null) currentPlayer.GetComponent<WheelVehicle>().Handbrake = true;
+
+    //    arenaProgressUIController.HideGameCanvas();
+    //    arenaPostPlaceController.PlayerWin(numberOfFrags, amountOfGoldReward, amountOfCupReward);
+
+    //    yield return new WaitForSeconds(pauseBeforShowingWinWindow);
+
+    //    gameCamera.gameObject.SetActive(false);
+    //    GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
+
+    //    arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
+    //    postPlaceCamera.gameObject.SetActive(true);
+    //    currentPlayer.SetActive(false);
+
+    //    //MusicManager.Instance.StopMusicPlaying();
+    //    MusicManager.Instance.StopSoundsPlaying();
+    //    MusicManager.Instance.PlayWinMusic();
+
+    //    // запуск окна оценки
+    //    InAppReviewsManager.Instance.ShowReviewWindow();
+
+    //    SendBattleFinishAnalyticEvent();
+    //}
+
+    //IEnumerator WaitAndShowLoseWindow()
+    //{
+    //    arenaProgressUIController.HideGameCanvas();
+    //    arenaPostPlaceController.PlayerLose(numberOfFrags, amountOfGoldReward, amountOfCupReward);
+
+    //    yield return new WaitForSeconds(pauseBeforShowingLoseWindow);
+
+    //    gameCamera.gameObject.SetActive(false);
+    //    GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
+
+    //    arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
+    //    postPlaceCamera.gameObject.SetActive(true);
+
+    //    MusicManager.Instance.StopMusicPlaying();
+    //    MusicManager.Instance.StopSoundsPlaying();
+
+    //    SendBattleFinishAnalyticEvent();
+    //}
 
     private void OnEnable()
     {

@@ -10,13 +10,13 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
 
     private CinemachineVirtualCamera camCinema;
 
-    private List<GameObject> drivers = new List<GameObject>();
+    [SerializeField]private List<GameObject> drivers = new List<GameObject>();
     [SerializeField]private GameObject currentDriver;
     private int targetIndex = 0;
 
     private bool isMobile;
 
-    private bool canFollowOnOtherPlayers;
+    [SerializeField]private bool canFollowOnOtherPlayers;
 
     private string key = "LastObservableName";
 
@@ -47,6 +47,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
+                    Debug.Log("TIK");
                     ChangeTarget();
                 }
             }
@@ -89,6 +90,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
 
     private void ChangeTarget()
     {
+        Debug.Log("CHANGE");
         if(drivers.Count > 0)
         {
             int nextIndex = targetIndex + 1;

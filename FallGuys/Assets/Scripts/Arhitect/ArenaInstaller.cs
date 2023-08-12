@@ -6,7 +6,6 @@ public class ArenaInstaller : Installer
     [Header("-----")]
     [Header("Arena Controllers")]
     [SerializeField] private TargetsController targetsController;
-    [SerializeField] private EndGameController endGameController;
 
     [Header("Arena AI")]
     [SerializeField] ArenaCarDriverAI arenaCarDriverAI;
@@ -61,9 +60,6 @@ public class ArenaInstaller : Installer
                 var playerEffector = new PlayerEffector(player, playerGO, levelUINotifications, levelUI, weapon);
 
                 currentPlayer = playerGO;
-
-                GameObject playerObjectClone = Instantiate(playerGO);
-                endGameController.SetPlayerObjectClone(playerObjectClone);
             }
             else
             {

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AwardsManager : MonoBehaviour
 {
+    [Header("Game Manager")]
+    [SerializeField] private GameManager gameManager;
+
     [Header("Reward For Place")]
     [SerializeField] internal List<PlaceAwards> placeAwards;
 
@@ -17,6 +20,7 @@ public class AwardsManager : MonoBehaviour
         }
         else Destroy(this.gameObject);
     }
+
 
 
     [System.Serializable]

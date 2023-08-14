@@ -164,7 +164,7 @@ public class RaceProgressController : LevelProgressController
                 }
 
                 // если приехал последний противник и окно победы уже было показано игроку, то показываем окно сплющивания
-                if (congratulationWasShowing) ShowPostRacingWindow();
+                if (congratulationWasShowing) ShowPostWindow();
                 // если приехал противник, но окно победы еще показывается, то ждем его завершения. По завершению окно сплющивание покажется само
 
                 StopRacing();
@@ -176,7 +176,7 @@ public class RaceProgressController : LevelProgressController
         }
     }
 
-    private void ShowPostRacingWindow()
+    protected override void ShowPostWindow()
     {
         Debug.Log("SHOW POST RACING WINDOW");
 
@@ -259,7 +259,7 @@ public class RaceProgressController : LevelProgressController
         }
         else
         {
-            ShowPostRacingWindow();
+            ShowPostWindow();
         }
     }
 
@@ -270,7 +270,7 @@ public class RaceProgressController : LevelProgressController
         raceProgressUIController.ShowObserverUI();
 
         // гонка окончена. Показ сплющивания 
-        ShowPostRacingWindow();
+        ShowPostWindow();
     }
 
     private void StopRacing()

@@ -175,7 +175,6 @@ public class GameManager : MonoBehaviour
         if (isShowPlayerStatisticsWindowAfterGameInTheLobby)
         {
             // показываем окно статы игрока после битвы
-            Debug.LogError("Show Player Statistics Window Ater Battle");
             PlayerStatisticsAfterBattleWindow playerStatisticsAfterBattleWindow = FindObjectOfType<PlayerStatisticsAfterBattleWindow>(true);
             if (playerStatisticsAfterBattleWindow != null)
             {
@@ -205,20 +204,23 @@ public class GameManager : MonoBehaviour
     {
         if (isObserverMode)
         {
+            int index = 0;
+
+            if (players.Count > 0) index = players.Count - 1;
+
             losersList.Reverse();
 
-            int i = 0;
             foreach (var loser in losersList)
             {
                 string loserName = loser.Name;
 
                 if (loserName == currentPlayer.Name)
                 {
-                    currentPlayerPlace = i + 1;
+                    currentPlayerPlace = index + 1;
                     break;
                 }
 
-                i++;
+                index++;
             }
         }
         else // значит игрок остался один, у него первое место

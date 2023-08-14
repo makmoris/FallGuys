@@ -47,4 +47,9 @@ public class ProgressControllerHoneycomb : LevelProgressController
         // update ui
         progressUIControllerHoneycomb.UpdateNamberOfFallens(currentNumberOfFallens);
     }
+
+    protected override void ShowPostWindow()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -35,4 +35,6 @@ public abstract class LevelProgressController : MonoBehaviour
     public abstract void AddPlayer(GameObject playerGO, bool isCurrentPlayer);
 
     public abstract void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners);
+
+    protected abstract void ShowPostWindow();
 }

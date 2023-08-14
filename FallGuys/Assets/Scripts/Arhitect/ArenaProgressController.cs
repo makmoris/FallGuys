@@ -10,7 +10,6 @@ public class ArenaProgressController : LevelProgressController
     [SerializeField] private CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
 
     private ArenaProgressUIController arenaProgressUIController;
-    private ArenaPostPlaceController arenaPostPlaceController;
 
     [Space]
     [SerializeField] private int numberOfPlayers;
@@ -23,6 +22,8 @@ public class ArenaProgressController : LevelProgressController
     private int playerFinishPlace;
     private int startNumberOfPlayers;
 
+    [Header("Pause When Observe Mode Enabled")]
+    [SerializeField] private float pauseBeforShowingPostWindowForObserver = 1.5f;
 
     private GameObject currentPlayer;
 
@@ -30,7 +31,6 @@ public class ArenaProgressController : LevelProgressController
     private void Awake()
     {
         arenaProgressUIController = levelProgressUIController as ArenaProgressUIController;
-        arenaPostPlaceController = postLevelPlaceController as ArenaPostPlaceController;
 
         if (Instance == null)
         {
@@ -86,7 +86,9 @@ public class ArenaProgressController : LevelProgressController
         _losersList.Add(deadPlayer);
         _playersList.Remove(deadPlayer);
 
-        if(deadPlayer == currentPlayer)
+        deadPlayer.GetComponent<WheelVehicle>().Handbrake = true;
+
+        if (deadPlayer == currentPlayer)
         {
             // показываем луз окно игроку
             arenaProgressUIController.LoseShowingOverEvent += LoseShowingOver;
@@ -101,7 +103,7 @@ public class ArenaProgressController : LevelProgressController
         {
             foreach (var player in _playersList)
             {
-                if(player == currentPlayer)
+                if (player == currentPlayer)
                 {
                     _isCurrentPlayerWinner = true;
 
@@ -109,11 +111,15 @@ public class ArenaProgressController : LevelProgressController
                     arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
                     arenaProgressUIController.ShowCongratilationsPanel();
                 }
+
+                _winnersList.Add(player);
+
+                player.GetComponent<WheelVehicle>().Handbrake = true;
             }
 
             if (!_isCurrentPlayerWinner)
             {
-                ShowPostWindow();
+                StartCoroutine(WaitAndShowPostWindow());
             }
 
             //DisabledAllChildElements();
@@ -129,7 +135,7 @@ public class ArenaProgressController : LevelProgressController
             if (carDriverAISecond != null) carDriverAISecond.StartDuel(_playersList[0].transform);
         }
     }
-    
+
     private void CalculateReward(int place)
     {
         playerFinishPlace = place;
@@ -142,14 +148,14 @@ public class ArenaProgressController : LevelProgressController
         CurrencyManager.Instance.AddGold(amountOfGoldReward);
         CurrencyManager.Instance.AddCup(amountOfCupReward);
 
-        if(place == 1)
+        if (place == 1)
         {
             BattleStatisticsManager.Instance.AddFirstPlace();
         }
 
         BattleStatisticsManager.Instance.AddBattle();
     }
-    
+
     private void DisabledAllChildElements()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -204,56 +210,18 @@ public class ArenaProgressController : LevelProgressController
         cameraFollowingOnOtherPlayers.EnableObserverMode();
     }
 
-    private void ShowPostWindow()
+    protected override void ShowPostWindow()
     {
-        Debug.Log("Post Window");
         SendListOfLosersNamesToGameManager();
+
+        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
     }
 
-    //IEnumerator WaitAndShowWinWindow()
-    //{
-    //    if(currentPlayer.GetComponent<WheelVehicle>() != null) currentPlayer.GetComponent<WheelVehicle>().Handbrake = true;
-
-    //    arenaProgressUIController.HideGameCanvas();
-    //    arenaPostPlaceController.PlayerWin(numberOfFrags, amountOfGoldReward, amountOfCupReward);
-
-    //    yield return new WaitForSeconds(pauseBeforShowingWinWindow);
-
-    //    gameCamera.gameObject.SetActive(false);
-    //    GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
-
-    //    arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
-    //    postPlaceCamera.gameObject.SetActive(true);
-    //    currentPlayer.SetActive(false);
-
-    //    //MusicManager.Instance.StopMusicPlaying();
-    //    MusicManager.Instance.StopSoundsPlaying();
-    //    MusicManager.Instance.PlayWinMusic();
-
-    //    // запуск окна оценки
-    //    InAppReviewsManager.Instance.ShowReviewWindow();
-
-    //    SendBattleFinishAnalyticEvent();
-    //}
-
-    //IEnumerator WaitAndShowLoseWindow()
-    //{
-    //    arenaProgressUIController.HideGameCanvas();
-    //    arenaPostPlaceController.PlayerLose(numberOfFrags, amountOfGoldReward, amountOfCupReward);
-
-    //    yield return new WaitForSeconds(pauseBeforShowingLoseWindow);
-
-    //    gameCamera.gameObject.SetActive(false);
-    //    GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
-
-    //    arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
-    //    postPlaceCamera.gameObject.SetActive(true);
-
-    //    MusicManager.Instance.StopMusicPlaying();
-    //    MusicManager.Instance.StopSoundsPlaying();
-
-    //    SendBattleFinishAnalyticEvent();
-    //}
+    IEnumerator WaitAndShowPostWindow()
+    {
+        yield return new WaitForSeconds(pauseBeforShowingPostWindowForObserver);
+        ShowPostWindow();
+    }
 
     private void OnEnable()
     {

@@ -11,9 +11,17 @@ public class ArenaProgressUIController : LevelProgressUIController
     [SerializeField] private TextMeshProUGUI leftText;
     [SerializeField] private TextMeshProUGUI fragText;
 
-    public void HideGameCanvas()
+    [Header("Additional UI To Hide When Observe")]
+    [SerializeField] private List<GameObject> additionalUIList;
+
+    public override void ShowObserverUI()
     {
-        gameCanvas.gameObject.SetActive(false);
+        base.ShowObserverUI();
+
+        foreach (var elem in additionalUIList)
+        {
+            elem.SetActive(false);
+        }
     }
 
     public void UpdateLeftText(int numberOfPlayers)

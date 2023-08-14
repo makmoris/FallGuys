@@ -17,8 +17,8 @@ public class PostLevelPlaceController : MonoBehaviour
     [SerializeField] protected GameObject postCameraGO;
 
     [Header("UI")]
-    [SerializeField] protected GameObject levelUIGO;
-    [SerializeField] protected GameObject postUIGO;
+    [SerializeField] protected GameObject levelCanvasGO;
+    [SerializeField] protected GameObject postPlaceCanvasGO;
 
     [Header("Winner Window")]
     [SerializeField] private GameObject winnerWindowGO;
@@ -44,8 +44,8 @@ public class PostLevelPlaceController : MonoBehaviour
     {
         if (!gameCameraGO.activeSelf) gameCameraGO.SetActive(true);
         if (postCameraGO.activeSelf) postCameraGO.SetActive(false);
-        if (postUIGO.activeSelf) postUIGO.SetActive(false);
-        if (!levelUIGO.activeSelf) levelUIGO.SetActive(true);
+        if (postPlaceCanvasGO.activeSelf) postPlaceCanvasGO.SetActive(false);
+        if (!levelCanvasGO.activeSelf) levelCanvasGO.SetActive(true);
 
         FillPostPlacesList();
     }
@@ -112,9 +112,9 @@ public class PostLevelPlaceController : MonoBehaviour
 
         postLevelUIController.SetNumberOfWinnersText(_winnersList.Count);
 
-        postUIGO.SetActive(true);
+        postPlaceCanvasGO.SetActive(true);
 
-        if (_isCurrentPlayerWinner) levelUIGO.SetActive(false);
+        if (_isCurrentPlayerWinner) levelCanvasGO.SetActive(false);
 
         postCameraGO.SetActive(true);
         gameCameraGO.SetActive(false);
@@ -125,8 +125,8 @@ public class PostLevelPlaceController : MonoBehaviour
         gameCameraGO.SetActive(false);
         postCameraGO.SetActive(false);
 
-        levelUIGO.SetActive(false);
-        postUIGO.SetActive(false);
+        levelCanvasGO.SetActive(false);
+        postPlaceCanvasGO.SetActive(false);
 
         winnerGO.SetActive(true);
 

@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class LevelProgressUIController : MonoBehaviour
 {
+    protected GameManager _gameManager;
+
     [Header("For Game Modes")]
     [SerializeField] protected GameObject defaultUI;
     [SerializeField] protected GameObject additionalUI;
-    [SerializeField] protected GameObject leaveButton;
+    [SerializeField] protected Button leaveButton;
 
     [Header("Congratulations And Lose Panels")]
     [SerializeField] private GameObject congratulationsPanel;
@@ -28,17 +31,24 @@ public abstract class LevelProgressUIController : MonoBehaviour
         HideElementsBeforeStart();
     }
 
+    public void SetGameManager(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+
+        SetLeaveButtonEvent();
+    }
+
     public virtual void ShowPlayerUI()
     {
         defaultUI.SetActive(true);
         additionalUI.SetActive(true);
-        leaveButton.SetActive(false);
+        leaveButton.gameObject.SetActive(false);
     }
     public virtual void ShowObserverUI()
     {
         defaultUI.SetActive(false);
         additionalUI.SetActive(true);
-        leaveButton.SetActive(true);
+        leaveButton.gameObject.SetActive(true);
 
         ShowCameraHint();
     }
@@ -90,5 +100,17 @@ public abstract class LevelProgressUIController : MonoBehaviour
         if (cameraHint.activeSelf) cameraHint.SetActive(false);
 
         if (!layouts.activeSelf) layouts.SetActive(true);
+    }
+
+    private void SetLeaveButtonEvent()
+    {
+        leaveButton.onClick.RemoveAllListeners();
+        leaveButton.onClick.AddListener(_gameManager.PlayerClickedExitToLobby);
+        leaveButton.onClick.AddListener(DeactivateLeaveButton);
+    }
+
+    private void DeactivateLeaveButton()
+    {
+        leaveButton.interactable = false;
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using VehicleBehaviour;
+using UnityEngine.UI;
 
 public class PostLevelPlaceController : MonoBehaviour
 {
     protected GameManager _gameManager;
-    public GameManager GameManager { set => _gameManager = value; }
 
     [Header("Post Level UI Controller")]
     [SerializeField] protected PostLevelUIController postLevelUIController;
@@ -27,12 +27,13 @@ public class PostLevelPlaceController : MonoBehaviour
     [Space]
     [SerializeField] private TextMeshProUGUI winnerNameText;
     [SerializeField] private TextMeshProUGUI cupsText;
+    [SerializeField] private Button continueButton;
 
     [Header("Player Elimination Place")]
     [SerializeField] private GameObject eleminationPlaceGO;
     [Space]
     [SerializeField] private float minTimeBeforDump = 1f;
-    [SerializeField] private float maxTimeBeforDump = 2.5f;
+    [SerializeField] private float maxTimeBeforDump = 2f;
 
     private List<PostPlace> postPlacesList = new List<PostPlace>();
 
@@ -49,15 +50,23 @@ public class PostLevelPlaceController : MonoBehaviour
         FillPostPlacesList();
     }
 
+    public void SetGameManager(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+
+        SetContinueButtonEvent();
+    }
+
     public void ShowPostPlace(List<GameObject> _winnersList, List<GameObject> _losersList, bool _isCurrentPlayerWinner)
     {
         if (_winnersList.Count == 1)// игра завершена, остался победитель. Показываем вин окно
         {
-            ShowWinnerWindow(_winnersList[0]);
+            ShowWinnerWindow(_winnersList[0], _isCurrentPlayerWinner);
         }
         else// игра не завершена, еще будут другие режими. Показ анимации выбывания и загрузка следующей карты
         {
             ShowElimination(_winnersList, _losersList, _isCurrentPlayerWinner);
+            LoadNextGameStage();
         }
     }
 
@@ -109,11 +118,9 @@ public class PostLevelPlaceController : MonoBehaviour
 
         postCameraGO.SetActive(true);
         gameCameraGO.SetActive(false);
-
-        LoadNextGameStage();
     }
 
-    private void ShowWinnerWindow(GameObject winnerGO)
+    private void ShowWinnerWindow(GameObject winnerGO, bool _isCurrentPlayerWinner)
     {
         gameCameraGO.SetActive(false);
         postCameraGO.SetActive(false);
@@ -132,6 +139,22 @@ public class PostLevelPlaceController : MonoBehaviour
         PlayerName winnerName = winnerGO.GetComponent<PlayerName>();
         winnerName.HideNameDisplay();
         winnerNameText.text = winnerName.Name;
+
+        int currentPlayerCupsValue = _gameManager.GetCurrentPlayerCupsValue();
+
+        if (_isCurrentPlayerWinner)
+        {
+            cupsText.text = currentPlayerCupsValue.ToString();
+        }
+        else
+        {
+            int minValue = 10;
+            if (currentPlayerCupsValue > 50) minValue = currentPlayerCupsValue - 45;
+
+            int randCupsValue = Random.Range(minValue, currentPlayerCupsValue + 50);
+
+            cupsText.text = randCupsValue.ToString();
+        }
 
         Suspension[] allChieldSuspensions = winnerGO.GetComponentsInChildren<Suspension>();
         foreach (var sus in allChieldSuspensions)
@@ -179,6 +202,18 @@ public class PostLevelPlaceController : MonoBehaviour
     {
         yield return new WaitForSeconds(timeBeforeLoadNextGameStage);
 
-        bool itWasNotTheLastGameStage = _gameManager.StartGameStage();
+        _gameManager.StartGameStage();
+    }
+
+    private void SetContinueButtonEvent()
+    {
+        continueButton.onClick.RemoveAllListeners();
+        continueButton.onClick.AddListener(_gameManager.PlayerClickedExitToLobby);
+        continueButton.onClick.AddListener(DeactivateContinueButton);
+    }
+
+    private void DeactivateContinueButton()
+    {
+        continueButton.interactable = false;
     }
 }

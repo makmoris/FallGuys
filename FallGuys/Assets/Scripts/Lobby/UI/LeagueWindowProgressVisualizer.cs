@@ -80,7 +80,7 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
 
     private void OnEnable()
     {
-        LobbyWindowsController.ShowLeagueProgressAnimationEvent += ShowProgressAnimationAfterPlay;
+        //LobbyWindowsController.ShowLeagueProgressAnimationEvent += ShowProgressAnimationAfterPlay;
 
         if (notFirstActive)
         {
@@ -107,7 +107,7 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         }
     }
 
-    private void ShowProgressAnimationAfterPlay(int _previousCupValue)
+    public void ShowProgressAnimationAfterPlay(int _previousCupValue)
     {
         previousCupsValue = _previousCupValue;
         isShowingProgressAnimationAfterPlay = true;
@@ -334,6 +334,6 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
 
     private void OnDisable()
     {
-        LobbyWindowsController.ShowLeagueProgressAnimationEvent -= ShowProgressAnimationAfterPlay;
+        //LobbyWindowsController.ShowLeagueProgressAnimationEvent -= ShowProgressAnimationAfterPlay;
     }
 }   

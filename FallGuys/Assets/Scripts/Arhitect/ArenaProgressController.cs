@@ -25,7 +25,6 @@ public class ArenaProgressController : LevelProgressController
 
 
     private GameObject currentPlayer;
-    private bool currentPlayerIsWinner;
 
     public static ArenaProgressController Instance { get; private set; }
     private void Awake()
@@ -104,7 +103,7 @@ public class ArenaProgressController : LevelProgressController
             {
                 if(player == currentPlayer)
                 {
-                    currentPlayerIsWinner = true;
+                    _isCurrentPlayerWinner = true;
 
                     // показываем окно победы игроку
                     arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
@@ -112,7 +111,7 @@ public class ArenaProgressController : LevelProgressController
                 }
             }
 
-            if (!currentPlayerIsWinner)
+            if (!_isCurrentPlayerWinner)
             {
                 ShowPostWindow();
             }
@@ -187,7 +186,7 @@ public class ArenaProgressController : LevelProgressController
     {
         arenaProgressUIController.CongratulationsOverEvent -= CongratulationsOver;
 
-        if (currentPlayerIsWinner)
+        if (_isCurrentPlayerWinner)
         {
             ShowPostWindow();
         }

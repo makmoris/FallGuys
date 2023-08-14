@@ -40,10 +40,11 @@ public class GameManager : MonoBehaviour
     private List<IPlayerData> losersList = new List<IPlayerData>();// first in list - last in award
     private IPlayerData currentPlayer;
 
+    [SerializeField]private int currentPlayerPlace;
+    private bool isShowPlayerStatisticsWindowAfterGameInTheLobby;
+
     private bool isObserverMode;
     public bool IsObserverMode => isObserverMode;
-
-    private int currentPlayerPlaceIndex;
 
     private bool isFirstStart = true;
 
@@ -65,7 +66,8 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        sceneLoader.lobbyOpenEvent += ResetValues;
+        sceneLoader.lobbyOpenEvent += ResetValuesAfterLeavingToLobby;
+        sceneLoader.lobbyOpenEvent += CheckTheDisplayOfThePlayerStatisticsWindowAfterGameInTheLobby;
     }
 
     private void Update()
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool StartGameStage()// начальна€ точка. ¬ызываетс€ по кнопке "Play"
+    public void StartGameStage()// начальна€ точка. ¬ызываетс€ по кнопке "Play"
     {
         SceneField sceneToLoad;
        
@@ -89,6 +91,8 @@ public class GameManager : MonoBehaviour
 
             isFirstStart = false;
             isObserverMode = false;
+
+            isShowPlayerStatisticsWindowAfterGameInTheLobby = false;
 
             sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
         }
@@ -108,12 +112,8 @@ public class GameManager : MonoBehaviour
                 currentGameStage = 0;
 
                 //sceneLoader.PrepareLobbyScene(); // сделать загрузку через окно
-
-                return false;// return false if the current game stage is the last one
             }
         }
-
-        return true;// return true if there is a next game stage
     }
 
     public void StartGameStageFromTutorialWindow()
@@ -123,7 +123,67 @@ public class GameManager : MonoBehaviour
         isFirstStart = false;
     }
 
-    
+    public void EliminateLosersFromList(List<string> losersNames)
+    {
+        for (int i = 0; i < losersNames.Count; i++)
+        {
+            foreach (var player in players)
+            {
+                string loserName = player.Name;
+
+                if (!losersList.Contains(player))// чтобы избежать повторов
+                {
+                    if (loserName == losersNames[i])
+                    {
+                        players.Remove(player);
+                        losersList.Add(player);
+                        testLosersNames.Add(player.Name);
+
+                        if (loserName == currentPlayer.Name)
+                        {
+                            isObserverMode = true;
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public int GetNumberOfWinners()
+    {
+        return gameStagesList[currentGameStage].numberOfWinners;
+    }
+
+    public void PlayerClickedExitToLobby()
+    {
+        // получаем место игрока
+        GetCurrentPlayerPlace();
+        // переходим в лобби с пометкой, что надо показать окно статистики игрока
+        isShowPlayerStatisticsWindowAfterGameInTheLobby = true;
+        sceneLoader.LoadLobbyScene();
+    }
+
+    public int GetCurrentPlayerCupsValue()
+    {
+        return CurrencyManager.Instance.Cups;
+    }
+
+    private void CheckTheDisplayOfThePlayerStatisticsWindowAfterGameInTheLobby()
+    {
+        if (isShowPlayerStatisticsWindowAfterGameInTheLobby)
+        {
+            // показываем окно статы игрока после битвы
+            Debug.LogError("Show Player Statistics Window Ater Battle");
+            PlayerStatisticsAfterBattleWindow playerStatisticsAfterBattleWindow = FindObjectOfType<PlayerStatisticsAfterBattleWindow>(true);
+            if (playerStatisticsAfterBattleWindow != null)
+            {
+                playerStatisticsAfterBattleWindow.gameObject.SetActive(true);
+                playerStatisticsAfterBattleWindow.ShowStatistics(currentPlayerPlace);
+            }
+        }
+    }
 
     private void CreatePlayersForOneGameSession()
     {
@@ -141,10 +201,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void GetCurrentPlayerPlace()// called when player click leave button or when game ower with one winner
+    {
+        if (isObserverMode)
+        {
+            losersList.Reverse();
+
+            int i = 0;
+            foreach (var loser in losersList)
+            {
+                string loserName = loser.Name;
+
+                if (loserName == currentPlayer.Name)
+                {
+                    currentPlayerPlace = i + 1;
+                    break;
+                }
+
+                i++;
+            }
+        }
+        else // значит игрок осталс€ один, у него первое место
+        {
+            currentPlayerPlace = 0;
+        }
+    }
+
     private void ClearPlayersForOneGameSession()
     {
         players.Clear();
         losersList.Clear();
+        testLosersNames.Clear();
     }
 
     private Player CreatePlayer()
@@ -186,42 +273,7 @@ public class GameManager : MonoBehaviour
         return ai;
     }
 
-    public void EliminateLosersFromList(List<string> losersNames)
-    {
-        for (int i = 0; i < losersNames.Count; i++)
-        {
-            foreach (var player in players)
-            {
-                string loserName = player.Name;
-
-                if (!losersList.Contains(player))// чтобы избежать повторов
-                {
-                    if (loserName == losersNames[i])
-                    {
-                        players.Remove(player);
-                        losersList.Add(player);
-                        testLosersNames.Add(player.Name);
-
-                        if (loserName == currentPlayer.Name)
-                        {
-                            isObserverMode = true;
-
-                            currentPlayerPlaceIndex = losersList.Count - 1;
-                        }
-
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    public int GetNumberOfWinners()
-    {
-        return gameStagesList[currentGameStage].numberOfWinners;
-    }
-
-    private void ResetValues()
+    private void ResetValuesAfterLeavingToLobby()
     {
         isFirstStart = true;
         currentGameStage = 0;
@@ -244,6 +296,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDisable()
     {
-        sceneLoader.lobbyOpenEvent -= ResetValues;
+        sceneLoader.lobbyOpenEvent -= ResetValuesAfterLeavingToLobby;
+        sceneLoader.lobbyOpenEvent -= CheckTheDisplayOfThePlayerStatisticsWindowAfterGameInTheLobby;
     }
 }

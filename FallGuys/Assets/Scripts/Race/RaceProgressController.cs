@@ -24,7 +24,6 @@ public class RaceProgressController : LevelProgressController
     private bool raceNotOver;
 
     private RaceProgressUIController raceProgressUIController;
-    private PostRacePlaceController postRacePlaceController;
 
     private GameObject currentPlayer;
     private bool currentPlayerWasFinished;
@@ -44,9 +43,8 @@ public class RaceProgressController : LevelProgressController
     private void Awake()
     {
         raceProgressUIController = levelProgressUIController as RaceProgressUIController;
-        postRacePlaceController = postLevelPlaceController as PostRacePlaceController;
 
-        if (!postRacePlaceController.gameObject.activeSelf) postRacePlaceController.gameObject.SetActive(true);
+        if (!postLevelPlaceController.gameObject.activeSelf) postLevelPlaceController.gameObject.SetActive(true);
 
         raceProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
@@ -221,8 +219,8 @@ public class RaceProgressController : LevelProgressController
         SendListOfLosersNamesToGameManager();
 
         raceProgressUIController.HideCameraHint();
-        
-        postRacePlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
+
+        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
     }
 
     private void SortLosersByPosition()

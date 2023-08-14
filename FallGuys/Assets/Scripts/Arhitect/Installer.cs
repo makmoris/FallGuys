@@ -53,7 +53,8 @@ public abstract class Installer : MonoBehaviour
         numberOfPlayers = playersData.Count;
 
         levelProgressController.GameManager = gameManager;
-        postLevelPlaceController.GameManager = gameManager;
+        levelProgressUIController.SetGameManager(gameManager);
+        postLevelPlaceController.SetGameManager(gameManager);
         postLevelUIController.GameManager = gameManager;
 
         levelProgressController.SetNumberOfPlayersAndWinners(playersData.Count, gameManager.GetNumberOfWinners());

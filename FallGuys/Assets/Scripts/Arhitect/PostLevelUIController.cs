@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public abstract class PostLevelUIController : MonoBehaviour
+public class PostLevelUIController : MonoBehaviour
 {
     protected GameManager _gameManager;
     public GameManager GameManager { set => _gameManager = value; }

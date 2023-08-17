@@ -17,18 +17,22 @@ public class DeadZone : Bonus
     [SerializeField] private ShieldDeadZone shieldBonus;
 
     [Space]
-    [SerializeField] private float respawnTime;
+    private float respawnTime;
 
     private List<GameObject> waitRespawnCars = new List<GameObject>();
     private List<GameObject> destroyedObjects = new List<GameObject>();
 
+    private void Awake()
+    {
+        respawnTime = 0f;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         Bumper bumper = other.GetComponent<Bumper>();
         if (bumper != null)
         {
-            bumper.gameObject.SetActive(false);
+            //bumper.gameObject.SetActive(false);
             StartCoroutine(WaitAndResp(bumper));
             waitRespawnCars.Add(bumper.gameObject);
             Debug.Log("DeadZone");
@@ -68,7 +72,7 @@ public class DeadZone : Bonus
             Vector3 pos = TargetsController.Instance.GetRespawnPosition().position;
             car.transform.position = new Vector3(pos.x, 5f, pos.z);
             car.transform.rotation = TargetsController.Instance.GetRespawnPosition().rotation;
-            car.SetActive(true);
+            //car.SetActive(true);
             bumper.enabled = true;// отключился при входе в зону из Bumper
             bumper.GetBonus(shieldBonus);
 

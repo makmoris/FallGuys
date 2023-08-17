@@ -45,7 +45,6 @@ public class PostLevelPlaceController : MonoBehaviour
         if (!gameCameraGO.activeSelf) gameCameraGO.SetActive(true);
         if (postCameraGO.activeSelf) postCameraGO.SetActive(false);
         if (postPlaceCanvasGO.activeSelf) postPlaceCanvasGO.SetActive(false);
-        if (!levelCanvasGO.activeSelf) levelCanvasGO.SetActive(true);
 
         FillPostPlacesList();
     }
@@ -85,6 +84,8 @@ public class PostLevelPlaceController : MonoBehaviour
                 winner.transform.localPosition = Vector3.zero;
                 winner.transform.localRotation = Quaternion.Euler(Vector3.zero);
 
+                winner.GetComponent<AudioListener>().enabled = false;
+
                 postPlacesList.Remove(postPlace);
             }
         }
@@ -105,6 +106,8 @@ public class PostLevelPlaceController : MonoBehaviour
                 float timeBeforDump = Random.Range(minTimeBeforDump, maxTimeBeforDump);
 
                 postPlace.DumpThisCar(timeBeforDump);
+
+                loser.GetComponent<AudioListener>().enabled = false;
 
                 postPlacesList.Remove(postPlace);
             }
@@ -130,6 +133,7 @@ public class PostLevelPlaceController : MonoBehaviour
 
         winnerGO.SetActive(true);
 
+        winnerGO.GetComponent<AudioListener>().enabled = false;
         winnerGO.GetComponent<Rigidbody>().isKinematic = true;
 
         winnerGO.transform.SetParent(winnerPlace);

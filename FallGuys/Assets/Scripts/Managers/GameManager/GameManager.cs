@@ -165,6 +165,11 @@ public class GameManager : MonoBehaviour
         sceneLoader.LoadLobbyScene();
     }
 
+    public void PlayerClickedExitToLobbyFromSettingsWindow()
+    {
+        sceneLoader.LoadLobbyScene();
+    }
+
     public int GetCurrentPlayerCupsValue()
     {
         return CurrencyManager.Instance.Cups;

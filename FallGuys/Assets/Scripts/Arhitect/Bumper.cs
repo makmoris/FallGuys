@@ -5,9 +5,6 @@ using System.Collections;
 public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обьекте нашего игрока будет висеть этот скрипт
 {
     [SerializeField]private bool isPlayer;
-    private bool playerWasSetted;
-
-    private AudioListener playerAudioListener;
 
     public event Action<Bonus> OnBonusGot;
     public event Action<Bonus, GameObject> OnBonusGotWithGameObject;
@@ -25,20 +22,6 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
     public static event Action<int> BonusBoxGiveGoldEvent;// дл€ дополнительной нотификации на экране о подборе бонуса
     public static event Action<int> BonusBoxGiveHPEvent;
 
-
-    private void OnEnable()
-    {
-        if (playerWasSetted)
-        {
-            //включаем листенер на тачке, отключаем на камере
-            if (isPlayer)
-            {
-                GameCameraAudioListenerController.Instance.DeactivateAudioListener();
-                playerAudioListener.enabled = true;
-            }
-        }
-    }
-
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -54,13 +37,6 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
     {
         if (playerObj == gameObject) isPlayer = true;
         else isPlayer = false;
-
-        if (isPlayer)
-        {
-            playerAudioListener = GetComponent<AudioListener>();
-        }
-
-        playerWasSetted = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -263,19 +239,5 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
 
         AnalyticsManager.Instance.PlayerFallsOutMap(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
             _player_gold_earn, _enemies_left);
-    }
-
-    
-    private void OnDisable()
-    {
-        if (playerWasSetted)
-        {
-            //отключаем листенер на тачке, включаем на камере, чтобы проиграть взрыв игрока
-            if (isPlayer)
-            {
-                GameCameraAudioListenerController.Instance.ActivateAudioListener();
-                playerAudioListener.enabled = false;
-            }
-        }
     }
 }

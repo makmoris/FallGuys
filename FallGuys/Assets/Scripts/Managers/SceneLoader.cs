@@ -65,6 +65,10 @@ public class SceneLoader : MonoBehaviour
 
             lobbyOpenEvent?.Invoke();
         }
+
+        if (next.name == lobbyScene.SceneName) MusicManager.Instance.PlayLobbyMusic();
+        if (next.name.EndsWith("Arena")) MusicManager.Instance.PlayArenaMusic();
+        if (next.name.EndsWith("Race")) MusicManager.Instance.PlayRaceMusic();
     }
 
     private void OnDisable()

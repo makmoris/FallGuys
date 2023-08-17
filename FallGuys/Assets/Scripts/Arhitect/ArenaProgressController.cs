@@ -52,6 +52,11 @@ public class ArenaProgressController : LevelProgressController
 
         UpdateLeftText();
         UpdateFragText();
+
+        if (numberOfPlayers == 2)
+        {
+            StartDuel();
+        }
     }
 
     public override void AddPlayer(GameObject playerGO, bool isCurrentPlayer)
@@ -128,12 +133,17 @@ public class ArenaProgressController : LevelProgressController
         }
         else if (numberOfPlayers == 2)   // сделать список игроков и брать оттуда двух оставшихся
         {
-            ArenaCarDriverAI carDriverAIFirst = _playersList[0].GetComponent<ArenaCarDriverAI>();
-            if (carDriverAIFirst != null) carDriverAIFirst.StartDuel(_playersList[1].transform);
-
-            ArenaCarDriverAI carDriverAISecond = _playersList[1].GetComponent<ArenaCarDriverAI>();
-            if (carDriverAISecond != null) carDriverAISecond.StartDuel(_playersList[0].transform);
+            StartDuel();
         }
+    }
+
+    private void StartDuel()
+    {
+        ArenaCarDriverAI carDriverAIFirst = _playersList[0].GetComponent<ArenaCarDriverAI>();
+        if (carDriverAIFirst != null) carDriverAIFirst.StartDuel(_playersList[1].transform);
+
+        ArenaCarDriverAI carDriverAISecond = _playersList[1].GetComponent<ArenaCarDriverAI>();
+        if (carDriverAISecond != null) carDriverAISecond.StartDuel(_playersList[0].transform);
     }
 
     private void CalculateReward(int place)

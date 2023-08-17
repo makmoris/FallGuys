@@ -11,7 +11,8 @@ public class MusicManager : MonoBehaviour
     [Header("Music")]
     [SerializeField] private AudioClip lobbyMusic;
     [SerializeField] private AudioClip arenaMusic;
-    [SerializeField] private AudioClip arenaMapSearchMusic;
+    [SerializeField] private AudioClip raceMusic;
+    [SerializeField] private AudioClip mapSearchMusic;
     [SerializeField] private AudioClip fillingLeagueScaleMusic;
     [SerializeField] private AudioClip winMusic;
 
@@ -53,34 +54,6 @@ public class MusicManager : MonoBehaviour
         Load();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            ToggleMusic(true);
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            ToggleMusic(false);
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            ToggleSounds(false);
-            VibrationManager.Instance.ToogleVibration(false);
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            ToggleSounds(true);
-            VibrationManager.Instance.ToogleVibration(true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            musicMixer.audioMixer.GetFloat("MusicVolume", out float val);
-            Debug.Log($"MUSIC ENABLED FALSE; {val}");
-        }
-    }
-
     public bool GetMusicEnabledState()
     {
         return musicEnabled;
@@ -96,14 +69,11 @@ public class MusicManager : MonoBehaviour
         {
             musicMixer.audioMixer.SetFloat("MusicVolume", 0f);
             musicEnabled = true;
-            //Debug.Log("MUSIC ENABLED TRUE");
         }
         else
         {
             musicMixer.audioMixer.SetFloat("MusicVolume", -80f);
             musicEnabled = false;
-            musicMixer.audioMixer.GetFloat("MusicVolume", out float val);
-            //Debug.Log($"MUSIC ENABLED FALSE; {val}");
         }
 
         Save();
@@ -178,9 +148,15 @@ public class MusicManager : MonoBehaviour
     {
         PlayMusic(arenaMusic);
     }
-    public void PlayArenaMapSearchMusic()
+
+    public void PlayRaceMusic()
     {
-        PlayMusic(arenaMapSearchMusic);
+        PlayMusic(raceMusic);
+    }
+
+    public void PlayMapSearchMusic()
+    {
+        PlayMusic(mapSearchMusic);
     }
     public void PlayFillingLeagueScaleMusic()
     {
@@ -203,8 +179,6 @@ public class MusicManager : MonoBehaviour
 
         if (soundsValue == 0) soundsEnabled = false;
         else soundsEnabled = true;
-
-        //Debug.Log($"Music enabled = {musicEnabled}");
 
         ToggleMusic(musicEnabled);
         ToggleSounds(soundsEnabled);

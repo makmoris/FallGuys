@@ -10,7 +10,7 @@ public abstract class LevelProgressUIController : MonoBehaviour
     [Header("For Game Modes")]
     [SerializeField] protected GameObject defaultUI;
     [SerializeField] protected GameObject additionalUI;
-    [SerializeField] protected Button leaveButton;
+    [SerializeField] protected Button leaveButtonInLevelCanvas;
 
     [Header("Congratulations And Lose Panels")]
     [SerializeField] private GameObject congratulationsPanel;
@@ -20,8 +20,10 @@ public abstract class LevelProgressUIController : MonoBehaviour
     public event System.Action CongratulationsOverEvent;
     public event System.Action LoseShowingOverEvent;
 
-    [Space]
+    [Header("Settings Windows")]
     [SerializeField] private GameObject layouts;
+    [Space]
+    [SerializeField] private Button leaveButtonInSettingsWindow;
 
     [Header("Camera Hint")]
     [SerializeField] private GameObject cameraHint;
@@ -35,20 +37,21 @@ public abstract class LevelProgressUIController : MonoBehaviour
     {
         _gameManager = gameManager;
 
-        SetLeaveButtonEvent();
+        SetLeaveButtonInLevelCanvasEvent();
+        SetLeaveButtonInSettingsWindowEvent();
     }
 
     public virtual void ShowPlayerUI()
     {
         defaultUI.SetActive(true);
         additionalUI.SetActive(true);
-        leaveButton.gameObject.SetActive(false);
+        leaveButtonInLevelCanvas.gameObject.SetActive(false);
     }
     public virtual void ShowObserverUI()
     {
         defaultUI.SetActive(false);
         additionalUI.SetActive(true);
-        leaveButton.gameObject.SetActive(true);
+        leaveButtonInLevelCanvas.gameObject.SetActive(true);
 
         ShowCameraHint();
     }
@@ -102,15 +105,27 @@ public abstract class LevelProgressUIController : MonoBehaviour
         if (!layouts.activeSelf) layouts.SetActive(true);
     }
 
-    private void SetLeaveButtonEvent()
+    private void SetLeaveButtonInLevelCanvasEvent()
     {
-        leaveButton.onClick.RemoveAllListeners();
-        leaveButton.onClick.AddListener(_gameManager.PlayerClickedExitToLobby);
-        leaveButton.onClick.AddListener(DeactivateLeaveButton);
+        leaveButtonInLevelCanvas.onClick.RemoveAllListeners();
+        leaveButtonInLevelCanvas.onClick.AddListener(_gameManager.PlayerClickedExitToLobby);
+        leaveButtonInLevelCanvas.onClick.AddListener(DeactivateLeaveButtonInLevelCanvas);
     }
 
-    private void DeactivateLeaveButton()
+    private void DeactivateLeaveButtonInLevelCanvas()
     {
-        leaveButton.interactable = false;
+        leaveButtonInLevelCanvas.interactable = false;
+    }
+
+    private void SetLeaveButtonInSettingsWindowEvent()
+    {
+        leaveButtonInSettingsWindow.onClick.RemoveAllListeners();
+        leaveButtonInSettingsWindow.onClick.AddListener(_gameManager.PlayerClickedExitToLobbyFromSettingsWindow);
+        leaveButtonInSettingsWindow.onClick.AddListener(DeactivateLeaveButtonInSettingsWindow);
+    }
+
+    private void DeactivateLeaveButtonInSettingsWindow()
+    {
+        leaveButtonInSettingsWindow.interactable = false;
     }
 }

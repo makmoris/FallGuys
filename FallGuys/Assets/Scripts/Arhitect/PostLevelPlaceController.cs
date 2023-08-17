@@ -18,6 +18,7 @@ public class PostLevelPlaceController : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] protected GameObject levelCanvasGO;
+    [SerializeField] protected GameObject canvasForLeaveButton;
     [SerializeField] protected GameObject postPlaceCanvasGO;
 
     [Header("Winner Window")]
@@ -58,6 +59,9 @@ public class PostLevelPlaceController : MonoBehaviour
 
     public void ShowPostPlace(List<GameObject> _winnersList, List<GameObject> _losersList, bool _isCurrentPlayerWinner)
     {
+        DisableAudioListeners(_winnersList);
+        DisableAudioListeners(_losersList);
+
         if (_winnersList.Count == 1)// игра завершена, остался победитель. Показываем вин окно
         {
             ShowWinnerWindow(_winnersList[0], _isCurrentPlayerWinner);
@@ -84,8 +88,6 @@ public class PostLevelPlaceController : MonoBehaviour
                 winner.transform.localPosition = Vector3.zero;
                 winner.transform.localRotation = Quaternion.Euler(Vector3.zero);
 
-                winner.GetComponent<AudioListener>().enabled = false;
-
                 postPlacesList.Remove(postPlace);
             }
         }
@@ -107,8 +109,6 @@ public class PostLevelPlaceController : MonoBehaviour
 
                 postPlace.DumpThisCar(timeBeforDump);
 
-                loser.GetComponent<AudioListener>().enabled = false;
-
                 postPlacesList.Remove(postPlace);
             }
         }
@@ -129,11 +129,11 @@ public class PostLevelPlaceController : MonoBehaviour
         postCameraGO.SetActive(false);
 
         levelCanvasGO.SetActive(false);
+        canvasForLeaveButton.SetActive(false);
         postPlaceCanvasGO.SetActive(false);
 
         winnerGO.SetActive(true);
 
-        winnerGO.GetComponent<AudioListener>().enabled = false;
         winnerGO.GetComponent<Rigidbody>().isKinematic = true;
 
         winnerGO.transform.SetParent(winnerPlace);
@@ -174,6 +174,14 @@ public class PostLevelPlaceController : MonoBehaviour
         }
 
         winnerWindowGO.SetActive(true);
+    }
+
+    private void DisableAudioListeners(List<GameObject> playersList)
+    {
+        foreach (var player in playersList)
+        {
+            player.GetComponent<AudioListener>().enabled = false;
+        }
     }
 
     private void LoadNextGameStage()

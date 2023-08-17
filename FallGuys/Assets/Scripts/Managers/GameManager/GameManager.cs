@@ -295,17 +295,19 @@ public class GameManager : MonoBehaviour
         int gameModeCount = gameStagesList[currentGameStage].gameModesList.Count;
         int randomGameModeIndex = Random.Range(0, gameModeCount);
 
-        int previousGameModeIndex = PlayerPrefs.GetInt(previousGameModeIndexKey, 999999);
-        if(previousGameModeIndex == randomGameModeIndex)
-        {
-            if(gameModeCount > 1)
-            {
-                if (randomGameModeIndex == 0) randomGameModeIndex++;
-                else if (randomGameModeIndex == gameModeCount - 1) randomGameModeIndex--;
-                else randomGameModeIndex++;
-            }
-        }
-        PlayerPrefs.SetInt(previousGameModeIndexKey, randomGameModeIndex);
+        //int previousGameModeIndex = PlayerPrefs.GetInt(previousGameModeIndexKey, 999999);
+
+        //if(gameStagesList[currentGameStage].gameModesList[previousGameModeIndex].gameMode 
+        //    == gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameMode)
+        //{
+        //    if(gameModeCount > 1)
+        //    {
+        //        if (randomGameModeIndex == 0) randomGameModeIndex++;
+        //        else if (randomGameModeIndex == gameModeCount - 1) randomGameModeIndex--;
+        //        else randomGameModeIndex++;
+        //    }
+        //}
+        //PlayerPrefs.SetInt(previousGameModeIndexKey, randomGameModeIndex);
 
         SceneField scene = gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameModeScenes.GetRandomScene();
 

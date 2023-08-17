@@ -8,6 +8,8 @@ public abstract class LevelProgressController : MonoBehaviour
     [SerializeField] protected LevelProgressUIController levelProgressUIController;
     [Header("Post Level Place Controller")]
     [SerializeField] protected PostLevelPlaceController postLevelPlaceController;
+    [Header("Camera Following On Other Players")]
+    [SerializeField] protected CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
 
     protected GameManager _gameManager;
     public GameManager GameManager { set => _gameManager = value; }
@@ -17,7 +19,8 @@ public abstract class LevelProgressController : MonoBehaviour
     protected List<GameObject> _losersList = new List<GameObject>();
 
     protected bool _isCurrentPlayerWinner;
-
+    protected bool _isGameEnded;
+    
     protected void SendListOfLosersNamesToGameManager()
     {
         List<string> losersNameList = new List<string>();

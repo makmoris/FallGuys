@@ -15432,7 +15432,7 @@ MonoBehaviour:
   - name: Honeycomb 1
     scene:
       m_SceneAsset: {fileID: 102900000, guid: 32d50e74376598640a0b5abccaab392e, type: 3}
-      m_SceneName: 1st_FallingBlocks
+      m_SceneName: 1st_Honeycomb
     levelImage: {fileID: 616589679}
   internetConnectionIsActive: 0
 --- !u!1 &719178931
@@ -41297,15 +41297,19 @@ MonoBehaviour:
   characterManager: {fileID: 2067186478}
   gameStagesList:
   - numberOfPlayers: 12
-    numberOfWinners: 2
+    numberOfWinners: 6
     gameModesList:
     - gameMode: 0
       gameModeScenes: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
-  - numberOfPlayers: 2
+    - gameMode: 2
+      gameModeScenes: {fileID: 11400000, guid: e749de1a212519244991b7714bac177c, type: 2}
+  - numberOfPlayers: 6
     numberOfWinners: 1
     gameModesList:
     - gameMode: 1
       gameModeScenes: {fileID: 11400000, guid: 8ee1e040721b4cc43b4088fab76031f1, type: 2}
+    - gameMode: 2
+      gameModeScenes: {fileID: 11400000, guid: e749de1a212519244991b7714bac177c, type: 2}
   testLosersNames: []
   currentPlayerPlace: 0
 --- !u!4 &2066765927

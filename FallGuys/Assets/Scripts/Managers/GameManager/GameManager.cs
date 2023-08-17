@@ -30,7 +30,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameStage> gameStagesList;
 
     private int currentGameStage;
-    private int currentGameMode;
+
+    private string previousGameModeIndexKey = "PreviousGameMode";
 
     private List<IPlayerData> players = new List<IPlayerData>();
     public List<IPlayerData> Players => players;
@@ -294,7 +295,17 @@ public class GameManager : MonoBehaviour
         int gameModeCount = gameStagesList[currentGameStage].gameModesList.Count;
         int randomGameModeIndex = Random.Range(0, gameModeCount);
 
-        currentGameMode = randomGameModeIndex;
+        int previousGameModeIndex = PlayerPrefs.GetInt(previousGameModeIndexKey, 999999);
+        if(previousGameModeIndex == randomGameModeIndex)
+        {
+            if(gameModeCount > 1)
+            {
+                if (randomGameModeIndex == 0) randomGameModeIndex++;
+                else if (randomGameModeIndex == gameModeCount - 1) randomGameModeIndex--;
+                else randomGameModeIndex++;
+            }
+        }
+        PlayerPrefs.SetInt(previousGameModeIndexKey, randomGameModeIndex);
 
         SceneField scene = gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameModeScenes.GetRandomScene();
 

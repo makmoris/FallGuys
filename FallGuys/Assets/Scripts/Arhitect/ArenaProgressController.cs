@@ -5,13 +5,9 @@ using VehicleBehaviour;
 
 public class ArenaProgressController : LevelProgressController
 {
-    [Header("-----")]
-    [Header("Camera")]
-    [SerializeField] private CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
-
     private ArenaProgressUIController arenaProgressUIController;
 
-    [Space]
+    [Header("-----")]
     [SerializeField] private int numberOfPlayers;
     [SerializeField] private int numberOfFrags;
     private int numberOfWinners;
@@ -83,57 +79,62 @@ public class ArenaProgressController : LevelProgressController
 
     private void ReduceNumberOfPlayers(GameObject deadPlayer)
     {
-        numberOfPlayers--;
-        if (numberOfPlayers < 0) numberOfPlayers = 0;
-
-        UpdateLeftText();
-
-        _losersList.Add(deadPlayer);
-        _playersList.Remove(deadPlayer);
-
-        deadPlayer.GetComponent<WheelVehicle>().Handbrake = true;
-
-        if (deadPlayer == currentPlayer)
+        if (!_isGameEnded)
         {
-            // показываем луз окно игроку
-            arenaProgressUIController.LoseShowingOverEvent += LoseShowingOver;
-            arenaProgressUIController.ShowLosingPanel();
-        }
-        else
-        {
-            cameraFollowingOnOtherPlayers.RemoveDriver(deadPlayer);
-        }
+            numberOfPlayers--;
+            if (numberOfPlayers < 0) numberOfPlayers = 0;
 
-        if (numberOfPlayers == numberOfWinners)
-        {
-            foreach (var player in _playersList)
+            UpdateLeftText();
+
+            _losersList.Add(deadPlayer);
+            _playersList.Remove(deadPlayer);
+
+            deadPlayer.GetComponent<WheelVehicle>().Handbrake = true;
+
+            if (deadPlayer == currentPlayer)
             {
-                if (player == currentPlayer)
-                {
-                    _isCurrentPlayerWinner = true;
+                // показываем луз окно игроку
+                arenaProgressUIController.LoseShowingOverEvent += LoseShowingOver;
+                arenaProgressUIController.ShowLosingPanel();
+            }
+            else
+            {
+                cameraFollowingOnOtherPlayers.RemoveDriver(deadPlayer);
+            }
 
-                    // показываем окно победы игроку
-                    arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
-                    arenaProgressUIController.ShowCongratilationsPanel();
+            if (numberOfPlayers == numberOfWinners)
+            {
+                _isGameEnded = true;
+
+                foreach (var player in _playersList)
+                {
+                    if (player == currentPlayer)
+                    {
+                        _isCurrentPlayerWinner = true;
+
+                        // показываем окно победы игроку
+                        arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
+                        arenaProgressUIController.ShowCongratilationsPanel();
+                    }
+
+                    _winnersList.Add(player);
+
+                    player.GetComponent<WheelVehicle>().Handbrake = true;
                 }
 
-                _winnersList.Add(player);
+                if (!_isCurrentPlayerWinner)
+                {
+                    StartCoroutine(WaitAndShowPostWindow());
+                }
 
-                player.GetComponent<WheelVehicle>().Handbrake = true;
+                //DisabledAllChildElements();
+                //CalculateReward(numberOfPlayers);
+                //StartCoroutine(WaitAndShowWinWindow());
             }
-
-            if (!_isCurrentPlayerWinner)
+            else if (numberOfPlayers == 2)   // сделать список игроков и брать оттуда двух оставшихся
             {
-                StartCoroutine(WaitAndShowPostWindow());
+                StartDuel();
             }
-
-            //DisabledAllChildElements();
-            //CalculateReward(numberOfPlayers);
-            //StartCoroutine(WaitAndShowWinWindow());
-        }
-        else if (numberOfPlayers == 2)   // сделать список игроков и брать оттуда двух оставшихся
-        {
-            StartDuel();
         }
     }
 

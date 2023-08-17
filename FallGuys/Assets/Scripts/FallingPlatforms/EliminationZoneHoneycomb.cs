@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class EliminationZoneHoneycomb : MonoBehaviour
 {
-    [SerializeField] private ProgressControllerHoneycomb progressControllerHoneycomb;
+    [SerializeField] private HoneycombProgressController honeycombProgressController;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Car"))
         {
-            progressControllerHoneycomb.PlayerOut(other.gameObject);
+            honeycombProgressController.PlayerOut(other.gameObject);
         }
     }
 }

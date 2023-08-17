@@ -11,6 +11,13 @@ public class FallingPlatform : MonoBehaviour
         public GameObject stateGO;
     }
 
+    [SerializeField] private float changeStateTime = 1f;
+    [SerializeField] private List<State> StatesList;
+    private int stateNumber;
+
+    private bool isPlatformNotFell = true;
+
+    [Header("-----")]
     [SerializeField] private FallingPlatformTrigger platformTrigger;
     [SerializeField] private GameObject platformStates;
 
@@ -20,13 +27,6 @@ public class FallingPlatform : MonoBehaviour
     private List<Transform> rayPlacesTransformsList = new List<Transform>();
 
     private TargetsControllerHoneycomb targetsControllerHoneycomb;
-
-    [Space]
-    [SerializeField] private float changeStateTime = 1f;
-    [SerializeField] private List<State> StatesList;
-    private int stateNumber;
-
-    private bool isPlatformNotFell = true;
 
     private Coroutine waitAndChangeStateCoroutine = null;
 

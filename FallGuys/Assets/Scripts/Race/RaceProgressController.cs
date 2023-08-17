@@ -7,9 +7,6 @@ using VehicleBehaviour;
 public class RaceProgressController : LevelProgressController
 {
    [Header("-----")]
-    [Header("Camera")]
-    [SerializeField] private CameraFollowingOnOtherPlayers cameraFollowingOnOtherPlayers;
-
     [Header("Start Sector")]
     [SerializeField] private RaceStartSector raceStartSector;
     [Space]

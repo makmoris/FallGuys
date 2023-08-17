@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HoneycombInstaller : Installer
 {
+    [Header("-----")]
     [Header("Falling Platform Controllers")]
     [SerializeField] TargetsControllerHoneycomb targetsControllerHoneycomb;
 

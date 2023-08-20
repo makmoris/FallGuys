@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ArenaProgressUIController : MonoBehaviour
+public class ArenaProgressUIController : LevelProgressUIController
 {
+    [Header("-----")]
     [SerializeField] private Canvas gameCanvas;
     [Space]
     [SerializeField] private TextMeshProUGUI leftText;
     [SerializeField] private TextMeshProUGUI fragText;
 
-    public void HideGameCanvas()
+    [Header("Additional UI To Hide When Observe")]
+    [SerializeField] private List<GameObject> additionalUIList;
+
+    public override void ShowObserverUI()
     {
-        gameCanvas.gameObject.SetActive(false);
+        base.ShowObserverUI();
+
+        foreach (var elem in additionalUIList)
+        {
+            elem.SetActive(false);
+        }
     }
 
     public void UpdateLeftText(int numberOfPlayers)

@@ -6,24 +6,25 @@ using UnityEngine.EventSystems;
 
 public class CameraFollowingOnOtherPlayers : MonoBehaviour
 {
+    [SerializeField] private UIEnemyPointers uIEnemyPointers;
+
     private CinemachineVirtualCamera camCinema;
+    private AudioListener audioListener;
 
     [SerializeField]private List<GameObject> drivers = new List<GameObject>();
-    private GameObject currentDriver;
-    [SerializeField]private int targetIndex = 0;
+    [SerializeField]private GameObject currentDriver;
+    private int targetIndex = 0;
 
     private bool isMobile;
 
     [SerializeField]private bool canFollowOnOtherPlayers;
-    public bool CanFollowOnOtherPlayers
-    {
-        get => canFollowOnOtherPlayers;
-        set => canFollowOnOtherPlayers = value;
-    }
+
+    private string key = "LastObservableName";
 
     private void Awake()
     {
         camCinema = GetComponent<CinemachineVirtualCamera>();
+        audioListener = GetComponent<AudioListener>();
 
         isMobile = Application.isMobilePlatform;
     }
@@ -48,15 +49,44 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
+                    Debug.Log("TIK");
                     ChangeTarget();
                 }
             }
         }
     }
 
-    public void AddDriver(GameObject driver)
+    public void EnableObserverMode()
+    {
+        canFollowOnOtherPlayers = true;
+
+        SetTarget();
+    }
+
+    public void EnablePlayerMode()
+    {
+        canFollowOnOtherPlayers = false;
+    }
+
+    public void AddDriver(GameObject driver, bool isCurrentPlayer)
     {
         drivers.Add(driver);
+
+        AudioListener driverAL = driver.GetComponent<AudioListener>();
+        driverAL.enabled = false;
+
+        if (isCurrentPlayer)
+        {
+            currentDriver = driver;
+
+            camCinema.m_Follow = currentDriver.transform;
+            camCinema.m_LookAt = currentDriver.transform;
+
+            driverAL.enabled = true;
+            audioListener.enabled = false;
+
+            uIEnemyPointers.ChangeCurrentTransform(currentDriver.transform);
+        }
     }
 
     public void RemoveDriver(GameObject driver)
@@ -66,22 +96,62 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
         drivers.Remove(driver);
     }
 
-    public void ChangeTarget()
+    private void ChangeTarget()
     {
         if(drivers.Count > 0)
         {
+            Debug.Log("CHANGE");
             int nextIndex = targetIndex + 1;
             if (nextIndex < drivers.Count) targetIndex = nextIndex;
             else targetIndex = 0;
-
+            Debug.Log($"Target index = {targetIndex}");
             camCinema.m_Follow = drivers[targetIndex].transform;
             camCinema.m_LookAt = drivers[targetIndex].transform;
 
-            currentDriver = drivers[targetIndex];
+            AudioListener audioListener;
+            if (currentDriver == null) audioListener = drivers[targetIndex].GetComponent<AudioListener>();
+            else audioListener = currentDriver.GetComponent<AudioListener>();
 
-            //int nextIndex = targetIndex + 1;
-            //if (nextIndex < drivers.Count) targetIndex = nextIndex;
-            //else targetIndex = 0;
+            audioListener.enabled = false;
+            currentDriver = drivers[targetIndex];
+            currentDriver.GetComponent<AudioListener>().enabled = true;
+
+            uIEnemyPointers.ChangeCurrentTransform(currentDriver.transform);
+
+            PlayerName currentDriverName = currentDriver.GetComponent<PlayerName>();
+            if(currentDriverName != null)
+            {
+                string currentName = currentDriverName.Name;
+                PlayerPrefs.SetString(key, currentName);
+            }
         }
+    }
+
+    private void SetTarget()
+    {
+        audioListener.enabled = false;
+
+        string lastObservableName = PlayerPrefs.GetString(key, "default");
+
+        bool continueInObserverMode = false;
+
+        foreach (var driver in drivers)
+        {
+            PlayerName playerName = driver.GetComponent<PlayerName>();
+            if(playerName != null)
+            {
+                if(lastObservableName == playerName.Name)
+                {
+                    currentDriver = driver;
+                    continueInObserverMode = true;
+
+                    currentDriver.GetComponent<AudioListener>().enabled = true;
+
+                    break;
+                }
+            }
+        }
+
+        if (!continueInObserverMode) ChangeTarget();
     }
 }

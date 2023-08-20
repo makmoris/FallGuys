@@ -54,7 +54,7 @@ public class MapSelector : MonoBehaviour
 
         LoadMap(loadingScene);
 
-        MusicManager.Instance.PlayArenaMapSearchMusic();
+        MusicManager.Instance.PlayMapSearchMusic();
     }
 
     public void GoToLevel()// вызывается из UI_InfiniteScroll по завершению анимации. Или окном gameTutorialWindow

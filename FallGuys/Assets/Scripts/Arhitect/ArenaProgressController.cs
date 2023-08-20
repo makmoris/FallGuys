@@ -3,27 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class ArenaProgressController : MonoBehaviour
+public class ArenaProgressController : LevelProgressController
 {
-    [Header("Arena progress UI Controller")]
-    [SerializeField] private ArenaProgressUIController arenaProgressUIController;
+    private ArenaProgressUIController arenaProgressUIController;
 
-    [Header("Arena Post Place Controller")]
-    [SerializeField] private ArenaPostPlaceController arenaPostPlaceController;
-
-    [Header("Cameras")]
-    [SerializeField] Camera gameCamera;
-    [SerializeField] Camera postPlaceCamera;
-
-    [Header("Win")]
-    [SerializeField] private float pauseBeforShowingWinWindow;
-
-    [Header("Lose")]
-    [SerializeField] private float pauseBeforShowingLoseWindow;
-
-    [Space]
+    [Header("-----")]
     [SerializeField] private int numberOfPlayers;
     [SerializeField] private int numberOfFrags;
+    private int numberOfWinners;
 
     [SerializeField] private int amountOfGoldReward;
     [SerializeField] private int amountOfCupReward;
@@ -31,13 +18,16 @@ public class ArenaProgressController : MonoBehaviour
     private int playerFinishPlace;
     private int startNumberOfPlayers;
 
+    [Header("Pause When Observe Mode Enabled")]
+    [SerializeField] private float pauseBeforShowingPostWindowForObserver = 1.5f;
 
-    private GameObject playerGO;
-    private bool playerWasDead;
+    private GameObject currentPlayer;
 
     public static ArenaProgressController Instance { get; private set; }
     private void Awake()
     {
+        arenaProgressUIController = levelProgressUIController as ArenaProgressUIController;
+
         if (Instance == null)
         {
             Instance = this;
@@ -46,22 +36,30 @@ public class ArenaProgressController : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        if (!gameCamera.gameObject.activeSelf) gameCamera.gameObject.SetActive(true);
-        if (postPlaceCamera.gameObject.activeSelf) postPlaceCamera.gameObject.SetActive(false);
-
-        //GameCameraAudioListenerController.Instance.DeactivateAudioListener();// изначально листенер только на самом авто игрока, чтобы правильно слышать звуки
     }
 
-
-    public void SetNumberOfPlayers(int _numberOfPlayers)// стартова€ точка
+    public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
     {
         numberOfPlayers = _numberOfPlayers;
         numberOfFrags = 0;
         startNumberOfPlayers = _numberOfPlayers;
 
+        numberOfWinners = _numberOfWinners;
+
         UpdateLeftText();
         UpdateFragText();
+
+        if (numberOfPlayers == 2)
+        {
+            StartDuel();
+        }
+    }
+
+    public override void AddPlayer(GameObject playerGO, bool isCurrentPlayer)
+    {
+        _playersList.Add(playerGO);
+
+        if (isCurrentPlayer) currentPlayer = playerGO;
     }
 
     public void AddFrag()// вызываетс€ из VisualIntermediary
@@ -74,30 +72,6 @@ public class ArenaProgressController : MonoBehaviour
         UpdateFragText();
     }
 
-    public void SendPlayerKillEnemyAnalyticEvent(GameObject killedEnemyObj)// вызываетс€ из VisualIntermediary после AddFrag()
-    {
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
-
-        int _player_kills_amount = numberOfFrags;
-
-        int _player_gold_earn = amountOfGoldReward;
-
-        int _enemies_left = numberOfPlayers - 2;
-
-        string _killed_enemy_car_id = killedEnemyObj.GetComponent<VehicleId>().VehicleID;
-
-        string _killed_enemy_gun_id = killedEnemyObj.transform.GetComponentInChildren<Weapon>().GetComponent<WeaponId>().WeaponID;
-
-        AnalyticsManager.Instance.PlayerKillEnemy(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left, _killed_enemy_car_id, _killed_enemy_gun_id);
-    }
-
     public void AddGold(int value)// вызываетс€ из PlayerEffector за подбор бонуса
     {
         amountOfGoldReward += value;
@@ -105,56 +79,74 @@ public class ArenaProgressController : MonoBehaviour
 
     private void ReduceNumberOfPlayers(GameObject deadPlayer)
     {
-        numberOfPlayers--;
-        if (numberOfPlayers < 0) numberOfPlayers = 0;
-
-        UpdateLeftText();
-
-        if(deadPlayer == playerGO)
+        if (!_isGameEnded)
         {
-            GameCameraAudioListenerController.Instance.ActivateAudioListener();// включаем на игровой камере, чтобы услышать звук взрыва авто. “.к. листенер на авто уничтожаетс€
-            // значит окно поражени€. »гра закончена
-            Debug.Log($"GameOver. «ан€л {numberOfPlayers + 1} место");
+            numberOfPlayers--;
+            if (numberOfPlayers < 0) numberOfPlayers = 0;
 
-            DisabledAllChildElements();
-            CalculateReward(numberOfPlayers + 1);
-            StartCoroutine(WaitAndShowLoseWindow());
-            playerWasDead = true;
-        }
-        else if (numberOfPlayers == 1 && !playerWasDead)
-        {
-            // если осталс€ один игрок, т.е. numberOfPlayers = 1, то кидаем окно победы
-            Debug.Log($"Win. «ан€л {numberOfPlayers} место");
+            UpdateLeftText();
 
-            DisabledAllChildElements();
-            CalculateReward(numberOfPlayers);
-            StartCoroutine(WaitAndShowWinWindow());
-        }
+            _losersList.Add(deadPlayer);
+            _playersList.Remove(deadPlayer);
 
-        if (numberOfPlayers == 2 && !playerWasDead)
-        {
-            GameObject[] cars = GameObject.FindGameObjectsWithTag("Car");
-            
-            ArenaCarDriverAI carDriverAI = null;
+            deadPlayer.GetComponent<WheelVehicle>().Handbrake = true;
 
-            foreach(var car in cars)
+            if (deadPlayer == currentPlayer)
             {
-                var _carAI = car.GetComponent<ArenaCarDriverAI>();
-                if (_carAI != null && car != deadPlayer)
-                {
-                    carDriverAI = _carAI;
-                    Debug.Log($"Duel with {carDriverAI.name}");
-                    break;
-                }
+                // показываем луз окно игроку
+                arenaProgressUIController.LoseShowingOverEvent += LoseShowingOver;
+                arenaProgressUIController.ShowLosingPanel();
+            }
+            else
+            {
+                cameraFollowingOnOtherPlayers.RemoveDriver(deadPlayer);
             }
 
-            if(carDriverAI != null)
+            if (numberOfPlayers == numberOfWinners)
             {
-                carDriverAI.StartDuel();
+                _isGameEnded = true;
+
+                foreach (var player in _playersList)
+                {
+                    if (player == currentPlayer)
+                    {
+                        _isCurrentPlayerWinner = true;
+
+                        // показываем окно победы игроку
+                        arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
+                        arenaProgressUIController.ShowCongratilationsPanel();
+                    }
+
+                    _winnersList.Add(player);
+
+                    player.GetComponent<WheelVehicle>().Handbrake = true;
+                }
+
+                if (!_isCurrentPlayerWinner)
+                {
+                    StartCoroutine(WaitAndShowPostWindow());
+                }
+
+                //DisabledAllChildElements();
+                //CalculateReward(numberOfPlayers);
+                //StartCoroutine(WaitAndShowWinWindow());
+            }
+            else if (numberOfPlayers == 2)   // сделать список игроков и брать оттуда двух оставшихс€
+            {
+                StartDuel();
             }
         }
     }
-    
+
+    private void StartDuel()
+    {
+        ArenaCarDriverAI carDriverAIFirst = _playersList[0].GetComponent<ArenaCarDriverAI>();
+        if (carDriverAIFirst != null) carDriverAIFirst.StartDuel(_playersList[1].transform);
+
+        ArenaCarDriverAI carDriverAISecond = _playersList[1].GetComponent<ArenaCarDriverAI>();
+        if (carDriverAISecond != null) carDriverAISecond.StartDuel(_playersList[0].transform);
+    }
+
     private void CalculateReward(int place)
     {
         playerFinishPlace = place;
@@ -167,14 +159,14 @@ public class ArenaProgressController : MonoBehaviour
         CurrencyManager.Instance.AddGold(amountOfGoldReward);
         CurrencyManager.Instance.AddCup(amountOfCupReward);
 
-        if(place == 1)
+        if (place == 1)
         {
             BattleStatisticsManager.Instance.AddFirstPlace();
         }
 
         BattleStatisticsManager.Instance.AddBattle();
     }
-    
+
     private void DisabledAllChildElements()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -184,20 +176,13 @@ public class ArenaProgressController : MonoBehaviour
         }
     }
 
-    public void SetCurrentPlayer(GameObject playerObj)
-    {
-        playerGO = playerObj;
-    }
-
     private void UpdateLeftText()
     {
-        //leftText.text = $"LEFT: {numberOfPlayers}";
         arenaProgressUIController.UpdateLeftText(numberOfPlayers);
     }
 
     private void UpdateFragText()
     {
-        //fragText.text = $"{numberOfFrags}";
         arenaProgressUIController.UpdateFragText(numberOfFrags);
     }
 
@@ -214,49 +199,39 @@ public class ArenaProgressController : MonoBehaviour
         return numberOfPlayers - 1;
     }
 
-    IEnumerator WaitAndShowWinWindow()
+    private void CongratulationsOver()
     {
-        if(playerGO.GetComponent<WheelVehicle>() != null) playerGO.GetComponent<WheelVehicle>().Handbrake = true;
+        arenaProgressUIController.CongratulationsOverEvent -= CongratulationsOver;
 
-        arenaProgressUIController.HideGameCanvas();
-        arenaPostPlaceController.PlayerWin(numberOfFrags, amountOfGoldReward, amountOfCupReward);
-
-        yield return new WaitForSeconds(pauseBeforShowingWinWindow);
-
-        gameCamera.gameObject.SetActive(false);
-        GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
-
-        arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
-        postPlaceCamera.gameObject.SetActive(true);
-        playerGO.SetActive(false);
-
-        //MusicManager.Instance.StopMusicPlaying();
-        MusicManager.Instance.StopSoundsPlaying();
-        MusicManager.Instance.PlayWinMusic();
-
-        // запуск окна оценки
-        InAppReviewsManager.Instance.ShowReviewWindow();
-
-        SendBattleFinishAnalyticEvent();
+        if (_isCurrentPlayerWinner)
+        {
+            ShowPostWindow();
+        }
     }
 
-    IEnumerator WaitAndShowLoseWindow()
+    private void LoseShowingOver()
     {
-        arenaProgressUIController.HideGameCanvas();
-        arenaPostPlaceController.PlayerLose(numberOfFrags, amountOfGoldReward, amountOfCupReward);
+        SendListOfLosersNamesToGameManager();
 
-        yield return new WaitForSeconds(pauseBeforShowingLoseWindow);
+        arenaProgressUIController.LoseShowingOverEvent -= LoseShowingOver;
 
-        gameCamera.gameObject.SetActive(false);
-        GameCameraAudioListenerController.Instance.DeactivateAudioListener();// выключаем на игровой камере
+        cameraFollowingOnOtherPlayers.RemoveDriver(currentPlayer);
 
-        arenaPostPlaceController.EnabledAudioListener();// подрубаем листенер на финишной тачке
-        postPlaceCamera.gameObject.SetActive(true);
+        arenaProgressUIController.ShowObserverUI();
+        cameraFollowingOnOtherPlayers.EnableObserverMode();
+    }
 
-        MusicManager.Instance.StopMusicPlaying();
-        MusicManager.Instance.StopSoundsPlaying();
+    protected override void ShowPostWindow()
+    {
+        SendListOfLosersNamesToGameManager();
 
-        SendBattleFinishAnalyticEvent();
+        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
+    }
+
+    IEnumerator WaitAndShowPostWindow()
+    {
+        yield return new WaitForSeconds(pauseBeforShowingPostWindowForObserver);
+        ShowPostWindow();
     }
 
     private void OnEnable()
@@ -295,5 +270,29 @@ public class ArenaProgressController : MonoBehaviour
 
         _battle_id++;
         PlayerPrefs.SetInt(_battle_id_key, _battle_id);
+    }
+
+    public void SendPlayerKillEnemyAnalyticEvent(GameObject killedEnemyObj)// вызываетс€ из VisualIntermediary после AddFrag()
+    {
+        string _battle_id_key = AnalyticsManager.battle_id_key;
+        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
+
+        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
+        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
+
+        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
+
+        int _player_kills_amount = numberOfFrags;
+
+        int _player_gold_earn = amountOfGoldReward;
+
+        int _enemies_left = numberOfPlayers - 2;
+
+        string _killed_enemy_car_id = killedEnemyObj.GetComponent<VehicleId>().VehicleID;
+
+        string _killed_enemy_gun_id = killedEnemyObj.transform.GetComponentInChildren<Weapon>().GetComponent<WeaponId>().WeaponID;
+
+        AnalyticsManager.Instance.PlayerKillEnemy(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
+            _player_gold_earn, _enemies_left, _killed_enemy_car_id, _killed_enemy_gun_id);
     }
 }

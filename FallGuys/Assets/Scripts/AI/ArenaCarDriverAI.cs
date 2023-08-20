@@ -29,6 +29,7 @@ public class ArenaCarDriverAI : MonoBehaviour
     [SerializeField]private int playerWasTargetCounter;
     [SerializeField] private int bonusWasTargetCounter;
     private Transform playerTransform;
+    private Transform targetForDuelTransform;
 
     private void Awake()
     {
@@ -159,83 +160,86 @@ public class ArenaCarDriverAI : MonoBehaviour
                 }
             }
 
-            if (isDuel && playerTransform != null)// дл€ дуэли. ¬ыбираем только между игроком и бонусами
+            if (isDuel)
             {
-                //difficultyLevelAI.
-                //int randomDuel = Random.Range(0, сложность бота, как часто он выбирает игрока на дуели);
-                DuelType duelType = arenaDifficultyLevelAI.GetDuelType();
-                switch (duelType)
+                if (targetForDuelTransform != null)// дл€ дуэли. ¬ыбираем только между игроком и бонусами
                 {
-                    case DuelType.randomFromPlayerAndBonus:
+                    //difficultyLevelAI.
+                    //int randomDuel = Random.Range(0, сложность бота, как часто он выбирает игрока на дуели);
+                    DuelType duelType = arenaDifficultyLevelAI.GetDuelType();
+                    switch (duelType)
+                    {
+                        case DuelType.randomFromPlayerAndBonus:
 
-                        int randVal = Random.Range(0, 2);
+                            int randVal = Random.Range(0, 2);
 
-                        if(randVal == 0)
-                        {
-                            targetPositionTransform = playerTransform;
-                        }
-                        else
-                        {
-                            int rr = Random.Range(0, bonusBoxes.Count);
-                            targetPositionTransform = bonusBoxes[rr];
-                        }
-
-                        break;
-
-                    case DuelType.alternationBetweenPlayerAndBonusBonus:
-
-                        if(playerWasTargetCounter == 0)
-                        {
-                            targetPositionTransform = playerTransform;
-                            playerWasTargetCounter++;
-                        }
-                        else
-                        {
-                            if(bonusWasTargetCounter == 0)
+                            if (randVal == 0)
+                            {
+                                targetPositionTransform = targetForDuelTransform;
+                            }
+                            else
                             {
                                 int rr = Random.Range(0, bonusBoxes.Count);
                                 targetPositionTransform = bonusBoxes[rr];
-                                bonusWasTargetCounter++;
                             }
-                            else if (bonusWasTargetCounter == 1)
+
+                            break;
+
+                        case DuelType.alternationBetweenPlayerAndBonusBonus:
+
+                            if (playerWasTargetCounter == 0)
+                            {
+                                targetPositionTransform = targetForDuelTransform;
+                                playerWasTargetCounter++;
+                            }
+                            else
+                            {
+                                if (bonusWasTargetCounter == 0)
+                                {
+                                    int rr = Random.Range(0, bonusBoxes.Count);
+                                    targetPositionTransform = bonusBoxes[rr];
+                                    bonusWasTargetCounter++;
+                                }
+                                else if (bonusWasTargetCounter == 1)
+                                {
+                                    int rr = Random.Range(0, bonusBoxes.Count);
+                                    targetPositionTransform = bonusBoxes[rr];
+
+                                    playerWasTargetCounter = 0;
+                                    bonusWasTargetCounter = 0;
+                                }
+                            }
+
+                            break;
+
+                        case DuelType.alternationBetweenPlayerAndBonus:
+
+                            if (playerWasTargetCounter == 0)
+                            {
+                                targetPositionTransform = targetForDuelTransform;
+                                playerWasTargetCounter++;
+                            }
+                            else
                             {
                                 int rr = Random.Range(0, bonusBoxes.Count);
                                 targetPositionTransform = bonusBoxes[rr];
 
                                 playerWasTargetCounter = 0;
-                                bonusWasTargetCounter = 0;
                             }
-                        }
 
-                        break;
+                            break;
 
-                    case DuelType.alternationBetweenPlayerAndBonus:
+                        case DuelType.playerOnly:
 
-                        if (playerWasTargetCounter == 0)
-                        {
-                            targetPositionTransform = playerTransform;
-                            playerWasTargetCounter++;
-                        }
-                        else
-                        {
-                            int rr = Random.Range(0, bonusBoxes.Count);
-                            targetPositionTransform = bonusBoxes[rr];
-
-                            playerWasTargetCounter = 0;
-                        }
-
-                        break;
-
-                    case DuelType.playerOnly:
-
-                        targetPositionTransform = playerTransform;
-                        break;
+                            targetPositionTransform = targetForDuelTransform;
+                            break;
+                    }
                 }
-            }
-            else if(playerTransform == null)
-            {
-                isDuel = false;
-                targetPositionTransform = targets[0];
+                else if (targetForDuelTransform == null)
+                {
+                    isDuel = false;
+                    //targetPositionTransform = targets[0];
+                }
             }
 
             targetReached = false;
@@ -306,12 +310,14 @@ public class ArenaCarDriverAI : MonoBehaviour
         isTargetReachedFirst = true;
     }
 
-    public void StartDuel()// вызываетс€ LevelProgressController, когда остаетс€ один бот и игрок
+    public void StartDuel(Transform _targetDuelTransform)// вызываетс€ LevelProgressController, когда остаетс€ один бот и игрок
     {
         isDuel = true;
 
         targetReached = true;
-        ChooseTargetPosition(playerTransform.position);
+
+        targetForDuelTransform = _targetDuelTransform;
+        ChooseTargetPosition(targetForDuelTransform.position);
     }
 
     public void SetNewPlayerTargetFromDetector(Transform transform)

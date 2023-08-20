@@ -10,8 +10,6 @@ public class SceneLoader : MonoBehaviour
     [Space]
     [SerializeField] private SceneField lobbyScene;
 
-    private AsyncOperation asyncOperationToLobby;
-
     public event System.Action lobbyOpenEvent;
 
     private static SceneLoader Instance { get; set; }
@@ -48,16 +46,9 @@ public class SceneLoader : MonoBehaviour
         Debug.Log("Load Anim Finished");
     }
 
-    //public void PrepareLobbyScene()
-    //{
-    //    asyncOperationToLobby = SceneManager.LoadSceneAsync(lobbyScene);
-    //    asyncOperationToLobby.allowSceneActivation = false;
-    //}
-
     public void LoadLobbyScene()
     {
         Debug.Log("ToLobby");
-        //asyncOperationToLobby.allowSceneActivation = true; 
         SceneManager.LoadScene(lobbyScene);
     }
 
@@ -73,11 +64,11 @@ public class SceneLoader : MonoBehaviour
             Debug.Log("LOBBY SCENE");
 
             lobbyOpenEvent?.Invoke();
-
-            //Canvas lobbyCanvas = FindObjectOfType<Canvas>();
-            //GameObject leagueWindow = lobbyCanvas.transform.Find("Lobby").transform.Find("LeagueWindow").gameObject;
-            //leagueWindow.SetActive(true);
         }
+
+        if (next.name == lobbyScene.SceneName) MusicManager.Instance.PlayLobbyMusic();
+        if (next.name.EndsWith("Arena")) MusicManager.Instance.PlayArenaMusic();
+        if (next.name.EndsWith("Race")) MusicManager.Instance.PlayRaceMusic();
     }
 
     private void OnDisable()

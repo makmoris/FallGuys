@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class RaceProgressController : MonoBehaviour
+public class RaceProgressController : LevelProgressController
 {
-    [Header("Camera")]
-    [SerializeField] private CameraFollowingOnOtherPlayers gameCamCinema;
-
+   [Header("-----")]
     [Header("Start Sector")]
     [SerializeField] private RaceStartSector raceStartSector;
     [Space]
@@ -22,11 +20,7 @@ public class RaceProgressController : MonoBehaviour
     private int currentNumberOfWinners;
     private bool raceNotOver;
 
-    [Header("Race Progress UI Controller")]
-    [SerializeField] private RaceProgressUIController raceProgressUIController;
-
-    [Header("Post Race Place Controller")]
-    [SerializeField] private PostRacePlaceController postRacePlaceController;
+    private RaceProgressUIController raceProgressUIController;
 
     private GameObject currentPlayer;
     private bool currentPlayerWasFinished;
@@ -45,27 +39,25 @@ public class RaceProgressController : MonoBehaviour
 
     private void Awake()
     {
-        if (!postRacePlaceController.gameObject.activeSelf) postRacePlaceController.gameObject.SetActive(true);
+        raceProgressUIController = levelProgressUIController as RaceProgressUIController;
+
+        if (!postLevelPlaceController.gameObject.activeSelf) postLevelPlaceController.gameObject.SetActive(true);
 
         raceProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
 
-    public void SetNumberOfWinners(int _numberOfWinners)
+    public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
     {
         numberOfWinners = _numberOfWinners;
         raceProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
 
-    public void SetCurrentPlayer(GameObject player)
-    {
-        currentPlayer = player;
-    }
-
-    public void AddPlayer(GameObject playerGO)
+    public override void AddPlayer(GameObject playerGO, bool isCurrentPlayer)
     {
         WheelVehicle wheelVehiclePlayer = playerGO.GetComponent<WheelVehicle>();
 
         raceDriversList.Add(wheelVehiclePlayer);
+        _playersList.Add(playerGO);
 
         RaceDriverAI raceDriverAI = playerGO.GetComponent<RaceDriverAI>();
         if (raceDriverAI != null)
@@ -76,7 +68,7 @@ public class RaceProgressController : MonoBehaviour
 
         wheelVehiclePlayer.Handbrake = true;
 
-        gameCamCinema.AddDriver(playerGO);
+        if (isCurrentPlayer) currentPlayer = playerGO;
     }
 
     public RaceStartSector GetRaceStartSector()
@@ -137,11 +129,12 @@ public class RaceProgressController : MonoBehaviour
             if (currentNumberOfWinners < numberOfWinners)
             {
                 winnersList.Add(wheelVehicleDriver);
+                _winnersList.Add(wheelVehicleDriver.gameObject);
 
                 if (wheelVehicleDriver.gameObject == currentPlayer)
                 {
                     currentPlayerWasFinished = true;
-                    raceProgressUIController.ShowPlayerCongratulations();
+                    raceProgressUIController.ShowCongratilationsPanel();
 
                     raceProgressUIController.CongratulationsOverEvent += CongratulationsOver;
                 }
@@ -149,11 +142,12 @@ public class RaceProgressController : MonoBehaviour
             else
             {
                 winnersList.Add(wheelVehicleDriver);
+                _winnersList.Add(wheelVehicleDriver.gameObject);
 
                 if (wheelVehicleDriver.gameObject == currentPlayer)
                 {
                     currentPlayerWasFinished = true;
-                    raceProgressUIController.ShowPlayerCongratulations();
+                    raceProgressUIController.ShowCongratilationsPanel();
 
                     raceProgressUIController.CongratulationsOverEvent += CongratulationsOver;
                 }
@@ -161,13 +155,13 @@ public class RaceProgressController : MonoBehaviour
                 // если гонка завершилась, а игрок не дошел до финиша, значит он проиграл
                 if (!currentPlayerWasFinished)
                 {
-                    raceProgressUIController.ShowPlayerLose();
+                    raceProgressUIController.ShowLosingPanel();
 
                     raceProgressUIController.LoseShowingOverEvent += LoseShowingOver;
                 }
 
                 // если приехал последний противник и окно победы уже было показано игроку, то показываем окно сплющивания
-                if (congratulationWasShowing) ShowPostRacingWindow();
+                if (congratulationWasShowing) ShowPostWindow();
                 // если приехал противник, но окно победы еще показывается, то ждем его завершения. По завершению окно сплющивание покажется само
 
                 StopRacing();
@@ -175,23 +169,24 @@ public class RaceProgressController : MonoBehaviour
                 Debug.Log("Race ended");// заканчиваем гонку. Переходим на следующий этап
             }
 
-            gameCamCinema.RemoveDriver(wheelVehicleDriver.gameObject);
+            cameraFollowingOnOtherPlayers.RemoveDriver(wheelVehicleDriver.gameObject);
         }
     }
 
-    private void ShowPostRacingWindow()
+    protected override void ShowPostWindow()
     {
         Debug.Log("SHOW POST RACING WINDOW");
-        gameCamCinema.CanFollowOnOtherPlayers = false;
 
-
-        List<WheelVehicle> losersList = new List<WheelVehicle>();
+        List<WheelVehicle> losersListWheelVehicle = new List<WheelVehicle>();
 
         foreach (var driver in raceDriversList)
         {
             if (!winnersList.Contains(driver))
             {
-                losersList.Add(driver);
+                _losersList.Add(driver.gameObject);
+                losersListWheelVehicle.Add(driver);
+
+                driver.Handbrake = true;
 
                 ApplyDisableBonus(driver.gameObject, Mathf.Infinity);
             }
@@ -217,11 +212,35 @@ public class RaceProgressController : MonoBehaviour
             if (raceAIWaipointTracker != null) raceAIWaipointTracker.enabled = false;
         }
 
-        postRacePlaceController.StartPostRacing(winnersList, losersList, numberOfWinners, currentPlayerWasFinished);
+        SortLosersByPosition();
+        SendListOfLosersNamesToGameManager();
+
+        raceProgressUIController.HideCameraHint();
+
+        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
+    }
+
+    private void SortLosersByPosition()
+    {
+        GameObject loser;
+        for (int i = 0; i < _losersList.Count; i++)
+        {
+            for (int j = i + 1; j < _losersList.Count; j++)
+            {
+                if (_losersList[j].transform.position.z < _losersList[i].transform.position.z)
+                {
+                    loser = _losersList[i];
+                    _losersList[i] = _losersList[j];
+                    _losersList[j] = loser;
+                }
+            }
+        }
     }
 
     private void CongratulationsOver()
     {
+        _isCurrentPlayerWinner = true;
+
         raceProgressUIController.CongratulationsOverEvent -= CongratulationsOver;
 
         congratulationWasShowing = true;
@@ -231,14 +250,13 @@ public class RaceProgressController : MonoBehaviour
             // если гонка не окончена, то следим за другими
             Debug.Log("ZAPUSK CAMERY");
 
-            gameCamCinema.CanFollowOnOtherPlayers = true;
-            gameCamCinema.ChangeTarget();
+            cameraFollowingOnOtherPlayers.EnableObserverMode();
 
-            raceProgressUIController.ShowCameraHintText();
+            raceProgressUIController.ShowCameraHint();
         }
         else
         {
-            ShowPostRacingWindow();
+            ShowPostWindow();
         }
     }
 
@@ -246,8 +264,10 @@ public class RaceProgressController : MonoBehaviour
     {
         raceProgressUIController.LoseShowingOverEvent -= LoseShowingOver;
 
+        raceProgressUIController.ShowObserverUI();
+
         // гонка окончена. Показ сплющивания 
-        ShowPostRacingWindow();
+        ShowPostWindow();
     }
 
     private void StopRacing()
@@ -265,6 +285,8 @@ public class RaceProgressController : MonoBehaviour
                 driverAI.Brake = true;
             }
         }
+
+        // отправляем список лузеров
     }
 
     private void OnDisable()

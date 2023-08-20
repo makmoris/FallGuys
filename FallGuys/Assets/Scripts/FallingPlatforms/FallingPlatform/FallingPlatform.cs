@@ -11,6 +11,13 @@ public class FallingPlatform : MonoBehaviour
         public GameObject stateGO;
     }
 
+    [SerializeField] private float changeStateTime = 1f;
+    [SerializeField] private List<State> StatesList;
+    private int stateNumber;
+
+    private bool isPlatformNotFell = true;
+
+    [Header("-----")]
     [SerializeField] private FallingPlatformTrigger platformTrigger;
     [SerializeField] private GameObject platformStates;
 
@@ -19,33 +26,13 @@ public class FallingPlatform : MonoBehaviour
     [SerializeField] private GameObject rayPlaces;
     private List<Transform> rayPlacesTransformsList = new List<Transform>();
 
-    private FallingPlatformTargetsController fallingPlatformTargetsController;
-
-    [Space]
-    [SerializeField] private float changeStateTime = 1f;
-    [SerializeField] private List<State> StatesList;
-    private int stateNumber;
-
-    private bool isPlatformNotFell = true;
+    private TargetsControllerHoneycomb targetsControllerHoneycomb;
 
     private Coroutine waitAndChangeStateCoroutine = null;
 
-    [System.Serializable]
-    public class Info
-    {
-        public Info(GameObject peres, GameObject sharik)
-        {
-            gameObjectPeresechenie = peres;
-            shar = sharik;
-        }
-
-        public GameObject gameObjectPeresechenie;
-        public GameObject shar;
-    }
-
     private void Awake()
     {
-        fallingPlatformTargetsController = transform.GetComponentInParent<FallingPlatformTargetsController>();
+        targetsControllerHoneycomb = transform.GetComponentInParent<TargetsControllerHoneycomb>();
 
         Transform[] rayPlacesTransforms = rayPlaces.GetComponentsInChildren<Transform>();
         for (int i = 0; i < rayPlacesTransforms.Length; i++)
@@ -136,7 +123,7 @@ public class FallingPlatform : MonoBehaviour
             platformStates.SetActive(false);
             platformTrigger.gameObject.layer = 6;
 
-            fallingPlatformTargetsController.PlatformFell(transform);
+            targetsControllerHoneycomb.PlatformFell(transform);
         }
         else
         {

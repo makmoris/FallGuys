@@ -51,7 +51,7 @@ public class PlayerEffector
             bumper.OnBonusGot += ApplyBonus;
             bumper.OnBonusGotWithGameObject += ApplyBonus;
         }
-        else Debug.LogError("Component Bumber not found");
+        else Debug.LogError("Component Bumper not found");
 
         VisualIntermediary intermediary = _playerGO.GetComponent<VisualIntermediary>();
         if (intermediary != null)
@@ -60,14 +60,10 @@ public class PlayerEffector
         }
         else Debug.LogError("Component VisualIntermediary not found");
 
-
         bumper.SetIsCurrentPlayer(_playerGO);
         _intermediary.SetIsCurrentPlayer(_playerGO);
 
         levelUINotifications = _levelUINotifications;
-
-        levelUI.UIEnemyPointers.SetCurrentPlayerTransform(_playerGO.transform);
-
 
         defaultHealth = player.Health;
     }
@@ -98,7 +94,7 @@ public class PlayerEffector
             bumper.OnBonusGot += ApplyBonus;
             bumper.OnBonusGotWithGameObject += ApplyBonus;
         }
-        else Debug.LogError("Component Bumber not found");
+        else Debug.LogError("Component Bumper not found");
 
         VisualIntermediary intermediary = _playerAIGO.GetComponent<VisualIntermediary>();
         if (intermediary != null)
@@ -106,7 +102,6 @@ public class PlayerEffector
             _intermediary = intermediary;
         }
         else Debug.LogError("Component VisualIntermediary not found");
-
 
         bumper.SetIsCurrentPlayer(_currentPlayerGO);
         _intermediary.SetIsCurrentPlayer(_currentPlayerGO);

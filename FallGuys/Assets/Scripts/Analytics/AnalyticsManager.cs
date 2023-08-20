@@ -55,7 +55,8 @@ public class AnalyticsManager : MonoBehaviour
 
     public int GetCurrentPlayerHealth()
     {
-        return (int)currentPlayer.Health;
+        //return (int)currentPlayer.Health;
+        return 0;
     }
 
     private void Initialize()

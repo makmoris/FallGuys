@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class RaceUI : LevelUI
 {
-
-
-
     #region Attack Pointer
     public override void ShowAttackPointer(Transform targetTransform)
     {

@@ -15,7 +15,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
     private Coroutine shieldCoroutine = null;
 
     [SerializeField]private GameObject playerGO;
-    private bool isPlayer;
 
     private HitHistory hitHistory;
 
@@ -38,9 +37,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     public void SetIsCurrentPlayer(GameObject playerObj)
     {
-        if (playerObj == gameObject) isPlayer = true;
-        else isPlayer = false;
-        Debug.Log($"SET IS CURRENT PLAYER = {playerObj}");
         playerGO = playerObj;
     }
 
@@ -60,8 +56,7 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
         }
 
         PlayerWasDeadEvent?.Invoke(this.gameObject);
-        //gameObject.SetActive(false);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     public void DestroyCar(GameObject killer)// смотрим, если киллер игрок (есть нужный скрипт)
     {
@@ -79,8 +74,7 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
 
         PlayerWasDeadEvent?.Invoke(this.gameObject);
-        //gameObject.SetActive(false);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 

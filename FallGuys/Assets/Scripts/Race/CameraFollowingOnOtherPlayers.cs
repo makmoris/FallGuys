@@ -49,7 +49,6 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
-                    Debug.Log("TIK");
                     ChangeTarget();
                 }
             }
@@ -100,11 +99,10 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
     {
         if(drivers.Count > 0)
         {
-            Debug.Log("CHANGE");
             int nextIndex = targetIndex + 1;
             if (nextIndex < drivers.Count) targetIndex = nextIndex;
             else targetIndex = 0;
-            Debug.Log($"Target index = {targetIndex}");
+            
             camCinema.m_Follow = drivers[targetIndex].transform;
             camCinema.m_LookAt = drivers[targetIndex].transform;
 
@@ -135,6 +133,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
 
         bool continueInObserverMode = false;
 
+        int currentDriverIndex = 0;
         foreach (var driver in drivers)
         {
             PlayerName playerName = driver.GetComponent<PlayerName>();
@@ -145,11 +144,19 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
                     currentDriver = driver;
                     continueInObserverMode = true;
 
+                    camCinema.m_Follow = currentDriver.transform;
+                    camCinema.m_LookAt = currentDriver.transform;
+
+                    uIEnemyPointers.ChangeCurrentTransform(currentDriver.transform);
+
                     currentDriver.GetComponent<AudioListener>().enabled = true;
+
+                    targetIndex = currentDriverIndex;
 
                     break;
                 }
             }
+            currentDriverIndex++;
         }
 
         if (!continueInObserverMode) ChangeTarget();

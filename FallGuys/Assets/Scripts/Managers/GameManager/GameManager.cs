@@ -261,7 +261,9 @@ public class GameManager : MonoBehaviour
 
     private PlayerAI CreateAIPlayer()
     {
-        string aiName = nameGenerator.GetNextRandomName();
+        //string aiName = nameGenerator.GetNextRandomName();
+        int rand = Random.Range(0, 999);
+        string aiName = $"Puncher_{rand}";
 
         if (namesList.Contains(aiName))
         {

@@ -117,7 +117,8 @@ public class PostLevelPlaceController : MonoBehaviour
 
         postPlaceCanvasGO.SetActive(true);
 
-        if (_isCurrentPlayerWinner) levelCanvasGO.SetActive(false);
+        //if (_isCurrentPlayerWinner) levelCanvasGO.SetActive(false);
+        levelCanvasGO.SetActive(false);
 
         postCameraGO.SetActive(true);
         gameCameraGO.SetActive(false);

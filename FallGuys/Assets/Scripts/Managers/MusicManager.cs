@@ -12,6 +12,7 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private AudioClip lobbyMusic;
     [SerializeField] private AudioClip arenaMusic;
     [SerializeField] private AudioClip raceMusic;
+    [SerializeField] private AudioClip honeycombMusic;
     [SerializeField] private AudioClip mapSearchMusic;
     [SerializeField] private AudioClip fillingLeagueScaleMusic;
     [SerializeField] private AudioClip winMusic;
@@ -152,6 +153,11 @@ public class MusicManager : MonoBehaviour
     public void PlayRaceMusic()
     {
         PlayMusic(raceMusic);
+    }
+
+    public void PlayHoneycombMusic()
+    {
+        PlayMusic(honeycombMusic);
     }
 
     public void PlayMapSearchMusic()

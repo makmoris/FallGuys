@@ -6,13 +6,11 @@ using UnityEngine.UI;
 public class ContinueButton : MonoBehaviour
 {
     [SerializeField] private float timeBeforeEnable = 2f;
-    [SerializeField] public Button button;
+    private Button button;
 
-    public void ShowLeagueWindowInLobby()
+    private void Awake()
     {
-        //LobbyWindowsController.Instance.ShowLeagueWindowOnLobby();
-
-        MusicManager.Instance.ReturnPreviousSoundsValue();
+        button = GetComponent<Button>();
     }
 
     private void OnEnable()

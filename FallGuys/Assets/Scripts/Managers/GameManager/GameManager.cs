@@ -15,10 +15,20 @@ public class GameManager : MonoBehaviour
     [System.Serializable]
     public class GameStage
     {
+        [SerializeField] private string name;
+        [Space]
         public int numberOfPlayers;
         public int numberOfWinners;
         public List<GameMode> gameModesList;
     }
+
+    #region Debug GameStagesList
+    [System.Serializable]
+    public class GameStagesList
+    {
+        public List<GameStage> gameStagesList;
+    }
+    #endregion
 
     [Header("SceneLoader")]
     [SerializeField] private SceneLoader sceneLoader;
@@ -26,12 +36,21 @@ public class GameManager : MonoBehaviour
     [Header("Player Character")]
     [SerializeField] private CharacterManager characterManager;
 
-    [Header("Game Stages")]
-    [SerializeField] private List<GameStage> gameStagesList;
+    #region Debug GameStagesList
+    [Space]
+    [Header("Debug Game Stages")]
+    [SerializeField] private int debugIndex;
+    [SerializeField] private List<GameStagesList> AllGameStagesList;
+    [Header("Current Debug Game Stages")]
+    [SerializeField]private List<GameStage> gameStagesList = new List<GameStage>();
+    #endregion
+
+    //[Header("Game Stages")] // Correct without Debug GameStagesList
+    //[SerializeField] private List<GameStage> gameStagesList; // Correct
 
     private int currentGameStage;
 
-    private string previousGameModeIndexKey = "PreviousGameMode";
+    private string previousGameModeEnumIndexKey = "PreviousGameModeEnum";
 
     private List<IPlayerData> players = new List<IPlayerData>();
     public List<IPlayerData> Players => players;
@@ -81,6 +100,10 @@ public class GameManager : MonoBehaviour
 
     public void StartGameStage()// начальная точка. Вызывается по кнопке "Play"
     {
+        #region Debug GameStagesList
+        gameStagesList = AllGameStagesList[debugIndex].gameStagesList;
+        #endregion
+
         SceneField sceneToLoad;
        
         if (isFirstStart)
@@ -289,6 +312,8 @@ public class GameManager : MonoBehaviour
         currentGameStage = 0;
 
         namesList.Clear();
+
+        PlayerPrefs.SetInt(previousGameModeEnumIndexKey, 999999);
     }
 
 
@@ -297,19 +322,18 @@ public class GameManager : MonoBehaviour
         int gameModeCount = gameStagesList[currentGameStage].gameModesList.Count;
         int randomGameModeIndex = Random.Range(0, gameModeCount);
 
-        //int previousGameModeIndex = PlayerPrefs.GetInt(previousGameModeIndexKey, 999999);
-
-        //if(gameStagesList[currentGameStage].gameModesList[previousGameModeIndex].gameMode 
-        //    == gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameMode)
-        //{
-        //    if(gameModeCount > 1)
-        //    {
-        //        if (randomGameModeIndex == 0) randomGameModeIndex++;
-        //        else if (randomGameModeIndex == gameModeCount - 1) randomGameModeIndex--;
-        //        else randomGameModeIndex++;
-        //    }
-        //}
-        //PlayerPrefs.SetInt(previousGameModeIndexKey, randomGameModeIndex);
+        int previousGameModeEnumIndex = PlayerPrefs.GetInt(previousGameModeEnumIndexKey, 999999);
+        
+        if (previousGameModeEnumIndex == (int)gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameMode)
+        {
+            if (gameModeCount > 1)
+            {
+                if (randomGameModeIndex == 0) randomGameModeIndex++;
+                else if (randomGameModeIndex == gameModeCount - 1) randomGameModeIndex--;
+                else randomGameModeIndex++;
+            }
+        }
+        PlayerPrefs.SetInt(previousGameModeEnumIndexKey, randomGameModeIndex);
 
         SceneField scene = gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameModeScenes.GetRandomScene();
 

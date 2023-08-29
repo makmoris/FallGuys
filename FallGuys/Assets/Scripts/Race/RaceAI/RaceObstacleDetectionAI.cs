@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RaceObstacleDetectionAI : MonoBehaviour
 {
+    public float Work;
 	[SerializeField] private bool inUpdate = false;
 	[Space]
 	[SerializeField] private string Obstacles = "Null";
@@ -37,11 +38,24 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 
 	private Coroutine _coroutine;
 
+    private bool isInitialized;
+
+    private void OnEnable()
+    {
+        if (isInitialized)
+        {
+            Debug.LogError("Enable");
+            _coroutine = StartCoroutine(WaitAndCheckObstacles());
+        }
+    }
+
     public void Initialize(RaceAIInputs _raceAIInputs)
     {
         raceAIInputs = _raceAIInputs;
 
         _coroutine = StartCoroutine(WaitAndCheckObstacles());
+
+        isInitialized = true;
     }
 
 	private IEnumerator WaitAndCheckObstacles()
@@ -55,13 +69,9 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 		}
 	}
 
-	private void OnDestroy()
+    public void CheckObstacles()
 	{
-		if (_coroutine != null) StopCoroutine(_coroutine);
-	}
-
-	public void CheckObstacles()
-	{
+        Work = Time.time;
 		Obstacles = "Null";
         RaycastHit hit = new RaycastHit();
 
@@ -220,4 +230,14 @@ public class RaceObstacleDetectionAI : MonoBehaviour
 			}
 		}
 	}
+
+    private void OnDestroy()
+    {
+        if (_coroutine != null) StopCoroutine(_coroutine);
+    }
+
+    private void OnDisable()
+    {
+        if (_coroutine != null) StopCoroutine(_coroutine);
+    }
 }

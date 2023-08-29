@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class RaceSectorWithHorizontalDynamicPlatform : MonoBehaviour
-{
+public class RaceSectorWithHorizontalDynamicPlatform : RaceSectorLogic
+{ 
     [SerializeField] private EnterSectorTrigger enterSectorTrigger;
     [SerializeField] private ExitSectorTrigger exitSectorTrigger;
 
@@ -20,13 +20,14 @@ public class RaceSectorWithHorizontalDynamicPlatform : MonoBehaviour
 
     private List<WheelVehicle> carsInSector = new List<WheelVehicle>();
 
+
     private void OnEnable()
     {
         enterSectorTrigger.CarEnteredTheSectorEvent += CarEnteredTheSector;
         exitSectorTrigger.CarLeftTheSectorEvent += CarLeftTheSector;
     }
 
-    private void CarEnteredTheSector(WheelVehicle car)
+    protected override void CarEnteredTheSector(WheelVehicle car)
     {
         if (!carsInSector.Contains(car))
         {
@@ -64,7 +65,7 @@ public class RaceSectorWithHorizontalDynamicPlatform : MonoBehaviour
         }
     }
 
-    private void CarLeftTheSector(WheelVehicle car)
+    protected override void CarLeftTheSector(WheelVehicle car)
     {
         carsInSector.Remove(car);
 

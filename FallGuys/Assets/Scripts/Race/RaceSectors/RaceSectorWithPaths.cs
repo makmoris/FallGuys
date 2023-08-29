@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class RaceSectorWithPaths : MonoBehaviour
+public class RaceSectorWithPaths : RaceSectorLogic
 {
     [SerializeField] private EnterSectorTrigger enterSectorTrigger;
     [SerializeField] private ExitSectorTrigger exitSectorTrigger;
@@ -25,7 +25,7 @@ public class RaceSectorWithPaths : MonoBehaviour
         exitSectorTrigger.CarLeftTheSectorEvent += CarLeftTheSector;
     }
 
-    public void CarEnteredTheSector(WheelVehicle car)
+    protected override void CarEnteredTheSector(WheelVehicle car)
     {
         carsInSector.Add(car);
 
@@ -37,12 +37,12 @@ public class RaceSectorWithPaths : MonoBehaviour
         }
     }
 
-    public void CarLeftTheSector(WheelVehicle car)
+    protected override void CarLeftTheSector(WheelVehicle car)
     {
         carsInSector.Remove(car);
     }
 
-    public RaceWaypointsPath GetWaypointsPath(Vector3 carPosition)
+    private RaceWaypointsPath GetWaypointsPath(Vector3 carPosition)
     {
         RaceWaypointsPath raceWaypointsPath = null;
 

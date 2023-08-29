@@ -8,6 +8,10 @@ public class RaceInstaller : Installer
     [SerializeField] RaceDriverAI raceDriverAIPrefab;
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
+    [Header("Additioanl Cars For Test")]
+    [SerializeField] private List<RaceDriverAI> raceDriverAILestTest;
+    private int index;
+
     protected override void InitializePlayers()
     {
         RaceProgressController raceProgressController = levelProgressController as RaceProgressController;
@@ -56,7 +60,14 @@ public class RaceInstaller : Installer
                 PlayerAI playerAI = _player as PlayerAI;
 
                 // Instantiate AI 
-                GameObject aiPlayerGO = Instantiate(raceDriverAIPrefab.gameObject);
+                //GameObject aiPlayerGO = Instantiate(raceDriverAIPrefab.gameObject);
+
+                // TEST
+                index++;
+                if (index >= raceDriverAILestTest.Count) index = 0;
+
+                GameObject aiPlayerGO = Instantiate(raceDriverAILestTest[index].gameObject);
+                //
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();

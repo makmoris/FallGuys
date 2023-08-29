@@ -11,6 +11,10 @@ public class ArenaInstaller : Installer
     [SerializeField] ArenaCarDriverAI arenaCarDriverAI;
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
+    [Header("Additioanl Cars For Test")]
+    [SerializeField] private List<ArenaCarDriverAI> arenaDriverAILestTest;
+    private int index;
+
     private int spawnCounter;
 
     protected override void InitializePlayers()
@@ -66,7 +70,14 @@ public class ArenaInstaller : Installer
                 PlayerAI playerAI = _player as PlayerAI;
 
                 // Instantiate AI 
-                GameObject aiPlayerGO = Instantiate(arenaCarDriverAI.gameObject);
+                //GameObject aiPlayerGO = Instantiate(arenaCarDriverAI.gameObject);
+
+                // TEST
+                index++;
+                if (index >= arenaDriverAILestTest.Count) index = 0;
+
+                GameObject aiPlayerGO = Instantiate(arenaDriverAILestTest[index].gameObject);
+                //
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();

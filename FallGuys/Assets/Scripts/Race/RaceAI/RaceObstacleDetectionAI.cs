@@ -28,12 +28,6 @@ public class RaceObstacleDetectionAI : MonoBehaviour
     [SerializeField] private GameObject frontSideLeftMiddle;
     [SerializeField] private GameObject frontSideRight;
     [SerializeField] private GameObject frontSideRightMiddle;
-    [Space]
-	[SerializeField] private GameObject frontCapsuleCollider;
-	[SerializeField] private Transform frontLeftWheel;
-	[SerializeField] private Transform frontRightWheel;
-	[SerializeField] private Transform leftAngle;
-	[SerializeField] private Transform rightAngle;
 
 	[Space]
 	[SerializeField] private int collisionCounter;

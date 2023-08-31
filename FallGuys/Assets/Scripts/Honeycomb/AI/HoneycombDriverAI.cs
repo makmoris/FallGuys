@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class HoneycombDriverAI : MonoBehaviour
+public class HoneycombDriverAI : DriverAI
 {
-    [Header("Точки Интереса")]
+    [Header("DEBUG")]
     public List<Transform> targets;
 
     [Space]
@@ -17,18 +17,11 @@ public class HoneycombDriverAI : MonoBehaviour
 
     private WheelVehicle wheelVehicle;
 
-    private bool obstacle;
-    public bool Obstacle
-    {
-        get => obstacle;
-        set => obstacle = value;
-    }
-
     [SerializeField]private TargetsControllerHoneycomb targetsControllerHoneycomb;
 
-    private void Awake()
+    public override void Initialize(GameObject currentPlayerGO)
     {
-        wheelVehicle = GetComponent<WheelVehicle>();
+        wheelVehicle = currentPlayerGO.GetComponent<WheelVehicle>();
     }
 
     private void Update()

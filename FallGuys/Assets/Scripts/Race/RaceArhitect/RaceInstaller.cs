@@ -69,6 +69,8 @@ public class RaceInstaller : Installer
                 GameObject aiPlayerGO = Instantiate(raceDriverAILestTest[index].gameObject);
                 //
 
+                aiPlayerGO.GetComponent<RaceDriverAI>().Initialize(aiPlayerGO);
+
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
                 playerName.Initialize(playerAI.Name, cameraFollowingOnOtherPlayers.transform);

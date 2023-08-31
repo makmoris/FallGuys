@@ -12,28 +12,6 @@ public class RaceAIInputs : MonoBehaviour
     
     private RaceDriverAI carAIReference;
 
-    [SerializeField] internal bool obstacle = false;
-    public bool Obstacle
-    {
-        get => obstacle;
-        set => obstacle = value;
-    }
-
-    [SerializeField] internal float obstacleSteer;
-    public float ObstacleSteer
-    {
-        get => obstacleSteer;
-        set => obstacleSteer = value;
-    }
-
-    [Space]
-    [SerializeField] private bool isPathMovement;
-    public bool IsPathMovement
-    {
-        get => isPathMovement;
-        set => isPathMovement = value;
-    }
-
     #region UTILITY
 
     private float randomValue;
@@ -63,17 +41,17 @@ public class RaceAIInputs : MonoBehaviour
     }
 
 
-    private void FixedUpdate()
-    {
-        if (isPathMovement)
-        {
-            PathMovement();
-        }
-        else
-        {
-            MovementToTarget();
-        }
-    }
+    //private void FixedUpdate()
+    //{
+    //    if (isPathMovement)
+    //    {
+    //        PathMovement();
+    //    }
+    //    else
+    //    {
+    //        MovementToTarget();
+    //    }
+    //}
 
     public void SetTargets(List<Transform> targets)
     {
@@ -103,7 +81,7 @@ public class RaceAIInputs : MonoBehaviour
         currentTargetIndex = index;
     }
 
-    private void MovementToTarget()
+    public void MovementToTarget()
     {
         if (targetsList.Count > 0)
         {
@@ -165,8 +143,6 @@ public class RaceAIInputs : MonoBehaviour
                         turnAmount = -1f;
                     }
                 }
-                //print(angleToDir);
-                //isTargetReachedFirst = true;
             }
             else
             {
@@ -177,34 +153,17 @@ public class RaceAIInputs : MonoBehaviour
                     currentTargetIndex++;
                 }
 
-                //if (carAIReference.CurrentSpeed > 1f)// если скорость больше 1, то тормозим 
-                //{
-                //    forwardAmount = -1f;
-                //}
-                //else
-                //{
-                //    forwardAmount = 0f;
-                //}
                 turnAmount = 0f;
-
-                //if (isTargetReachedFirst)
-                //{
-                //    targetReached = true;
-                //    isTargetReachedFirst = false;
-
-                //    //print(gameObject.name + " догнал " + targetPositionTransform.name + "   - isTargetReachedFirst");
-                //}
             }
             
             currentAccel = forwardAmount;
             currentSteer = turnAmount;
 
-            if (!obstacle) carAIReference.Move(turnAmount, forwardAmount);
-            else carAIReference.Move(obstacleSteer, forwardAmount);
+            carAIReference.Move(turnAmount, forwardAmount);
         }
     }
 
-    private void PathMovement()
+    public void PathMovement()
     {
         #region MAX SPEED
 
@@ -296,8 +255,7 @@ public class RaceAIInputs : MonoBehaviour
 
         #region MOVE CAR
 
-        if (!obstacle) carAIReference.Move(steer, accel);
-        else carAIReference.Move(obstacleSteer, accel);
+        carAIReference.Move(steer, accel);
 
         #endregion
     }

@@ -1225,9 +1225,9 @@ GameObject:
   - component: {fileID: 6297012013745208000}
   - component: {fileID: 2522180990896590878}
   - component: {fileID: 5320158814984930241}
+  - component: {fileID: 6139954342480321004}
   - component: {fileID: 7656846055283641193}
   - component: {fileID: 8900470938014827711}
-  - component: {fileID: 6139954342480321004}
   m_Layer: 0
   m_Name: ArenaDriverAI
   m_TagString: Car
@@ -1720,7 +1720,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyEffect: {fileID: 2557796309139896421, guid: a3613dd087ed87c4c932903a5a389c90, type: 3}
   shield: {fileID: 8118757010959994270}
-  playerGO: {fileID: 0}
+--- !u!114 &6139954342480321004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4112123068374292011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba46e0fe3e6fa484ca6783c593dffca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resetLastShooterTime: 2
 --- !u!114 &7656846055283641193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1764,19 +1776,6 @@ MonoBehaviour:
   isDuel: 0
   playerWasTargetCounter: 0
   bonusWasTargetCounter: 0
---- !u!114 &6139954342480321004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4112123068374292011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba46e0fe3e6fa484ca6783c593dffca7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resetLastShooterTime: 2
 --- !u!1 &4272827903272145172
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public enum ProgressStyle
     PointToPoint,
 }
 
-public class RaceDriverAI : MonoBehaviour
+public class RaceDriverAI : DriverAI
 {
     private RaceAIInputs raceAIInputs;
     private RaceAIWaipointTracker raceAIWaypointTracker;
@@ -85,10 +85,12 @@ public class RaceDriverAI : MonoBehaviour
         set => brake = value;
     }
 
-    private void Start()
+    private bool isPathMovement;
+
+    public override void Initialize(GameObject currentPlayerGO)
     {
-        wheelVehicle = GetComponent<WheelVehicle>();
-        rb = GetComponent<Rigidbody>();
+        wheelVehicle = currentPlayerGO.GetComponent<WheelVehicle>();
+        rb = currentPlayerGO.GetComponent<Rigidbody>();
 
         maxSpeed = wheelVehicle.MaxSpeed;
         maximumSteerAngle = wheelVehicle.SteerAngle;
@@ -98,8 +100,8 @@ public class RaceDriverAI : MonoBehaviour
         raceAIInputs = gameObject.AddComponent<RaceAIInputs>();
         raceAIWaypointTracker = gameObject.AddComponent<RaceAIWaipointTracker>();
 
-        raceObstacleDetectionAI = GetComponent<RaceObstacleDetectionAI>();
-        raceObstacleDetectionAI.Initialize(raceAIInputs);
+        raceObstacleDetectionAI = GetComponentInParent<RaceObstacleDetectionAI>();
+        raceObstacleDetectionAI.Initialize(this);
 
         #endregion
 
@@ -112,12 +114,58 @@ public class RaceDriverAI : MonoBehaviour
         #endregion
 
         isGround = true;
-
-        //moveForward = true;
     }
 
-    private void Update()
+    //private void Start()
+    //{
+    //    maxSpeed = wheelVehicle.MaxSpeed;
+    //    maximumSteerAngle = wheelVehicle.SteerAngle;
+
+    //    #region FEATURES SCRIPTS
+
+    //    raceAIInputs = gameObject.AddComponent<RaceAIInputs>();
+    //    raceAIWaypointTracker = gameObject.AddComponent<RaceAIWaipointTracker>();
+
+    //    raceObstacleDetectionAI = GetComponentInParent<RaceObstacleDetectionAI>();
+    //    raceObstacleDetectionAI.Initialize(raceAIInputs);
+
+    //    #endregion
+
+    //    #region AI REFERENCES
+
+    //    carAItargetObj = new GameObject("WaypointsTarget");
+    //    //carAItargetObj.transform.parent = this.transform.GetChild(1);
+    //    carAItarget = carAItargetObj.transform;
+
+    //    #endregion
+
+    //    isGround = true;
+
+    //    //moveForward = true;
+    //}
+
+    //private void Update()
+    //{
+    //    currentSpeed = wheelVehicle.Speed;
+
+    //    if (moveForward)
+    //    {
+    //        MoveForward();
+    //    }
+    //}
+
+    private void FixedUpdate()
     {
+        if (isPathMovement)
+        {
+            raceAIInputs.PathMovement();
+        }
+        else
+        {
+            raceAIInputs.MovementToTarget();
+        }
+
+
         currentSpeed = wheelVehicle.Speed;
 
         if (moveForward)
@@ -129,7 +177,6 @@ public class RaceDriverAI : MonoBehaviour
     public void StartMoveForward()
     {
         moveForward = true;
-        //Debug.Log($"Авто {this.gameObject.name} начало движение MoveForward");
     }
 
     public void StopMoveForward()
@@ -145,24 +192,32 @@ public class RaceDriverAI : MonoBehaviour
 
     public void Move(float steering, float accel)
     {
-        if (!moveForward)
+        if (!obstacle)
         {
-            if (!brake && isGround)
+            if (!moveForward)
             {
-                wheelVehicle.Steering = steering;
-                wheelVehicle.Throttle = accel;
-                wheelVehicle.Handbrake = false;
-            }
-            else
-            {
-                wheelVehicle.Steering = 0f;
-
-                if (currentSpeed > 1f)
+                if (!brake && isGround)
                 {
-                    wheelVehicle.Handbrake = true;
+                    wheelVehicle.Steering = steering;
+                    wheelVehicle.Throttle = accel;
+                    wheelVehicle.Handbrake = false;
                 }
-                else wheelVehicle.Handbrake = false;
+                else
+                {
+                    wheelVehicle.Steering = 0f;
+
+                    if (currentSpeed > 1f)
+                    {
+                        wheelVehicle.Handbrake = true;
+                    }
+                    else wheelVehicle.Handbrake = false;
+                }
             }
+        }
+        else
+        {
+            wheelVehicle.Steering = obstacleSteer;
+            wheelVehicle.Throttle = accel;
         }
     }
 
@@ -173,7 +228,7 @@ public class RaceDriverAI : MonoBehaviour
 
     public void SetNewWaypointsPath(RaceWaypointsPath newPath)
     {
-        raceAIInputs.IsPathMovement = true;
+        isPathMovement = true;
         raceWaypointsPath = newPath;
         raceAIWaypointTracker.SetNewWaypointsPath(newPath);
         moveForward = false;
@@ -181,7 +236,7 @@ public class RaceDriverAI : MonoBehaviour
 
     public void WasRespawn()
     {
-        if (raceAIInputs.IsPathMovement) ResetWaypointsPath();
+        if (isPathMovement) ResetWaypointsPath();
         else ResetMovementToTarget();
     }
 
@@ -200,7 +255,7 @@ public class RaceDriverAI : MonoBehaviour
     {
         raceAIInputs.SetTargets(targets);
         ResetMovementToTarget();
-        raceAIInputs.IsPathMovement = false;
+        isPathMovement = false;
         moveForward = false;
     }
 

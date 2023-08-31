@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class ArenaCarDriverAI : MonoBehaviour
+public class ArenaCarDriverAI : DriverAI
 {
-    [Header("“очки »нтереса")]
+    [Header("DEBUG")]
     public List<Transform> targets;
 
     [Space]
@@ -15,12 +15,12 @@ public class ArenaCarDriverAI : MonoBehaviour
     private bool targetReached;
     private bool isTargetReachedFirst;
 
-    private WheelVehicle wheelVehicle;
+    [SerializeField]private WheelVehicle wheelVehicle;
     
-    private bool obstacle;
-    public bool Obstacle { get => obstacle;
-        set => obstacle = value;
-    }
+    //private bool obstacle;
+    //public bool Obstacle { get => obstacle;
+    //    set => obstacle = value;
+    //}
 
     private ArenaDifficultyLevelsAI arenaDifficultyLevelAI;
 
@@ -31,14 +31,26 @@ public class ArenaCarDriverAI : MonoBehaviour
     private Transform playerTransform;
     private Transform targetForDuelTransform;
 
-    private void Awake()
+    //private void Awake()
+    //{
+    //    wheelVehicle = GetComponentInParent<WheelVehicle>();
+    //}
+
+    public override void Initialize(GameObject currentPlayerGO)
     {
-        wheelVehicle = GetComponent<WheelVehicle>();
+        wheelVehicle = currentPlayerGO.GetComponent<WheelVehicle>();
+
+        playerTransform = currentPlayerGO.transform;
     }
 
     private void Update()
     {
         if(!obstacle) Moving();
+        else
+        {
+            wheelVehicle.Steering = obstacleSteer;
+            wheelVehicle.Throttle = 1f;
+        }
     }
     
     private void Moving()
@@ -273,10 +285,10 @@ public class ArenaCarDriverAI : MonoBehaviour
                 bonusBoxes.Add(item);
             }
 
-            if (item.GetComponent<Bumper>() != null && item.GetComponent<ArenaCarDriverAI>() == null)
-            {
-                playerTransform = item;
-            }
+            //if (item.GetComponent<Bumper>() != null && item.GetComponent<ArenaCarDriverAI>() == null)
+            //{
+            //    playerTransform = item;
+            //}
         }
 
         // если нужно, то добавл€ем еще игроков, чтобы был больше шанс на него напасть

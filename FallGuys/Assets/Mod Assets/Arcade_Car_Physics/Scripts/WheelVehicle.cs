@@ -217,12 +217,12 @@ namespace VehicleBehaviour {
         public bool jumping = false;
 
         // Boost particles and sound
-        [SerializeField] ParticleSystem[] boostParticles = new ParticleSystem[0];
-        [SerializeField] AudioClip boostClip = default;
-        [SerializeField] AudioSource boostSource = default;
+       ParticleSystem[] boostParticles = new ParticleSystem[0];
+       AudioClip boostClip = default;
+        AudioSource boostSource = default;
         
         // Private variables set at the start
-        [SerializeField ] Rigidbody rb = default;
+        Rigidbody rb = default;
         internal WheelCollider[] wheels = new WheelCollider[0];
 
         // Init rigidbody, center of mass, wheels and more

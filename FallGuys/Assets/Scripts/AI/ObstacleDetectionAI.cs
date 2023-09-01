@@ -1,186 +1,221 @@
-ï»¿using System.Collections;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using VehicleBehaviour;
 
 public class ObstacleDetectionAI : MonoBehaviour
 {
 	[SerializeField] private bool inUpdate = false;
 	[Space]
-	[SerializeField] private string Obstacles = "Null";
-	[SerializeField] private float ObstacleDistance = 0;
-	[SerializeField] private float raycastLength = 10F;
-	[SerializeField] private float angleObstacle = 0;
+    [SerializeField] private LayerMask obstacleLayerMask;
 
-	public LayerMask obstacleLayerMask;
+    [Header("Raycast Directions")]
+    private float sidesRayLength;
+    [SerializeField] private GameObject leftSideBack;
+    [SerializeField] private GameObject leftSideMiddle;
+    [SerializeField] private GameObject leftSideFront;
+    [Space]
+    [SerializeField] private GameObject rightSideBack;
+    [SerializeField] private GameObject rightSideMiddle;
+    [SerializeField] private GameObject rightSideFront;
+    
+    private float frontSideRayLength;
+    [Space]
+    [SerializeField] private GameObject frontSideMiddle;
+    [SerializeField] private GameObject frontSideLeftMiddle;
+    [SerializeField] private GameObject frontSideRightMiddle;
+    [Space]
+    [SerializeField] private GameObject frontSideLeft_Angle;
+    [SerializeField] private GameObject frontSideRight_Angle;
 
-	[Header("Raycast Directions")]
-	[SerializeField] private GameObject frontCapsuleCollider;
-	[SerializeField] private Transform frontLeftWheel;
-	[SerializeField] private Transform frontRightWheel;
-	[SerializeField] private Transform leftAngle;
-	[SerializeField] private Transform rightAngle;
+    [Header("DEBUG")]
+    [SerializeField] private string Obstacles = "Null";
+    [SerializeField] private float ObstacleDistance = 0;
+    [SerializeField] private float angleObstacle = 0;
 
-	[Space]
-	[SerializeField] private int collisionCounter;
-	private bool isTurnBack;
+    [SerializeField] private int collisionCounter;
+    private bool isTurnBack;
 
-	private ArenaCarDriverAI arenaCarDriverAI;
-	private HoneycombDriverAI honeycombPlatformsDriverAI;
-	private WheelVehicle wheelVehicle;
+    private DriverAI driverAI;
 
-	private Coroutine _coroutine;
+    private Coroutine _coroutine;
 
-	private void Awake()
-	{
-		wheelVehicle = GetComponent<WheelVehicle>();
-		arenaCarDriverAI = GetComponent<ArenaCarDriverAI>();
-		honeycombPlatformsDriverAI = GetComponent<HoneycombDriverAI>();
-	}
+    private bool isAILogicSetted;
 
-	private void OnEnable()
-	{
-		_coroutine = StartCoroutine(WaitAndCheckObstacles());
-	}
+    private void OnEnable()
+    {
+        if (isAILogicSetted)
+        {
+            _coroutine = StartCoroutine(WaitAndCheckObstacles());
+        }
+    }
 
-	private IEnumerator WaitAndCheckObstacles()
-	{
-		while (true)
-		{
-			CheckObstacles();
-			yield return new WaitForSeconds(0.25f);
-		}
-	}
+    public void SetAILogic(DriverAI driverAI, float frontSideRayLength, float sidesRayLength, float angleForSides)
+    {
+        this.driverAI = driverAI;
 
-	private void OnDestroy()
-	{
-		if (_coroutine != null) StopCoroutine(_coroutine);
-	}
+        this.frontSideRayLength = frontSideRayLength;
+        this.sidesRayLength = sidesRayLength;
 
-	//private void Update()
-	//{
-	//    CheckObstacles();
-	//}
+        frontSideLeft_Angle.transform.rotation = Quaternion.Euler(0f, -angleForSides, 0f);
+        frontSideRight_Angle.transform.rotation = Quaternion.Euler(0f, angleForSides, 0f);
 
-	public void CheckObstacles()
-	{
-		Obstacles = "Null";
-		RaycastHit hit;
+        if(frontSideRayLength <= 0 || sidesRayLength <= 0 || angleForSides == 0)
+        {
+            Debug.LogError($"These values cannot be <= 0 (angleForSides must != 0); Values from Installer; frontSideRayLength = {frontSideRayLength}, " +
+                $" sidesRayLength = {sidesRayLength}, angleForSides = {angleForSides}");
+        }
 
-		Vector3 PosCenter = frontCapsuleCollider.gameObject.transform.position;
-		Vector3 DirCenter = frontCapsuleCollider.gameObject.transform.forward;
+        _coroutine = StartCoroutine(WaitAndCheckObstacles());
 
-		Vector3 DirAngleLeft = -leftAngle.forward;
-		Vector3 DirAngleRight = -rightAngle.forward;
+        isAILogicSetted = true;
+    }
 
-		Vector3 PosRight = frontLeftWheel.position;
-		Vector3 PosLeft = frontRightWheel.position;
+    private IEnumerator WaitAndCheckObstacles()
+    {
+        while (true)
+        {
+            CheckObstacles();
 
-		if (Physics.Raycast(PosCenter, DirCenter, out hit, raycastLength, obstacleLayerMask)
-			)
-		{                   // Center
-			Debug.DrawRay(hit.point, hit.normal, Color.cyan);
+            if (inUpdate) yield return new WaitForEndOfFrame();
+            else yield return new WaitForSeconds(0.25f);
+        }
+    }
 
-			angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //Ã³Ã£Ã®Ã« Ã¬Ã¥Ã¦Ã¤Ã³ Ã Ã¢Ã²Ã®Ã¬Ã®Ã¡Ã¨Ã«Ã¥Ã¬ Ã¨ Ã¶Ã¥Ã«Ã¥Ã¢Ã®Ã© Ã²Ã°Ã Ã¥ÃªÃ²Ã®Ã°Ã¨Ã¥Ã©
-				new Vector2(DirCenter.x, DirCenter.z));
+    public void CheckObstacles()
+    {
+        Obstacles = "Null";
+        RaycastHit hit = new RaycastHit();
 
-			if (angleObstacle < 0)
-			{
-				Obstacles = "Left_1";
+        if (Physics.Raycast(frontSideLeft_Angle.transform.position, frontSideLeft_Angle.transform.forward, out hit, frontSideRayLength * 0.7f, obstacleLayerMask))
+        {
+            Obstacles = "Front Side Left";
+            ObstacleDistance = hit.distance;
 
-				wheelVehicle.Steering = -1f;
-			}
-			else
-			{
-				Obstacles = "Right_1";
+            driverAI.ObstacleSteer = 0.75f;
+        }
+        if (Physics.Raycast(frontSideLeftMiddle.transform.position, transform.forward, out hit, frontSideRayLength, obstacleLayerMask))
+        {
+            Obstacles = "front Side Left Middle";
+            ObstacleDistance = hit.distance;
 
-				wheelVehicle.Steering = 1f;
-			}
-			ObstacleDistance = hit.distance;
-		}
-		else if (Physics.Raycast(PosLeft, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
-		{                   // Left
-			Obstacles = "Left_2";
-			ObstacleDistance = hit.distance;
+            driverAI.ObstacleSteer = 1f;
+        }
+        if (Physics.Raycast(frontSideRight_Angle.transform.position, frontSideRight_Angle.transform.forward, out hit, frontSideRayLength * 0.7f, obstacleLayerMask))
+        {
+            Obstacles = "front Side Right";
+            ObstacleDistance = hit.distance;
 
-			wheelVehicle.Steering = -1f;
-		}
-		else if (Physics.Raycast(PosRight, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
-		{               // Right
-			Obstacles = "Right_2";
-			ObstacleDistance = hit.distance;
+            driverAI.ObstacleSteer = -0.75f;
+        }
+        if (Physics.Raycast(frontSideRightMiddle.transform.position, transform.forward, out hit, frontSideRayLength, obstacleLayerMask))
+        {
+            Obstacles = "front Side Right Middle";
+            ObstacleDistance = hit.distance;
 
-			wheelVehicle.Steering = 1f;
-		}
+            driverAI.ObstacleSteer = -1f;
+        }
+        if (Physics.Raycast(frontSideMiddle.transform.position, transform.forward, out hit, frontSideRayLength * 1.25f, obstacleLayerMask)
+            )
+        {                   // Center
+            Debug.DrawRay(hit.point, hit.normal, Color.cyan);
+
+            angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //óãîë ìåæäó àâòîìîáèëåì è öåëåâîé òðàåêòîðèåé
+                new Vector2(transform.forward.x, transform.forward.z));
+
+            if (angleObstacle < 0)
+            {
+                Obstacles = "front Side Middle To Left";
+
+                driverAI.ObstacleSteer = -1f;
+            }
+            else
+            {
+                Obstacles = "front Side Middle To Right";
+
+                driverAI.ObstacleSteer = 1f;
+            }
+            ObstacleDistance = hit.distance;
+        }
+
+        if (Physics.Raycast(leftSideBack.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "left Side Back";
+            ObstacleDistance = hit.distance;
+
+            driverAI.ObstacleSteer = 0.75f;
+        }
+        if (Physics.Raycast(leftSideMiddle.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "left Side Middle";
+            ObstacleDistance = hit.distance;
+
+            driverAI.ObstacleSteer = 0.75f;
+        }
+        if (Physics.Raycast(leftSideFront.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "left Side Front";
+            ObstacleDistance = hit.distance;
+
+            driverAI.ObstacleSteer = 0.75f;
+        }
+
+        if (Physics.Raycast(rightSideBack.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "right Side Back";
+            ObstacleDistance = hit.distance;
+
+            driverAI.ObstacleSteer = -0.75f;
+        }
+        if (Physics.Raycast(rightSideMiddle.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "right Side Middle";
+            ObstacleDistance = hit.distance;
+
+            driverAI.ObstacleSteer = -0.75f;
+        }
+        if (Physics.Raycast(rightSideFront.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
+        {
+            Obstacles = "right Side Front";
+            ObstacleDistance = hit.distance;
+
+            driverAI.ObstacleSteer = -0.75f;
+        }
 
 
-		if (Physics.Raycast(PosRight, -DirAngleRight, out hit, raycastLength * .7f, obstacleLayerMask))
-		{       // Right angle
-			Obstacles = "Right_3";
-			ObstacleDistance = hit.distance;
+        Debug.DrawLine(frontSideMiddle.transform.position, frontSideMiddle.transform.position + transform.forward * frontSideRayLength * 1.25f, Color.red);
+        Debug.DrawLine(frontSideLeft_Angle.transform.position, frontSideLeft_Angle.transform.position + frontSideLeft_Angle.transform.forward * frontSideRayLength * 0.7f, Color.red);
+        Debug.DrawLine(frontSideLeftMiddle.transform.position, frontSideLeftMiddle.transform.position + transform.forward * frontSideRayLength, Color.red);
+        Debug.DrawLine(frontSideRight_Angle.transform.position, frontSideRight_Angle.transform.position + frontSideRight_Angle.transform.forward * frontSideRayLength * 0.7f, Color.red);
+        Debug.DrawLine(frontSideRightMiddle.transform.position, frontSideRightMiddle.transform.position + transform.forward * frontSideRayLength, Color.red);
 
-			wheelVehicle.Steering = 1f;
-		}
+        Debug.DrawLine(leftSideBack.transform.position, leftSideBack.transform.position - transform.right * sidesRayLength, Color.red);
+        Debug.DrawLine(leftSideMiddle.transform.position, leftSideMiddle.transform.position - transform.right * sidesRayLength, Color.red);
+        Debug.DrawLine(leftSideFront.transform.position, leftSideFront.transform.position - transform.right * sidesRayLength, Color.red);
 
-		if (Physics.Raycast(PosLeft, -DirAngleLeft, out hit, raycastLength * .7f, obstacleLayerMask))
-		{           // Left angle
-			Obstacles = "Left_3";
-			ObstacleDistance = hit.distance;
+        Debug.DrawLine(rightSideBack.transform.position, rightSideBack.transform.position + transform.right * sidesRayLength, Color.red);
+        Debug.DrawLine(rightSideMiddle.transform.position, rightSideMiddle.transform.position + transform.right * sidesRayLength, Color.red);
+        Debug.DrawLine(rightSideFront.transform.position, rightSideFront.transform.position + transform.right * sidesRayLength, Color.red);
 
-			wheelVehicle.Steering = -1f;
-		}
+        if (Obstacles != "Null")// åñëè ïåðåä áîòîì åñòü ïðåïÿòñâèå è îí íå ñäàåò íàçàä
+        {
+            driverAI.Obstacle = true;
 
-		if (Obstacles != "Null")// Ã¥Ã±Ã«Ã¨ Ã¯Ã¥Ã°Ã¥Ã¤ Ã¡Ã®Ã²Ã®Ã¬ Ã¥Ã±Ã²Ã¼ Ã¯Ã°Ã¥Ã¯Ã¿Ã²Ã±Ã¢Ã¨Ã¥ Ã¨ Ã®Ã­ Ã­Ã¥ Ã±Ã¤Ã Ã¥Ã² Ã­Ã Ã§Ã Ã¤
-		{
-			if(arenaCarDriverAI != null) arenaCarDriverAI.Obstacle = true;
-			if (honeycombPlatformsDriverAI != null) honeycombPlatformsDriverAI.Obstacle = true;
+            //if (isTurnBack)
+            //{
+            //    wheelVehicle.Throttle = -1f;
+            //    wheelVehicle.Steering = 0f;
+            //}
+            //else
+            //{
+            //    wheelVehicle.Throttle = 1f;
+            //}
+        }
+        else
+        {
+            driverAI.Obstacle = false;
 
-			if (isTurnBack)
-			{
-				wheelVehicle.Throttle = -1f;
-				wheelVehicle.Steering = 0f;
-			}
-			else
-			{
-				wheelVehicle.Throttle = 1f;
-			}
-		}
-		else
-		{
-			if (arenaCarDriverAI != null) arenaCarDriverAI.Obstacle = false;
-			if (honeycombPlatformsDriverAI != null) honeycombPlatformsDriverAI.Obstacle = false;
-
-			isTurnBack = false;
-			collisionCounter = 0;
-		}
-
-		Debug.DrawLine(PosCenter, PosCenter + DirCenter * raycastLength, Color.red);
-		Debug.DrawLine(PosLeft, PosLeft + DirCenter * raycastLength * .5f, Color.red);
-		Debug.DrawLine(PosRight, PosRight + DirCenter * raycastLength * .5f, Color.red);
-
-		Debug.DrawLine(PosLeft, PosLeft - DirAngleLeft * raycastLength * .7f, Color.blue);
-		Debug.DrawLine(PosRight, PosRight - DirAngleRight * raycastLength * .7f, Color.blue);
-	}
-
-	private void OnCollisionStay(Collision collision)
-	{
-		if (collision.gameObject.layer == 6)
-		{
-			collisionCounter++;
-
-			if (collisionCounter >= 50 && collisionCounter <= 300)
-			{
-				isTurnBack = true;
-			}
-
-			if (collisionCounter > 300 && collisionCounter <= 600)
-			{
-				isTurnBack = false;
-			}
-
-			if (collisionCounter > 600)
-			{
-				collisionCounter = 50;
-			}
-		}
-	}
+            isTurnBack = false;
+            collisionCounter = 0;
+        }
+    }
 }

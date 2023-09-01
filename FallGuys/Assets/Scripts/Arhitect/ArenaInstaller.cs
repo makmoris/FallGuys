@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VehicleBehaviour;
 
 public class ArenaInstaller : Installer
 {
@@ -27,6 +28,11 @@ public class ArenaInstaller : Installer
 
                 // Install player
                 GameObject playerGO = Instantiate(player.VehiclePrefab);
+
+                playerGO.transform.Find("Player Components").gameObject.SetActive(true);
+                playerGO.transform.Find("AI Components").gameObject.SetActive(false);
+
+                playerGO.GetComponent<WheelVehicle>().IsPlayer = true;
 
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
@@ -73,10 +79,20 @@ public class ArenaInstaller : Installer
                 //GameObject aiPlayerGO = Instantiate(arenaCarDriverAI.gameObject);
 
                 // TEST
-                index++;
-                if (index >= arenaDriverAILestTest.Count) index = 0;
+                //index++;
+                //if (index >= arenaDriverAILestTest.Count) index = 0;
 
-                GameObject aiPlayerGO = Instantiate(arenaDriverAILestTest[index].gameObject);
+                //GameObject aiPlayerGO = Instantiate(arenaDriverAILestTest[index].gameObject);
+
+
+                GameObject aiPlayerGO = Instantiate(playerAI.VehiclePrefab);
+
+                aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
+                aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
+                AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
+                aILogics.EnableArenaAI(aiPlayerGO, 10f, 1f, 40f);
+
+                aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
                 //
 
                 // Set Name

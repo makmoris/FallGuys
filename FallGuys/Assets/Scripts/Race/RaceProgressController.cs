@@ -59,7 +59,7 @@ public class RaceProgressController : LevelProgressController
         raceDriversList.Add(wheelVehiclePlayer);
         _playersList.Add(playerGO);
 
-        RaceDriverAI raceDriverAI = playerGO.GetComponent<RaceDriverAI>();
+        RaceDriverAI raceDriverAI = playerGO.GetComponentInChildren<RaceDriverAI>();
         if (raceDriverAI != null)
         {
             raceDriversAIDictionary.Add(wheelVehiclePlayer, raceDriverAI);
@@ -196,11 +196,11 @@ public class RaceProgressController : LevelProgressController
         {
             GameObject aiDriver = kvp.Key.gameObject;
 
-            RaceObstacleDetectionAI raceObstacleDetectionAI = aiDriver.GetComponent<RaceObstacleDetectionAI>();
-            if (raceObstacleDetectionAI != null) raceObstacleDetectionAI.enabled = false;
+            ObstacleDetectionAIOld obstacleDetectionAI = aiDriver.GetComponentInChildren<ObstacleDetectionAIOld>();
+            if (obstacleDetectionAI != null) obstacleDetectionAI.enabled = false;
 
-            RaceGroundDetectionAI raceGroundDetectionAI = aiDriver.GetComponent<RaceGroundDetectionAI>();
-            if (raceGroundDetectionAI != null) raceGroundDetectionAI.enabled = false;
+            GroundDetectionAI groundDetectionAI = aiDriver.GetComponentInChildren<GroundDetectionAI>();
+            if (groundDetectionAI != null) groundDetectionAI.enabled = false;
 
             RaceDriverAI raceDriverAI = kvp.Value;
             raceDriverAI.enabled = false;
@@ -208,7 +208,7 @@ public class RaceProgressController : LevelProgressController
             RaceAIInputs raceAIInputs = aiDriver.GetComponent<RaceAIInputs>();
             if (raceAIInputs != null) raceAIInputs.enabled = false;
 
-            RaceAIWaipointTracker raceAIWaipointTracker = aiDriver.GetComponent<RaceAIWaipointTracker>();
+            RaceAIWaipointTracker raceAIWaipointTracker = aiDriver.GetComponentInChildren<RaceAIWaipointTracker>();
             if (raceAIWaipointTracker != null) raceAIWaipointTracker.enabled = false;
         }
 

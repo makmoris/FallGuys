@@ -46,7 +46,7 @@ public class TargetsController : MonoBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            var arenaCarDriverAI = players[i].GetComponent<ArenaCarDriverAI>();
+            var arenaCarDriverAI = players[i].GetComponentInChildren<ArenaCarDriverAI>();
 
             if (arenaCarDriverAI != null)
             {

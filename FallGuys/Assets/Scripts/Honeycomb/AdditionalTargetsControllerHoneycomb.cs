@@ -11,7 +11,7 @@ public class AdditionalTargetsControllerHoneycomb : TargetsControllerHoneycomb
 
     public void PlayerEntered(GameObject playerGO)
     {
-        HoneycombDriverAI honeycombDriverAI = playerGO.GetComponent<HoneycombDriverAI>();
+        HoneycombDriverAI honeycombDriverAI = playerGO.GetComponentInChildren<HoneycombDriverAI>();
         if(honeycombDriverAI != null)
         {
             honeycombDriverAI.ResetTargetController(this);

@@ -43,7 +43,7 @@ public class RaceRespawnController : MonoBehaviour
         car.transform.SetParent(null);
         car.gameObject.SetActive(true);
 
-        RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+        RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
         if (raceDriverAI != null)
         {
             raceDriverAI.Brake = false;

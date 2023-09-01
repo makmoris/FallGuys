@@ -18,17 +18,22 @@ public class PlayerAI : IPlayerAI
     public string Name => _name;
 
 
+    private GameObject _vehicle;
+    public GameObject VehiclePrefab => _vehicle;
+
     private Material _vehicleColorMaterial;
     public Material VehicleColorMaterial => _vehicleColorMaterial;
 
     private Weapon _weapon;
     public Weapon Weapon => _weapon;
 
-    public PlayerAI(string name, Material vehicleColorMaterial, Weapon weapon)
+    public PlayerAI(string name, GameObject vehiclePrefab, Material vehicleColorMaterial, Weapon weapon)
     {
         _isAI = true;
 
         _name = name;
+
+        _vehicle = vehiclePrefab;
 
         _vehicleColorMaterial = vehicleColorMaterial;
 

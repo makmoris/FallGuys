@@ -15,13 +15,13 @@ public class EnemyPointer : MonoBehaviour // кидаем на врагов
     {
         if (!onStart)
         {
-            levelUI.ShowEnemyPositionPointer(this);
+            if (levelUI != null) levelUI.ShowEnemyPositionPointer(this);
         }
     }
 
     private void OnDisable()
     {
-        levelUI.HideEnemyPositionPointer(this, false);
+        if (levelUI != null) levelUI.HideEnemyPositionPointer(this, false);
         onStart = false;
 
         Debug.Log("OnDisable123");
@@ -29,7 +29,7 @@ public class EnemyPointer : MonoBehaviour // кидаем на врагов
 
     private void OnDestroy()
     {
-        levelUI.HideEnemyPositionPointer(this, true);
+        if (levelUI != null) levelUI.HideEnemyPositionPointer(this, true);
 
         Debug.Log("OnDestroy123");
     }

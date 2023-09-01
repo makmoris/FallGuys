@@ -34,7 +34,7 @@ public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
 
     internal void CarEnteredThePlatform(GameObject enteredCar)
     {
-        RaceDriverAI raceDriverAI = enteredCar.GetComponent<RaceDriverAI>();
+        RaceDriverAI raceDriverAI = enteredCar.GetComponentInChildren<RaceDriverAI>();
 
         if(raceDriverAI != null)
         {
@@ -84,7 +84,7 @@ public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
         {
             carsInSector.Add(car);
 
-            RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+            RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
             if (raceDriverAI != null)
             {
                 AddToRaceDriverAIWithPathAndPlatformDictionary(raceDriverAI);

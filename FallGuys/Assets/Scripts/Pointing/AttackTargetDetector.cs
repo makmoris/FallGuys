@@ -16,7 +16,7 @@ public class AttackTargetDetector : MonoBehaviour
 
     private void Awake()
     {
-        arenaDriverAI = transform.GetComponentInParent<ArenaCarDriverAI>();
+        arenaDriverAI = transform.root.GetComponentInChildren<ArenaCarDriverAI>();
     }
     private void Start()
     {

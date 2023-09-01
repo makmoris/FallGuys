@@ -110,6 +110,12 @@ public class CharacterManager : MonoBehaviour
 
     #endregion
 
+    public GameObject GetRandomCarPrefab()
+    {
+        int randIndex = Random.Range(0, playerVehicles.Count);
+
+        return playerVehicles[randIndex].vehiclePrefab;
+    }
 
     public Weapon GetRandomWeapon()
     {

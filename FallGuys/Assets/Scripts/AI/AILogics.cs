@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AILogics : MonoBehaviour
 {
-    [SerializeField] private ObstacleDetectionAI1 obstacleDetection;
+    [SerializeField] private ObstacleDetectionAI obstacleDetection;
     [SerializeField] private GroundDetectionAI groundDetectionAI;
 
     private void Awake()

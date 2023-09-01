@@ -29,7 +29,7 @@ public class RaceSectorWithPaths : RaceSectorLogic
     {
         carsInSector.Add(car);
 
-        RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+        RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
         if (raceDriverAI != null)
         {
             raceDriverAI.SetNewWaypointsPath(GetWaypointsPath(raceDriverAI.transform.position));

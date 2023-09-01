@@ -13,7 +13,7 @@ public class ExitSectorTrigger : MonoBehaviour
         {
             CarLeftTheSectorEvent?.Invoke(car);
 
-            RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+            RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
             if (raceDriverAI != null) raceDriverAI.StartMoveForward();
         }
     }

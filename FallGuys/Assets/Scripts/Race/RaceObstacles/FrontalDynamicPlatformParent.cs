@@ -37,7 +37,7 @@ public class FrontalDynamicPlatformParent : MonoBehaviour
         {
             foreach (var car in carsOnPlatform)
             {
-                RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+                RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
 
                 if (raceDriverAI != null)
                 {

@@ -297,11 +297,13 @@ public class GameManager : MonoBehaviour
 
         namesList.Add(aiName);
 
+        GameObject aiPrefab = characterManager.GetRandomCarPrefab();
+
         Material aiColorMaterial = characterManager.GetRandomMaterial();
 
         Weapon aiWeapon = characterManager.GetRandomWeapon();
 
-        PlayerAI ai = new PlayerAI(aiName, aiColorMaterial, aiWeapon);
+        PlayerAI ai = new PlayerAI(aiName, aiPrefab, aiColorMaterial, aiWeapon);
 
         return ai;
     }

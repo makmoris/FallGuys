@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VehicleBehaviour;
 
 public class HoneycombInstaller : Installer
 {
@@ -22,6 +23,12 @@ public class HoneycombInstaller : Installer
 
                 // Instantiate Player
                 GameObject playerGO = Instantiate(player.VehiclePrefab);
+
+
+                playerGO.transform.Find("Player Components").gameObject.SetActive(true);
+                playerGO.transform.Find("AI Components").gameObject.SetActive(false);
+
+                playerGO.GetComponent<WheelVehicle>().IsPlayer = true;
 
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
@@ -59,7 +66,16 @@ public class HoneycombInstaller : Installer
                 PlayerAI playerAI = _player as PlayerAI;
 
                 // Instantiate AI 
-                GameObject aiPlayerGO = Instantiate(honeycombDriverAIPrefab.gameObject);
+                //GameObject aiPlayerGO = Instantiate(honeycombDriverAIPrefab.gameObject);
+
+                GameObject aiPlayerGO = Instantiate(playerAI.VehiclePrefab);
+
+                aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
+                aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
+                AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
+                aILogics.EnableHoneycombAI(aiPlayerGO, 5f, 1f, 15f);
+
+                aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
@@ -83,7 +99,7 @@ public class HoneycombInstaller : Installer
                 levelProgressController.AddPlayer(aiPlayerGO, false);
 
                 // Targets Controller
-                aiPlayerGO.GetComponent<HoneycombDriverAI>().SetTargetController(targetsControllerHoneycomb);
+                aiPlayerGO.GetComponentInChildren<HoneycombDriverAI>().SetTargetController(targetsControllerHoneycomb);
 
                 // Spawn Place
                 Transform spawnPlace = targetsControllerHoneycomb.GetSpawnPlace();

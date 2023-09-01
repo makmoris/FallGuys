@@ -33,7 +33,7 @@ public class RaceSectorWithHorizontalDynamicPlatform : RaceSectorLogic
         {
             carsInSector.Add(car);
 
-            RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+            RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
             if (raceDriverAI != null)
             {
                 List<Transform> newList = new();
@@ -59,7 +59,7 @@ public class RaceSectorWithHorizontalDynamicPlatform : RaceSectorLogic
 
                 raceDriverAI.SetTargets(newList);
 
-                RaceGroundDetectionAI raceGroundDetectionAI = car.GetComponent<RaceGroundDetectionAI>();
+                GroundDetectionAI raceGroundDetectionAI = car.GetComponentInChildren<GroundDetectionAI>();
                 raceGroundDetectionAI.enabled = true;
             }
         }
@@ -69,7 +69,7 @@ public class RaceSectorWithHorizontalDynamicPlatform : RaceSectorLogic
     {
         carsInSector.Remove(car);
 
-        RaceGroundDetectionAI raceGroundDetectionAI = car.GetComponent<RaceGroundDetectionAI>();
+        GroundDetectionAI raceGroundDetectionAI = car.GetComponentInChildren<GroundDetectionAI>();
         if(raceGroundDetectionAI != null) raceGroundDetectionAI.enabled = false;
 
     }

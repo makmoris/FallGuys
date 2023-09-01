@@ -34,7 +34,7 @@ public class HorizontalDynamicPlatformParent : MonoBehaviour
         {
             foreach (var car in carsOnPlatform)
             {
-                RaceDriverAI raceDriverAI = car.GetComponent<RaceDriverAI>();
+                RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
 
                 if (raceDriverAI != null)
                 {
@@ -64,7 +64,7 @@ public class HorizontalDynamicPlatformParent : MonoBehaviour
             carsOnPlatform.Add(other.gameObject);
             CheckCar(other.gameObject);
 
-            RaceDriverAI raceDriverAI = other.GetComponent<RaceDriverAI>();
+            RaceDriverAI raceDriverAI = other.GetComponentInChildren<RaceDriverAI>();
 
             if (raceDriverAI != null)
             {

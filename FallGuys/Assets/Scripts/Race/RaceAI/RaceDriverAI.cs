@@ -100,8 +100,8 @@ public class RaceDriverAI : DriverAI
         raceAIInputs = gameObject.AddComponent<RaceAIInputs>();
         raceAIWaypointTracker = gameObject.AddComponent<RaceAIWaipointTracker>();
 
-        raceObstacleDetectionAI = GetComponentInParent<RaceObstacleDetectionAI>();
-        raceObstacleDetectionAI.Initialize(this);
+        //raceObstacleDetectionAI = GetComponentInParent<RaceObstacleDetectionAI>();
+        //raceObstacleDetectionAI.Initialize(this);
 
         #endregion
 

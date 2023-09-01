@@ -63,7 +63,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
-            RaceDriverAI carAI = other.GetComponent<RaceDriverAI>();
+            RaceDriverAI carAI = other.GetComponentInChildren<RaceDriverAI>();
             if (carAI != null)
             {
                 carsAIInWaitZone.Add(carAI);
@@ -90,7 +90,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
-            RaceDriverAI carAI = other.GetComponent<RaceDriverAI>();
+            RaceDriverAI carAI = other.GetComponentInChildren<RaceDriverAI>();
             if (carAI != null)
             {
                 carsAIInWaitZone.Remove(carAI);

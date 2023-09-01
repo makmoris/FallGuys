@@ -140,10 +140,10 @@ public class ArenaProgressController : LevelProgressController
 
     private void StartDuel()
     {
-        ArenaCarDriverAI carDriverAIFirst = _playersList[0].GetComponent<ArenaCarDriverAI>();
+        ArenaCarDriverAI carDriverAIFirst = _playersList[0].GetComponentInChildren<ArenaCarDriverAI>();
         if (carDriverAIFirst != null) carDriverAIFirst.StartDuel(_playersList[1].transform);
 
-        ArenaCarDriverAI carDriverAISecond = _playersList[1].GetComponent<ArenaCarDriverAI>();
+        ArenaCarDriverAI carDriverAISecond = _playersList[1].GetComponentInChildren<ArenaCarDriverAI>();
         if (carDriverAISecond != null) carDriverAISecond.StartDuel(_playersList[0].transform);
     }
 

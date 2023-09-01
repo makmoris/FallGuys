@@ -11,7 +11,7 @@ public class AreaMovementToTarget : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
-            RaceDriverAI raceDriverAI = other.GetComponent<RaceDriverAI>();
+            RaceDriverAI raceDriverAI = other.GetComponentInChildren<RaceDriverAI>();
             if (raceDriverAI != null)
             {
                 int rand = Random.Range(0, targetsVariantList.Count);

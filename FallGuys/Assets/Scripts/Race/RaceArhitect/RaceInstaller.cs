@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using VehicleBehaviour;
 
 public class RaceInstaller : Installer
 {
@@ -24,6 +25,11 @@ public class RaceInstaller : Installer
 
                 // Instantiate Player
                 GameObject playerGO = Instantiate(player.VehiclePrefab);
+
+                playerGO.transform.Find("Player Components").gameObject.SetActive(true);
+                playerGO.transform.Find("AI Components").gameObject.SetActive(false);
+
+                playerGO.GetComponent<WheelVehicle>().IsPlayer = true;
 
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
@@ -63,13 +69,16 @@ public class RaceInstaller : Installer
                 //GameObject aiPlayerGO = Instantiate(raceDriverAIPrefab.gameObject);
 
                 // TEST
-                index++;
-                if (index >= raceDriverAILestTest.Count) index = 0;
+                GameObject aiPlayerGO = Instantiate(playerAI.VehiclePrefab);
+                //aiPlayerGO.GetComponentInChildren<RaceDriverAI>().Initialize(aiPlayerGO);
 
-                GameObject aiPlayerGO = Instantiate(raceDriverAILestTest[index].gameObject);
-                //
+                // Test
+                aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
+                aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
+                AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
+                aILogics.EnableRaceAI(aiPlayerGO, 5f, 1f, 15f);
 
-                aiPlayerGO.GetComponent<RaceDriverAI>().Initialize(aiPlayerGO);
+                aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
@@ -106,6 +115,7 @@ public class RaceInstaller : Installer
                 // Set default data
                 playerAI.SetDefaultData(playerAIDefaultData);
 
+    
                 // Player Effector
                 var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI, true);
             }

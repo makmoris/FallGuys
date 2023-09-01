@@ -23,9 +23,6 @@ namespace VehicleBehaviour {
         [SerializeField] PlayerNumber playerId;
     #endif
 
-        // AI
-        [SerializeField] private bool isBot;
-
         // If isPlayer is false inputs are ignored
         [SerializeField] bool isPlayer = true;
         public bool IsPlayer { get => isPlayer;
@@ -274,8 +271,8 @@ namespace VehicleBehaviour {
             }
 
 
-            //AI
-            if (isBot && isPlayer) isPlayer = false;
+            ////AI
+            //if (isBot && isPlayer) isPlayer = false;
         }
 
         // Visual feedbacks and boost regen
@@ -334,7 +331,7 @@ namespace VehicleBehaviour {
                 // Jump
                 jumping = GetInput(jumpInput) != 0;
             }
-            else if (isBot)
+            else
             {
                 steering = turnInputCurve.Evaluate(steering) * steerAngle;
 

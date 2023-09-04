@@ -12,6 +12,9 @@ public class RaceRespawnController : MonoBehaviour
     [Space]
     [SerializeField] private List<RaceRespawnZone> raceRespawnZones;
 
+    [Header("Additional zones with respawn in the same place")]
+    [SerializeField] private List<RaceAdditionalZoneWithRespawnInTheSamePlace> raceAdditionalZonesList = new List<RaceAdditionalZoneWithRespawnInTheSamePlace>();
+
     private void OnEnable()
     {
         WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent += RespawnCarAfterStuck;
@@ -28,6 +31,21 @@ public class RaceRespawnController : MonoBehaviour
     {
         if (canRespawnCarAfterStuck)
         {
+            if(raceAdditionalZonesList.Count > 0)
+            {
+                foreach (var zone in raceAdditionalZonesList)
+                {
+                    if (zone.CheckCarInZone(wheelVehicle.gameObject)) // car in zone. Respawn in the same place
+                    {
+                        wheelVehicle.transform.rotation = Quaternion.Euler(0f, wheelVehicle.transform.rotation.y, 0f);
+                        wheelVehicle.transform.position = new Vector3(wheelVehicle.transform.position.x, wheelVehicle.transform.position.y,
+                            wheelVehicle.transform.position.z);
+
+                        return;
+                    }
+                }
+            }
+
             RespawnCar(wheelVehicle.gameObject);
 
             StartCoroutine(PauseAfterRespawnCarAfterStuck());

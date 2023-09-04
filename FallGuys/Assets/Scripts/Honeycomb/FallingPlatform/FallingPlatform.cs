@@ -11,6 +11,7 @@ public class FallingPlatform : MonoBehaviour
         public GameObject stateGO;
     }
 
+    [SerializeField] private float delayBeforeTriggering = 0.25f;
     [SerializeField] private float changeStateTime = 1f;
     [SerializeField] private List<State> StatesList;
     private int stateNumber;
@@ -29,6 +30,7 @@ public class FallingPlatform : MonoBehaviour
     private TargetsControllerHoneycomb targetsControllerHoneycomb;
 
     private Coroutine waitAndChangeStateCoroutine = null;
+    private Coroutine delayCoroutine = null;
 
     private void Awake()
     {
@@ -89,9 +91,36 @@ public class FallingPlatform : MonoBehaviour
 
     public void ChangeState()
     {
+        //if (isPlatformNotFell)
+        //{
+        //    if(stateNumber < StatesList.Count) StatesList[stateNumber].stateGO.SetActive(false);
+
+        //    stateNumber++;
+
+        //    if (waitAndChangeStateCoroutine != null && stateNumber < StatesList.Count) StopCoroutine(waitAndChangeStateCoroutine);
+
+        //    if (stateNumber < StatesList.Count - 1)
+        //    {
+        //        StatesList[stateNumber].stateGO.SetActive(true);
+
+        //        waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(false));
+        //    }
+        //    else if (stateNumber < StatesList.Count)
+        //    {
+        //        StatesList[stateNumber].stateGO.SetActive(true);
+
+        //        waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(true));
+        //    }
+        //}
+
+        StartCoroutine(Delay());
+    }
+
+    private void ChangeStateAfterDelay()
+    {
         if (isPlatformNotFell)
         {
-            if(stateNumber < StatesList.Count) StatesList[stateNumber].stateGO.SetActive(false);
+            if (stateNumber < StatesList.Count) StatesList[stateNumber].stateGO.SetActive(false);
 
             stateNumber++;
 
@@ -110,6 +139,13 @@ public class FallingPlatform : MonoBehaviour
                 waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(true));
             }
         }
+    }
+
+    private IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(delayBeforeTriggering);
+
+        ChangeStateAfterDelay();
     }
 
     private IEnumerator WaitAndChangeState(bool isLastState)

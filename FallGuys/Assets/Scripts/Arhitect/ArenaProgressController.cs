@@ -38,6 +38,13 @@ public class ArenaProgressController : LevelProgressController
         }
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        VisualIntermediary.PlayerWasDeadEvent += ReduceNumberOfPlayers;
+    }
+
     public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
     {
         numberOfPlayers = _numberOfPlayers;
@@ -60,6 +67,9 @@ public class ArenaProgressController : LevelProgressController
         _playersList.Add(playerGO);
 
         if (isCurrentPlayer) currentPlayer = playerGO;
+
+        WheelVehicle wheelVehicle = playerGO.GetComponent<WheelVehicle>();
+        wheelVehicle.Handbrake = true;
     }
 
     public void AddFrag()// вызывается из VisualIntermediary
@@ -75,6 +85,15 @@ public class ArenaProgressController : LevelProgressController
     public void AddGold(int value)// вызывается из PlayerEffector за подбор бонуса
     {
         amountOfGoldReward += value;
+    }
+
+    protected override void StartGame()
+    {
+        foreach (var player in _playersList)
+        {
+            WheelVehicle wheelVehicle = player.GetComponent<WheelVehicle>();
+            wheelVehicle.Handbrake = false;
+        }
     }
 
     private void ReduceNumberOfPlayers(GameObject deadPlayer)
@@ -234,12 +253,10 @@ public class ArenaProgressController : LevelProgressController
         ShowPostWindow();
     }
 
-    private void OnEnable()
+    protected override void OnDisable()
     {
-        VisualIntermediary.PlayerWasDeadEvent += ReduceNumberOfPlayers;
-    }
-    private void OnDisable()
-    {
+        base.OnDisable();
+
         VisualIntermediary.PlayerWasDeadEvent -= ReduceNumberOfPlayers;
     }
 

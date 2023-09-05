@@ -21,6 +21,11 @@ public abstract class LevelProgressController : MonoBehaviour
     protected bool _isCurrentPlayerWinner;
     protected bool _isGameEnded;
     
+    protected virtual void OnEnable()
+    {
+        levelProgressUIController.GameCanStartEvent += StartGame;
+    }
+
     protected void SendListOfLosersNamesToGameManager()
     {
         List<string> losersNameList = new List<string>();
@@ -40,4 +45,11 @@ public abstract class LevelProgressController : MonoBehaviour
     public abstract void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners);
 
     protected abstract void ShowPostWindow();
+
+    protected abstract void StartGame();
+
+    protected virtual void OnDisable()
+    {
+        levelProgressUIController.GameCanStartEvent -= StartGame;
+    }
 }

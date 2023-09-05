@@ -31,9 +31,10 @@ public class RaceProgressController : LevelProgressController
     private Dictionary<WheelVehicle, RaceDriverAI> raceDriversAIDictionary = new Dictionary<WheelVehicle, RaceDriverAI>();
     [SerializeField]private List<WheelVehicle> winnersList = new List<WheelVehicle>();
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        raceProgressUIController.RaceCanStartEvent += StartRacing;
+        base.OnEnable();
+
         raceFinishSector.ThisDriverFinishedEvent += DriverFinished;
     }
 
@@ -76,7 +77,7 @@ public class RaceProgressController : LevelProgressController
         return raceStartSector;
     }
 
-    private void StartRacing()
+    protected override void StartGame()
     {
         foreach (var driver in raceDriversList)
         {
@@ -289,9 +290,10 @@ public class RaceProgressController : LevelProgressController
         // отправляем список лузеров
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        raceProgressUIController.RaceCanStartEvent -= StartRacing;
+        base.OnDisable();
+
         raceFinishSector.ThisDriverFinishedEvent -= DriverFinished;
     }
 }

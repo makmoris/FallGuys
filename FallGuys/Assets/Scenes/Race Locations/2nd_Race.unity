@@ -2768,8 +2768,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502731360}
-  m_LocalRotation: {x: 0.22263902, y: 0.000000018754479, z: -0.000000004282978, w: 0.97490096}
-  m_LocalPosition: {x: 0, y: 3.69, z: -6.62}
+  m_LocalRotation: {x: 0.22263904, y: 0.000000016774514, z: -0.000000003830812, w: 0.97490096}
+  m_LocalPosition: {x: -10, y: 4.01, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12210,6 +12210,7 @@ MonoBehaviour:
   - {fileID: 1754255701}
   - {fileID: 1999988073}
   - {fileID: 1572603062}
+  raceAdditionalZonesList: []
 --- !u!4 &1621096271
 Transform:
   m_ObjectHideFlags: 0
@@ -13816,7 +13817,7 @@ GameObject:
   - component: {fileID: 1902256974}
   - component: {fileID: 1902256975}
   m_Layer: 0
-  m_Name: ShowTrackCutScene
+  m_Name: CutScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13850,6 +13851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a72799599bdfb32409b3966d3a80725b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  haveCutscene: 1
   showTrackCutSceneCameras: {fileID: 1313886078}
   gameCanvas: {fileID: 6733512053703664807}
 --- !u!114 &1902256975
@@ -14946,10 +14948,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 174010353486705729, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 204144675501403670, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -14969,10 +14967,6 @@ PrefabInstance:
     - target: {fileID: 1466697160036869095, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1667024150195972440, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1672339509867183312, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
       propertyPath: m_SizeDelta.x
@@ -15006,10 +15000,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RaceLevelUI
       objectReference: {fileID: 0}
-    - target: {fileID: 5694895020507340556, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5953056351927090523, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -15030,10 +15020,6 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 976984403}
-    - target: {fileID: 7937727782141542011, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8404747912610038749, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
       propertyPath: trackCutScene
       value: 

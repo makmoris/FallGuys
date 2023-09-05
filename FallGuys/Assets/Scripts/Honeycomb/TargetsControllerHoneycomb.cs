@@ -5,6 +5,7 @@ using UnityEngine;
 public class TargetsControllerHoneycomb : MonoBehaviour
 {
     [SerializeField] private List<Transform> spawnPlaces;
+    private List<Transform> spawnPlacesClone = new List<Transform>();
 
     [SerializeField]protected List<Transform> targetsList = new List<Transform>();
 
@@ -17,6 +18,8 @@ public class TargetsControllerHoneycomb : MonoBehaviour
         {
             if(platform.IsItNotAnEdgePlatform()) targetsList.Add(platform.transform);
         }
+
+        DisableSpawnPlaces();
     }
 
     public void PlatformFell(Transform platformTrn)
@@ -42,5 +45,27 @@ public class TargetsControllerHoneycomb : MonoBehaviour
             return spawnPlace;
         }
         else return null;
+    }
+
+    public List<Transform> GetSpawnPlacesList()
+    {
+        return spawnPlaces;
+    }
+
+    public void EnableSpawnPlaces()
+    {
+        foreach (var spawnPlace in spawnPlacesClone)
+        {
+            spawnPlace.GetComponentInChildren<Collider>().enabled = true;
+        }
+    }
+
+    private void DisableSpawnPlaces()
+    {
+        foreach (var spawnPlace in spawnPlaces)
+        {
+            spawnPlace.GetComponentInChildren<Collider>().enabled = false;
+            spawnPlacesClone.Add(spawnPlace);
+        }
     }
 }

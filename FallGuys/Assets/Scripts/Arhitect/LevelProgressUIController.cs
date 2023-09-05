@@ -28,9 +28,40 @@ public abstract class LevelProgressUIController : MonoBehaviour
     [Header("Camera Hint")]
     [SerializeField] private GameObject cameraHint;
 
+    [Header("Cut Scene")]
+    [SerializeField] private ShowCutScene trackCutScene;
+
+    [Header("Start Timer And Goal")]
+    [SerializeField] private GameObject goalPanel;
+    [SerializeField] private TimerBeforeStart timerBeforeStart;
+    [SerializeField] private int time = 3;
+
+    public event System.Action GameCanStartEvent;
+
     private void Awake()
     {
         HideElementsBeforeStart();
+    }
+
+    protected virtual void OnEnable()
+    {
+        trackCutScene.ShowTrackCutSceneEndedEvent += StartShowingTimerAndShowGoal;
+    }
+
+    protected void StartShowingTimerAndShowGoal()
+    {
+        timerBeforeStart.TimerBeforeStartFinishedEvent += TimerBeforeStartFinished;
+        timerBeforeStart.StartTimer(time);
+    }
+
+    protected virtual void TimerBeforeStartFinished()
+    {
+        timerBeforeStart.TimerBeforeStartFinishedEvent -= TimerBeforeStartFinished;
+
+        GameCanStartEvent?.Invoke();
+
+        goalPanel.SetActive(false);
+        timerBeforeStart.gameObject.SetActive(false);
     }
 
     public void SetGameManager(GameManager gameManager)
@@ -103,6 +134,7 @@ public abstract class LevelProgressUIController : MonoBehaviour
         if (cameraHint.activeSelf) cameraHint.SetActive(false);
 
         if (!layouts.activeSelf) layouts.SetActive(true);
+        if (!goalPanel.activeSelf) goalPanel.SetActive(true);
     }
 
     private void SetLeaveButtonInLevelCanvasEvent()
@@ -127,5 +159,10 @@ public abstract class LevelProgressUIController : MonoBehaviour
     private void DeactivateLeaveButtonInSettingsWindow()
     {
         leaveButtonInSettingsWindow.interactable = false;
+    }
+
+    protected virtual void OnDisable()
+    {
+        trackCutScene.ShowTrackCutSceneEndedEvent -= StartShowingTimerAndShowGoal;
     }
 }

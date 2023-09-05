@@ -5,15 +5,30 @@ using UnityEngine;
 public class HoneycombProgressUIController : LevelProgressUIController
 {
     [Header("-----")]
-    [SerializeField] HoneycombEliminatePanel EliminatePanel;
+    [SerializeField] HoneycombEliminatePanel eliminatePanel;
+
 
     public void SetNumberOfFallens(int numberOfFallens)
     {
-        EliminatePanel.SetNumberOfFallens(numberOfFallens);
+        eliminatePanel.SetNumberOfFallens(numberOfFallens);
     }
 
     public void UpdateNamberOfFallens(int currentNumber)
     {
-        EliminatePanel.UpdateNamberOfFallens(currentNumber);
+        eliminatePanel.UpdateNamberOfFallens(currentNumber);
+    }
+
+    protected override void HideElementsBeforeStart()
+    {
+        base.HideElementsBeforeStart();
+
+        if (eliminatePanel.gameObject.activeSelf) eliminatePanel.gameObject.SetActive(false);
+    }
+
+    protected override void TimerBeforeStartFinished()
+    {
+        base.TimerBeforeStartFinished();
+
+        eliminatePanel.gameObject.SetActive(true);
     }
 }

@@ -11,6 +11,9 @@ public class HoneycombProgressController : LevelProgressController
     [Space]
     [SerializeField] private float disableWeaponTimeOnStart = 5f;
 
+    [Header("Targets Controller")]
+    [SerializeField] private TargetsControllerHoneycomb targetsControllerHoneycomb;
+
     private HoneycombProgressUIController honeycombProgressUIController;
 
     private int numberOfWinners;
@@ -19,10 +22,11 @@ public class HoneycombProgressController : LevelProgressController
 
     private GameObject currentPlayer;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         honeycombProgressUIController = levelProgressUIController as HoneycombProgressUIController;
     }
+
 
     public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
     {
@@ -41,6 +45,20 @@ public class HoneycombProgressController : LevelProgressController
         _playersList.Add(playerGO);
 
         if (isCurrentPlayer) currentPlayer = playerGO;
+
+        WheelVehicle wheelVehicle = playerGO.GetComponent<WheelVehicle>();
+        wheelVehicle.Handbrake = true;
+    }
+
+    protected override void StartGame()
+    {
+        foreach (var player in _playersList)
+        {
+            WheelVehicle wheelVehicle = player.GetComponent<WheelVehicle>();
+            wheelVehicle.Handbrake = false;
+        }
+
+        targetsControllerHoneycomb.EnableSpawnPlaces();
     }
 
     public void PlayerOut(GameObject playerGO)
@@ -141,4 +159,5 @@ public class HoneycombProgressController : LevelProgressController
         yield return new WaitForSeconds(pauseBeforShowingPostWindowForObserver);
         ShowPostWindow();
     }
+
 }

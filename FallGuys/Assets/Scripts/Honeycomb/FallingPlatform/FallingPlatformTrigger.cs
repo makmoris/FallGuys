@@ -13,6 +13,11 @@ public class FallingPlatformTrigger : MonoBehaviour
         fallingPlatform = transform.GetComponentInParent<FallingPlatform>();
     }
 
+    private void Start()
+    {
+        
+    }
+
     public void CheckCarsOnPlatform()
     {
         if (carsOnPlatformList.Count > 0)
@@ -53,8 +58,6 @@ public class FallingPlatformTrigger : MonoBehaviour
                     {
                         fallingPlatform.ChangeState();
                     }
-
-                    Debug.Log("enter");
                 }
             }
         }
@@ -65,8 +68,6 @@ public class FallingPlatformTrigger : MonoBehaviour
         if (other.CompareTag("Car") && carsOnPlatformList.Contains(other.gameObject))
         {
             carsOnPlatformList.Remove(other.gameObject);
-
-            Debug.Log("exit");
         }
     }
 }

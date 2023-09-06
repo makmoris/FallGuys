@@ -234,7 +234,10 @@ namespace VehicleBehaviour {
         [SerializeField] private float stuckTime_RolledOntoRoofOfSide;
         [SerializeField] private float stuckTime_PlayerPressesOnGasButDoesntMove;
         [SerializeField] private float stuckTime_StuckInSomething;
+
         [SerializeField] private float stuckTime_BotAIPressesOnGasButDoesntMove;
+        [SerializeField]private bool aiIsTriedToPutItBack;
+        [SerializeField]private bool aiGiveBack;
 
         //[SerializeField]private int immobilityValue;// сколько игрок провел в неподвижном состоянии
         //[SerializeField] private int immobilityValue2;
@@ -337,14 +340,29 @@ namespace VehicleBehaviour {
 
                 if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && !handbrake)
                 {
+                    //if (aiGiveBack) throttle = -1f;
+
                     //Debug.Log("Газует бот, но застрял");
                     //immobilityValueOnlyForBot++;
                     stuckTime_BotAIPressesOnGasButDoesntMove += Time.deltaTime;
 
                     if (stuckTime_BotAIPressesOnGasButDoesntMove >= stuckTimeThreshold)
                     {
-                        stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
-                        RespanwAfterStuck();
+                        if (aiIsTriedToPutItBack)
+                        {
+                            aiIsTriedToPutItBack = false;
+
+                            stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                            RespanwAfterStuck();
+                        }
+                        else
+                        {
+                            aiIsTriedToPutItBack = true;
+
+                            stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                            TryAIToGiveBack();
+                        }
+                        
                         //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
                         //transform.position = GetAppearPosition();
                     }
@@ -363,6 +381,8 @@ namespace VehicleBehaviour {
                 wheel.motorTorque = 0.0001f;
                 wheel.brakeTorque = 0;
             }
+
+            if (aiGiveBack) throttle = -1f;
 
             // Handbrake
             if (handbrake)
@@ -536,6 +556,19 @@ namespace VehicleBehaviour {
             Vector3 newPos = new Vector3(currentPos.x + random, currentPos.y + 7f, currentPos.z + random);
 
             return newPos;
+        }
+
+        private void TryAIToGiveBack()
+        {
+            aiGiveBack = true;
+            StartCoroutine(AIGiveBack());
+        }
+
+        IEnumerator AIGiveBack()
+        {
+            yield return new WaitForSeconds(2f);
+
+            aiGiveBack = false;
         }
 
         public void PlayerStuckUnder()// from UderPlayerCar. Only on Player car

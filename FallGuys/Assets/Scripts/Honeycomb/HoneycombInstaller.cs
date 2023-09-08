@@ -73,7 +73,7 @@ public class HoneycombInstaller : Installer
                 aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
                 aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
-                aILogics.EnableHoneycombAI(aiPlayerGO, 5f, 1f, 15f);
+                aILogics.EnableHoneycombAI(aiPlayerGO, frontRayLegth, sideRayLength, angleForSidesRays);
 
                 aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
 
@@ -110,7 +110,7 @@ public class HoneycombInstaller : Installer
                 // Enemy Pointer
                 EnemyPointer enemyPointer = aiPlayerGO.GetComponentInChildren<EnemyPointer>(true);
                 if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-                enemyPointer.LevelUI = levelUI;
+                enemyPointer.Initialize(levelUI);
 
                 // Set default data
                 playerAI.SetDefaultData(fallingPlatformsAIDefaultData);

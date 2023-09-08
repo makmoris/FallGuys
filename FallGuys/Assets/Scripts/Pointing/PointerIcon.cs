@@ -1,30 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PointerIcon : MonoBehaviour
+public abstract class PointerIcon : MonoBehaviour
 {
-    [SerializeField] private Image _image;
+    [SerializeField] protected Image _image;
 
-    [Header("Prefabs")]
-    [SerializeField] private Sprite greenPointerWithinScreen;
-    [SerializeField] private Sprite yellowPointerWithinScreen;
-    [SerializeField] private Sprite redPointerWithinScreen;
+    protected bool pointerIsOffScreen;
 
-    [SerializeField] private Sprite greenPointerOffScreen;
-    [SerializeField] private Sprite yellowPointerOffScreen;
-    [SerializeField] private Sprite redPointerOffScreen;
-
-    bool _isShown = true;
-
-    [Space]
-    [SerializeField]private float startHealthValue;
-    [SerializeField] private float _healthValue;
-    private bool isFirstColorUpdate = true;
-
-    private bool pointerIsOffScreen;
-
+    private bool _isShown = true;
     private bool notFirstOffScreen;
     private bool notFirstWithinScreen;
 
@@ -46,7 +30,7 @@ public class PointerIcon : MonoBehaviour
     {
         pointerIsOffScreen = true;
 
-        UpdateHealthColor(_healthValue);
+        PointerPositionRelativeToTheScreenHasChanged();
 
         if (!notFirstOffScreen)
         {
@@ -55,13 +39,13 @@ public class PointerIcon : MonoBehaviour
             notFirstOffScreen = true;
             notFirstWithinScreen = false;
         }
-        //_image.SetNativeSize(); // нагружает
+        //_image.SetNativeSize(); // нагружает   
     }
     public void WithinScreenPointer()
     {
         pointerIsOffScreen = false;
-        
-        UpdateHealthColor(_healthValue);
+
+        PointerPositionRelativeToTheScreenHasChanged();
 
         if (!notFirstWithinScreen)
         {
@@ -105,42 +89,8 @@ public class PointerIcon : MonoBehaviour
         if (gameObject.activeSelf) StartCoroutine(HideProcess());
     }
 
-    public void UpdateHealthColor(float healthValue)
-    {
-        if (isFirstColorUpdate)
-        {
-            startHealthValue = healthValue;
-
-            if (!pointerIsOffScreen) _image.sprite = greenPointerWithinScreen;
-            else _image.sprite = greenPointerOffScreen;
-
-            isFirstColorUpdate = false;
-
-            _healthValue = startHealthValue;
-        }
-        else
-        {
-            float healthPercent = (healthValue / startHealthValue) * 100f;
-
-            if (healthPercent > 65)
-            {
-                if (!pointerIsOffScreen) _image.sprite = greenPointerWithinScreen;
-                else _image.sprite = greenPointerOffScreen;
-            }
-            else if (healthPercent <= 65 && healthPercent > 35)
-            {
-                if (!pointerIsOffScreen) _image.sprite = yellowPointerWithinScreen;
-                else _image.sprite = yellowPointerOffScreen;
-            }
-            else
-            {
-                if (!pointerIsOffScreen) _image.sprite = redPointerWithinScreen;
-                else _image.sprite = redPointerOffScreen;
-            }
-
-            _healthValue = healthValue;
-        }
-    }
+    public virtual void PointerPositionRelativeToTheScreenHasChanged() { }
+    public virtual void UpdateHealthColor(float healthValue) { }
 
     IEnumerator ShowProcess()
     {

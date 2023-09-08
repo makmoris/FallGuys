@@ -21,8 +21,6 @@ public class ArenaProgressController : LevelProgressController
     [Header("Pause When Observe Mode Enabled")]
     [SerializeField] private float pauseBeforShowingPostWindowForObserver = 1.5f;
 
-    private GameObject currentPlayer;
-
     public static ArenaProgressController Instance { get; private set; }
     private void Awake()
     {
@@ -66,7 +64,7 @@ public class ArenaProgressController : LevelProgressController
     {
         _playersList.Add(playerGO);
 
-        if (isCurrentPlayer) currentPlayer = playerGO;
+        if (isCurrentPlayer) _currentPlayer = playerGO;
 
         WheelVehicle wheelVehicle = playerGO.GetComponent<WheelVehicle>();
         wheelVehicle.Handbrake = true;
@@ -110,7 +108,7 @@ public class ArenaProgressController : LevelProgressController
 
             deadPlayer.GetComponent<WheelVehicle>().Handbrake = true;
 
-            if (deadPlayer == currentPlayer)
+            if (deadPlayer == _currentPlayer)
             {
                 // показываем луз окно игроку
                 arenaProgressUIController.LoseShowingOverEvent += LoseShowingOver;
@@ -127,7 +125,7 @@ public class ArenaProgressController : LevelProgressController
 
                 foreach (var player in _playersList)
                 {
-                    if (player == currentPlayer)
+                    if (player == _currentPlayer)
                     {
                         _isCurrentPlayerWinner = true;
 
@@ -234,7 +232,7 @@ public class ArenaProgressController : LevelProgressController
 
         arenaProgressUIController.LoseShowingOverEvent -= LoseShowingOver;
 
-        cameraFollowingOnOtherPlayers.RemoveDriver(currentPlayer);
+        cameraFollowingOnOtherPlayers.RemoveDriver(_currentPlayer);
 
         arenaProgressUIController.ShowObserverUI();
         cameraFollowingOnOtherPlayers.EnableObserverMode();

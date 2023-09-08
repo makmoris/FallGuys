@@ -1,15 +1,5 @@
-using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
-
-//[System.Serializable]
-//public class EnemiesSettings
-//{
-//    public GameObject _enemyPrefab;
-//    public PlayerDefaultData _enemyDefaultData;
-//    public PlayerLimitsData _enemyLimitsData;
-//    public Weapon _enemyWeapon;
-//}
 
 public abstract class Installer : MonoBehaviour
 {
@@ -23,19 +13,14 @@ public abstract class Installer : MonoBehaviour
     [SerializeField] protected LevelProgressUIController levelProgressUIController;
     [SerializeField] protected PostLevelPlaceController postLevelPlaceController;
     [SerializeField] protected PostLevelUIController postLevelUIController;
+    [Header("AI Settings")]
+    [SerializeField] protected float frontRayLegth = 7f;
+    [SerializeField] protected float sideRayLength = 1f;
+    [SerializeField] protected float angleForSidesRays = 25f;
 
     protected GameManager gameManager;
     protected List<IPlayerData> playersData;
     protected GameObject currentPlayer;
-
-    //[Space]
-    //[SerializeField] protected GameObject _playerPrefab;
-    //[SerializeField] protected PlayerDefaultData _playerDefaultData;
-    //[SerializeField] protected PlayerLimitsData _playerLimitsData;
-    //[SerializeField] protected Weapon _playerWeapon;
-
-    //[Space]
-    //[SerializeField] protected List<EnemiesSettings> _enemiesSettings;
 
 
     protected int numberOfPlayers;
@@ -56,8 +41,6 @@ public abstract class Installer : MonoBehaviour
         levelProgressUIController.SetGameManager(gameManager);
         postLevelPlaceController.SetGameManager(gameManager);
         postLevelUIController.GameManager = gameManager;
-
-        //levelProgressController.SetNumberOfPlayersAndWinners(playersData.Count, gameManager.GetNumberOfWinners());
 
         InitializePlayers();
 

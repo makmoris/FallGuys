@@ -201,7 +201,7 @@ public class PlayerEffector
                 }
                 shieldCoroutine = CoroutineRunner.Run(ShieldActive(bonus.Value));
 
-                if(isCurrentPlayer) SendPlayerGetShieldAnalyticEvent();
+                if (isCurrentPlayer) { }//SendPlayerGetShieldAnalyticEvent();
 
                 break;
 
@@ -209,8 +209,8 @@ public class PlayerEffector
 
                 if (isCurrentPlayer)
                 {
-                    ArenaProgressController.Instance.AddGold((int)bonus.Value);
-                    SendPlayerGetGoldAnalyticEvent((int)bonus.Value);
+                    //ArenaProgressController.Instance.AddGold((int)bonus.Value);
+                    //SendPlayerGetGoldAnalyticEvent((int)bonus.Value);
                 }
 
                 break;

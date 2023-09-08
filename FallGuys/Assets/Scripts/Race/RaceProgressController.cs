@@ -22,7 +22,6 @@ public class RaceProgressController : LevelProgressController
 
     private RaceProgressUIController raceProgressUIController;
 
-    private GameObject currentPlayer;
     private bool currentPlayerWasFinished;
 
     private bool congratulationWasShowing;
@@ -69,7 +68,7 @@ public class RaceProgressController : LevelProgressController
 
         wheelVehiclePlayer.Handbrake = true;
 
-        if (isCurrentPlayer) currentPlayer = playerGO;
+        if (isCurrentPlayer) _currentPlayer = playerGO;
     }
 
     public RaceStartSector GetRaceStartSector()
@@ -132,7 +131,7 @@ public class RaceProgressController : LevelProgressController
                 winnersList.Add(wheelVehicleDriver);
                 _winnersList.Add(wheelVehicleDriver.gameObject);
 
-                if (wheelVehicleDriver.gameObject == currentPlayer)
+                if (wheelVehicleDriver.gameObject == _currentPlayer)
                 {
                     currentPlayerWasFinished = true;
                     raceProgressUIController.ShowCongratilationsPanel();
@@ -145,7 +144,7 @@ public class RaceProgressController : LevelProgressController
                 winnersList.Add(wheelVehicleDriver);
                 _winnersList.Add(wheelVehicleDriver.gameObject);
 
-                if (wheelVehicleDriver.gameObject == currentPlayer)
+                if (wheelVehicleDriver.gameObject == _currentPlayer)
                 {
                     currentPlayerWasFinished = true;
                     raceProgressUIController.ShowCongratilationsPanel();

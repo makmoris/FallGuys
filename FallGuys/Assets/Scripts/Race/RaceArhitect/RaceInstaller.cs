@@ -6,12 +6,7 @@ public class RaceInstaller : Installer
 {
     [Header("-----")]
     [Header("Race AI")]
-    [SerializeField] RaceDriverAI raceDriverAIPrefab;
     [SerializeField] PlayerDefaultData playerAIDefaultData;
-
-    [Header("Additioanl Cars For Test")]
-    [SerializeField] private List<RaceDriverAI> raceDriverAILestTest;
-    private int index;
 
     protected override void InitializePlayers()
     {
@@ -65,18 +60,13 @@ public class RaceInstaller : Installer
             {
                 PlayerAI playerAI = _player as PlayerAI;
 
-                // Instantiate AI 
-                //GameObject aiPlayerGO = Instantiate(raceDriverAIPrefab.gameObject);
-
-                // TEST
                 GameObject aiPlayerGO = Instantiate(playerAI.VehiclePrefab);
-                //aiPlayerGO.GetComponentInChildren<RaceDriverAI>().Initialize(aiPlayerGO);
 
                 // Test
                 aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
                 aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
-                aILogics.EnableRaceAI(aiPlayerGO, 5f, 1f, 15f);
+                aILogics.EnableRaceAI(aiPlayerGO, frontRayLegth, sideRayLength, angleForSidesRays);
 
                 aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
 
@@ -110,7 +100,7 @@ public class RaceInstaller : Installer
                 // Enemy Pointer
                 EnemyPointer enemyPointer = aiPlayerGO.GetComponentInChildren<EnemyPointer>(true);
                 if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-                enemyPointer.LevelUI = levelUI;
+                enemyPointer.Initialize(levelUI);
 
                 // Set default data
                 playerAI.SetDefaultData(playerAIDefaultData);

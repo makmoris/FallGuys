@@ -1,12 +1,14 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class ArenaInstaller : Installer
+public class RingsInstaller : Installer
 {
     [Header("-----")]
-    [Header("Arena Controllers")]
+    [Header("Rings Controllers")]
     [SerializeField] private TargetsController targetsController;
+    [SerializeField] private RingsController ringsController;
 
     [Header("Arena AI")]
     [SerializeField] PlayerDefaultData playerAIDefaultData;
@@ -62,7 +64,7 @@ public class ArenaInstaller : Installer
                 playerGO.transform.rotation = targetsController.GetStartSpawnPosition(spawnCounter).rotation;
 
                 // Player Effector
-                var playerEffector = new PlayerEffector(player, playerGO, levelUINotifications, levelUI, weapon);
+                var playerEffector = new PlayerEffector(player, playerGO, levelUINotifications, levelUI, weapon, true);
 
                 currentPlayer = playerGO;
             }
@@ -109,19 +111,20 @@ public class ArenaInstaller : Installer
 
                 // Enemy Pointer
                 EnemyPointer enemyPointer = aiPlayerGO.GetComponentInChildren<EnemyPointer>(true);
-                if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
-                enemyPointer.Initialize(levelUI);
+                //if (!enemyPointer.gameObject.activeSelf) enemyPointer.gameObject.SetActive(true);
+                //enemyPointer.Initialize(levelUI);
 
                 // Set default data
                 playerAI.SetDefaultData(playerAIDefaultData);
 
                 // Player Effector
-                var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI);
+                var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI, true);
             }
 
             spawnCounter++;
         }
 
         targetsController.SetTargetsForPlayers();
+        ringsController.Initialize(levelUI);
     }
 }

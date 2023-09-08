@@ -6,8 +6,8 @@ using UnityEngine;
 public class ArenaProgressUIController : LevelProgressUIController
 {
     [Header("-----")]
-    [SerializeField] private Canvas gameCanvas;
-    [Space]
+    //[SerializeField] private Canvas gameCanvas;
+    //[Space]
     [SerializeField] private TextMeshProUGUI leftText;
     [SerializeField] private TextMeshProUGUI fragText;
 

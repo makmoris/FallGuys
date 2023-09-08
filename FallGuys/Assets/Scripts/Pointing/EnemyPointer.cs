@@ -5,11 +5,16 @@ public class EnemyPointer : MonoBehaviour // кидаем на врагов
     private bool onStart = true;
 
     private LevelUI levelUI;
-    public LevelUI LevelUI
-    {
-        set => levelUI = value;
-    }
+    //public LevelUI LevelUI
+    //{
+    //    set => levelUI = value;
+    //}
 
+    public void Initialize(LevelUI levelUI)
+    {
+        this.levelUI = levelUI;
+        levelUI.AddEnemyPointer(this);
+    }
 
     private void OnEnable()
     {

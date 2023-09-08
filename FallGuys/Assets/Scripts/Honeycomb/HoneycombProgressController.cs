@@ -20,8 +20,6 @@ public class HoneycombProgressController : LevelProgressController
     private int numberOfFallens;// сколько должно упасть
     private int currentNumberOfFallens;
 
-    private GameObject currentPlayer;
-
     protected virtual void Awake()
     {
         honeycombProgressUIController = levelProgressUIController as HoneycombProgressUIController;
@@ -44,7 +42,7 @@ public class HoneycombProgressController : LevelProgressController
     {
         _playersList.Add(playerGO);
 
-        if (isCurrentPlayer) currentPlayer = playerGO;
+        if (isCurrentPlayer) _currentPlayer = playerGO;
 
         WheelVehicle wheelVehicle = playerGO.GetComponent<WheelVehicle>();
         wheelVehicle.Handbrake = true;
@@ -75,7 +73,7 @@ public class HoneycombProgressController : LevelProgressController
 
             ApplyDisableBonus(playerGO, Mathf.Infinity);
 
-            if (playerGO == currentPlayer)
+            if (playerGO == _currentPlayer)
             {
                 // показываем луз окно игроку
                 honeycombProgressUIController.LoseShowingOverEvent += LoseShowingOver;
@@ -93,7 +91,7 @@ public class HoneycombProgressController : LevelProgressController
 
                     player.GetComponent<WheelVehicle>().Handbrake = true;
 
-                    if(player == currentPlayer)
+                    if(player == _currentPlayer)
                     {
                         _isCurrentPlayerWinner = true;
 
@@ -138,7 +136,7 @@ public class HoneycombProgressController : LevelProgressController
 
         honeycombProgressUIController.LoseShowingOverEvent -= LoseShowingOver;
 
-        cameraFollowingOnOtherPlayers.RemoveDriver(currentPlayer);
+        cameraFollowingOnOtherPlayers.RemoveDriver(_currentPlayer);
 
         honeycombProgressUIController.ShowObserverUI();
         cameraFollowingOnOtherPlayers.EnableObserverMode();

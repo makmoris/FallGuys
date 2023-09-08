@@ -64,7 +64,7 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
                     {
                         if (isPlayer)
                         {
-                            SendPlayerFallsOutMapAnalyticEvent();
+                            //SendPlayerFallsOutMapAnalyticEvent();
                         }
 
                         OnBonusGot?.Invoke(bonus);
@@ -76,7 +76,7 @@ public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обье
                     Debug.Log($"{name} Event GetBonus {other.name}");
                     if (other.name == "MysteryBox" && isPlayer)
                     {
-                        SendPlayerPickMysteryBoxAnalyticEvent();
+                        //SendPlayerPickMysteryBoxAnalyticEvent();
                         VibrationManager.Instance.BonusBoxVibration();
 
                         if (bonus.Type == BonusType.AddGold)// здесь, т.к. знаем, что это игрок подобрал бокс

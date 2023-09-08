@@ -20,7 +20,9 @@ public abstract class LevelProgressController : MonoBehaviour
 
     protected bool _isCurrentPlayerWinner;
     protected bool _isGameEnded;
-    
+
+    protected GameObject _currentPlayer;
+
     protected virtual void OnEnable()
     {
         levelProgressUIController.GameCanStartEvent += StartGame;

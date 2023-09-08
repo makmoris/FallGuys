@@ -18,7 +18,7 @@ public class UIEnemyPointers : MonoBehaviour
 
     [Header("Prefabs")]
     [SerializeField] PointerIcon _positionPointerPrefab;
-    [SerializeField] PointerIcon _attackPointerPrefab;
+    [SerializeField] PointerIconToAttack _attackPointerPrefab;
 
 
     private void Awake()
@@ -32,6 +32,14 @@ public class UIEnemyPointers : MonoBehaviour
     public void ChangeCurrentTransform(Transform _currentTransform)
     {
         currentTransform = _currentTransform;
+    }
+
+    public void AddEnemyPointer(EnemyPointer enemyPointer)
+    {
+        if (!_positionDictionary.ContainsKey(enemyPointer))
+        {
+            AddToPositionList(enemyPointer);
+        }
     }
 
     public void ShowEnemyPositionPointer(EnemyPointer enemyPointer)
@@ -55,18 +63,21 @@ public class UIEnemyPointers : MonoBehaviour
 
     public void UpdateEnemyHP(float healthValue, EnemyPointer enemyPointer)
     {
-        if (_positionDictionary.ContainsKey(enemyPointer))
-        {
-            PointerIcon pointerIcon = _positionDictionary[enemyPointer];
-            pointerIcon.UpdateHealthColor(healthValue);
-        }
-        else
-        {
-            AddToPositionList(enemyPointer);
+        //if (_positionDictionary.ContainsKey(enemyPointer))
+        //{
+        //    PointerIcon pointerIcon = _positionDictionary[enemyPointer];
+        //    pointerIcon.UpdateHealthColor(healthValue);
+        //}
+        //else
+        //{
+        //    AddToPositionList(enemyPointer);
 
-            PointerIcon pointerIcon = _positionDictionary[enemyPointer];
-            pointerIcon.UpdateHealthColor(healthValue);
-        }
+        //    PointerIcon pointerIcon = _positionDictionary[enemyPointer];
+        //    pointerIcon.UpdateHealthColor(healthValue);
+        //}
+
+        PointerIcon pointerIcon = _positionDictionary[enemyPointer];
+        pointerIcon.UpdateHealthColor(healthValue);
     }
 
     private void AddToPositionList(EnemyPointer enemyPointer)

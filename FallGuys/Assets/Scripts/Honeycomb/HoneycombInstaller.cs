@@ -73,7 +73,7 @@ public class HoneycombInstaller : Installer
                 aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
                 aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
-                aILogics.EnableHoneycombAI(aiPlayerGO, frontRayLegth, sideRayLength, angleForSidesRays);
+                aILogics.EnableHoneycombAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
 
                 aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
 

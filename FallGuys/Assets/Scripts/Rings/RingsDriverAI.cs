@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class HoneycombDriverAI : DriverAI
+public class RingsDriverAI : DriverAI
 {
     [Header("DEBUG")]
     public List<Transform> targets;
@@ -17,7 +17,7 @@ public class HoneycombDriverAI : DriverAI
 
     private WheelVehicle wheelVehicle;
 
-    [SerializeField]private TargetsControllerHoneycomb targetsControllerHoneycomb;
+    private List<Ring> ringsList = new List<Ring>();
 
     public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO)
     {
@@ -29,32 +29,62 @@ public class HoneycombDriverAI : DriverAI
         if (!obstacle) Moving();
         else
         {
-            targetReached = true;
+            wheelVehicle.Steering = obstacleSteer;
+            wheelVehicle.Throttle = 1f;
         }
-        // если есть препятствие, то надо взять другую цель
-
-        // поставить ограничение по скорости, а то улетают сильно. Мб кинуть замедление при соприкосновении с препятсвием
     }
 
-    public void SetTargetController(TargetsControllerHoneycomb fallingPlatformTargetsController)// from installer
+    public void SetTargets(List<Transform> _targets)
     {
-        this.targetsControllerHoneycomb = fallingPlatformTargetsController;
+        targets = _targets.GetRange(0, _targets.Count);
 
-        this.targetsControllerHoneycomb.PlatformFellEvent += RemoveFromTargetsList;
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i].gameObject == wheelVehicle.gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
+            {
+                targets.RemoveAt(i);
+                break;
+            }
+        }
 
-        List<Transform> targetsFromTargetsController = targetsControllerHoneycomb.GetTargets();
-        targets = targetsFromTargetsController.GetRange(0, targetsFromTargetsController.Count);
+        int rand = Random.Range(0, targets.Count);
 
-        targetReached = true;
-        ChooseTargetPosition(targets[0].position);
+        targetPositionTransform = targets[rand];
+        isTargetReachedFirst = true;
     }
 
-    public void ResetTargetController(TargetsControllerHoneycomb fallingPlatformTargetsController)
+    public void SelectRingToTarget()
     {
-        targetsControllerHoneycomb.PlatformFellEvent -= RemoveFromTargetsList;
-        targets.Clear();
+        List<Transform> activeRingTransformList = new List<Transform>();
 
-        SetTargetController(fallingPlatformTargetsController);
+        foreach (var ring in ringsList)
+        {
+            if (ring.IsActive) activeRingTransformList.Add(ring.transform);
+        }
+
+        if(activeRingTransformList.Count > 0)
+        {
+            int indexOfRingWithMinDistance = 0;
+            float minDistance = Mathf.Infinity;
+
+            for (int i = 0; i < activeRingTransformList.Count; i++)
+            {
+                float distance = (activeRingTransformList[i].position - wheelVehicle.transform.position).sqrMagnitude;
+
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    indexOfRingWithMinDistance = i;
+                }
+            }
+
+            targetPositionTransform = activeRingTransformList[indexOfRingWithMinDistance];
+        }
+    }
+
+    public void SetRings(List<Ring> ringsList)
+    {
+        this.ringsList = ringsList.GetRange(0, ringsList.Count);
     }
 
     private void Moving()
@@ -134,23 +164,11 @@ public class HoneycombDriverAI : DriverAI
             {
                 targetReached = true;
                 isTargetReachedFirst = false;
-
-                //print(gameObject.name + " догнал " + targetPositionTransform.name + "   - isTargetReachedFirst");
             }
         }
 
-        // для движения
         wheelVehicle.Throttle = forwardAmount;
-
-        // для поворотов
         wheelVehicle.Steering = turnAmount;
-
-        // для нитро
-        //wheelVehicle.boosting = true;
-
-        // для прыжков / С прыжками проблема, т.к. он зависит от длительности нажатия кнопки. Сделать через корутину, чтобы подержать секунду true и 
-        // отключить в false
-        //wheelVehicle.jumping = true;
     }
 
     private void ChooseTargetPosition(Vector3 targetPosition)
@@ -187,17 +205,6 @@ public class HoneycombDriverAI : DriverAI
         }
     }
 
-    private void RemoveFromTargetsList(Transform removedTrn)
-    {
-        if (removedTrn == targetPositionTransform)
-        {
-            targetReached = true;
-            ChooseTargetPosition(targetPositionTransform.position);
-        }
-
-        targets.Remove(removedTrn);
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform == targetPositionTransform)
@@ -214,10 +221,5 @@ public class HoneycombDriverAI : DriverAI
             //print("Защита");
             targetReached = true;
         }
-    }
-
-    private void OnDisable()
-    {
-        targetsControllerHoneycomb.PlatformFellEvent -= RemoveFromTargetsList;
     }
 }

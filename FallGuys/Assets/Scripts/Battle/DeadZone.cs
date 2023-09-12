@@ -16,7 +16,9 @@ public class DeadZone : Bonus
     [Header("Add Shield Bonus")]
     [SerializeField] private ShieldDeadZone shieldBonus;
 
-    [Space]
+    [Header("Arena Spawn Controller")]
+    [SerializeField] private ArenaSpawnController arenaSpawnController;
+
     private float respawnTime;
 
     private List<GameObject> waitRespawnCars = new List<GameObject>();
@@ -69,9 +71,9 @@ public class DeadZone : Bonus
         {
             GameObject car = bumper.gameObject;
             
-            Vector3 pos = TargetsController.Instance.GetRespawnPosition().position;
+            Vector3 pos = arenaSpawnController.GetRespawnPosition().position;
             car.transform.position = new Vector3(pos.x, 5f, pos.z);
-            car.transform.rotation = TargetsController.Instance.GetRespawnPosition().rotation;
+            car.transform.rotation = arenaSpawnController.GetRespawnPosition().rotation;
             //car.SetActive(true);
             bumper.enabled = true;// отключился при входе в зону из Bumper
             bumper.GetBonus(shieldBonus);

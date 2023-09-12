@@ -741,6 +741,7 @@ Transform:
   - {fileID: 880584679}
   - {fileID: 111490868}
   - {fileID: 1422044412}
+  - {fileID: 8531019589874195479}
   m_Father: {fileID: 1149829909693026082}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6168,6 +6169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51f24ebdae6588443a395b59db534950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  priorityIndex: 0
 --- !u!1 &1067606624703702155
 GameObject:
   m_ObjectHideFlags: 0
@@ -17132,6 +17134,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc58d2a762c6034fa6293dd3ad4c0b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7142443638431089344
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8531019589874195479}
+  - component: {fileID: 9149406450623407702}
+  m_Layer: 0
+  m_Name: Rings AI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8531019589874195479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7142443638431089344}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1215122732}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9149406450623407702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7142443638431089344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b1fe404aa3b8f948a45168b2bd0d511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targets: []
+  targetPositionTransform: {fileID: 0}
 --- !u!1 &7337611219506570863
 GameObject:
   m_ObjectHideFlags: 0
@@ -17537,17 +17585,13 @@ MonoBehaviour:
   boostForce: 5000
   boosting: 0
   jumping: 0
-  boostParticles:
-  - {fileID: 3176207373781243764}
-  - {fileID: 4858487656271373462}
-  boostClip: {fileID: 8300000, guid: 7c29c309722a2444582a425e8e6aeb77, type: 3}
-  boostSource: {fileID: 2761268709838729471}
-  rb: {fileID: 0}
   stuckTimeThreshold: 2
   stuckTime_RolledOntoRoofOfSide: 0
   stuckTime_PlayerPressesOnGasButDoesntMove: 0
   stuckTime_StuckInSomething: 0
   stuckTime_BotAIPressesOnGasButDoesntMove: 0
+  aiIsTriedToPutItBack: 0
+  aiGiveBack: 0
 --- !u!114 &1761472695379857695
 MonoBehaviour:
   m_ObjectHideFlags: 0

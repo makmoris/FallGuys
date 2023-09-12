@@ -7,13 +7,15 @@ public class RingsInstaller : Installer
 {
     [Header("-----")]
     [Header("Rings Controllers")]
-    [SerializeField] private TargetsController targetsController;
+    [SerializeField] private RingsTargetsController ringsTargetsController;
     [SerializeField] private RingsController ringsController;
+    [SerializeField] private ArenaSpawnController arenaSpawnController;
 
-    [Header("Arena AI")]
+    [Header("Rings AI")]
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
     private int spawnCounter;
+    private List<GameObject> playersList = new List<GameObject>();
 
     protected override void InitializePlayers()
     {
@@ -40,7 +42,7 @@ public class RingsInstaller : Installer
                 playerGO.GetComponentInChildren<HitSidesController>().SetIsPlayer();
 
                 // TargetsController
-                targetsController.AddPlayerToTargets(playerGO);
+                ringsTargetsController.AddPlayerToTargets(playerGO);
 
                 // Weapon
                 Transform weaponPlace = playerGO.transform.Find("WeaponPlace");
@@ -59,14 +61,16 @@ public class RingsInstaller : Installer
                 levelProgressController.AddPlayer(playerGO, true);
 
                 // Spawn Place
-                Vector3 pos = targetsController.GetStartSpawnPosition(spawnCounter).position;
+                Vector3 pos = arenaSpawnController.GetStartSpawnPosition(spawnCounter).position;
                 playerGO.transform.position = new Vector3(pos.x, 2f, pos.z);
-                playerGO.transform.rotation = targetsController.GetStartSpawnPosition(spawnCounter).rotation;
+                playerGO.transform.rotation = arenaSpawnController.GetStartSpawnPosition(spawnCounter).rotation;
 
                 // Player Effector
                 var playerEffector = new PlayerEffector(player, playerGO, levelUINotifications, levelUI, weapon, true);
 
                 currentPlayer = playerGO;
+
+                playersList.Add(playerGO);
             }
             else
             {
@@ -77,7 +81,7 @@ public class RingsInstaller : Installer
                 aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
                 aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
-                aILogics.EnableArenaAI(aiPlayerGO, frontRayLegth, sideRayLength, angleForSidesRays);
+                aILogics.EnableRingsAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
 
                 aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
 
@@ -90,7 +94,7 @@ public class RingsInstaller : Installer
                 if (aiVehicleCustomizer != null) aiVehicleCustomizer.SetColorMaterial(playerAI.VehicleColorMaterial);
 
                 // TargetsController
-                targetsController.AddPlayerToTargets(aiPlayerGO);
+                ringsTargetsController.AddPlayerToTargets(aiPlayerGO);
 
                 // Weapon
                 Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
@@ -105,9 +109,9 @@ public class RingsInstaller : Installer
                 levelProgressController.AddPlayer(aiPlayerGO, false);
 
                 // Spawn Place
-                Vector3 posEnemy = targetsController.GetStartSpawnPosition(spawnCounter).position;
+                Vector3 posEnemy = arenaSpawnController.GetStartSpawnPosition(spawnCounter).position;
                 aiPlayerGO.transform.position = new Vector3(posEnemy.x, 2f, posEnemy.z);
-                aiPlayerGO.transform.rotation = targetsController.GetStartSpawnPosition(spawnCounter).rotation;
+                aiPlayerGO.transform.rotation = arenaSpawnController.GetStartSpawnPosition(spawnCounter).rotation;
 
                 // Enemy Pointer
                 EnemyPointer enemyPointer = aiPlayerGO.GetComponentInChildren<EnemyPointer>(true);
@@ -119,12 +123,14 @@ public class RingsInstaller : Installer
 
                 // Player Effector
                 var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI, true);
+
+                playersList.Add(aiPlayerGO);
             }
 
             spawnCounter++;
         }
 
-        targetsController.SetTargetsForPlayers();
-        ringsController.Initialize(levelUI);
+        ringsTargetsController.SetTargetsForAIPlayers();
+        ringsController.Initialize(levelUI, playersList);
     }
 }

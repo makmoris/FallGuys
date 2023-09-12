@@ -18,5 +18,5 @@ public abstract class DriverAI : MonoBehaviour
         set => obstacleSteer = value;
     }
 
-    public abstract void Initialize(GameObject currentPlayerGO);
+    public abstract void Initialize(GameObject aiPlayerGO , GameObject currentPlayerGO);
 }

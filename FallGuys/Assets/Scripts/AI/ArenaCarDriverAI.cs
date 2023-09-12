@@ -36,9 +36,9 @@ public class ArenaCarDriverAI : DriverAI
     //    wheelVehicle = GetComponentInParent<WheelVehicle>();
     //}
 
-    public override void Initialize(GameObject currentPlayerGO)
+    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO)
     {
-        wheelVehicle = currentPlayerGO.GetComponent<WheelVehicle>();
+        wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
 
         playerTransform = currentPlayerGO.transform;
     }
@@ -271,7 +271,7 @@ public class ArenaCarDriverAI : DriverAI
         
         for (int i = 0; i < targets.Count; i++)
         {
-            if (targets[i].gameObject == gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
+            if (targets[i].gameObject == wheelVehicle.gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
             {
                 targets.RemoveAt(i);
                 break;

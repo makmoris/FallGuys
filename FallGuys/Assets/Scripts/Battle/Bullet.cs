@@ -65,8 +65,16 @@ public class Bullet : Bonus
                     // передаем инфу тому, в кого попали, кто в него попал
                     if (other != null && parentCollider != null) other.GetComponent<HitHistory>().SetLastShooter(parentCollider.gameObject);
                 }
-                //StartCoroutine(ShowShotEffect(effectTime));
+                else
+                {
+                    Ring ring = other.GetComponent<Ring>();
+                    if(ring != null)
+                    {
+                        ring.PlayerKnockedDownTheRing(GetParent());
+                    }
+                }
             }
+
             if (other != null && parentCollider != null) Debug.Log($"пуля попала в {other.name}. Выстрелил {parentCollider.gameObject.name}");
             StartCoroutine(ShowShotEffect(effectTime));
 

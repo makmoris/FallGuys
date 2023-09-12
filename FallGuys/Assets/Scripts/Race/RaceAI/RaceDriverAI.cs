@@ -87,10 +87,10 @@ public class RaceDriverAI : DriverAI
 
     private bool isPathMovement;
 
-    public override void Initialize(GameObject currentPlayerGO)
+    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO)
     {
-        wheelVehicle = currentPlayerGO.GetComponent<WheelVehicle>();
-        rb = currentPlayerGO.GetComponent<Rigidbody>();
+        wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
+        rb = aiPlayerGO.GetComponent<Rigidbody>();
 
         maxSpeed = wheelVehicle.MaxSpeed;
         maximumSteerAngle = wheelVehicle.SteerAngle;

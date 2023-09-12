@@ -17,7 +17,7 @@ public class AILogics : MonoBehaviour
     }
 
     // From Installer
-    public void EnableArenaAI(GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides)
+    public void EnableArenaAI(GameObject aiPlayerGO, GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides)
     {
         ArenaCarDriverAI arenaAI;
 
@@ -28,13 +28,13 @@ public class AILogics : MonoBehaviour
             if (arenaAI != null)
             {
                 arenaAI.gameObject.SetActive(true);
-                arenaAI.Initialize(currentPlayerGO);
+                arenaAI.Initialize(aiPlayerGO, currentPlayerGO);
                 obstacleDetection.SetAILogic(arenaAI, frontSideRayLength, sidesRayLength, angleForSides);
             }
         }
     }
 
-    public void EnableRaceAI(GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides)
+    public void EnableRaceAI(GameObject aiPlayerGO, GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides)
     {
         RaceDriverAI raceAI;
 
@@ -45,7 +45,7 @@ public class AILogics : MonoBehaviour
             if (raceAI != null)
             {
                 raceAI.gameObject.SetActive(true);
-                raceAI.Initialize(currentPlayerGO);
+                raceAI.Initialize(aiPlayerGO, currentPlayerGO);
                 obstacleDetection.SetAILogic(raceAI, frontSideRayLength, sidesRayLength, angleForSides);
 
                 groundDetectionAI.Initialize(raceAI);
@@ -53,7 +53,7 @@ public class AILogics : MonoBehaviour
         }
     }
 
-    public void EnableHoneycombAI(GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides)
+    public void EnableHoneycombAI(GameObject aiPlayerGO, GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides)
     {
         HoneycombDriverAI HoneycombAI;
 
@@ -64,8 +64,25 @@ public class AILogics : MonoBehaviour
             if (HoneycombAI != null)
             {
                 HoneycombAI.gameObject.SetActive(true);
-                HoneycombAI.Initialize(currentPlayerGO);
+                HoneycombAI.Initialize(aiPlayerGO, currentPlayerGO);
                 obstacleDetection.SetAILogic(HoneycombAI, frontSideRayLength, sidesRayLength, angleForSides);
+            }
+        }
+    }
+
+    public void EnableRingsAI(GameObject aiPlayerGO, GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides)
+    {
+        RingsDriverAI ringsAI;
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            ringsAI = transform.GetChild(i).GetComponent<RingsDriverAI>();
+
+            if (ringsAI != null)
+            {
+                ringsAI.gameObject.SetActive(true);
+                ringsAI.Initialize(aiPlayerGO, currentPlayerGO);
+                obstacleDetection.SetAILogic(ringsAI, frontSideRayLength, sidesRayLength, angleForSides);
             }
         }
     }

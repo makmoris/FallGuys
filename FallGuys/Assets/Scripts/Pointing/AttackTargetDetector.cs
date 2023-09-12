@@ -36,6 +36,22 @@ public class AttackTargetDetector : MonoBehaviour
                 else if(arenaDriverAI != null) arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
             }
         }
+        else
+        {
+            AttackPointer attackPointerCurrent = currentTargetObject.GetComponent<AttackPointer>();
+            AttackPointer newAttackPointer = other.GetComponent<AttackPointer>();
+
+            if(newAttackPointer != null)
+            {
+                if (newAttackPointer.GetPriorityIndex() > attackPointerCurrent.GetPriorityIndex())
+                {
+                    currentTargetObject = other.gameObject;
+
+                    if (!isAI) levelUI.ShowAttackPointer(currentTargetObject.transform);
+                    else if (arenaDriverAI != null) arenaDriverAI.SetNewPlayerTargetFromDetector(currentTargetObject.transform.parent.transform);
+                }
+            }
+        }
     }
 
     private void OnTriggerStay(Collider other)

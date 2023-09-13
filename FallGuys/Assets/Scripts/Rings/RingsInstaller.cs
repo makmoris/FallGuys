@@ -15,7 +15,6 @@ public class RingsInstaller : Installer
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
     private int spawnCounter;
-    private List<GameObject> playersList = new List<GameObject>();
 
     protected override void InitializePlayers()
     {
@@ -69,8 +68,6 @@ public class RingsInstaller : Installer
                 var playerEffector = new PlayerEffector(player, playerGO, levelUINotifications, levelUI, weapon, true);
 
                 currentPlayer = playerGO;
-
-                playersList.Add(playerGO);
             }
             else
             {
@@ -123,14 +120,14 @@ public class RingsInstaller : Installer
 
                 // Player Effector
                 var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI, true);
-
-                playersList.Add(aiPlayerGO);
             }
 
             spawnCounter++;
         }
 
         ringsTargetsController.SetTargetsForAIPlayers();
-        ringsController.Initialize(levelUI, playersList);
+
+        RingsProgressController ringsProgressController = levelProgressController as RingsProgressController;
+        ringsController.Initialize(ringsProgressController, levelUI);
     }
 }

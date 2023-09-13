@@ -4131,7 +4131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9003519a3d6bec458dc41ea866ad376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointsValue: 1
   numberOfActivatedRings: 2
   ringRechargeTime: 5
 --- !u!1001 &266903623
@@ -16491,6 +16490,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1291655252}
   m_Mesh: {fileID: 1618651724453957149, guid: 7d3c669489085194a9ce6f96b6af07f5, type: 3}
+--- !u!114 &1292417581 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5080134840780296685, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+  m_PrefabInstance: {fileID: 2840997851410847267}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3756810da8c41134fb4d87d4a0ef42ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1295990113
 GameObject:
   m_ObjectHideFlags: 0
@@ -27028,6 +27038,9 @@ MonoBehaviour:
   levelProgressUIController: {fileID: 2840997851410847268}
   postLevelPlaceController: {fileID: 169798293}
   cameraFollowingOnOtherPlayers: {fileID: 1858392600}
+  playTimeSeconds: 30
+  gameTimer: {fileID: 1292417581}
+  pointsValue: 1
 --- !u!1 &2043339814
 GameObject:
   m_ObjectHideFlags: 0
@@ -28452,6 +28465,10 @@ PrefabInstance:
     - target: {fileID: 1690970814890684225, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2636740042712938224, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_Name
+      value: PlayerPlaceTextBig
       objectReference: {fileID: 0}
     - target: {fileID: 2857099670809415930, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
       propertyPath: trackCutScene

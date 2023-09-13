@@ -28,7 +28,11 @@ public class ShowCutScene : MonoBehaviour
     {
         MusicManager.Instance.StopSoundsPlaying();
 
-        if (!haveCutscene) ShowTrackCutSceneEndedEvent?.Invoke();
+        if (!haveCutscene)
+        {
+            ShowTrackCutSceneEndedEvent?.Invoke();
+            MusicManager.Instance.ReturnPreviousSoundsValue();
+        }
     }
 
     public void CutSceneEnded()

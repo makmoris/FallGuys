@@ -40,7 +40,7 @@ public class ArenaCarDriverAI : DriverAI
     {
         wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
 
-        playerTransform = currentPlayerGO.transform;
+        if(currentPlayerGO != null) playerTransform = currentPlayerGO.transform;
     }
 
     private void Update()
@@ -310,9 +310,12 @@ public class ArenaCarDriverAI : DriverAI
 
             int addedPlayersValue = Mathf.CeilToInt(targets.Count * frequencyOfTargetingPlayer);
 
-            for (int i = 0; i < addedPlayersValue; i++)
+            if(playerTransform != null)
             {
-                targets.Add(playerTransform);
+                for (int i = 0; i < addedPlayersValue; i++)
+                {
+                    targets.Add(playerTransform);
+                }
             }
         }
 

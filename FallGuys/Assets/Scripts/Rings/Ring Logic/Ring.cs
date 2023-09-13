@@ -39,7 +39,7 @@ public class Ring : MonoBehaviour
     {
         isActive = false;
 
-        ringsController.TheRingIsKnockedOff(this, playerGO);
+        ringsController.TheRingIsKnockedOff(playerGO);
         DeactivateRing(true);
     }
 

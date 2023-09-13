@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class RingsController : MonoBehaviour
 {
-    [Header("Points")]
-    [SerializeField] private int pointsValue = 1;
     [Header("Ring")]
     [SerializeField] private int numberOfActivatedRings = 1;
     [SerializeField] private float ringRechargeTime = 1f;
+
+    private RingsProgressController ringsProgressController;
 
     private int numberOfCurrentActivatedRings;
 
     private List<Ring> ringsList = new List<Ring>();
     private List<Ring> ringsReadyForActivationList = new List<Ring>();
     private List<Ring> activatedRingsList = new List<Ring>();
-
-    private Dictionary<GameObject, int> playerPointsDictionary = new Dictionary<GameObject, int>();
 
     public System.Action RingActivatedEvent;
 
@@ -36,16 +34,16 @@ public class RingsController : MonoBehaviour
         }
     }
 
-    public void Initialize(LevelUI levelUI, List<GameObject> playersList)
+    public void Initialize(RingsProgressController ringsProgressController, LevelUI levelUI)
     {
+        this.ringsProgressController = ringsProgressController;
         InitializeRings(levelUI);
-        FillPlayerPointsDictionary(playersList);
         SelectRingsToActivate();
     }
 
-    public void TheRingIsKnockedOff(Ring ring, GameObject playerGO)
+    public void TheRingIsKnockedOff(GameObject playerGO)
     {
-        playerPointsDictionary[playerGO] += pointsValue;
+        ringsProgressController.AddPointsToPlayer(playerGO);
 
         numberOfCurrentActivatedRings--;
         SelectRingsToActivate();
@@ -87,14 +85,6 @@ public class RingsController : MonoBehaviour
                     RingActivatedEvent?.Invoke();
                 }
             }
-        }
-    }
-
-    private void FillPlayerPointsDictionary(List<GameObject> playersList)
-    {
-        foreach (var player in playersList)
-        {
-            playerPointsDictionary.Add(player, 0);
         }
     }
 

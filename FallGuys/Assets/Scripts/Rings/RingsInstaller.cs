@@ -128,6 +128,8 @@ public class RingsInstaller : Installer
         ringsTargetsController.SetTargetsForAIPlayers();
 
         RingsProgressController ringsProgressController = levelProgressController as RingsProgressController;
+        ringsProgressController.IsObserverMode(gameManager.IsObserverMode);
+
         ringsController.Initialize(ringsProgressController, levelUI);
     }
 }

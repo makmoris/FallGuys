@@ -21,6 +21,8 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
 
     private string key = "LastObservableName";
 
+    public event System.Action<GameObject> StartFollowingANewPlayerEvent;
+
     private void Awake()
     {
         camCinema = GetComponent<CinemachineVirtualCamera>();
@@ -95,6 +97,11 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
         drivers.Remove(driver);
     }
 
+    public GameObject GetCurrentDriver()
+    {
+        return currentDriver;
+    }
+
     private void ChangeTarget()
     {
         if(drivers.Count > 0)
@@ -122,6 +129,8 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
                 string currentName = currentDriverName.Name;
                 PlayerPrefs.SetString(key, currentName);
             }
+
+            StartFollowingANewPlayerEvent?.Invoke(currentDriver);
         }
     }
 

@@ -21,6 +21,9 @@ public class RingsProgressController : LevelProgressController
     private int numberOfWinners;
     private bool gameUntilTheFirstWinner;
 
+    private bool isObserverMode;
+    private GameObject currentFollowingPlayer;
+
     protected virtual void Awake()
     {
         ringsProgressUIController = levelProgressUIController as RingsProgressUIController;
@@ -59,6 +62,8 @@ public class RingsProgressController : LevelProgressController
 
     protected override void ShowPostWindow()
     {
+        if (isObserverMode) cameraFollowingOnOtherPlayers.StartFollowingANewPlayerEvent -= CurrentFollowingPlayerChanged;
+
         SendListOfLosersNamesToGameManager();
 
         postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
@@ -70,6 +75,14 @@ public class RingsProgressController : LevelProgressController
 
         // проверяем таблицу игроков, меняем местами, отображаем в ui
         UpdatePlayerPlacesList();
+    }
+
+    public void IsObserverMode(bool isObserverMode)
+    {
+        this.isObserverMode = isObserverMode;
+
+        if (isObserverMode) cameraFollowingOnOtherPlayers.StartFollowingANewPlayerEvent += CurrentFollowingPlayerChanged;
+        else currentFollowingPlayer = _currentPlayer;
     }
 
     private void GameTimeIsOver()
@@ -131,18 +144,15 @@ public class RingsProgressController : LevelProgressController
         {
             player.GetComponent<WheelVehicle>().Handbrake = true;
         }
-
-        Debug.LogError($"Winners list count = {_winnersList.Count}; losers count = {_losersList.Count}");
     }
 
     private void UpdatePlayerPlacesList()
     {
         List<KeyValuePair<GameObject, int>> sortingPlayersPlaces = playerPointsDictionary.OrderByDescending(d => d.Value).ToList();
 
-
-        if (sortingPlayersPlaces[0].Key == _currentPlayer)
+        if (sortingPlayersPlaces[0].Key == currentFollowingPlayer)
         {
-            ringsProgressUIController.UpdatePointsText(1, playerPointsDictionary[_currentPlayer], 2, sortingPlayersPlaces[1].Value);
+            ringsProgressUIController.UpdatePointsText(1, playerPointsDictionary[currentFollowingPlayer], 2, sortingPlayersPlaces[1].Value);
         }
         else
         {
@@ -151,7 +161,7 @@ public class RingsProgressController : LevelProgressController
 
             for (int i = 0; i < sortingPlayersPlaces.Count; i++)
             {
-                if(sortingPlayersPlaces[i].Key == _currentPlayer)
+                if(sortingPlayersPlaces[i].Key == currentFollowingPlayer)
                 {
                     playerPlace = i + 1;
                     playerPoints = sortingPlayersPlaces[i].Value;
@@ -164,6 +174,12 @@ public class RingsProgressController : LevelProgressController
         }
 
         if (gameUntilTheFirstWinner) SortTheWinners();
+    }
+
+    private void CurrentFollowingPlayerChanged(GameObject currentFollowingPlayer)
+    {
+        this.currentFollowingPlayer = currentFollowingPlayer;
+        UpdatePlayerPlacesList();
     }
 
     private void CongratulationsOver()

@@ -4621,7 +4621,7 @@ GameObject:
   - component: {fileID: 264127721}
   - component: {fileID: 264127722}
   m_Layer: 0
-  m_Name: Rings
+  m_Name: RingsController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4668,7 +4668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9003519a3d6bec458dc41ea866ad376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfActivatedRings: 2
+  numberOfActivatedRings: 3
   ringRechargeTime: 5
 --- !u!1001 &266903623
 PrefabInstance:
@@ -16520,6 +16520,7 @@ MonoBehaviour:
   ringsTargetsController: {fileID: 690294570}
   ringsController: {fileID: 264127722}
   arenaSpawnController: {fileID: 1978241974}
+  customAttackRange: 20
   playerAIDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
 --- !u!1 &1213261327
 GameObject:
@@ -29086,7 +29087,7 @@ MonoBehaviour:
   levelProgressUIController: {fileID: 2840997851410847268}
   postLevelPlaceController: {fileID: 169798293}
   cameraFollowingOnOtherPlayers: {fileID: 1858392600}
-  playTimeSeconds: 30
+  playTimeSeconds: 150
   gameTimer: {fileID: 1292417581}
   pointsValue: 1
 --- !u!1 &2043339814

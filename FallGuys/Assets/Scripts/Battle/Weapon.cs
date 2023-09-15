@@ -49,12 +49,6 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        //if (isLobby)// потом можно сделать на проверку сцены. Если активна лобби сцена, то true
-        //{
-        //    CreateExampleBullet();
-        //    this.enabled = false;
-        //}
-
         damage = characteristicsData.Damage;
         rechargeTime = characteristicsData.RechargeTime;
         attackRange = characteristicsData.AttackRange;
@@ -74,26 +68,6 @@ public class Weapon : MonoBehaviour
         defaultWeaponRotation = weaponTransform.localRotation;
     }
 
-    private void Start()
-    {
-        ////bulletPool = new PoolMono<Bullet>(bulletPrefab, poolCount);
-        ////bulletPool.autoExpand = autoExpand;
-
-        ////SetDetectorScale();
-
-        ////CreateExampleBullet();
-
-        ////defaultWeaponRotation = weaponTransform.localRotation;
-    }
-
-    private void CreateExampleBullet()
-    {
-        bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, startBulletPosition.rotation, startBulletPosition);
-        bulletExample.GetComponent<Bullet>().enabled = false;
-        bulletExample.GetComponent<Collider>().enabled = false;
-        bulletExample.transform.Find("FireTrail").gameObject.SetActive(false);
-    }
-
     private void Update()
     {
         if (canAttack)
@@ -111,6 +85,39 @@ public class Weapon : MonoBehaviour
             StartCoroutine(Shot());
             nextShot = false;
         }
+    }
+
+    public void Initialize(bool _isAI, Collider _bodyCollider)
+    {
+        parentBodyCollider = _bodyCollider;
+        parentShield = parentBodyCollider.transform.GetComponentInChildren<Shield>(true).gameObject;
+        parentBumper = _bodyCollider.gameObject.GetComponent<Bumper>();
+
+        disableWeaponBonus = new();
+        disableWeaponBonus.Type = BonusType.DisableWeapon;
+        disableWeaponBonus.Value = rechargeTime;
+
+
+        isAI = _isAI;
+        if (isAI)
+        {
+            attackTargetDetector.IsAI(isAI);
+
+            ArenaDifficultyLevelsAI arenaDifficultyLevelsAI = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>();
+            if (arenaDifficultyLevelsAI != null) shotDecisionSpeed = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>().GetShotDecisionSpeed();
+        }
+    }
+
+    public void ChangeAttackRange(float customAttackRange)
+    {
+        attackRange = customAttackRange;
+        SetDetectorScale();
+    }
+
+    public void ChangeRechargeTime(float customRechargeTime)
+    {
+        rechargeTime = customRechargeTime;
+        disableWeaponBonus.Value = rechargeTime;
     }
 
     public void EnableWeapon(GameObject gameObj)
@@ -151,6 +158,14 @@ public class Weapon : MonoBehaviour
         if (!disableWeaponEvent) canAIAttack = false;
     }
 
+    private void CreateExampleBullet()
+    {
+        bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, startBulletPosition.rotation, startBulletPosition);
+        bulletExample.GetComponent<Bullet>().enabled = false;
+        bulletExample.GetComponent<Collider>().enabled = false;
+        bulletExample.transform.Find("FireTrail").gameObject.SetActive(false);
+    }
+
     private void SetDetectorScale()
     {
         detectorTransform.localScale = Vector3.one * attackRange;
@@ -164,27 +179,6 @@ public class Weapon : MonoBehaviour
     private void HideBulletExample()
     {
         bulletExample.gameObject.SetActive(false);
-    }
-
-    public void SetParentBodyCollider(Collider bodyCollider)// вызывается из Installer ДО IsAI
-    {
-        parentBodyCollider = bodyCollider;
-        parentShield = parentBodyCollider.transform.GetComponentInChildren<Shield>(true).gameObject;
-        parentBumper = bodyCollider.gameObject.GetComponent<Bumper>();
-
-        disableWeaponBonus = new();
-        disableWeaponBonus.Type = BonusType.DisableWeapon;
-        disableWeaponBonus.Value = rechargeTime;
-    }
-
-    public void IsAI(bool value)// вызывается в installer при создании бота
-    {
-        isAI = value;
-
-        attackTargetDetector.IsAI(isAI);
-
-        ArenaDifficultyLevelsAI arenaDifficultyLevelsAI = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>();
-        if(arenaDifficultyLevelsAI != null) shotDecisionSpeed = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>().GetShotDecisionSpeed();
     }
 
     private void ApplyDisableBonus()

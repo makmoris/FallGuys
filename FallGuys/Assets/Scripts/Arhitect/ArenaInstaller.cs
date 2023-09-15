@@ -44,7 +44,7 @@ public class ArenaInstaller : Installer
                 // Weapon
                 Transform weaponPlace = playerGO.transform.Find("WeaponPlace");
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
-                weapon.SetParentBodyCollider(playerGO.GetComponent<Collider>());
+                weapon.Initialize(false, playerGO.GetComponent<Collider>());
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
@@ -94,8 +94,7 @@ public class ArenaInstaller : Installer
                 // Weapon
                 Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
-                weaponAI.IsAI(true);
+                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
 
                 // Camera
                 cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);

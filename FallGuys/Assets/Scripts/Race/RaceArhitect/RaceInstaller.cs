@@ -6,6 +6,7 @@ public class RaceInstaller : Installer
 {
     [Header("-----")]
     [Header("Race AI")]
+    [SerializeField] private float customRechargeTime = 10f;
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
     protected override void InitializePlayers()
@@ -34,7 +35,8 @@ public class RaceInstaller : Installer
                 // Weapon
                 Transform weaponPlace = playerGO.transform.Find("WeaponPlace");
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
-                weapon.SetParentBodyCollider(playerGO.GetComponent<Collider>());
+                weapon.Initialize(false, playerGO.GetComponent<Collider>());
+                weapon.ChangeRechargeTime(customRechargeTime);
                 weapon.DisableWeapon(playerGO);
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
@@ -81,8 +83,8 @@ public class RaceInstaller : Installer
                 // Weapon
                 Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
-                weaponAI.IsAI(true);
+                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
+                weaponAI.ChangeRechargeTime(customRechargeTime);
                 weaponAI.DisableWeapon(aiPlayerGO);
 
                 // Camera

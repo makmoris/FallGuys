@@ -12,6 +12,7 @@ public class RingsInstaller : Installer
     [SerializeField] private ArenaSpawnController arenaSpawnController;
 
     [Header("Rings AI")]
+    [SerializeField] private float customAttackRange = 20f;
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
     private int spawnCounter;
@@ -46,7 +47,8 @@ public class RingsInstaller : Installer
                 // Weapon
                 Transform weaponPlace = playerGO.transform.Find("WeaponPlace");
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
-                weapon.SetParentBodyCollider(playerGO.GetComponent<Collider>());
+                weapon.Initialize(false, playerGO.GetComponent<Collider>());
+                weapon.ChangeAttackRange(customAttackRange);
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
@@ -96,8 +98,8 @@ public class RingsInstaller : Installer
                 // Weapon
                 Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
-                weaponAI.IsAI(true);
+                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
+                weaponAI.ChangeAttackRange(customAttackRange);
 
                 // Camera
                 cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);

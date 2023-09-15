@@ -38,7 +38,7 @@ public class HoneycombInstaller : Installer
                 // Weapon
                 Transform weaponPlace = playerGO.transform.Find("WeaponPlace");
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
-                weapon.SetParentBodyCollider(playerGO.GetComponent<Collider>());
+                weapon.Initialize(false, playerGO.GetComponent<Collider>());
                 weapon.DisableWeapon(playerGO);
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
@@ -88,8 +88,7 @@ public class HoneycombInstaller : Installer
                 // Weapon
                 Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                weaponAI.SetParentBodyCollider(aiPlayerGO.GetComponent<Collider>());
-                weaponAI.IsAI(true);
+                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
                 weaponAI.DisableWeapon(aiPlayerGO);
 
                 // Camera

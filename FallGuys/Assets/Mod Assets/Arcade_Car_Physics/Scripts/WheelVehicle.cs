@@ -155,7 +155,7 @@ namespace VehicleBehaviour {
         [SerializeField] bool handbrake;
         public bool Handbrake { get => handbrake;
             set => handbrake = value;
-        } 
+        }
         
         // Use this to disable drifting
         [HideInInspector] public bool allowDrift = true;
@@ -309,6 +309,7 @@ namespace VehicleBehaviour {
 
                     if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
                     {
+                        Debug.Log("Застрял");
                         //Debug.Log("Жмем на газ. Застрял");
                         //immobilityValue2++;
                         stuckTime_PlayerPressesOnGasButDoesntMove += Time.deltaTime;
@@ -323,7 +324,15 @@ namespace VehicleBehaviour {
                             //transform.position = GetAppearPosition();
                         }
                     }
-                    else stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                    else if (throttle == 0)
+                    {
+                        Debug.Log("Отпустили кнопку");
+                    }
+                    else
+                    {
+                        Debug.Log("Жмем кнопку");
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                    }
                 }
                 // Boost
                 boosting = (GetInput(boostInput) > 0.5f);
@@ -419,31 +428,37 @@ namespace VehicleBehaviour {
 
             // Boost
             if (boosting && allowBoost && boost > 0.1f) {
-                rb.AddForce(transform.forward * boostForce);
 
-                boost -= Time.fixedDeltaTime;
-                if (boost < 0f) { boost = 0f; }
+                int value;
+                if (throttle > 0) value = 1;
+                else value = -1;
 
-                if (boostParticles.Length > 0 && !boostParticles[0].isPlaying) {
-                    foreach (ParticleSystem boostParticle in boostParticles) {
-                        boostParticle.Play();
-                    }
-                }
+                rb.AddForce(transform.forward * boostForce * value);
 
-                if (boostSource != null && !boostSource.isPlaying) {
-                    boostSource.Play();
-                }
-            } else {
-                if (boostParticles.Length > 0 && boostParticles[0].isPlaying) {
-                    foreach (ParticleSystem boostParticle in boostParticles) {
-                        boostParticle.Stop();
-                    }
-                }
+                //boost -= Time.fixedDeltaTime;
+                //if (boost < 0f) { boost = 0f; }
 
-                if (boostSource != null && boostSource.isPlaying) {
-                    boostSource.Stop();
-                }
-            }
+                //if (boostParticles.Length > 0 && !boostParticles[0].isPlaying) {
+                //    foreach (ParticleSystem boostParticle in boostParticles) {
+                //        boostParticle.Play();
+                //    }
+                //}
+
+                //if (boostSource != null && !boostSource.isPlaying) {
+                //    boostSource.Play();
+                //}
+            } 
+            //else {
+            //    if (boostParticles.Length > 0 && boostParticles[0].isPlaying) {
+            //        foreach (ParticleSystem boostParticle in boostParticles) {
+            //            boostParticle.Stop();
+            //        }
+            //    }
+
+            //    if (boostSource != null && boostSource.isPlaying) {
+            //        boostSource.Stop();
+            //    }
+            //}
 
             // Drift
             if (drift && allowDrift) {

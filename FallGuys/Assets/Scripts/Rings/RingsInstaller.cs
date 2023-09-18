@@ -13,6 +13,7 @@ public class RingsInstaller : Installer
 
     [Header("Rings AI")]
     [SerializeField] private float customAttackRange = 20f;
+    [SerializeField] private float customRechargeTime = 3f;
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
     private int spawnCounter;
@@ -49,6 +50,7 @@ public class RingsInstaller : Installer
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
                 weapon.Initialize(false, playerGO.GetComponent<Collider>());
                 weapon.ChangeAttackRange(customAttackRange);
+                weapon.ChangeRechargeTime(customRechargeTime);
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
@@ -100,6 +102,7 @@ public class RingsInstaller : Installer
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
                 weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
                 weaponAI.ChangeAttackRange(customAttackRange);
+                weaponAI.ChangeRechargeTime(customRechargeTime);
 
                 // Camera
                 cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);

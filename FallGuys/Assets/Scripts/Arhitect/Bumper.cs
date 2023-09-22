@@ -9,8 +9,8 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public event Action<Bonus> OnBonusGot;
     public event Action<Bonus, GameObject> OnBonusGotWithGameObject;
 
-    public static event Action PlayerSlowedEvent;
-    public static event Action PlayerStoppedSlowingEvent;
+    //public static event Action PlayerSlowedEvent;
+    //public static event Action PlayerStoppedSlowingEvent;
     private Coroutine oilPuddleCoroutine = null;
     private int oilPuddleCoroutineCounter;
 
@@ -19,8 +19,10 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
 
     private int slowdownsCounter;
 
-    public static event Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
-    public static event Action<int> BonusBoxGiveHPEvent;
+    //public static event Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
+    //public static event Action<int> BonusBoxGiveHPEvent;
+
+    private LevelUINotifications levelUINotifications;
 
     private void Awake()
     {
@@ -33,9 +35,14 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         // для работы enabled = true/false
     }
 
-    public void SetIsCurrentPlayer(GameObject playerObj)
+    public void Init(GameObject playerObj, LevelUINotifications levelUINotifications)
     {
-        if (playerObj == gameObject) isPlayer = true;
+        if (playerObj == gameObject)
+        {
+            isPlayer = true;
+
+            this.levelUINotifications = levelUINotifications;
+        }
         else isPlayer = false;
     }
 
@@ -81,11 +88,13 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
 
                         if (bonus.Type == BonusType.AddGold)// здесь, т.к. знаем, что это игрок подобрал бокс
                         {
-                            BonusBoxGiveGoldEvent?.Invoke((int)bonus.Value);
+                            //BonusBoxGiveGoldEvent?.Invoke((int)bonus.Value);
+                            levelUINotifications.GameUINotifications.ShowGoldNotification((int)bonus.Value);
                         }
                         if (bonus.Type == BonusType.AddHealth)
                         {
-                            BonusBoxGiveHPEvent?.Invoke((int)bonus.Value);
+                            //BonusBoxGiveHPEvent?.Invoke((int)bonus.Value);
+                            levelUINotifications.GameUINotifications.ShowHealthNotification((int)bonus.Value);
                         }
                     }
 
@@ -114,6 +123,16 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         bonus.Got();
     }
 
+    public void ShowAdditionalBulletBonusNotification(AdditionalBulletBonus additionalBulletBonus)
+    {
+        if (isPlayer) levelUINotifications.BuffsDebuffsNotifications.ShowAdditionalBulletBonusNotification(additionalBulletBonus);
+    }
+
+    public void HideAdditionalBulletBonusNotification()
+    {
+        if (isPlayer) levelUINotifications.BuffsDebuffsNotifications.HideAdditionalBulletBonusNotification();
+    }
+
     #region OilPuddle
     public void GetBonusFromOilPuddle(Bonus bonus, float damageInterval)// вызывается при въезде в лужу из OilPuddle
     {
@@ -130,7 +149,8 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         if (isPlayer)
         {
             // нотификация
-            PlayerSlowedEvent?.Invoke();
+            //PlayerSlowedEvent?.Invoke();
+            levelUINotifications.BuffsDebuffsNotifications.ShowSlowdownDebuff();
         }
     }
 
@@ -161,7 +181,8 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                 if (isPlayer)
                 {
                     // нотификация стоп
-                    PlayerStoppedSlowingEvent?.Invoke();
+                    //PlayerStoppedSlowingEvent?.Invoke();
+                    levelUINotifications.BuffsDebuffsNotifications.HideSlowdownDebuff();
                 }
             }
             else if (oilPuddleCoroutineCounter < 0) oilPuddleCoroutineCounter = 0;
@@ -179,7 +200,8 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         if (isPlayer)
         {
             // нотификация
-            PlayerSlowedEvent?.Invoke();
+            //PlayerSlowedEvent?.Invoke();
+            levelUINotifications.BuffsDebuffsNotifications.ShowSlowdownDebuff();
         }
     }
 
@@ -194,7 +216,8 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
             if (isPlayer)
             {
                 // нотификация стоп
-                PlayerStoppedSlowingEvent?.Invoke();
+                //PlayerStoppedSlowingEvent?.Invoke();
+                levelUINotifications.BuffsDebuffsNotifications.HideSlowdownDebuff();
             }
         }
         else if (slowdownsCounter < 0) slowdownsCounter = 0;

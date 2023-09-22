@@ -7,6 +7,10 @@ public class ArenaUI : LevelUI
     [Header("Player HP")]
     [SerializeField] private PlayerHealthUI playerHealthUI;
 
+    public override void AddEnemyPointer(EnemyPointer enemyPointer)
+    {
+        uiEnemyPointers.AddEnemyPointer(enemyPointer);
+    }
 
     #region Attack Pointer
     public override void ShowAttackPointer(Transform targetTransform)

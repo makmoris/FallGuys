@@ -14,6 +14,13 @@ public class HitSidesController : Bonus
         set => this.value = value;
     }
 
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     private Dictionary<Collider, Bumper> _parentsOfCollisionObjectsDict = new Dictionary<Collider, Bumper>();
 
     private Rigidbody _rbParent;

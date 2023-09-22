@@ -8,10 +8,7 @@ public abstract class LevelUI : MonoBehaviour, ILevelUI
     [SerializeField] protected UIEnemyPointers uiEnemyPointers;
     public UIEnemyPointers UIEnemyPointers { get => uiEnemyPointers; }
 
-    public void AddEnemyPointer(EnemyPointer enemyPointer)
-    {
-        uiEnemyPointers.AddEnemyPointer(enemyPointer);
-    }
+    public abstract void AddEnemyPointer(EnemyPointer enemyPointer);
 
     public abstract void UpdateCurrentPlayerHP(float hpValue);
     public abstract void UpdateEnemyHP(float hpValue, EnemyPointer enemyPointer);

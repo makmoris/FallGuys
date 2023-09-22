@@ -20,13 +20,12 @@ public class UIEnemyPointers : MonoBehaviour
     [SerializeField] PointerIcon _positionPointerPrefab;
     [SerializeField] PointerIconToAttack _attackPointerPrefab;
 
+    private bool isInit;
+
 
     private void Awake()
     {
-        _attackPointerPrefab = Instantiate(_attackPointerPrefab, _canvasTransform);
-
-        _positionPointersPool = new PoolMono<PointerIcon>(_positionPointerPrefab, poolCount, _canvasTransform);
-        _positionPointersPool.autoExpand = autoExpand;
+        if (!isInit) Initialize();
     }
 
     public void ChangeCurrentTransform(Transform _currentTransform)
@@ -36,6 +35,8 @@ public class UIEnemyPointers : MonoBehaviour
 
     public void AddEnemyPointer(EnemyPointer enemyPointer)
     {
+        if (!isInit) Initialize();
+
         if (!_positionDictionary.ContainsKey(enemyPointer))
         {
             AddToPositionList(enemyPointer);
@@ -44,12 +45,20 @@ public class UIEnemyPointers : MonoBehaviour
 
     public void ShowEnemyPositionPointer(EnemyPointer enemyPointer)
     {
+        if (!isInit) Initialize();
+
+        if (!_positionDictionary.ContainsKey(enemyPointer)) AddEnemyPointer(enemyPointer);
+
         PointerIcon newPointer = _positionDictionary[enemyPointer];
         newPointer.Show();
     }
 
     public void HideEnemyPositionPointer(EnemyPointer enemyPointer, bool remove)
     {
+        if (!isInit) Initialize();
+
+        if (!_positionDictionary.ContainsKey(enemyPointer)) AddEnemyPointer(enemyPointer);
+
         if (!remove)
         {
             PointerIcon newPointer = _positionDictionary[enemyPointer];
@@ -63,21 +72,22 @@ public class UIEnemyPointers : MonoBehaviour
 
     public void UpdateEnemyHP(float healthValue, EnemyPointer enemyPointer)
     {
-        //if (_positionDictionary.ContainsKey(enemyPointer))
-        //{
-        //    PointerIcon pointerIcon = _positionDictionary[enemyPointer];
-        //    pointerIcon.UpdateHealthColor(healthValue);
-        //}
-        //else
-        //{
-        //    AddToPositionList(enemyPointer);
+        if (!isInit) Initialize();
 
-        //    PointerIcon pointerIcon = _positionDictionary[enemyPointer];
-        //    pointerIcon.UpdateHealthColor(healthValue);
-        //}
+        if (!_positionDictionary.ContainsKey(enemyPointer)) AddEnemyPointer(enemyPointer);
 
         PointerIcon pointerIcon = _positionDictionary[enemyPointer];
         pointerIcon.UpdateHealthColor(healthValue);
+    }
+
+    private void Initialize()
+    {
+        _attackPointerPrefab = Instantiate(_attackPointerPrefab, _canvasTransform);
+
+        _positionPointersPool = new PoolMono<PointerIcon>(_positionPointerPrefab, poolCount, _canvasTransform);
+        _positionPointersPool.autoExpand = autoExpand;
+
+        isInit = true;
     }
 
     private void AddToPositionList(EnemyPointer enemyPointer)
@@ -160,6 +170,8 @@ public class UIEnemyPointers : MonoBehaviour
 
     public void ShowAttackPointer(Transform transformToAttack)
     {
+        if (!isInit) Initialize();
+
         _attackPointerPrefab.Show();
         _attackPointerPrefab.SetIconPosition(GetAttackTargetPosition(transformToAttack), Quaternion.identity);
     }

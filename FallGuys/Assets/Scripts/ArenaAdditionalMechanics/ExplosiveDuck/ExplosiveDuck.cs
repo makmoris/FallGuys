@@ -11,6 +11,13 @@ public class ExplosiveDuck : Bonus, IExplosion
         set => this.value = value;
     }
 
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     [Header("Explosion")]
     public LayerMask ignoreLayer;
     //public bool isBullet;

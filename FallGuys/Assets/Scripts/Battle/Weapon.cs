@@ -47,6 +47,9 @@ public class Weapon : MonoBehaviour
 
     DisableWeaponBonus disableWeaponBonus;
 
+    private AdditionalBulletBonus additionalBulletBonus;
+    private bool isAdditionalBulletBonusSetted;
+
     private void Awake()
     {
         damage = characteristicsData.Damage;
@@ -158,6 +161,21 @@ public class Weapon : MonoBehaviour
         if (!disableWeaponEvent) canAIAttack = false;
     }
 
+    public void SetAdditionalBulletBonus(AdditionalBulletBonus additionalBulletBonus)// from RingsBonusBox
+    {
+        this.additionalBulletBonus = additionalBulletBonus;
+        isAdditionalBulletBonusSetted = true;
+
+        parentBumper.ShowAdditionalBulletBonusNotification(additionalBulletBonus);
+    }
+    public void RemoveAdditionalBulletBonus()
+    {
+        additionalBulletBonus = null;
+        isAdditionalBulletBonusSetted = false;
+
+        parentBumper.HideAdditionalBulletBonusNotification();
+    }
+
     private void CreateExampleBullet()
     {
         bulletExample = Instantiate(bulletPrefab, startBulletPosition.position, startBulletPosition.rotation, startBulletPosition);
@@ -199,6 +217,10 @@ public class Weapon : MonoBehaviour
 
         bullet.transform.position = startBulletPosition.position;
         bullet.transform.rotation = startBulletPosition.rotation;
+
+        if (isAdditionalBulletBonusSetted) bullet.SetAdditionalBulletBonus(additionalBulletBonus, this);
+
+        bullet.Shot();
 
         ApplyDisableBonus();
 

@@ -13,6 +13,13 @@ public class DeadZone : Bonus
         set => this.value = value;
     }
 
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     [Header("Add Shield Bonus")]
     [SerializeField] private ShieldDeadZone shieldBonus;
 

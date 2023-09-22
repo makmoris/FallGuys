@@ -2182,6 +2182,66 @@ PrefabInstance:
       propertyPath: characterManager
       value: 
       objectReference: {fileID: 679319006}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].name
+      value: First Stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[1].name
+      value: Second Stage
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].numberOfPlayers
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].numberOfWinners
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[1].numberOfPlayers
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[1].numberOfWinners
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].gameModesList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[1].gameModesList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].gameModesList.Array.data[0].gameMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].gameModesList.Array.data[1].gameMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].gameModesList.Array.data[2].gameMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].gameModesList.Array.data[0].gameModeScenes
+      value: 
+      objectReference: {fileID: 11400000, guid: 94864093826d2e047b6d1ff840f0787b, type: 2}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].gameModesList.Array.data[1].gameModeScenes
+      value: 
+      objectReference: {fileID: 11400000, guid: e749de1a212519244991b7714bac177c, type: 2}
+    - target: {fileID: 7805026586829290975, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
+      propertyPath: gameStagesList.Array.data[0].gameModesList.Array.data[2].gameModeScenes
+      value: 
+      objectReference: {fileID: 11400000, guid: ce98b10fccd881c4aa546234c6ac143b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a306a3e0fd724714e9f0bbc714497c05, type: 3}
 --- !u!1 &822255386
@@ -4520,6 +4580,123 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992717146}
   m_CullTransparentMesh: 1
+--- !u!1 &2043439893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2043439895}
+  - component: {fileID: 2043439894}
+  m_Layer: 0
+  m_Name: AwardsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2043439894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043439893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eabf45b61dcf8941a0135311a181b07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeAwards:
+  - place: 1
+    goldsValue: 16
+    cupsValue: 16
+  - place: 2
+    goldsValue: 15
+    cupsValue: 15
+  - place: 3
+    goldsValue: 14
+    cupsValue: 14
+  - place: 4
+    goldsValue: 13
+    cupsValue: 13
+  - place: 5
+    goldsValue: 12
+    cupsValue: 12
+  - place: 6
+    goldsValue: 11
+    cupsValue: 11
+  - place: 7
+    goldsValue: 10
+    cupsValue: 10
+  - place: 8
+    goldsValue: 9
+    cupsValue: 9
+  - place: 9
+    goldsValue: 8
+    cupsValue: 8
+  - place: 10
+    goldsValue: 7
+    cupsValue: 7
+  - place: 11
+    goldsValue: 6
+    cupsValue: 6
+  - place: 12
+    goldsValue: 5
+    cupsValue: 5
+  - place: 13
+    goldsValue: 4
+    cupsValue: 4
+  - place: 14
+    goldsValue: 3
+    cupsValue: 3
+  - place: 15
+    goldsValue: 2
+    cupsValue: 2
+  - place: 16
+    goldsValue: 1
+    cupsValue: 1
+  - place: 17
+    goldsValue: 1
+    cupsValue: 1
+  - place: 18
+    goldsValue: 1
+    cupsValue: 1
+  - place: 19
+    goldsValue: 1
+    cupsValue: 1
+  - place: 20
+    goldsValue: 1
+    cupsValue: 1
+  - place: 21
+    goldsValue: 1
+    cupsValue: 1
+  - place: 22
+    goldsValue: 1
+    cupsValue: 1
+  - place: 23
+    goldsValue: 1
+    cupsValue: 1
+  - place: 24
+    goldsValue: 1
+    cupsValue: 1
+--- !u!4 &2043439895
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043439893}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1504890558371949568
 PrefabInstance:
   m_ObjectHideFlags: 0

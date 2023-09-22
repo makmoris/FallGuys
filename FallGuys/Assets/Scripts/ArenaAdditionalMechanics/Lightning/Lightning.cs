@@ -11,6 +11,13 @@ public class Lightning : Bonus
         set => this.value = value;
     }
 
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     public DisableWeaponBonus disableWeaponBonus;
 
     [Space]

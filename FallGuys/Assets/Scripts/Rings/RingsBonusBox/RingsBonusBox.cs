@@ -1,0 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RingsBonusBox : MonoBehaviour
+{
+    [SerializeField] private float boxRespawnTime = 5f;
+    [Space]
+    [SerializeField] private List<AdditionalBulletBonus> additionalBulletBonusesList;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Car"))
+        {
+            Weapon weapon = other.GetComponentInChildren<Weapon>();
+
+            weapon.SetAdditionalBulletBonus(GetRandomAdditionalBonus());
+
+            CoroutineRunner.Run(WaitAndRespawn());
+        }
+    }
+
+    private AdditionalBulletBonus GetRandomAdditionalBonus()
+    {
+        int rand = Random.Range(0, additionalBulletBonusesList.Count);
+
+        return additionalBulletBonusesList[rand];
+    }
+
+    IEnumerator WaitAndRespawn()
+    {
+        gameObject.SetActive(false);
+        yield return new WaitForSeconds(boxRespawnTime);
+        gameObject.SetActive(true);
+    }
+}
+

@@ -6,7 +6,8 @@ public enum BonusType
     AddShield = 1,
     AddGold = 2,
     DisableWeapon = 3,
-    DisableWeaponFromLightning = 4
+    DisableWeaponFromLightning = 4,
+    Slowdown = 5
     //AddSpeed = 2,
     //AddDamage = 3
 }
@@ -15,6 +16,8 @@ public abstract class Bonus : MonoBehaviour
     public BonusType Type;
     //public float value;
     public abstract float Value { get; set; }
+
+    public abstract float BonusTime { get; set; }
 
     public virtual void Got()
     {

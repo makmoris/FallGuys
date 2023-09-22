@@ -10,6 +10,14 @@ public class SandSpikes : Bonus
         get => value;
         set => this.value = value;
     }
+
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     [Space]
     public LayerMask ignoreLayer;
     [SerializeField] private float radius;

@@ -11,6 +11,13 @@ public class Bullet : Bonus
         set => this.value = value;
     }
 
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     [Space]
     [SerializeField] private float bulletSpeed = 5f;
     
@@ -27,6 +34,14 @@ public class Bullet : Bonus
     private Collider bulletCollider;
     private MeshRenderer bulletMeshRenderer;
 
+    private bool canShot;
+
+    private bool isRing;
+
+    private Weapon weapon;
+    private AdditionalBulletBonus additionalBulletBonus;
+    private bool isAdditionalBulletBonusSetted;
+
     private void Start()
     {
         shotEffect.SetActive(false);
@@ -34,9 +49,14 @@ public class Bullet : Bonus
         bulletMeshRenderer = gameObject.GetComponent<MeshRenderer>();
     }
 
+    private void OnEnable()
+    {
+        canShot = false;
+    }
+
     private void Update()
     {
-        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
+        if(canShot) transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,18 +69,30 @@ public class Bullet : Bonus
                 //Debug.Log("Бочка");
                 explosion.ExplodeWithDelay();
 
-                //gameObject.SetActive(false);
-                //tail.SetActive(false);
+                if (isAdditionalBulletBonusSetted)
+                {
+                    RemoveAdditionalBulletBonus();
+                }
             }
             else // если нет, значит попали в игрока или что-то другое. 
             {
                 Bumper bumper = other.GetComponent<Bumper>();
                 if (bumper != null)// если это игрок - Выпихиваем его в направлении пули
                 {
-                    //Debug.Log("Игрок");
-                    forceDirection = (other.transform.position - transform.position).normalized;
-                    other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 3f,
-                        forceDirection.z * force), forceMode);
+                    if (isAdditionalBulletBonusSetted)// без толчка
+                    {
+                        bumper.GetBonus(additionalBulletBonus);
+                        AdditionalBulletBonus additionalBulletBonusGO = Instantiate(additionalBulletBonus, other.transform.position, Quaternion.identity);
+                        additionalBulletBonusGO.PlayEffect(other.transform.position);
+
+                        RemoveAdditionalBulletBonus();
+                    }
+                    else
+                    {
+                        forceDirection = (other.transform.position - transform.position).normalized;
+                        other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 3f,
+                            forceDirection.z * force), forceMode);
+                    }
 
                     // передаем инфу тому, в кого попали, кто в него попал
                     if (other != null && parentCollider != null) other.GetComponent<HitHistory>().SetLastShooter(parentCollider.gameObject);
@@ -70,16 +102,41 @@ public class Bullet : Bonus
                     Ring ring = other.GetComponent<Ring>();
                     if(ring != null)
                     {
+                        isRing = true;
                         ring.PlayerKnockedDownTheRing(GetParent());
+                    }
+                    else
+                    {
+                        isRing = false;
                     }
                 }
             }
 
-            if (other != null && parentCollider != null) Debug.Log($"пуля попала в {other.name}. Выстрелил {parentCollider.gameObject.name}");
+            if (other != null && parentCollider != null)
+            {
+                Debug.Log($"пуля попала в {other.name}. Выстрелил {parentCollider.gameObject.name}");
+
+                if (isAdditionalBulletBonusSetted && !isRing)
+                {
+                    RemoveAdditionalBulletBonus();
+                }
+            }
             StartCoroutine(ShowShotEffect(effectTime));
 
             //gameObject.SetActive(false);
         }
+    }
+
+    public void SetAdditionalBulletBonus(AdditionalBulletBonus additionalBulletBonus, Weapon weapon)
+    {
+        this.additionalBulletBonus = additionalBulletBonus;
+        this.weapon = weapon;
+        isAdditionalBulletBonusSetted = true;
+    }
+
+    public void Shot()
+    {
+        canShot = true;
     }
 
     public void SetParent(Collider parentCollider, GameObject parentShield)
@@ -105,6 +162,15 @@ public class Bullet : Bonus
         // заглушка, чтобы не удалять пулю
     }
 
+    private void RemoveAdditionalBulletBonus()
+    {
+        weapon.RemoveAdditionalBulletBonus();
+
+        isAdditionalBulletBonusSetted = false;
+        additionalBulletBonus = null;
+        weapon = null;
+    }
+
     IEnumerator ShowShotEffect(float time)
     {
         shotEffect.SetActive(true);
@@ -113,6 +179,7 @@ public class Bullet : Bonus
         float oldSpeed = bulletSpeed;
         bulletSpeed = 0f;
         bulletMeshRenderer.enabled = false;
+        canShot = false;
 
         yield return new WaitForSeconds(time);
 

@@ -9,6 +9,9 @@ public class PlayerEffector
 
     private LevelUI levelUI;
 
+    private GameObject thisPlayerGO;
+    private Bumper thisBumper;
+
     private EnemyPointer enemyPointer;
 
     private LevelUINotifications levelUINotifications;
@@ -26,7 +29,7 @@ public class PlayerEffector
     private float defaultHealth;// для вибрации
 
     private Coroutine disableWeaponCoroutine = null;
-
+    private Coroutine slowdownCoroutine = null;
 
     public PlayerEffector(Player _player, GameObject _playerGO, LevelUINotifications _levelUINotifications, LevelUI _levelUI, Weapon _playerWeapon,
         bool _isImmortal = false)
@@ -45,6 +48,8 @@ public class PlayerEffector
         //Weapon weapon = _player.Weapon;
         _weapon = _playerWeapon;
 
+        thisPlayerGO = _playerGO;
+
         Bumper bumper = _playerGO.GetComponent<Bumper>();
         if (bumper != null)
         {
@@ -52,6 +57,7 @@ public class PlayerEffector
             bumper.OnBonusGotWithGameObject += ApplyBonus;
         }
         else Debug.LogError("Component Bumper not found");
+        thisBumper = bumper;
 
         VisualIntermediary intermediary = _playerGO.GetComponent<VisualIntermediary>();
         if (intermediary != null)
@@ -60,7 +66,7 @@ public class PlayerEffector
         }
         else Debug.LogError("Component VisualIntermediary not found");
 
-        bumper.SetIsCurrentPlayer(_playerGO);
+        bumper.Init(_playerGO, _levelUINotifications);
         _intermediary.SetIsCurrentPlayer(_playerGO);
 
         levelUINotifications = _levelUINotifications;
@@ -88,6 +94,8 @@ public class PlayerEffector
         //Weapon weapon = _playerAI.Weapon;
         _weapon = _aiWeapon;
 
+        thisPlayerGO = _playerAIGO;
+
         Bumper bumper = _playerAIGO.GetComponent<Bumper>();
         if (bumper != null)
         {
@@ -95,6 +103,7 @@ public class PlayerEffector
             bumper.OnBonusGotWithGameObject += ApplyBonus;
         }
         else Debug.LogError("Component Bumper not found");
+        thisBumper = bumper;
 
         VisualIntermediary intermediary = _playerAIGO.GetComponent<VisualIntermediary>();
         if (intermediary != null)
@@ -103,7 +112,7 @@ public class PlayerEffector
         }
         else Debug.LogError("Component VisualIntermediary not found");
 
-        bumper.SetIsCurrentPlayer(_currentPlayerGO);
+        bumper.Init(_currentPlayerGO, null);
         _intermediary.SetIsCurrentPlayer(_currentPlayerGO);
 
         defaultHealth = player.Health;
@@ -214,6 +223,46 @@ public class PlayerEffector
                 }
 
                 break;
+
+            case BonusType.DisableWeaponFromLightning:
+
+                if (!isShieldActive)
+                {
+                    if (disableWeaponCoroutine != null)
+                    {
+                        CoroutineRunner.Stop(disableWeaponCoroutine);
+                    }
+                    disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.Value, thisPlayerGO));
+
+                    _weapon.DisableWeapon(thisPlayerGO);
+
+                    if (isCurrentPlayer)
+                    {
+                        levelUINotifications.BuffsDebuffsNotifications.ShowLightningDebuff();
+                        levelUINotifications.AttackBan.ShowBanImage(bonus.Value);
+                    }
+                }
+
+                break;
+
+            case BonusType.Slowdown:
+
+                if (!isShieldActive)
+                {
+                    if (slowdownCoroutine != null)
+                    {
+                        CoroutineRunner.Stop(slowdownCoroutine);
+                    }
+                    thisBumper.StartSlowdown(bonus.Value);
+                    slowdownCoroutine = CoroutineRunner.Run(WaitAndDeactivateSlowdown(bonus.BonusTime, thisPlayerGO));
+
+                    if (isCurrentPlayer)
+                    {
+                        levelUINotifications.BuffsDebuffsNotifications.ShowSlowdownDebuff();
+                    }
+                }
+
+                break;
         }
     }
 
@@ -275,6 +324,17 @@ public class PlayerEffector
         {
             levelUINotifications.BuffsDebuffsNotifications.HideLightningDebuff();
             levelUINotifications.AttackBan.HideBanImage();
+        }
+    }
+
+    IEnumerator WaitAndDeactivateSlowdown(float time, GameObject _gameObject)
+    {
+        yield return new WaitForSeconds(time);
+        thisBumper.StopSlowDown();
+        
+        if (isCurrentPlayer)
+        {
+            levelUINotifications.BuffsDebuffsNotifications.HideSlowdownDebuff();
         }
     }
 

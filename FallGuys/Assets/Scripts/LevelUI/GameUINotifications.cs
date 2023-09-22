@@ -13,7 +13,7 @@ public class GameUINotifications : MonoBehaviour
 
     private Coroutine hideCoroutine;
 
-    private void ShowHealthNotification(int value)
+    public void ShowHealthNotification(int value)
     {
         healthNotificationText.text = $"+{value} HP";
         healthNotificationText.transform.localScale = Vector3.one;
@@ -22,7 +22,7 @@ public class GameUINotifications : MonoBehaviour
         HideHealthNotification();
     }
 
-    private void ShowGoldNotification(int value)
+    public void ShowGoldNotification(int value)
     {
         goldNotificationText.text = $"+{value}";
         goldNotificationText.transform.localScale = Vector3.one;
@@ -62,15 +62,15 @@ public class GameUINotifications : MonoBehaviour
     }
 
 
-    private void OnEnable()
-    {
-        Bumper.BonusBoxGiveHPEvent += ShowHealthNotification;
-        Bumper.BonusBoxGiveGoldEvent += ShowGoldNotification;
-    }
+    //private void OnEnable()
+    //{
+    //    Bumper.BonusBoxGiveHPEvent += ShowHealthNotification;
+    //    Bumper.BonusBoxGiveGoldEvent += ShowGoldNotification;
+    //}
 
-    private void OnDisable()
-    {
-        Bumper.BonusBoxGiveHPEvent -= ShowHealthNotification;
-        Bumper.BonusBoxGiveGoldEvent -= ShowGoldNotification;
-    }
+    //private void OnDisable()
+    //{
+    //    Bumper.BonusBoxGiveHPEvent -= ShowHealthNotification;
+    //    Bumper.BonusBoxGiveGoldEvent -= ShowGoldNotification;
+    //}
 }

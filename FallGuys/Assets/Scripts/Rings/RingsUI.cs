@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RingsUI : LevelUI
 {
+    public override void AddEnemyPointer(EnemyPointer enemyPointer) { }
+
     #region Attack Pointer
     public override void ShowAttackPointer(Transform targetTransform)
     {

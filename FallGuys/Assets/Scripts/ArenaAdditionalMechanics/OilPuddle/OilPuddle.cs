@@ -11,6 +11,13 @@ public class OilPuddle : Bonus
         set => this.value = value;
     }
 
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     [Space]
 
     [SerializeField] private float damageInterval = 0.5f;// пауза между получением урона пока игрок в луже

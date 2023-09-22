@@ -13,6 +13,13 @@ public class AddBonus : Bonus
         set => this.value = value;
     }
 
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     private int enumLength;
 
     [Space]

@@ -11,6 +11,13 @@ public class Explosion : Bonus, IExplosion
         set => this.value = value;
     }
 
+    private float time;
+    public override float BonusTime
+    {
+        get => time;
+        set => time = value;
+    }
+
     [Space]
     public LayerMask ignoreLayer; // ignore AttackPointer
     //public bool isBullet;

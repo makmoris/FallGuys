@@ -47,7 +47,10 @@ public class Weapon : MonoBehaviour
 
     DisableWeaponBonus disableWeaponBonus;
 
-    private AdditionalBulletBonus additionalBulletBonus;
+    private List<AdditionalBulletBonus> additionalBulletBonusList = new List<AdditionalBulletBonus>();
+    private bool isAutomaticAdditionalBulletBonusRecharge;
+
+    [SerializeField]private AdditionalBulletBonus additionalBulletBonus;
     private bool isAdditionalBulletBonusSetted;
 
     private void Awake()
@@ -161,12 +164,12 @@ public class Weapon : MonoBehaviour
         if (!disableWeaponEvent) canAIAttack = false;
     }
 
-    public void SetAdditionalBulletBonus(AdditionalBulletBonus additionalBulletBonus)// from RingsBonusBox
+    public void SetAdditionalBulletBonus(AdditionalBulletBonus additionalBulletBonus, bool showNotification)// from RingsBonusBox
     {
         this.additionalBulletBonus = additionalBulletBonus;
         isAdditionalBulletBonusSetted = true;
 
-        parentBumper.ShowAdditionalBulletBonusNotification(additionalBulletBonus);
+        if(showNotification) parentBumper.ShowAdditionalBulletBonusNotification(additionalBulletBonus);
     }
     public void RemoveAdditionalBulletBonus()
     {
@@ -174,6 +177,23 @@ public class Weapon : MonoBehaviour
         isAdditionalBulletBonusSetted = false;
 
         parentBumper.HideAdditionalBulletBonusNotification();
+
+        if(isAutomaticAdditionalBulletBonusRecharge) SetAdditionalBulletBonus(GetRandomAdditionalBonus(), false);
+    }
+
+    public void UseAutomaticAdditionalBulletBonusRecharge(List<AdditionalBulletBonus> additionalBulletBonusList)// from Installer
+    {
+        this.additionalBulletBonusList = additionalBulletBonusList;
+        isAutomaticAdditionalBulletBonusRecharge = true;
+
+        SetAdditionalBulletBonus(GetRandomAdditionalBonus(), false);
+    }
+
+    private AdditionalBulletBonus GetRandomAdditionalBonus()
+    {
+        int rand = Random.Range(0, additionalBulletBonusList.Count);
+
+        return additionalBulletBonusList[rand];
     }
 
     private void CreateExampleBullet()

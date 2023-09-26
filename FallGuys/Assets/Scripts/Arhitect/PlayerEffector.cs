@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using VehicleBehaviour;
 
 public class PlayerEffector
 {
@@ -30,6 +31,7 @@ public class PlayerEffector
 
     private Coroutine disableWeaponCoroutine = null;
     private Coroutine slowdownCoroutine = null;
+    private Coroutine controlInversionCoroutine = null;
 
     public PlayerEffector(Player _player, GameObject _playerGO, LevelUINotifications _levelUINotifications, LevelUI _levelUI, Weapon _playerWeapon,
         bool _isImmortal = false)
@@ -254,11 +256,32 @@ public class PlayerEffector
                         CoroutineRunner.Stop(slowdownCoroutine);
                     }
                     thisBumper.StartSlowdown(bonus.Value);
-                    slowdownCoroutine = CoroutineRunner.Run(WaitAndDeactivateSlowdown(bonus.BonusTime, thisPlayerGO));
+                    slowdownCoroutine = CoroutineRunner.Run(WaitAndDeactivateSlowdown(bonus.BonusTime));
 
                     if (isCurrentPlayer)
                     {
                         levelUINotifications.BuffsDebuffsNotifications.ShowSlowdownDebuff();
+                    }
+                }
+
+                break;
+
+            case BonusType.ControlInversion:
+
+                if (!isShieldActive)
+                {
+                    if (controlInversionCoroutine != null)
+                    {
+                        CoroutineRunner.Stop(controlInversionCoroutine);
+                    }
+                    
+                    thisPlayerGO.GetComponent<WheelVehicle>().ChangeTheTurnControllerToInverse();
+
+                    controlInversionCoroutine = CoroutineRunner.Run(WaitAndDeactivateControlInversion(bonus.BonusTime));
+
+                    if (isCurrentPlayer)
+                    {
+                        levelUINotifications.BuffsDebuffsNotifications.ShowControlInversion();
                     }
                 }
 
@@ -327,7 +350,7 @@ public class PlayerEffector
         }
     }
 
-    IEnumerator WaitAndDeactivateSlowdown(float time, GameObject _gameObject)
+    IEnumerator WaitAndDeactivateSlowdown(float time)
     {
         yield return new WaitForSeconds(time);
         thisBumper.StopSlowDown();
@@ -335,6 +358,17 @@ public class PlayerEffector
         if (isCurrentPlayer)
         {
             levelUINotifications.BuffsDebuffsNotifications.HideSlowdownDebuff();
+        }
+    }
+
+    IEnumerator WaitAndDeactivateControlInversion(float time)
+    {
+        yield return new WaitForSeconds(time);
+        thisPlayerGO.GetComponent<WheelVehicle>().ChangeTheTurnControllerToNormal();
+
+        if (isCurrentPlayer)
+        {
+            levelUINotifications.BuffsDebuffsNotifications.HideControlInversion();
         }
     }
 

@@ -7,7 +7,8 @@ public enum BonusType
     AddGold = 2,
     DisableWeapon = 3,
     DisableWeaponFromLightning = 4,
-    Slowdown = 5
+    Slowdown = 5,
+    ControlInversion = 6
     //AddSpeed = 2,
     //AddDamage = 3
 }

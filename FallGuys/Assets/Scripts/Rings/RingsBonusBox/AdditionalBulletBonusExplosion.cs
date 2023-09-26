@@ -32,7 +32,6 @@ public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
 
     public override void PlayEffect(Vector3 effectPosition)
     {
-        Debug.LogError("Playu");
         transform.localPosition = effectPosition;
         Explode();
     }

@@ -42,15 +42,32 @@ public class Bullet : Bonus
     private AdditionalBulletBonus additionalBulletBonus;
     private bool isAdditionalBulletBonusSetted;
 
-    private void Start()
+    private bool init;
+
+    private void Initialize()
     {
         shotEffect.SetActive(false);
         bulletCollider = gameObject.GetComponent<Collider>();
         bulletMeshRenderer = gameObject.GetComponent<MeshRenderer>();
+
+        init = true;
+    }
+
+    private void Start()
+    {
+        if (!init)
+        {
+            Initialize();
+        }
     }
 
     private void OnEnable()
     {
+        if (!init)
+        {
+            Initialize();
+        }
+
         canShot = false;
     }
 
@@ -136,6 +153,16 @@ public class Bullet : Bonus
 
     public void Shot()
     {
+        if (isAdditionalBulletBonusSetted)
+        {
+            if(additionalBulletBonus.AdditionalBulletBonusType == AdditionalBulletBonusTypeEnum.AdditionalBulletBonusBlankShot)
+            {
+                RemoveAdditionalBulletBonus();
+                StartCoroutine(ShowShotEffect(effectTime));
+                return;
+            }
+        }
+        
         canShot = true;
     }
 

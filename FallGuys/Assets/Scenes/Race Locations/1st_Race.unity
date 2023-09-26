@@ -1387,10 +1387,17 @@ MonoBehaviour:
   levelProgressUIController: {fileID: 1302945594}
   postLevelPlaceController: {fileID: 929349635}
   postLevelUIController: {fileID: 929349634}
-  raceDriverAIPrefab: {fileID: 1168299745426089823, guid: 99fa67b2fa6c5b144b80ef74f222b01b, type: 3}
+  frontRayLegth: 7
+  sideRayLength: 1
+  angleForSidesRays: 25
+  customRechargeTime: 10
   playerAIDefaultData: {fileID: 11400000, guid: 0df943f6ad61fe94b8131b81df97a517, type: 2}
-  raceDriverAILestTest:
-  - {fileID: 1168299745426089823, guid: 99fa67b2fa6c5b144b80ef74f222b01b, type: 3}
+  additionalBulletBonusList:
+  - {fileID: 228953397863495708, guid: 390f22ff9f9a26e45916e8f33bb29400, type: 3}
+  - {fileID: 620515326768965270, guid: e954cde7d5f805c42926b2967861728b, type: 3}
+  - {fileID: 3433477903891059765, guid: 27ac0b59f69f95a47bc4cd500c341616, type: 3}
+  - {fileID: 3005907176518556209, guid: 29f059dee630ab349b9e86c5700be793, type: 3}
+  - {fileID: 4626066060848180063, guid: 45b12abaf4b647141bbf723aa76d4724, type: 3}
 --- !u!4 &44254853
 Transform:
   m_ObjectHideFlags: 0
@@ -23626,6 +23633,22 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4856298748606147985, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4856298748606147985, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4856298748606147985, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4856298748606147985, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5565235742149249427, guid: 913424a9d3740ab43950534a6ba84104, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -26218,7 +26241,7 @@ GameObject:
   - component: {fileID: 1447386386}
   m_Layer: 0
   m_Name: RaceRespawnZone (1)
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29277,7 +29300,7 @@ GameObject:
   - component: {fileID: 1509319081}
   m_Layer: 0
   m_Name: RaceRespawnZone
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45933,7 +45956,7 @@ GameObject:
   - component: {fileID: 1915547394}
   m_Layer: 0
   m_Name: RaceRespawnZone (2)
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46651,7 +46674,7 @@ GameObject:
   - component: {fileID: 1974424172}
   m_Layer: 0
   m_Name: RaceRespawnZone (4)
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46763,7 +46786,7 @@ GameObject:
   - component: {fileID: 1984135120}
   m_Layer: 0
   m_Name: RaceRespawnZone (3)
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47769,7 +47792,6 @@ MonoBehaviour:
   - {fileID: 1915547394}
   - {fileID: 1984135120}
   - {fileID: 1974424172}
-  raceAdditionalZonesList: []
 --- !u!4 &2055981271
 Transform:
   m_ObjectHideFlags: 0

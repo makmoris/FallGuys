@@ -12,6 +12,7 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     [SerializeField] private Image slowDebuff;
     private bool slowDebuffNeedToShow;
     [SerializeField] private Image lightningDebuff;
+    [SerializeField] private Image controlInversion;
 
     [Header("Rings Bullet Buffs")]
     [SerializeField] private GameObject additionalBulletBonusLightning;
@@ -24,6 +25,7 @@ public class BuffsDebuffsNotifications : MonoBehaviour
 
         slowDebuff.gameObject.SetActive(false);
         lightningDebuff.gameObject.SetActive(false);
+        controlInversion.gameObject.SetActive(false);
 
         additionalBulletBonusLightning.SetActive(false);
         additionalBulletBonusSlowdownOilPuddle.SetActive(false);
@@ -71,6 +73,16 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     public void HideLightningDebuff()
     {
         lightningDebuff.gameObject.SetActive(false);
+    }
+
+    public void ShowControlInversion()
+    {
+        controlInversion.gameObject.SetActive(true);
+    }
+
+    public void HideControlInversion()
+    {
+        controlInversion.gameObject.SetActive(false);
     }
 
     #region Additional Bullet Bonuses

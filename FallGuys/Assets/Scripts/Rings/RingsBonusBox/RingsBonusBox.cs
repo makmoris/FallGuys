@@ -14,7 +14,7 @@ public class RingsBonusBox : MonoBehaviour
         {
             Weapon weapon = other.GetComponentInChildren<Weapon>();
 
-            weapon.SetAdditionalBulletBonus(GetRandomAdditionalBonus());
+            weapon.SetAdditionalBulletBonus(GetRandomAdditionalBonus(), true);
 
             CoroutineRunner.Run(WaitAndRespawn());
         }

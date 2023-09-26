@@ -6,7 +6,9 @@ public enum AdditionalBulletBonusTypeEnum
 {
     AdditionalBulletBonusLightning = 0,
     AdditionalBulletBonusSlowdownOilPuddle = 1,
-    AdditionalBulletBonusExplosion = 2
+    AdditionalBulletBonusExplosion = 2,
+    AdditionalBulletBonusControlInversion = 3,
+    AdditionalBulletBonusBlankShot = 4
 }
 
 public abstract class AdditionalBulletBonus : Bonus

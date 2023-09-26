@@ -9,6 +9,9 @@ public class RaceInstaller : Installer
     [SerializeField] private float customRechargeTime = 10f;
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
+    [Header("Additional Bullet Bonuses")]
+    [SerializeField] private List<AdditionalBulletBonus> additionalBulletBonusList;
+
     protected override void InitializePlayers()
     {
         RaceProgressController raceProgressController = levelProgressController as RaceProgressController;
@@ -38,6 +41,7 @@ public class RaceInstaller : Installer
                 weapon.Initialize(false, playerGO.GetComponent<Collider>());
                 weapon.ChangeRechargeTime(customRechargeTime);
                 weapon.DisableWeapon(playerGO);
+                weapon.UseAutomaticAdditionalBulletBonusRecharge(additionalBulletBonusList);
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
@@ -86,6 +90,7 @@ public class RaceInstaller : Installer
                 weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
                 weaponAI.ChangeRechargeTime(customRechargeTime);
                 weaponAI.DisableWeapon(aiPlayerGO);
+                weaponAI.UseAutomaticAdditionalBulletBonusRecharge(additionalBulletBonusList);
 
                 // Camera
                 cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);

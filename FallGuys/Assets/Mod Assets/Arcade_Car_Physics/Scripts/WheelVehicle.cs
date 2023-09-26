@@ -244,6 +244,8 @@ namespace VehicleBehaviour {
         //[SerializeField] private int immobilityValue3;
         //[SerializeField] private int immobilityValueOnlyForBot;
 
+        private bool isInverseTurnController;
+
         public static event Action<WheelVehicle> NotifyGetRespanwPositionForWheelVehicleEvent;
 
         void Start() {
@@ -326,11 +328,11 @@ namespace VehicleBehaviour {
                     }
                     else if (throttle == 0)
                     {
-                        Debug.Log("Отпустили кнопку");
+                        //Debug.Log("Отпустили кнопку");
                     }
                     else
                     {
-                        Debug.Log("Жмем кнопку");
+                        //Debug.Log("Жмем кнопку");
                         stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
                     }
                 }
@@ -338,6 +340,7 @@ namespace VehicleBehaviour {
                 boosting = (GetInput(boostInput) > 0.5f);
                 // Turn
                 steering = turnInputCurve.Evaluate(GetInput(turnInput)) * steerAngle;
+                if (isInverseTurnController) steering *= -1f;
                 // Dirft
                 drift = GetInput(driftInput) > 0 && rb.velocity.sqrMagnitude > 100;
                 // Jump
@@ -546,6 +549,15 @@ namespace VehicleBehaviour {
         public void ToogleHandbrake(bool h)
         {
             handbrake = h;
+        }
+
+        public void ChangeTheTurnControllerToInverse()
+        {
+            isInverseTurnController = true;
+        }
+        public void ChangeTheTurnControllerToNormal()
+        {
+            isInverseTurnController = false;
         }
 
         // MULTIOSCONTROLS is another package I'm working on ignore it I don't know if it will get a release.

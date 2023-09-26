@@ -10,9 +10,7 @@ public class RaceCannon : MonoBehaviour
     [SerializeField]private List<GameObject> shells = new List<GameObject>();
     private int shellCreateCounter;
     private Dictionary<GameObject, Rigidbody> shellsRBDictionary = new Dictionary<GameObject, Rigidbody>();
-    private Dictionary<GameObject, IExplosion> shellsIExposionDictionary = new Dictionary<GameObject, IExplosion>();
-
-
+    private Dictionary<GameObject, IExplosion> shellsIExplosionDictionary = new Dictionary<GameObject, IExplosion>();
 
     [Space]
     [SerializeField] private float timeToNextShot = 5f;
@@ -34,14 +32,6 @@ public class RaceCannon : MonoBehaviour
         StartCoroutine(WaitAndShot(0f));
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Shot();
-        }
-    }
-
     private void Shot()
     {
         GameObject shellGO = GetShell();
@@ -57,7 +47,7 @@ public class RaceCannon : MonoBehaviour
         //shellRB.AddRelativeForce(Vector3.forward * randomThrowForce, ForceMode.VelocityChange);
         shellRB.AddForce(transform.forward * randomThrowForce, ForceMode.VelocityChange);
 
-        IExplosion shellExplosion = shellsIExposionDictionary[shellGO];
+        IExplosion shellExplosion = shellsIExplosionDictionary[shellGO];
         if(shellExplosion != null)
         {
             float timeToExplosion = Random.Range(minTimeToExplosion, maxTimeToExplosion);
@@ -72,7 +62,7 @@ public class RaceCannon : MonoBehaviour
 
         foreach (var shell in shells)
         {
-            if (!shell.activeInHierarchy && shell == neededShellType)
+            if (!shell.activeInHierarchy && shell.name.StartsWith(neededShellType.name))
             {
                 shellGO = shell;
                 shellGO.transform.position = shellPosition.position;
@@ -129,7 +119,7 @@ public class RaceCannon : MonoBehaviour
     }
     private void FillShellsIExposionDictionary(GameObject keyShellGO)
     {
-        if (!shellsIExposionDictionary.ContainsKey(keyShellGO))
+        if (!shellsIExplosionDictionary.ContainsKey(keyShellGO))
         {
             IExplosion shellExplosion = keyShellGO.GetComponent<IExplosion>();
             if (shellExplosion == null)
@@ -139,7 +129,7 @@ public class RaceCannon : MonoBehaviour
                 if (shellExplosion == null) return;
             }
 
-            shellsIExposionDictionary.Add(keyShellGO, shellExplosion);
+            shellsIExplosionDictionary.Add(keyShellGO, shellExplosion);
         }
     }
 

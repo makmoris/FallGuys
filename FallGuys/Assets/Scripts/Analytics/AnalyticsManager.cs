@@ -43,10 +43,10 @@ public class AnalyticsManager : MonoBehaviour
     }
 
 
-    private void Start()
-    {
-        if (!initializeCompleted) Initialize();
-    }
+    //private void Start()
+    //{
+    //    if (!initializeCompleted) Initialize();
+    //}
 
     public void SetCurrentPlayer(IPlayer player)
     {
@@ -59,7 +59,7 @@ public class AnalyticsManager : MonoBehaviour
         return 0;
     }
 
-    private void Initialize()
+    public void Initialize()
     {   // вызываем методы инициализации. ѕотом нужно дождатьс€ ответов, что инициализаци€ выполнена
         foreach (var item in analytics)
         {

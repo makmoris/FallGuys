@@ -27,18 +27,32 @@ public class LoadingScene : MonoBehaviour
 
     private bool analyticsEventWasSended;
 
+    private NetworkChecker networkChecker;
+    private AnalyticsManager analyticsManager;
+    private AdsInitializer adsInitializer;
+
     [Space]
     [SerializeField] private bool internetConnectionIsActive;
     [SerializeField] private bool analyticsInitializeCompleted;
+    [SerializeField] private bool adsInitializeCompleted;
 
     private AsyncOperation asyncOperation;
 
+    public void Initialize(NetworkChecker networkChecker, AnalyticsManager analyticsManager, AdsInitializer adsInitializer)
+    {
+        this.networkChecker = networkChecker;
+        this.analyticsManager = analyticsManager;
+        this.adsInitializer = adsInitializer;
+    }
+
     private void OnEnable()
     {
-        NetworkChecker.InternetConnectionAppearedEvent += SetInternetConnectionIsActive;
-        NetworkChecker.InternetConnectionLostEvent += SetInternetConnectionIsInactive;
+        networkChecker.InternetConnectionAppearedEvent += SetInternetConnectionIsActive;
+        networkChecker.InternetConnectionLostEvent += SetInternetConnectionIsInactive;
 
         AnalyticsManager.InitializeCompletedEvent += AnalyticsInitializeCompleted;
+
+        adsInitializer.ADSInitializationCompleteEvent += AdsInitializeCompleted;
     }
 
     private void Start()
@@ -80,6 +94,11 @@ public class LoadingScene : MonoBehaviour
         asyncOperation.allowSceneActivation = false;
     }
 
+    private void AdsInitializeCompleted()
+    {
+        adsInitializeCompleted = true;
+    }
+
     public void GoToLevel()// вызывается окном gameTutorialWindow
     {
         asyncOperation.allowSceneActivation = true;
@@ -117,12 +136,12 @@ public class LoadingScene : MonoBehaviour
             if (asyncOperation.progress >= 0.9f)
             {
                 //if (!tutorialWindowWasShown) gameTutorialWindow.SetActive(true);// для показа окна тутора
-                if (!tutorialWindowWasShown && !analyticsEventWasSended && internetConnectionIsActive && analyticsInitializeCompleted)
+                if (!tutorialWindowWasShown && !analyticsEventWasSended && internetConnectionIsActive && analyticsInitializeCompleted && adsInitializeCompleted)
                 {
                     analyticsEventWasSended = true;
                     SendUserAnalyticEvent();// analytics
                 }
-                else if (tutorialWindowWasShown && internetConnectionIsActive && analyticsInitializeCompleted)
+                else if (tutorialWindowWasShown && internetConnectionIsActive && analyticsInitializeCompleted && adsInitializeCompleted)
                 {
                     Debug.Log("[TEST] Tutorial has been shown, Internet is active, Analytics has been initialized. Can go to the lobby");
                     asyncOperation.allowSceneActivation = true;
@@ -213,9 +232,11 @@ public class LoadingScene : MonoBehaviour
 
     private void OnDisable()
     {
-        NetworkChecker.InternetConnectionAppearedEvent -= SetInternetConnectionIsActive;
-        NetworkChecker.InternetConnectionLostEvent -= SetInternetConnectionIsInactive;
+        networkChecker.InternetConnectionAppearedEvent -= SetInternetConnectionIsActive;
+        networkChecker.InternetConnectionLostEvent -= SetInternetConnectionIsInactive;
 
         AnalyticsManager.InitializeCompletedEvent -= AnalyticsInitializeCompleted;
+
+        adsInitializer.ADSInitializationCompleteEvent -= AdsInitializeCompleted;
     }
 }

@@ -11,16 +11,14 @@ public class NetworkChecker : MonoBehaviour
 
     [SerializeField] private bool internetAvailable;
 
-    private bool isInit;
-
     private bool isFirstGameLaunch;
 
     NetworkCheck networking;
 
-    public static event System.Action InternetConnectionLostEvent;
-    public static event System.Action InternetConnectionAppearedEvent;
+    public System.Action InternetConnectionLostEvent;
+    public System.Action InternetConnectionAppearedEvent;
 
-    public static NetworkChecker Instance { get; private set; }
+    private static NetworkChecker Instance { get; set; }
     private void Awake()
     {
         if (Instance == null)
@@ -34,15 +32,11 @@ public class NetworkChecker : MonoBehaviour
         }
     }
 
-    void Start()
+    public void Initialize()
     {
-        if (!isInit)
-        {
-            networking = new NetworkCheck();
+        networking = new NetworkCheck();
 
-            isInit = true;
-            isFirstGameLaunch = true;
-        }
+        isFirstGameLaunch = true;
         canvasInternetWindow.SetActive(true);
     }
 
@@ -114,9 +108,6 @@ public class NetworkChecker : MonoBehaviour
                 isFirstGameLaunch = false;
             }
         }
-
-        //transform.GetChild(0).GetComponent<Image>().color = newColor;
-        //transform.GetChild(1).GetComponent<Text>().text = message;
     }
 
     public bool GetNetworkStatus()

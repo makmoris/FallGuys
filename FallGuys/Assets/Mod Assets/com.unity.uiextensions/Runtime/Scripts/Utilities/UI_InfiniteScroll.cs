@@ -76,6 +76,8 @@ namespace UnityEngine.UI.Extensions
 
         Vector3 defaultScrollRectLocalPosition;
 
+        private NetworkChecker networkChecker;
+
         protected virtual void Awake()
         {
             if (!InitByUser)
@@ -84,6 +86,10 @@ namespace UnityEngine.UI.Extensions
             defaultScrollRectLocalPosition = _scrollRect.content.localPosition;
         }
 
+        public void Initialize(NetworkChecker networkChecker)
+        {
+            this.networkChecker = networkChecker;
+        }
 
         private void FixedUpdate()
         {
@@ -468,7 +474,7 @@ namespace UnityEngine.UI.Extensions
 
             yield return new WaitForSeconds(1f);
 
-            while (NetworkChecker.Instance.GetNetworkStatus() == false)
+            while (networkChecker.GetNetworkStatus() == false)
             {
                 // ожидание подключения интернета
                 yield return null;

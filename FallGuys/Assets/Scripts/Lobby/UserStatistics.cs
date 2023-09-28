@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class UserStatistics : MonoBehaviour
+public class UserStatistics : MonoBehaviour // only on lobby
 {
     private int battles_amount;
     private float win_rate;
@@ -12,11 +12,15 @@ public class UserStatistics : MonoBehaviour
     private string gun_id;
     private string control_type;
 
-    void Start()
-    {
-        GetParameters();
-        SendUserAnalyticEvent();
-    }
+    private NetworkChecker networkChecker;
+
+    //public void Initialize(NetworkChecker networkChecker)
+    //{
+    //    this.networkChecker = networkChecker;
+
+    //    GetParameters();
+    //    SendUserAnalyticEvent();
+    //}
 
     private void GetParameters()
     {
@@ -47,7 +51,7 @@ public class UserStatistics : MonoBehaviour
 
     private void SendUserAnalyticEvent()
     {
-        StartCoroutine(WaitAndSendEvent());
+        CoroutineRunner.Run(WaitAndSendEvent());
         //AnalyticsManager.Instance.User(battles_amount, win_rate, cups_amount, league, gold, car_id, gun_id, control_type);
     }
 
@@ -55,7 +59,7 @@ public class UserStatistics : MonoBehaviour
     {
         //yield return new WaitForSeconds(2f);
 
-        while (NetworkChecker.Instance.GetNetworkStatus() == false)
+        while (networkChecker.GetNetworkStatus() == false)
         {
             // ожидание подключения интернета
             yield return null;

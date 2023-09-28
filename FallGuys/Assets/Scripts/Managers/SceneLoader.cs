@@ -26,7 +26,13 @@ public class SceneLoader : MonoBehaviour
         }
 
         if (mapSelectionCanvas.gameObject.activeSelf) mapSelectionCanvas.gameObject.SetActive(false);
+    }
+
+    public void Initialize(NetworkChecker networkChecker)
+    {
         mapSelector = mapSelectionCanvas.transform.GetComponentInChildren<MapSelector>(true);
+
+        mapSelector.Initialize(this, networkChecker);
     }
 
     private void OnEnable()
@@ -37,7 +43,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadNextLevelSceneWithAnimation(SceneField nextScene)
     {
         mapSelectionCanvas.gameObject.SetActive(true);
-        mapSelector.StartLoading(nextScene, this);
+        mapSelector.StartLoading(nextScene);
     }
 
     public void LoadAnimationFinished(AsyncOperation asyncOperation)

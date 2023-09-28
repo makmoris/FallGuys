@@ -25,12 +25,22 @@ public class MapSelector : MonoBehaviour
 
     private SceneLoader sceneLoader;
 
+    private NetworkChecker networkChecker;
+
     private AsyncOperation asyncOperation;
+
+    public void Initialize(SceneLoader sceneLoader, NetworkChecker networkChecker)
+    {
+        this.sceneLoader = sceneLoader;
+        this.networkChecker = networkChecker;
+
+        infiniteScroll.Initialize(networkChecker);
+    }
 
     private void OnEnable()
     {
-        NetworkChecker.InternetConnectionAppearedEvent += SetInternetConnectionIsActive;
-        NetworkChecker.InternetConnectionLostEvent += SetInternetConnectionIsInactive;
+        networkChecker.InternetConnectionAppearedEvent += SetInternetConnectionIsActive;
+        networkChecker.InternetConnectionLostEvent += SetInternetConnectionIsInactive;
     }
     private void SetInternetConnectionIsActive()
     {
@@ -43,14 +53,12 @@ public class MapSelector : MonoBehaviour
         asyncOperation.allowSceneActivation = false;
     }
 
-    public void StartLoading(SceneField loadingScene, SceneLoader sceneLoader)// вызывается по кнопке Play
+    public void StartLoading(SceneField loadingScene)// вызывается по кнопке Play
     {
         Debug.Log("MapSelector StartLoading");
         asyncOperation = null;
 
-        if (this.sceneLoader == null) this.sceneLoader = sceneLoader;
-
-        internetConnectionIsActive = NetworkChecker.Instance.GetNetworkStatus();
+        internetConnectionIsActive = networkChecker.GetNetworkStatus();
 
         LoadMap(loadingScene);
 
@@ -119,7 +127,7 @@ public class MapSelector : MonoBehaviour
 
     private void OnDisable()
     {
-        NetworkChecker.InternetConnectionAppearedEvent -= SetInternetConnectionIsActive;
-        NetworkChecker.InternetConnectionLostEvent -= SetInternetConnectionIsInactive;
+        networkChecker.InternetConnectionAppearedEvent -= SetInternetConnectionIsActive;
+        networkChecker.InternetConnectionLostEvent -= SetInternetConnectionIsInactive;
     }
 }

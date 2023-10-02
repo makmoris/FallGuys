@@ -1,5 +1,5 @@
 public enum RewardType
 {
-    Money = 0,
+    Gold = 0,
     Cups = 1
 }

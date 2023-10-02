@@ -70,7 +70,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
 
             switch (_showAdButton.RewardType)
             {
-                case RewardType.Money:
+                case RewardType.Gold:
                     CurrencyManager.Instance.AddGold(_showAdButton.RewardValue);
                     break;
                 case RewardType.Cups:

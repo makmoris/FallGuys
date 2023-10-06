@@ -124,7 +124,7 @@ public class CurrencyManager : MonoBehaviour
     #region SaveLoad
     private void Load()
     {
-        var data = SaveManager.Load<SaveData.PlayerCurrency>(saveKey);
+        var data = PunchCars.SaveData.SaveManager.Load<PunchCars.SaveData.PlayerCurrency>(saveKey);
 
         Gold = data.gold;
         Cups = data.cups;
@@ -132,12 +132,12 @@ public class CurrencyManager : MonoBehaviour
 
     private void Save()
     {
-        SaveManager.Save(saveKey, GetPlayerCurrency());
+        PunchCars.SaveData.SaveManager.Save(saveKey, GetPlayerCurrency());
     }
 
-    private SaveData.PlayerCurrency GetPlayerCurrency()
+    private PunchCars.SaveData.PlayerCurrency GetPlayerCurrency()
     {
-        var data = new SaveData.PlayerCurrency()
+        var data = new PunchCars.SaveData.PlayerCurrency()
         {
             gold = Gold,
             cups = Cups

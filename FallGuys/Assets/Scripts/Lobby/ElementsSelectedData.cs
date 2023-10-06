@@ -55,7 +55,7 @@ public class ElementsSelectedData : MonoBehaviour
     #region SaveLoad
     private void Load()
     {
-        var data = SaveManager.Load<SaveData.ElementsSelect>(saveKey);
+        var data = PunchCars.SaveData.SaveManager.Load<PunchCars.SaveData.ElementsSelect>(saveKey);
 
         if (data.allSelectedElementsList == null) data.allSelectedElementsList = _allSelectedElementsList;
 
@@ -64,12 +64,12 @@ public class ElementsSelectedData : MonoBehaviour
 
     private void Save()
     {
-        SaveManager.Save(saveKey, GetElementsSelect());
+        PunchCars.SaveData.SaveManager.Save(saveKey, GetElementsSelect());
     }
 
-    private SaveData.ElementsSelect GetElementsSelect()
+    private PunchCars.SaveData.ElementsSelect GetElementsSelect()
     {
-        var data = new SaveData.ElementsSelect()
+        var data = new PunchCars.SaveData.ElementsSelect()
         {
             allSelectedElementsList = _allSelectedElementsList
         };

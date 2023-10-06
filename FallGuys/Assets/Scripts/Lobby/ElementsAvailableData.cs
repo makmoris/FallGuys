@@ -57,7 +57,7 @@ public class ElementsAvailableData : MonoBehaviour
     #region SaveLoad
     private void Load()
     {
-        var data = SaveManager.Load<SaveData.ElementsAvailable>(saveKey);
+        var data = PunchCars.SaveData.SaveManager.Load<PunchCars.SaveData.ElementsAvailable>(saveKey);
 
         if (data.allAvailableElementsList == null) data.allAvailableElementsList = _allAvailableElementsList;
 
@@ -66,12 +66,12 @@ public class ElementsAvailableData : MonoBehaviour
 
     private void Save()
     {
-        SaveManager.Save(saveKey, GetElementsAvailable());
+        PunchCars.SaveData.SaveManager.Save(saveKey, GetElementsAvailable());
     }
 
-    private SaveData.ElementsAvailable GetElementsAvailable()
+    private PunchCars.SaveData.ElementsAvailable GetElementsAvailable()
     {
-        var data = new SaveData.ElementsAvailable()
+        var data = new PunchCars.SaveData.ElementsAvailable()
         {
             allAvailableElementsList = _allAvailableElementsList
         };

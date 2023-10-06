@@ -66,7 +66,7 @@ public class BattleStatisticsManager : MonoBehaviour
     #region SaveLoad
     private void Load()
     {
-        var data = SaveManager.Load<SaveData.PlayerBattleStatistics>(saveKey);
+        var data = PunchCars.SaveData.SaveManager.Load<PunchCars.SaveData.PlayerBattleStatistics>(saveKey);
 
         BattlesAmount = data.battlesAmount;
         NumberOfFirstPlaces = data.numberOfFirstPlaces;
@@ -74,12 +74,12 @@ public class BattleStatisticsManager : MonoBehaviour
 
     private void Save()
     {
-        SaveManager.Save(saveKey, GetPlayerBattleStatistics());
+        PunchCars.SaveData.SaveManager.Save(saveKey, GetPlayerBattleStatistics());
     }
 
-    private SaveData.PlayerBattleStatistics GetPlayerBattleStatistics()
+    private PunchCars.SaveData.PlayerBattleStatistics GetPlayerBattleStatistics()
     {
-        var data = new SaveData.PlayerBattleStatistics()
+        var data = new PunchCars.SaveData.PlayerBattleStatistics()
         {
             battlesAmount = BattlesAmount,
             numberOfFirstPlaces = NumberOfFirstPlaces

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PunchCars.InAppPurchasing
 {
-    [CreateAssetMenu(fileName = "New Product", menuName = "PuchCars/IAP/Product", order = 0)]
+    [CreateAssetMenu(fileName = "New Product", menuName = "PunchCars/IAP/Product", order = 0)]
     public class ProductSO : ScriptableObject, IProductProvider
     {
         [SerializeField] private BuyMethode _buyMethode;

@@ -1,6 +1,6 @@
 using System;
 
-namespace SaveData
+namespace PunchCars.SaveData
 {
     [Serializable]
     public class PlayerBattleStatistics

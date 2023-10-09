@@ -17,6 +17,7 @@ public class FallingPlatform : MonoBehaviour
     private int stateNumber;
 
     private bool isPlatformNotFell = true;
+    [SerializeField]private bool isPlatformCompletedStateChange = true;
 
     [Header("-----")]
     [SerializeField] private FallingPlatformTrigger platformTrigger;
@@ -50,14 +51,6 @@ public class FallingPlatform : MonoBehaviour
         StatesList[0].stateGO.SetActive(true);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            bool b = IsItNotAnEdgePlatform();
-        }
-    }
-
     public bool IsItNotAnEdgePlatform()
     {
         bool isItNotAnEdgePlatform = true;
@@ -68,22 +61,10 @@ public class FallingPlatform : MonoBehaviour
         {
             if (!Physics.Raycast(pos.position, pos.forward, out hit, 2f, layerMask))
             {
-                //Renderer renderer = GetComponentInChildren<Renderer>();
-                ////Renderer renderer = pos.GetComponentInChildren<Renderer>();
-                //renderer.material.SetColor("_Color", Color.black);
-
                 isItNotAnEdgePlatform = false;
 
                 break;
             }
-            else
-            {
-                //Renderer renderer = GetComponentInChildren<Renderer>();
-                ////Renderer renderer = pos.GetComponentInChildren<Renderer>();
-                //renderer.material.SetColor("_Color", Color.red);
-            }
-
-            //Debug.DrawLine(pos.position, pos.position + pos.forward * 2f, Color.red);
         }
 
         return isItNotAnEdgePlatform;
@@ -91,34 +72,12 @@ public class FallingPlatform : MonoBehaviour
 
     public void ChangeState()
     {
-        //if (isPlatformNotFell)
-        //{
-        //    if(stateNumber < StatesList.Count) StatesList[stateNumber].stateGO.SetActive(false);
-
-        //    stateNumber++;
-
-        //    if (waitAndChangeStateCoroutine != null && stateNumber < StatesList.Count) StopCoroutine(waitAndChangeStateCoroutine);
-
-        //    if (stateNumber < StatesList.Count - 1)
-        //    {
-        //        StatesList[stateNumber].stateGO.SetActive(true);
-
-        //        waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(false));
-        //    }
-        //    else if (stateNumber < StatesList.Count)
-        //    {
-        //        StatesList[stateNumber].stateGO.SetActive(true);
-
-        //        waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(true));
-        //    }
-        //}
-
         StartCoroutine(Delay());
     }
 
     private void ChangeStateAfterDelay()
     {
-        if (isPlatformNotFell)
+        if (isPlatformNotFell && isPlatformCompletedStateChange)
         {
             if (stateNumber < StatesList.Count) StatesList[stateNumber].stateGO.SetActive(false);
 
@@ -138,7 +97,15 @@ public class FallingPlatform : MonoBehaviour
 
                 waitAndChangeStateCoroutine = StartCoroutine(WaitAndChangeState(true));
             }
+
+            WaitForStateChangeToComplete();
         }
+    }
+
+    private void WaitForStateChangeToComplete()
+    {
+        isPlatformCompletedStateChange = false;
+        StartCoroutine(WaitAndCompleteTheStateChanging());
     }
 
     private IEnumerator Delay()
@@ -165,5 +132,13 @@ public class FallingPlatform : MonoBehaviour
         {
             platformTrigger.CheckCarsOnPlatform();
         }
+    }
+
+    private IEnumerator WaitAndCompleteTheStateChanging()
+    {
+        yield return new WaitForSeconds(changeStateTime);
+
+        isPlatformCompletedStateChange = true;
+        platformTrigger.CheckCarsOnPlatform();
     }
 }

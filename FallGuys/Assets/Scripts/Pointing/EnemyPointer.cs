@@ -28,14 +28,10 @@ public class EnemyPointer : MonoBehaviour // кидаем на врагов
     {
         if (levelUI != null) levelUI.HideEnemyPositionPointer(this, false);
         onStart = false;
-
-        Debug.Log("OnDisable123");
     }
 
     private void OnDestroy()
     {
         if (levelUI != null) levelUI.HideEnemyPositionPointer(this, true);
-
-        Debug.Log("OnDestroy123");
     }
 }

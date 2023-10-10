@@ -36,7 +36,10 @@ public class PostPlaceBackground : MonoBehaviour
 
                 int i = PlayerPrefs.GetInt(key, 0);
                 ShowBackground(backgrounds[i]);
+
                 i++;
+                if (i == backgrounds.Count) i = 0;
+
                 PlayerPrefs.SetInt(key, i);
 
                 break;

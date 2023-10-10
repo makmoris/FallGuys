@@ -217,7 +217,7 @@ public class RaceProgressController : LevelProgressController
 
         raceProgressUIController.HideCameraHint();
 
-        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
+        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner, _currentPlayer);
     }
 
     private void SortLosersByPosition()

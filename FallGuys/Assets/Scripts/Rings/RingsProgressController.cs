@@ -66,7 +66,7 @@ public class RingsProgressController : LevelProgressController
 
         SendListOfLosersNamesToGameManager();
 
-        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
+        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner, _currentPlayer);
     }
 
     public void AddPointsToPlayer(GameObject playerGO)

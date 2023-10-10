@@ -57,7 +57,7 @@ public class PostLevelPlaceController : MonoBehaviour
         SetContinueButtonEvent();
     }
 
-    public void ShowPostPlace(List<GameObject> _winnersList, List<GameObject> _losersList, bool _isCurrentPlayerWinner)
+    public void ShowPostPlace(List<GameObject> _winnersList, List<GameObject> _losersList, bool _isCurrentPlayerWinner, GameObject _currentPlayerGO)
     {
         DisableAudioListeners(_winnersList);
         DisableAudioListeners(_losersList);
@@ -68,12 +68,12 @@ public class PostLevelPlaceController : MonoBehaviour
         }
         else// игра не завершена, еще будут другие режими. Показ анимации выбывания и загрузка следующей карты
         {
-            ShowElimination(_winnersList, _losersList, _isCurrentPlayerWinner);
+            ShowElimination(_winnersList, _losersList, _currentPlayerGO);
             LoadNextGameStage();
         }
     }
 
-    private void ShowElimination(List<GameObject> _winnersList, List<GameObject> _losersList, bool _isCurrentPlayerWinner)
+    private void ShowElimination(List<GameObject> _winnersList, List<GameObject> _losersList, GameObject _currentPlayerGO)
     {
         foreach (var winner in _winnersList)
         {
@@ -83,6 +83,8 @@ public class PostLevelPlaceController : MonoBehaviour
 
                 PostPlace postPlace = postPlacesList[0];
                 Transform postPlaceTransform = postPlace.GetPlaceTransform();
+
+                if (winner == _currentPlayerGO) postPlace.RecolorCellForPlayer();
                
                 winner.transform.SetParent(postPlaceTransform);
                 winner.transform.localPosition = Vector3.zero;
@@ -100,6 +102,8 @@ public class PostLevelPlaceController : MonoBehaviour
 
                 PostPlace postPlace = postPlacesList[0];
                 Transform postPlaceTransform = postPlace.GetPlaceTransform();
+
+                if (loser == _currentPlayerGO) postPlace.RecolorCellForPlayer();
 
                 loser.transform.SetParent(postPlaceTransform);
                 loser.transform.localPosition = Vector3.zero;

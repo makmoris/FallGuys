@@ -242,7 +242,7 @@ public class ArenaProgressController : LevelProgressController
     {
         SendListOfLosersNamesToGameManager();
 
-        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
+        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner, _currentPlayer);
     }
 
     IEnumerator WaitAndShowPostWindow()

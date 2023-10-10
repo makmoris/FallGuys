@@ -117,7 +117,7 @@ public class HoneycombProgressController : LevelProgressController
     {
         SendListOfLosersNamesToGameManager();
 
-        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner);
+        postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner, _currentPlayer);
     }
 
     private void ApplyDisableBonus(GameObject driverGO, float disableTime)

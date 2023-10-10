@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class PostRaceBackMovingWall : MonoBehaviour
 {
-    private Vector3 finishPos = new Vector3(0f, 1f, 1.25f);
+    private Vector3 finishPos;
 
     private float speed = 5f;
 
     private bool dump;
 
+    private void Awake()
+    {
+        finishPos = new Vector3(transform.localPosition.x, transform.localPosition.y, -2.25f);
+    }
 
     private void Update()
     {
         if (dump)
         {
-            var step = speed * Time.deltaTime; // calculate distance to move
+            var step = speed * Time.deltaTime;
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, finishPos, step);
 
             if (Vector3.Distance(transform.localPosition, finishPos) < 0.001f)

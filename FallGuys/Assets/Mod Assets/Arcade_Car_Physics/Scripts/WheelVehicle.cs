@@ -24,7 +24,7 @@ namespace VehicleBehaviour {
     #endif
 
         // If isPlayer is false inputs are ignored
-        [SerializeField] bool isPlayer = true;
+         bool isPlayer = true;
         public bool IsPlayer { get => isPlayer;
             set => isPlayer = value;
         } 

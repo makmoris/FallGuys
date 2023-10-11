@@ -10,7 +10,6 @@ public class HoneycombInstaller : Installer
     [SerializeField] TargetsControllerHoneycomb targetsControllerHoneycomb;
 
     [Header("Falling Platform AI")]
-    [SerializeField] HoneycombDriverAI honeycombDriverAIPrefab;
     [SerializeField] PlayerDefaultData fallingPlatformsAIDefaultData;
 
     protected override void InitializePlayers()

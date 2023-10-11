@@ -236,8 +236,8 @@ namespace VehicleBehaviour {
         [SerializeField] private float stuckTime_StuckInSomething;
 
         [SerializeField] private float stuckTime_BotAIPressesOnGasButDoesntMove;
-        [SerializeField]private bool aiIsTriedToPutItBack;
-        [SerializeField]private bool aiGiveBack;
+        //[SerializeField]private bool aiIsTriedToPutItBack;
+        //[SerializeField]private bool aiGiveBack;
 
         //[SerializeField]private int immobilityValue;// сколько игрок провел в неподвижном состоянии
         //[SerializeField] private int immobilityValue2;
@@ -360,21 +360,24 @@ namespace VehicleBehaviour {
 
                     if (stuckTime_BotAIPressesOnGasButDoesntMove >= stuckTimeThreshold)
                     {
-                        if (aiIsTriedToPutItBack)
-                        {
-                            aiIsTriedToPutItBack = false;
+                        stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                        RespanwAfterStuck();
 
-                            stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
-                            RespanwAfterStuck();
-                        }
-                        else
-                        {
-                            aiIsTriedToPutItBack = true;
+                        //if (aiIsTriedToPutItBack)
+                        //{
+                        //    aiIsTriedToPutItBack = false;
 
-                            stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
-                            TryAIToGiveBack();
-                        }
-                        
+                        //    stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                        //    RespanwAfterStuck();
+                        //}
+                        //else
+                        //{
+                        //    aiIsTriedToPutItBack = true;
+
+                        //    stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                        //    TryAIToGiveBack();
+                        //}
+
                         //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
                         //transform.position = GetAppearPosition();
                     }
@@ -394,7 +397,7 @@ namespace VehicleBehaviour {
                 wheel.brakeTorque = 0;
             }
 
-            if (aiGiveBack) throttle = -1f;
+            //if (aiGiveBack) throttle = -1f;
 
             // Handbrake
             if (handbrake)
@@ -585,18 +588,18 @@ namespace VehicleBehaviour {
             return newPos;
         }
 
-        private void TryAIToGiveBack()
-        {
-            aiGiveBack = true;
-            StartCoroutine(AIGiveBack());
-        }
+        //private void TryAIToGiveBack()
+        //{
+        //    aiGiveBack = true;
+        //    StartCoroutine(AIGiveBack());
+        //}
 
-        IEnumerator AIGiveBack()
-        {
-            yield return new WaitForSeconds(2f);
+        //IEnumerator AIGiveBack()
+        //{
+        //    yield return new WaitForSeconds(2f);
 
-            aiGiveBack = false;
-        }
+        //    aiGiveBack = false;
+        //}
 
         public void PlayerStuckUnder()// from UderPlayerCar. Only on Player car
         {

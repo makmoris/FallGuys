@@ -77,7 +77,10 @@ public class DeadZone : Bonus
         if(bumper != null && waitRespawnCars.Contains(bumper.gameObject))
         {
             GameObject car = bumper.gameObject;
-            
+
+            car.SetActive(false);
+            car.SetActive(true);
+
             Vector3 pos = arenaSpawnController.GetRespawnPosition().position;
             car.transform.position = new Vector3(pos.x, 5f, pos.z);
             car.transform.rotation = arenaSpawnController.GetRespawnPosition().rotation;

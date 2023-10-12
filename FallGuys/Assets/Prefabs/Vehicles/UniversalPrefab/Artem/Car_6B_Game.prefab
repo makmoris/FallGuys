@@ -87,19 +87,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557858722840362344}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ae437f48cab54a31b2c01d2e4d2ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0.15
-  decayTime: 60
+  decayTime: 5
   material: {fileID: 2100000, guid: cf67cfc288c6d4eba9e67404b1952a43, type: 2}
   roughness: 0
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 557858724038174137}
-  offset: {x: 0, y: -0.29, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &557858722979668025
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,19 +782,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557858723615134452}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ae437f48cab54a31b2c01d2e4d2ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0.15
-  decayTime: 60
+  decayTime: 5
   material: {fileID: 2100000, guid: cf67cfc288c6d4eba9e67404b1952a43, type: 2}
   roughness: 0
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 557858723127181267}
-  offset: {x: 0, y: -0.29, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &557858723638643906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,19 +1298,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557858724075778279}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ae437f48cab54a31b2c01d2e4d2ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0.15
-  decayTime: 60
+  decayTime: 5
   material: {fileID: 2100000, guid: cf67cfc288c6d4eba9e67404b1952a43, type: 2}
   roughness: 0
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 557858723449261556}
-  offset: {x: 0, y: -0.29, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &557858724105885799
 GameObject:
   m_ObjectHideFlags: 0
@@ -6905,19 +6905,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557858724547959139}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ae437f48cab54a31b2c01d2e4d2ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0.15
-  decayTime: 60
+  decayTime: 5
   material: {fileID: 2100000, guid: cf67cfc288c6d4eba9e67404b1952a43, type: 2}
   roughness: 0
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 557858724656510291}
-  offset: {x: 0, y: -0.29, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &557858724656510288
 GameObject:
   m_ObjectHideFlags: 0
@@ -12091,7 +12091,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1699643496784839617}
   serializedVersion: 2
-  m_Mass: 2400
+  m_Mass: 1200
   m_Drag: 0.02
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -12226,8 +12226,6 @@ MonoBehaviour:
   stuckTime_PlayerPressesOnGasButDoesntMove: 0
   stuckTime_StuckInSomething: 0
   stuckTime_BotAIPressesOnGasButDoesntMove: 0
-  aiIsTriedToPutItBack: 0
-  aiGiveBack: 0
 --- !u!81 &1699643496785141736
 AudioListener:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ namespace VehicleBehaviour.Trails
 
 		public Transform parent;
 
-		public Vector3 offset;
+		public Vector3 offsetN = new Vector3(0f, -0.2f, 0f);
 
 		WheelCollider wheel;
 		WheelVehicle vehicle;
@@ -80,7 +80,7 @@ namespace VehicleBehaviour.Trails
 		{
 			//Stops emitting the last trail and passes the parameters onto a new one
 			EndTrail();
-			trails.AddLast(new Trail(parent, material, decayTime, roughness, softSourceEnd, offset, width));
+			trails.AddLast(new Trail(parent, material, decayTime, roughness, softSourceEnd, offsetN, width));
 		}
 
 		/// <summary>

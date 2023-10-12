@@ -13713,7 +13713,7 @@ GameObject:
   - component: {fileID: 189156828}
   m_Layer: 0
   m_Name: ExitSectorTrigger
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14444,7 +14444,7 @@ GameObject:
   - component: {fileID: 312587184}
   m_Layer: 0
   m_Name: ExitSectorTrigger
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31483,7 +31483,7 @@ GameObject:
   - component: {fileID: 937134931}
   m_Layer: 0
   m_Name: EnterSectorTrigger
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31779,7 +31779,7 @@ GameObject:
   - component: {fileID: 962926548}
   m_Layer: 0
   m_Name: EnterSectorTrigger
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46421,6 +46421,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1906287549}
     m_Modifications:
+    - target: {fileID: 1291689471150701321, guid: ecf5e8710e4d12a4ab6b6f4760aa2274, type: 3}
+      propertyPath: m_TagString
+      value: BulletIgnore
+      objectReference: {fileID: 0}
     - target: {fileID: 3449016339965626239, guid: ecf5e8710e4d12a4ab6b6f4760aa2274, type: 3}
       propertyPath: m_Name
       value: Finish segment
@@ -55888,7 +55892,7 @@ GameObject:
   - component: {fileID: 2024149894}
   m_Layer: 0
   m_Name: EnterSectorTrigger
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56084,8 +56088,9 @@ MonoBehaviour:
   frontRayLegth: 7
   sideRayLength: 1
   angleForSidesRays: 25
-  customRechargeTime: 10
+  customRechargeTime: 5
   playerAIDefaultData: {fileID: 11400000, guid: 614f97c44d8fd0e4ba0da57aafa32477, type: 2}
+  useAdditionalBulletBonuses: 0
   additionalBulletBonusList:
   - {fileID: 228953397863495708, guid: 390f22ff9f9a26e45916e8f33bb29400, type: 3}
   - {fileID: 620515326768965270, guid: e954cde7d5f805c42926b2967861728b, type: 3}
@@ -56439,7 +56444,7 @@ GameObject:
   - component: {fileID: 2102603438}
   m_Layer: 0
   m_Name: ExitSectorTrigger
-  m_TagString: Untagged
+  m_TagString: BulletIgnore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

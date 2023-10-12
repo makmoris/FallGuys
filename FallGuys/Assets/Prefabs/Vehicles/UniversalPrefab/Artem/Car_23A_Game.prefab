@@ -259,7 +259,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5275041379166497009}
   serializedVersion: 2
-  m_Mass: 2400
+  m_Mass: 1200
   m_Drag: 0.02
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -293,7 +293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c241727a8fc83048b56bdd0b450f8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayer: 1
   m_Inputs: {fileID: 11400000, guid: 236567edad244004e9d73ee6879aaf9d, type: 2}
   turnInputCurve:
     serializedVersion: 2
@@ -394,8 +393,6 @@ MonoBehaviour:
   stuckTime_PlayerPressesOnGasButDoesntMove: 0
   stuckTime_StuckInSomething: 0
   stuckTime_BotAIPressesOnGasButDoesntMove: 0
-  aiIsTriedToPutItBack: 0
-  aiGiveBack: 0
 --- !u!81 &7416097611686411345
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1187,19 +1184,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5460852552347001212}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ae437f48cab54a31b2c01d2e4d2ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0.15
-  decayTime: 60
+  decayTime: 5
   material: {fileID: 2100000, guid: cf67cfc288c6d4eba9e67404b1952a43, type: 2}
   roughness: 0
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 5460852551795236068}
-  offset: {x: 0, y: -0.29, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &5460852552355691608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,19 +1315,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5460852552390723039}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ae437f48cab54a31b2c01d2e4d2ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0.15
-  decayTime: 60
+  decayTime: 5
   material: {fileID: 2100000, guid: cf67cfc288c6d4eba9e67404b1952a43, type: 2}
   roughness: 0
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 5460852551695434245}
-  offset: {x: 0, y: -0.29, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &5460852552393722648
 GameObject:
   m_ObjectHideFlags: 0
@@ -1646,19 +1643,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5460852552501160129}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ae437f48cab54a31b2c01d2e4d2ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0.15
-  decayTime: 60
+  decayTime: 5
   material: {fileID: 2100000, guid: cf67cfc288c6d4eba9e67404b1952a43, type: 2}
   roughness: 0
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 5460852552474649843}
-  offset: {x: 0, y: -0.29, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &5460852552532977029
 GameObject:
   m_ObjectHideFlags: 0
@@ -7327,19 +7324,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5460852553378486902}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ae437f48cab54a31b2c01d2e4d2ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   width: 0.15
-  decayTime: 60
+  decayTime: 5
   material: {fileID: 2100000, guid: cf67cfc288c6d4eba9e67404b1952a43, type: 2}
   roughness: 0
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 5460852553078495394}
-  offset: {x: 0, y: -0.29, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &5460852553390703934
 GameObject:
   m_ObjectHideFlags: 0

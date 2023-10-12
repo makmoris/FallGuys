@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
+using Sirenix.OdinInspector;
 
 public class RaceInstaller : Installer
 {
@@ -10,6 +11,8 @@ public class RaceInstaller : Installer
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
     [Header("Additional Bullet Bonuses")]
+    [SerializeField] private bool useAdditionalBulletBonuses;
+    [ShowIf("useAdditionalBulletBonuses", true)]
     [SerializeField] private List<AdditionalBulletBonus> additionalBulletBonusList;
 
     protected override void InitializePlayers()
@@ -41,7 +44,7 @@ public class RaceInstaller : Installer
                 weapon.Initialize(false, playerGO.GetComponent<Collider>());
                 weapon.ChangeRechargeTime(customRechargeTime);
                 weapon.DisableWeapon(playerGO);
-                weapon.UseAutomaticAdditionalBulletBonusRecharge(additionalBulletBonusList);
+                if(useAdditionalBulletBonuses) weapon.UseAutomaticAdditionalBulletBonusRecharge(additionalBulletBonusList);
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
@@ -90,7 +93,7 @@ public class RaceInstaller : Installer
                 weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
                 weaponAI.ChangeRechargeTime(customRechargeTime);
                 weaponAI.DisableWeapon(aiPlayerGO);
-                weaponAI.UseAutomaticAdditionalBulletBonusRecharge(additionalBulletBonusList);
+                if(useAdditionalBulletBonuses) weaponAI.UseAutomaticAdditionalBulletBonusRecharge(additionalBulletBonusList);
 
                 // Camera
                 cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);

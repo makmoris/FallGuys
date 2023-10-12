@@ -17,7 +17,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     private Rigidbody _rb;
     private float _defaultDragValue;
 
-    private int slowdownsCounter;
+    [SerializeField]private int slowdownsCounter;
 
     //public static event Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
     //public static event Action<int> BonusBoxGiveHPEvent;
@@ -209,7 +209,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     {
         slowdownsCounter--;
 
-        if (slowdownsCounter == 0)
+        if (slowdownsCounter <= 0)
         {
             _rb.drag = _defaultDragValue;
 
@@ -223,6 +223,11 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         else if (slowdownsCounter < 0) slowdownsCounter = 0;
     }
     #endregion
+
+    private void OnDisable()
+    {
+        StopSlowDown();
+    }
 
     private void SendPlayerPickMysteryBoxAnalyticEvent()
     {

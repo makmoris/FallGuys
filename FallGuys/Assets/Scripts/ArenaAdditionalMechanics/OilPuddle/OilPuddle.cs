@@ -143,9 +143,4 @@ public class OilPuddle : Bonus
 
         gameObject.SetActive(false);
     }
-
-    public override void Got()
-    {
-        // заглушка, чтобы не удалять объект
-    }
 }

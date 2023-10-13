@@ -144,11 +144,6 @@ public class HitSidesController : Bonus
         return parentBumper;
     }
 
-    public override void Got()
-    {
-        // заглушка, чтобы не удалять объект
-    }
-
     private IEnumerator WaitToNewHit()
     {
         canNewHit = false;

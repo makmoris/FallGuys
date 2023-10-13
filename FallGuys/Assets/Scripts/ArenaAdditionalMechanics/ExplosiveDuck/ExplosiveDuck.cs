@@ -172,11 +172,6 @@ public class ExplosiveDuck : Bonus, IExplosion
         Explode();
     }
 
-    public override void Got()
-    {
-        // заглушка, чтобы не удалять объект
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(duck.transform.position, radius);

@@ -210,7 +210,7 @@ public class PlayerEffector
                     CoroutineRunner.Stop(shieldCoroutine);
                     _intermediary.HideShield();
                 }
-                shieldCoroutine = CoroutineRunner.Run(ShieldActive(bonus.Value));
+                shieldCoroutine = CoroutineRunner.Run(ShieldActive(bonus.BonusTime));
 
                 if (isCurrentPlayer) { }//SendPlayerGetShieldAnalyticEvent();
 

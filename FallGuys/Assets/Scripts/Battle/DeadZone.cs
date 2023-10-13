@@ -48,11 +48,6 @@ public class DeadZone : Bonus
         }
     }
 
-    public override void Got()
-    {
-        // заглушка, чтобы не удалять объект
-    }
-
     private void PlayerWasDestroy(GameObject playerGO)
     {
         destroyedObjects.Add(playerGO);

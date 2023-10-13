@@ -58,7 +58,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                 if (bulletParent != this.gameObject)                 // значит это один и тот же игрок. Не бьем по самому себе.
                 {
                     OnBonusGot?.Invoke(bonus);
-                    bonus.Got();
+                    //bonus.Got();
                     Debug.Log($"Прилетела пуля в бампер");
                 }
             }
@@ -75,7 +75,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                         }
 
                         OnBonusGot?.Invoke(bonus);
-                        bonus.Got();
+                        //bonus.Got();
 
                         enabled = false; // enabled = true сделает DeadZone на респе
                     }
@@ -101,7 +101,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                     if (enabled)
                     {
                         OnBonusGot?.Invoke(bonus);
-                        bonus.Got();
+                        //bonus.Got();
                         Debug.Log($"TEST {bonus.Type}");
                     }
                 }
@@ -113,14 +113,14 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     {
         Debug.Log($"Public GetBonus - {bonus.Type}; {gameObject.name}");
         OnBonusGot?.Invoke(bonus);
-        bonus.Got();
+        //bonus.Got();
     }
 
     public void GetBonusWithGameObject(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера. Для молнии
     {
         Debug.Log($"Public GetBonus - {bonus.Type}; {gameObject.name}");
         OnBonusGotWithGameObject?.Invoke(bonus, _gameObject);
-        bonus.Got();
+        //bonus.Got();
     }
 
     public void ShowAdditionalBulletBonusNotification(AdditionalBulletBonus additionalBulletBonus)
@@ -137,7 +137,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public void GetBonusFromOilPuddle(Bonus bonus, float damageInterval)// вызывается при въезде в лужу из OilPuddle
     {
         OnBonusGot?.Invoke(bonus);
-        bonus.Got();
+        //bonus.Got();
 
         oilPuddleCoroutineCounter++;
 
@@ -159,7 +159,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         yield return new WaitForSeconds(time);
         Debug.Log($"OIL COROUTINE");
         OnBonusGot?.Invoke(bonus);
-        bonus.Got();
+        //bonus.Got();
 
         oilPuddleCoroutine = StartCoroutine(WaitAndGetBonusFromOilPuddle(bonus, time));
     }

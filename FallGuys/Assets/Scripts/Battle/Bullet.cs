@@ -184,10 +184,10 @@ public class Bullet : Bonus
     }
 
 
-    public override void Got()
-    {
-        // заглушка, чтобы не удалять пулю
-    }
+    //public override void Got()
+    //{
+    //    // заглушка, чтобы не удалять пулю
+    //}
 
     private void RemoveAdditionalBulletBonus()
     {

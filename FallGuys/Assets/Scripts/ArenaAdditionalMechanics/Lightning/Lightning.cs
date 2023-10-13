@@ -81,9 +81,4 @@ public class Lightning : Bonus
 
         lightningCollider.gameObject.SetActive(true);
     }
-
-    public override void Got()
-    {
-        // заглушка, чтобы не удалять объект
-    }
 }

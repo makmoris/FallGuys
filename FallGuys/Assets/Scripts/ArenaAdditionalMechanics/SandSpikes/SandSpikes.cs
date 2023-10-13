@@ -148,11 +148,6 @@ public class SandSpikes : Bonus
         gameObject.SetActive(false);
     }
 
-    public override void Got()
-    {
-        // заглушка, чтобы не удалять объект
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, radius);

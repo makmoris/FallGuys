@@ -93,7 +93,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284850691298600790}
   serializedVersion: 2
-  m_Mass: 1200
+  m_Mass: 1800
   m_Drag: 0.02
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -361,6 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e26477c32513d44b86b95f0a274cbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slowdownsCounter: 0
 --- !u!114 &287744723789405625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5812,7 +5813,7 @@ MonoBehaviour:
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 8939899595502433285}
-  offset: {x: 0, y: 0, z: 0}
+  offsetN: {x: 0, y: -0.2, z: 0}
 --- !u!1 &8939899595748481267
 GameObject:
   m_ObjectHideFlags: 0
@@ -6067,7 +6068,7 @@ MonoBehaviour:
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 8939899597166007942}
-  offset: {x: 0, y: 0, z: 0}
+  offsetN: {x: 0, y: -0.2, z: 0}
 --- !u!1 &8939899596034810448
 GameObject:
   m_ObjectHideFlags: 0
@@ -6232,7 +6233,7 @@ MonoBehaviour:
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 8939899597183165629}
-  offset: {x: 0, y: 0, z: 0}
+  offsetN: {x: 0, y: -0.2, z: 0}
 --- !u!1 &8939899596214856534
 GameObject:
   m_ObjectHideFlags: 0
@@ -6648,7 +6649,7 @@ MonoBehaviour:
   softSourceEnd: 1
   trailing: 0
   parent: {fileID: 8939899596214856533}
-  offset: {x: 0, y: 0, z: 0}
+  offsetN: {x: 0, y: -0.2, z: 0}
 --- !u!1 &8939899596431432969
 GameObject:
   m_ObjectHideFlags: 0

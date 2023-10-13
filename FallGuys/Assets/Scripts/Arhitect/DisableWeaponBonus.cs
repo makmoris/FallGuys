@@ -17,8 +17,8 @@ public class DisableWeaponBonus : Bonus
         set => time = value;
     }
 
-    public override void Got()
-    {
-        // заглушка, чтобы не удалять объект
-    }
+    //public override void Got()
+    //{
+    //    // заглушка, чтобы не удалять объект
+    //}
 }

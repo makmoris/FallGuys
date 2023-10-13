@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Ring : MonoBehaviour
 {
+    [SerializeField] private GameObject effect;
+
     private EnemyPointer enemyPointer;
     private AttackPointer attackPointer;
     private RingsController ringsController;
@@ -24,6 +26,8 @@ public class Ring : MonoBehaviour
 
         _meshRenderer = GetComponent<MeshRenderer>();
         _collider = GetComponent<Collider>();
+
+        effect.SetActive(false);
     }
 
     public void Initialize(LevelUI levelUI, RingsController ringsController, float rechargeTime)
@@ -41,6 +45,9 @@ public class Ring : MonoBehaviour
 
         ringsController.TheRingIsKnockedOff(playerGO);
         DeactivateRing(true);
+
+        effect.SetActive(false);
+        effect.SetActive(true);
     }
 
     public void ActivateRing()

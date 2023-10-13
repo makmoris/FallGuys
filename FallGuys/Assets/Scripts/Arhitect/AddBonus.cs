@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class AddBonus : Bonus
 {
+
     [SerializeField] private float value;
     public override float Value
     {
@@ -22,6 +23,9 @@ public class AddBonus : Bonus
 
     private int enumLength;
 
+    [SerializeField] private VremBonusBox vremBonusBox;
+    [Space]
+
     [Space]
     [SerializeField] private float boxRespawnTime;
 
@@ -35,12 +39,12 @@ public class AddBonus : Bonus
     [SerializeField] private int minShieldBonusValue;
     [SerializeField] private int maxShieldBonusValue;
 
-    [Header("Gold")]
-    [SerializeField] private int minGoldBonusValue;
-    [SerializeField] private int maxGoldBonusValue;
-    [Space]
-    [SerializeField] private ParticleSystem goldEffect;
-    [SerializeField] private AudioClip goldSound;
+    //[Header("Gold")]
+    //[SerializeField] private int minGoldBonusValue;
+    //[SerializeField] private int maxGoldBonusValue;
+    //[Space]
+    //[SerializeField] private ParticleSystem goldEffect;
+    //[SerializeField] private AudioClip goldSound;
 
     List<BonusType> bonuses = new List<BonusType>();
 
@@ -60,7 +64,8 @@ public class AddBonus : Bonus
         {
             BonusType bonusType = (BonusType)Enum.GetValues(typeof(BonusType)).GetValue(i);
 
-            if (bonusType != BonusType.DisableWeaponFromLightning && bonusType != BonusType.DisableWeapon)
+            if (bonusType != BonusType.DisableWeaponFromLightning && bonusType != BonusType.DisableWeapon
+                && bonusType != BonusType.ControlInversion && bonusType != BonusType.Slowdown && bonusType != BonusType.AddGold)
             {
                 bonuses.Add(bonusType);
             }
@@ -70,7 +75,8 @@ public class AddBonus : Bonus
     private void OnEnable()
     {
         Type = GetRandomBonus();
-        value = GetRandomValue(Type);
+        Value = GetRandomValue(Type);
+        BonusTime = GetRandomValue(Type);
     }
 
     private BonusType GetRandomBonus()
@@ -102,38 +108,40 @@ public class AddBonus : Bonus
 
                 break;
 
-            case BonusType.AddGold:
+            //case BonusType.AddGold:
 
-                int randG = Random.Range(minGoldBonusValue, maxGoldBonusValue + 1);
-                value = randG;
+            //    int randG = Random.Range(minGoldBonusValue, maxGoldBonusValue + 1);
+            //    value = randG;
 
-                break;
+            //    break;
         }
 
         return value;
     }
 
-    //public override void Got()
-    //{
-    //    if (Type == BonusType.AddHealth)
-    //    {
-    //        healthEffect.Play();
-    //    }
-    //    if (Type == BonusType.AddGold)
-    //    {
-    //        goldEffect.Play();
+    public override void Got()
+    {
+        if (Type == BonusType.AddHealth)
+        {
+            healthEffect.Play();
+        }
+        //if (Type == BonusType.AddGold)
+        //{
+        //    goldEffect.Play();
 
-    //        audioSource.clip = goldSound;
-    //        audioSource.Play();
-    //    }
+        //    audioSource.clip = goldSound;
+        //    audioSource.Play();
+        //}
 
-    //    CoroutineRunner.Run(WaitAndRespawn());
-    //}
+        CoroutineRunner.Run(WaitAndRespawn());
+    }
 
     IEnumerator WaitAndRespawn()
     {
         gameObject.SetActive(false);
         yield return new WaitForSeconds(boxRespawnTime);
         gameObject.SetActive(true);
+
+        if(vremBonusBox != null) vremBonusBox.ShowBox();
     }
 }

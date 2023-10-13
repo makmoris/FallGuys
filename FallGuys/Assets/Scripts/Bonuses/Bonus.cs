@@ -17,9 +17,9 @@ public abstract class Bonus : MonoBehaviour
 
     public abstract float BonusTime { get; set; }
 
-    //public virtual void Got()
-    //{
-    //    //Destroy(gameObject);
-    //    gameObject.SetActive(false);
-    //}
+    public virtual void Got()
+    {
+        //Destroy(gameObject);
+        //gameObject.SetActive(false);
+    }
 }

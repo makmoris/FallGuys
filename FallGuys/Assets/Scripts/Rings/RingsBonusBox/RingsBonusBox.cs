@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RingsBonusBox : MonoBehaviour
 {
+    [SerializeField] private VremBonusBox vremBonusBox;
+    [Space]
+
     [SerializeField] private float boxRespawnTime = 5f;
     [Space]
     [SerializeField] private List<AdditionalBulletBonus> additionalBulletBonusesList;
@@ -32,6 +35,7 @@ public class RingsBonusBox : MonoBehaviour
         gameObject.SetActive(false);
         yield return new WaitForSeconds(boxRespawnTime);
         gameObject.SetActive(true);
+        if (vremBonusBox != null)  vremBonusBox.ShowBox();
     }
 }
 

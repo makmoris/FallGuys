@@ -6,21 +6,6 @@ using Random = UnityEngine.Random;
 
 public class AddBonus : Bonus
 {
-
-    [SerializeField] private float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
     private int enumLength;
 
     [SerializeField] private VremBonusBox vremBonusBox;
@@ -74,9 +59,8 @@ public class AddBonus : Bonus
 
     private void OnEnable()
     {
-        Type = GetRandomBonus();
-        Value = GetRandomValue(Type);
-        BonusTime = GetRandomValue(Type);
+        _bonusType = GetRandomBonus();
+        _bonusValue = GetRandomValue(BonusType);
     }
 
     private BonusType GetRandomBonus()
@@ -119,22 +103,22 @@ public class AddBonus : Bonus
         return value;
     }
 
-    public override void Got()
-    {
-        if (Type == BonusType.AddHealth)
-        {
-            healthEffect.Play();
-        }
-        //if (Type == BonusType.AddGold)
-        //{
-        //    goldEffect.Play();
+    //public override void Got()
+    //{
+    //    if (Type == BonusType.AddHealth)
+    //    {
+    //        healthEffect.Play();
+    //    }
+    //    if (Type == BonusType.AddGold)
+    //    {
+    //        goldEffect.Play();
 
-        //    audioSource.clip = goldSound;
-        //    audioSource.Play();
-        //}
+    //        audioSource.clip = goldSound;
+    //        audioSource.Play();
+    //    }
 
-        CoroutineRunner.Run(WaitAndRespawn());
-    }
+    //    CoroutineRunner.Run(WaitAndRespawn());
+    //}
 
     IEnumerator WaitAndRespawn()
     {

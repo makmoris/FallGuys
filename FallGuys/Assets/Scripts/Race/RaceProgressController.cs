@@ -98,12 +98,10 @@ public class RaceProgressController : LevelProgressController
 
     private void ApplyDisableBonus(GameObject driverGO, float disableTime)
     {
-        DisableWeaponBonus disableWeaponBonus = new();
-        disableWeaponBonus.Type = BonusType.DisableWeapon;
-        disableWeaponBonus.Value = disableTime;
+        DisableWeaponBonus disableWeaponBonus = new(disableTime);
 
         Bumper bumper = driverGO.GetComponent<Bumper>();
-        bumper.GetBonusWithGameObject(disableWeaponBonus, driverGO);
+        bumper.GetBonus(disableWeaponBonus, driverGO);
     }
 
     private void DriverFinished(WheelVehicle wheelVehicleDriver)

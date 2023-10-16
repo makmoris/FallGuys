@@ -4,21 +4,6 @@ using UnityEngine;
 
 public class SandSpikes : Bonus
 {
-    [SerializeField] float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
-    [Space]
     public LayerMask ignoreLayer;
     [SerializeField] private float radius;
     [SerializeField] private float upwards;

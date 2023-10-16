@@ -2,24 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitSidesController : Bonus
+public class HitSidesController : MonoBehaviour
 {
+    private HealthBonus healthBonus;
+    private float damage;
+
     [SerializeField] private int minDamageSpeedValue;
     [SerializeField] private int maxDamageSpeedValue;
-
-    private float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
 
     private Dictionary<Collider, Bumper> _parentsOfCollisionObjectsDict = new Dictionary<Collider, Bumper>();
 
@@ -83,15 +72,15 @@ public class HitSidesController : Bonus
 
                     if (val >= minDamageSpeedValue && val <= maxDamageSpeedValue)
                     {
-                        value = val * -1f;
+                        damage = val * -1f;
 
-                        enemyBumper.GetBonus(this);
+                        healthBonus = new HealthBonus(damage);
+                        enemyBumper.GetBonus(healthBonus);
                     }
                     Debug.Log($"{gameObject.transform.parent.name} наносит урон {enemyBumper.name} в размере {val}, т.к. {gameObject.transform.parent.name} влетел ему в жопой");
                 }
 
                 StartCoroutine(WaitToNewHit());
-                return;
             }
             else if (hittedSide == "FrontSide")// если удар пришелс€ на ѕ≈–≈ƒЌ»… бампер
             {
@@ -101,9 +90,10 @@ public class HitSidesController : Bonus
 
                     if (val >= minDamageSpeedValue && val <= maxDamageSpeedValue)
                     {
-                        value = val * -1f;
+                        damage = val * -1f;
 
-                        enemyBumper.GetBonus(this);
+                        healthBonus = new HealthBonus(damage);
+                        enemyBumper.GetBonus(healthBonus);
                     }
                     Debug.Log($"{gameObject.transform.parent.name} наносит урон {enemyBumper.name} в размере {val}, т.к. {gameObject.transform.parent.name} хотел ударить его передом");
                 }
@@ -113,14 +103,12 @@ public class HitSidesController : Bonus
                 }
 
                 StartCoroutine(WaitToNewHit());
-                return;
             }
             else// если удар пришелс€ на любую из сторон, то там в любом случае получаем урон, т.к. в нас влетели
             {
                 Debug.Log($"{gameObject.transform.parent.name} получает урон в бок от {enemyBumper.name}");
 
                 StartCoroutine(WaitToNewHit());
-                return;
             }
         }
     }

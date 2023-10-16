@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class OilPuddle : Bonus
 {
-    [SerializeField] float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
-    [Space]
-
     [SerializeField] private float damageInterval = 0.5f;// пауза между получением урона пока игрок в луже
     [SerializeField] private float decelerationAmount = 2.5f;// величина замедления
     [Space]

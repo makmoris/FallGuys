@@ -4,20 +4,6 @@ using UnityEngine;
 
 public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
 {
-    [SerializeField]private float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    [SerializeField] private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusSlowdownOilPuddle;
 
     [Space]
@@ -27,8 +13,8 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
 
     private void Awake()
     {
-        Type = BonusType.Slowdown;
-        puddleLiveTime = time;
+        _bonusType = BonusType.Slowdown;
+        puddleLiveTime = _bonusValue;
         slowdownGO.SetActive(false);
     }
 

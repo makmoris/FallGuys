@@ -2,23 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Bullet : Bonus
+public class Bullet : MonoBehaviour
 {
-    [SerializeField] float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
+    private HealthBonus healthBonus;
 
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
-    [Space]
     [SerializeField] private float bulletSpeed = 5f;
     
     [SerializeField] private float force;
@@ -43,6 +30,9 @@ public class Bullet : Bonus
     private bool isAdditionalBulletBonusSetted;
 
     private bool init;
+
+    [Header("DEBUG")]
+    [SerializeField] private float damage;
 
     private void Initialize()
     {
@@ -96,6 +86,8 @@ public class Bullet : Bonus
                 Bumper bumper = other.GetComponent<Bumper>();
                 if (bumper != null)// если это игрок - Выпихиваем его в направлении пули
                 {
+                    bumper.GetBonus(healthBonus, this.gameObject);
+
                     if (isAdditionalBulletBonusSetted)// без толчка
                     {
                         bumper.GetBonus(additionalBulletBonus);
@@ -174,7 +166,8 @@ public class Bullet : Bonus
 
     public void SetDamageValue(float damageValue)
     {
-        Value = damageValue;
+        damage = damageValue;
+        healthBonus = new HealthBonus(damage);
     }
 
     // вызывается Bumper, чтобы проверять, что мы не воздействуем на самого себя. Чтобы не стрелять по самому себе 
@@ -182,12 +175,6 @@ public class Bullet : Bonus
     {
         return parentCollider.gameObject;
     }
-
-
-    //public override void Got()
-    //{
-    //    // заглушка, чтобы не удалять пулю
-    //}
 
     private void RemoveAdditionalBulletBonus()
     {

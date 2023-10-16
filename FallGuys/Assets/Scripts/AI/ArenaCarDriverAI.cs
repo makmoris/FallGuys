@@ -24,7 +24,7 @@ public class ArenaCarDriverAI : DriverAI
 
     private ArenaDifficultyLevelsAI arenaDifficultyLevelAI;
 
-    private List<Transform> bonusBoxes = new();// для дуэли, чтобы чередовал игрока с бонусами
+    [SerializeField]private List<Transform> bonusBoxes = new();// для дуэли, чтобы чередовал игрока с бонусами
     [SerializeField]private bool isDuel;
     [SerializeField]private int playerWasTargetCounter;
     [SerializeField] private int bonusWasTargetCounter;
@@ -280,7 +280,7 @@ public class ArenaCarDriverAI : DriverAI
 
         foreach (var item in targets)
         {
-            if (item.GetComponent<Animator>() != null)// пока так, потом, если понадобится, можно создать какой-нибудь скрипт и кинуть на бокс
+            if (item.GetComponent<VremBonusBox>() != null)// пока так, потом, если понадобится, можно создать какой-нибудь скрипт и кинуть на бокс
             {
                 bonusBoxes.Add(item);
             }

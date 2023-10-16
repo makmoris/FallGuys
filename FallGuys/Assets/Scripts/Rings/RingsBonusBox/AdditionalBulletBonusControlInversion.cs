@@ -4,24 +4,11 @@ using UnityEngine;
 
 public class AdditionalBulletBonusControlInversion : AdditionalBulletBonus
 {
-    private float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-    [SerializeField] private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusControlInversion;
 
     private void Awake()
     {
-        Type = BonusType.ControlInversion;
+        _bonusType = BonusType.ControlInversion;
     }
 
     public override void PlayEffect(Vector3 effectPosition)

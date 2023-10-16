@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
 {
-    private float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-    public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusExplosion;
-
-    [Space]
     public LayerMask ignoreLayer; // ignore AttackPointer
     //public bool isBullet;
     [SerializeField] private float radius;
@@ -29,6 +13,8 @@ public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
     [SerializeField] private GameObject explosionEffect;
 
     public ForceMode forceMode = ForceMode.VelocityChange;
+
+    public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusExplosion;
 
     public override void PlayEffect(Vector3 effectPosition)
     {

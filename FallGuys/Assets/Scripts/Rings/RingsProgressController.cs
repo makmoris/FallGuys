@@ -129,6 +129,8 @@ public class RingsProgressController : LevelProgressController
             }
         }
 
+        _losersList.Reverse();
+
         if (_isCurrentPlayerWinner)
         {
             ringsProgressUIController.CongratulationsOverEvent += CongratulationsOver;

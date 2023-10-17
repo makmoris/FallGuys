@@ -280,7 +280,7 @@ public class ArenaCarDriverAI : DriverAI
 
         foreach (var item in targets)
         {
-            if (item.GetComponent<VremBonusBox>() != null)// пока так, потом, если понадобится, можно создать какой-нибудь скрипт и кинуть на бокс
+            if (item.GetComponent<BonusBox>() != null)// пока так, потом, если понадобится, можно создать какой-нибудь скрипт и кинуть на бокс
             {
                 bonusBoxes.Add(item);
             }

@@ -90,7 +90,7 @@ public class Bullet : MonoBehaviour
 
                     if (isAdditionalBulletBonusSetted)// без толчка
                     {
-                        bumper.GetBonus(additionalBulletBonus);
+                        bumper.GetBonus(additionalBulletBonus.GetBonus());
                         AdditionalBulletBonus additionalBulletBonusGO = Instantiate(additionalBulletBonus, other.transform.position, Quaternion.identity);
                         additionalBulletBonusGO.PlayEffect(other.transform.position);
 

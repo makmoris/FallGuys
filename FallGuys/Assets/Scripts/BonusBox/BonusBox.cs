@@ -1,105 +1,118 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BonusBox : MonoBehaviour
 {
     [System.Flags]
-    public enum VehicleBonuses
+    public enum Bonuses
     {
         Nothing = 0,
         Health = 1,
-        Shield = 2
+        Shield = 2,
+        Lightning = 4,
+        SlowdownOilPuddle = 8,
+        Explosion = 16,
+        ControlInversion = 32,
+        BlankShot = 64
     }
 
-    [System.Flags]
-    public enum BulletBonuses
-    {
-        Nothing = 0,
-        Lightning = 1,
-        SlowdownOilPuddle = 2,
-        Explosion = 4,
-        ControlInversion = 8,
-        BlankShot = 16
-    }
+    [SerializeField] private Bonuses bonusesFlags;
+    [SerializeField] private List<Bonuses> activeBonusesFlagsList = new List<Bonuses>();
 
-    [SerializeField] private VehicleBonuses vehicleBonusesFlags;
-    [SerializeField] private BulletBonuses bulletBonusesFlags;
+    [Header("Bonus Prefabs")]
+    [SerializeField] private HealthBonusForBonusBox healthBonusForBonusBox;
+    [SerializeField] private ShieldBonusForBonusBox shieldBonusForBonusBox;
+    [SerializeField] private AdditionalBulletBonusLightning additionalBulletBonusLightning;
+    [SerializeField] private AdditionalBulletBonusSlowdownOilPuddle additionalBulletBonusSlowdownOilPuddle;
+    [SerializeField] private AdditionalBulletBonusExplosion additionalBulletBonusExplosion;
+    [SerializeField] private AdditionalBulletBonusControlInversion additionalBulletBonusControlInversion;
+    [SerializeField] private AdditionalBulletBonusBlankShot additionalBulletBonusBlankShot;
 
-    private List<Bonus> usingBonuses;
-
-    [Header("Vehicle Bonuses Settings")]
-    [Header("Health")]
-    [Min(1)] [SerializeField] private int minHealthBonusValue = 1;
-    [Min(1)] [SerializeField] private int maxHealthBonusValue = 10;
-    [Space]
-    [SerializeField] private ParticleSystem healthEffect;
-
-    [Header("Shield")]
-    [Min(1)] [SerializeField] private int minShieldBonusTime = 1;
-    [Min(1)] [SerializeField] private int maxShieldBonusTime = 5;
-
-    [Header("Bullet Bonuses Settings")]
-    [SerializeField] private List<AdditionalBulletBonus> additionalBulletBonusesPrefabList;
-
-    private BonusBoxTrigger bonusBoxTrigger;
+    [Header("Bonus Box")]
+    [Min(0)][SerializeField] private float bonusBoxRespawnTime = 4f;
+    [SerializeField] private GameObject bonusBoxGO;
 
     private void Awake()
     {
-        bonusBoxTrigger = GetComponentInChildren<BonusBoxTrigger>();
-        bonusBoxTrigger.Initialize(this);
+        FillActiveBonusesList();
     }
 
-    public void ApplyBonus(GameObject carGO)
+
+    public void ApplyBonus(GameObject car)
     {
-        int r = Random.Range(0, 2);
+        Bonuses randomBonusFlag = activeBonusesFlagsList[Random.Range(0, activeBonusesFlagsList.Count)];
 
-        if (r == 0) ApplyVehicleBonus(carGO);
-        else ApplyBulletBonus(carGO);
-    }
+        Bumper bumper = car.GetComponent<Bumper>();
+        Weapon weapon = car.GetComponentInChildren<Weapon>();
 
-    private void ApplyVehicleBonus(GameObject carGO)
-    {
-        Bumper bumper = carGO.GetComponent<Bumper>();
-
-        //switch (vehicleBonuses)
-        //{
-        //    case VehicleBonuses.Health:
-
-        //        Type = BonusType.AddHealth;
-        //        Value = Random.Range(minHealthBonusValue, maxHealthBonusValue + 1);
-
-        //        break;
-        //    case VehicleBonuses.Shield:
-
-        //        Type = BonusType.AddShield;
-        //        BonusTime = Random.Range(minShieldBonusTime, maxShieldBonusTime + 1);
-
-        //        break;
-        //}
-    }
-
-    private void ApplyBulletBonus(GameObject carGO)
-    {
-        Weapon weapon = carGO.GetComponentInChildren<Weapon>();
-
-        
-    }
-
-    private AdditionalBulletBonus GetRandomAdditionalBonus()
-    {
-        int rand = Random.Range(0, additionalBulletBonusesPrefabList.Count);
-
-        return additionalBulletBonusesPrefabList[rand];
-    }
-
-    private void CheckBonusesFlags()
-    {
-        if (vehicleBonusesFlags.HasFlag(VehicleBonuses.Health))
+        switch (randomBonusFlag)
         {
+            case Bonuses.Health:
 
-            //usingBonuses.Add();
+                bumper.GetBonus(healthBonusForBonusBox.GetBonus());
+
+                HealthBonusForBonusBox healthBonus = Instantiate(healthBonusForBonusBox, transform.position, Quaternion.identity);
+                healthBonus.ShowEffect();
+
+                break;
+
+            case Bonuses.Shield:
+
+                bumper.GetBonus(shieldBonusForBonusBox.GetBonus());
+
+                break;
+
+            case Bonuses.Lightning:
+
+                weapon.SetAdditionalBulletBonus(additionalBulletBonusLightning, true);
+
+                break;
+
+            case Bonuses.SlowdownOilPuddle:
+
+                weapon.SetAdditionalBulletBonus(additionalBulletBonusSlowdownOilPuddle, true);
+
+                break;
+
+            case Bonuses.Explosion:
+
+                weapon.SetAdditionalBulletBonus(additionalBulletBonusExplosion, true);
+
+                break;
+
+            case Bonuses.ControlInversion:
+
+                weapon.SetAdditionalBulletBonus(additionalBulletBonusControlInversion, true);
+
+                break;
+
+            case Bonuses.BlankShot:
+
+                weapon.SetAdditionalBulletBonus(additionalBulletBonusBlankShot, true);
+
+                break;
         }
+
+        CoroutineRunner.Run(WaitAndRespawn());
     }
-    
+
+    private void FillActiveBonusesList()
+    {
+        if (bonusesFlags.HasFlag(Bonuses.Health)) activeBonusesFlagsList.Add(Bonuses.Health);
+        if (bonusesFlags.HasFlag(Bonuses.Shield)) activeBonusesFlagsList.Add(Bonuses.Shield);
+        if (bonusesFlags.HasFlag(Bonuses.Lightning)) activeBonusesFlagsList.Add(Bonuses.Lightning);
+        if (bonusesFlags.HasFlag(Bonuses.SlowdownOilPuddle)) activeBonusesFlagsList.Add(Bonuses.SlowdownOilPuddle);
+        if (bonusesFlags.HasFlag(Bonuses.Explosion)) activeBonusesFlagsList.Add(Bonuses.Explosion);
+        if (bonusesFlags.HasFlag(Bonuses.ControlInversion)) activeBonusesFlagsList.Add(Bonuses.ControlInversion);
+        if (bonusesFlags.HasFlag(Bonuses.BlankShot)) activeBonusesFlagsList.Add(Bonuses.BlankShot);
+    }
+
+    IEnumerator WaitAndRespawn()
+    {
+        bonusBoxGO.SetActive(false);
+        yield return new WaitForSeconds(bonusBoxRespawnTime);
+        bonusBoxGO.SetActive(true);
+    }
 }

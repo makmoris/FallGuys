@@ -6,8 +6,16 @@ public class AdditionalBulletBonusBlankShot : AdditionalBulletBonus
 {
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType =>  AdditionalBulletBonusTypeEnum.AdditionalBulletBonusBlankShot;
 
+    private HealthBonus healthBonus;
+
     public override void PlayEffect(Vector3 effectPosition)
     {
         Destroy(gameObject);
+    }
+
+    public override Bonus GetBonus()
+    {
+        healthBonus = new HealthBonus(0);
+        return healthBonus;
     }
 }

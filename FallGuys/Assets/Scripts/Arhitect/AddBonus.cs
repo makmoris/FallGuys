@@ -50,7 +50,7 @@ public class AddBonus : Bonus
             BonusType bonusType = (BonusType)Enum.GetValues(typeof(BonusType)).GetValue(i);
 
             if (bonusType != BonusType.DisableWeaponFromLightning && bonusType != BonusType.DisableWeapon
-                && bonusType != BonusType.ControlInversion && bonusType != BonusType.Slowdown && bonusType != BonusType.AddGold)
+                && bonusType != BonusType.ControlInversion  && bonusType != BonusType.AddGold)
             {
                 bonuses.Add(bonusType);
             }

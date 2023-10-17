@@ -1,10 +1,11 @@
 public enum BonusType
 {
-    AddHealth = 0,
-    AddShield = 1,
-    AddGold = 2,
-    DisableWeapon = 3,
-    DisableWeaponFromLightning = 4,
-    Slowdown = 5,
-    ControlInversion = 6
+    None = 0,
+    AddHealth = 1,
+    AddShield = 2,
+    AddGold = 3,
+    DisableWeapon = 4,
+    DisableWeaponFromLightning = 5,
+    Slowdown = 6,
+    ControlInversion = 7
 }

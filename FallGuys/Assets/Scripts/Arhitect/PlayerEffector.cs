@@ -122,13 +122,11 @@ public class PlayerEffector
 
     private void ApplyBonus(Bonus bonus)
     {
-        //Debug.Log($"PLAYER EFFECTOR {bonus.Type}");
-
         switch (bonus.BonusType)
         {
             case BonusType.AddHealth:
 
-                if (bonus.BonusValue < 0 && isShieldActive && bonus.GetComponent<DeadZone>() == null)// последнее - чтобы получать урон в щите, если выпал со сцены
+                if (bonus.BonusValue < 0 && isShieldActive)// последнее - чтобы получать урон в щите, если выпал со сцены
                 {
 
                 }
@@ -136,10 +134,7 @@ public class PlayerEffector
                 {
                     var resultHealth = player.Health + bonus.BonusValue;
                     Debug.Log(resultHealth + " = " + player.Health + " + " + bonus.BonusValue);
-                    //if (resultHealth > limitsData.MaxHP)
-                    //{
-                    //    //resultHealth = _limitsData.MaxHP; // убрали лимит на хп
-                    //}
+
                     if (resultHealth <= 0)
                     {
                         resultHealth = 0;
@@ -152,20 +147,8 @@ public class PlayerEffector
                     else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
 
                     if (player.Health == 0)
-                    {
-                        Debug.Log("DA 1");
-                        //Bullet bullet = bonus.GetComponent<Bullet>();
-
-                        //if (bullet != null)
-                        //{
-                        //    Debug.Log("BULLET 1");
-                        //    _intermediary.DestroyCar(bullet.GetParent());
-                        //}
-                        //else
-                        //{
-                        //    _intermediary.DestroyCar();
-                        //}
-                        ////Debug.Log("Destroy in effector");
+                    {   
+                        _intermediary.DestroyCar();
 
                         if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
                     }
@@ -193,14 +176,6 @@ public class PlayerEffector
                 }
 
                 break;
-
-            //case BonusType.AddSpeed:
-
-            //    break;
-
-            //case BonusType.AddDamage:
-
-            //    break;
 
             case BonusType.AddShield:
                                                 // сейчас мерцает в зависмости от времени действия. 5 раз в течении 1/3 от времени действия
@@ -251,12 +226,14 @@ public class PlayerEffector
 
                 if (!isShieldActive)
                 {
+                    SlowdownBonus slowdownBonus = bonus as SlowdownBonus;
+
                     if (slowdownCoroutine != null)
                     {
                         CoroutineRunner.Stop(slowdownCoroutine);
                     }
-                    thisBumper.StartSlowdown(bonus.BonusValue);
-                    slowdownCoroutine = CoroutineRunner.Run(WaitAndDeactivateSlowdown(bonus.BonusValue));
+                    thisBumper.StartSlowdown(slowdownBonus.BonusValue);
+                    slowdownCoroutine = CoroutineRunner.Run(WaitAndDeactivateSlowdown(slowdownBonus.SlowdownTime));
 
                     if (isCurrentPlayer)
                     {
@@ -295,7 +272,9 @@ public class PlayerEffector
         {
             case BonusType.AddHealth:
 
-                if (bonus.BonusValue < 0 && isShieldActive && bonus.GetComponent<DeadZone>() == null)// последнее - чтобы получать урон в щите, если выпал со сцены
+                DeadZone deadZone = _gameObject.GetComponent<DeadZone>();
+
+                if (bonus.BonusValue < 0 && isShieldActive && deadZone == null)// последнее - чтобы получать урон в щите, если выпал со сцены
                 {
 
                 }
@@ -331,6 +310,10 @@ public class PlayerEffector
                         //Debug.Log("Destroy in effector");
 
                         if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
+                    }
+                    else
+                    {
+                        if (deadZone != null) deadZone.RespawnCar(thisBumper);
                     }
 
                     if (bonus.BonusValue > 0 && isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.BonusValue);

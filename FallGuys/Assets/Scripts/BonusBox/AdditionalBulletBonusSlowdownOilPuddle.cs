@@ -6,15 +6,15 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
 {
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusSlowdownOilPuddle;
 
-    [Space]
-    private float puddleLiveTime;
+    private SlowdownBonus slowdownBonus;
+    [SerializeField] private float decelerationAmount = 1.5f;
+
     [Space]
     [SerializeField] private GameObject slowdownGO;
+    [SerializeField] private float puddleLiveTime = 5f;
 
     private void Awake()
     {
-        _bonusType = BonusType.Slowdown;
-        puddleLiveTime = _bonusValue;
         slowdownGO.SetActive(false);
     }
 
@@ -22,6 +22,12 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
     {
         transform.localPosition = effectPosition;
         StartCoroutine(PuddleMakingAnimation());
+    }
+
+    public override Bonus GetBonus()
+    {
+        slowdownBonus = new SlowdownBonus(decelerationAmount, puddleLiveTime);
+        return slowdownBonus;
     }
 
     IEnumerator PuddleMakingAnimation()

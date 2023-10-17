@@ -1,8 +1,8 @@
 public class DisableWeaponBonus : Bonus
 {
-    public DisableWeaponBonus(float bonusValue)
+    public DisableWeaponBonus(float value)
     {
         _bonusType = BonusType.DisableWeapon;
-        _bonusValue = bonusValue;
+        _bonusValue = value;
     }
 }

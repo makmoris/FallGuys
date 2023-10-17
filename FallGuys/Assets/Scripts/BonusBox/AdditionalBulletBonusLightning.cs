@@ -1,12 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class AdditionalBulletBonusLightning : AdditionalBulletBonus
 {
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusLightning;
 
+    [MinValue(0)][SerializeField] private float disableTime = 5f;
     [SerializeField] private AdditionalBulletBonusLightningEffect lightningEffect;
+
+    private DisableWeaponFromLightningBonus disableWeaponFromLightningBonus;
 
     private void Awake()
     {
@@ -17,5 +19,11 @@ public class AdditionalBulletBonusLightning : AdditionalBulletBonus
     {
         transform.localPosition = effectPosition;
         lightningEffect.gameObject.SetActive(true);
+    }
+
+    public override Bonus GetBonus()
+    {
+        disableWeaponFromLightningBonus = new DisableWeaponFromLightningBonus(disableTime);
+        return disableWeaponFromLightningBonus;
     }
 }

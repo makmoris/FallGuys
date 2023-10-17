@@ -1,9 +1,13 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OilPuddle : Bonus
+public class OilPuddle : MonoBehaviour
 {
+    private HealthBonus healthBonus;
+    [MaxValue(0)][SerializeField] private float damage = -5f;
+    [Space]
     [SerializeField] private float damageInterval = 0.5f;// пауза между получением урона пока игрок в луже
     [SerializeField] private float decelerationAmount = 2.5f;// величина замедления
     [Space]
@@ -21,14 +25,8 @@ public class OilPuddle : Bonus
         appearancePlace.SetActive(false);
         HidePuddlesInList();
         SetValuesInOilPuddleColliders();
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            StartOilPuddleAppearance();
-        }
+        healthBonus = new HealthBonus(damage);
     }
 
     public void StartOilPuddleAppearanceFromController(float waitTime)// вызывается контроллером
@@ -39,7 +37,7 @@ public class OilPuddle : Bonus
     public void MakeDamage(GameObject damagableObject)
     {
         Bumper bumper = damagableObject.GetComponent<Bumper>();
-        if (bumper != null) bumper.GetBonusFromOilPuddle(this, damageInterval);
+        if (bumper != null) bumper.GetBonusFromOilPuddle(healthBonus, damageInterval);
     }
 
     public void StopDamage(GameObject damagableObject)

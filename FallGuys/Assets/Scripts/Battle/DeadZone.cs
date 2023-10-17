@@ -2,25 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Sirenix.OdinInspector;
 
-
-public class DeadZone : Bonus
+public class DeadZone : MonoBehaviour
 {
-    [Space]
-    [Header("Add Shield Bonus")]
-    [SerializeField] private ShieldDeadZone shieldBonus;
+    [MaxValue(0)][SerializeField] private float damage = -5f;
+    [MinValue(0)][SerializeField] private float shieldTime = 4f;
 
+    private HealthBonus healthBonus;
+    private ShieldBonus shieldBonus;
+
+    [Space]
     [Header("Arena Spawn Controller")]
     [SerializeField] private ArenaSpawnController arenaSpawnController;
 
     private float respawnTime;
 
     private List<GameObject> waitRespawnCars = new List<GameObject>();
-    private List<GameObject> destroyedObjects = new List<GameObject>();
 
     private void Awake()
     {
         respawnTime = 0f;
+
+        healthBonus = new HealthBonus(damage);
+        shieldBonus = new ShieldBonus(shieldTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,28 +33,16 @@ public class DeadZone : Bonus
         Bumper bumper = other.GetComponent<Bumper>();
         if (bumper != null)
         {
-            //bumper.gameObject.SetActive(false);
-            StartCoroutine(WaitAndResp(bumper));
-            waitRespawnCars.Add(bumper.gameObject);
+            bumper.GetBonus(healthBonus, this.gameObject);
+
             Debug.Log("DeadZone");
         }
     }
 
-    private void PlayerWasDestroy(GameObject playerGO)
+    public void RespawnCar(Bumper bumper)
     {
-        destroyedObjects.Add(playerGO);
-
-        if (waitRespawnCars.Contains(playerGO)) waitRespawnCars.Remove(playerGO);
-    }
-
-    private bool IsPlayerDead(GameObject playerGO)
-    {
-        foreach (var obj in destroyedObjects)
-        {
-            if (obj == playerGO) return true;
-        }
-
-        return false;
+        StartCoroutine(WaitAndResp(bumper));
+        waitRespawnCars.Add(bumper.gameObject);
     }
 
     IEnumerator WaitAndResp(Bumper bumper)
@@ -72,15 +65,5 @@ public class DeadZone : Bonus
 
             waitRespawnCars.Remove(bumper.gameObject);
         }
-    }
-
-    private void OnEnable()
-    {
-        VisualIntermediary.PlayerWasDeadEvent += PlayerWasDestroy;
-    }
-
-    private void OnDisable()
-    {
-        VisualIntermediary.PlayerWasDeadEvent -= PlayerWasDestroy;
     }
 }

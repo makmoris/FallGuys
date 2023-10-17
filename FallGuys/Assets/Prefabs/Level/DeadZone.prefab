@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5892970622600334522}
   - component: {fileID: 5892970622600334523}
   - component: {fileID: 5892970622600334520}
-  - component: {fileID: 5892970622600334521}
   m_Layer: 0
   m_Name: DeadZone
   m_TagString: Respawn
@@ -111,21 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e2ae8b980915d42a0c2063330e5233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
-  value: -10
-  shieldBonus: {fileID: 5892970622600334521}
+  damage: -55
+  shieldTime: 4
   arenaSpawnController: {fileID: 0}
---- !u!114 &5892970622600334521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5892970622600334518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6de3e0c32b27a2349b01cab879d1a23f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 1
-  time: 5

@@ -122,24 +122,19 @@ public class PlayerEffector
 
     private void ApplyBonus(Bonus bonus)
     {
-        //Debug.Log($"PLAYER EFFECTOR {bonus.Type}");
-
-        switch (bonus.Type)
+        switch (bonus.BonusType)
         {
             case BonusType.AddHealth:
 
-                if (bonus.Value < 0 && isShieldActive && bonus.GetComponent<DeadZone>() == null)// последнее - чтобы получать урон в щите, если выпал со сцены
+                if (bonus.BonusValue < 0 && isShieldActive)// последнее - чтобы получать урон в щите, если выпал со сцены
                 {
 
                 }
                 else if(!isImmortal)
                 {
-                    var resultHealth = player.Health + bonus.Value;
-                    Debug.Log(resultHealth + " = " + player.Health + " + " + bonus.Value);
-                    //if (resultHealth > limitsData.MaxHP)
-                    //{
-                    //    //resultHealth = _limitsData.MaxHP; // убрали лимит на хп
-                    //}
+                    var resultHealth = player.Health + bonus.BonusValue;
+                    Debug.Log(resultHealth + " = " + player.Health + " + " + bonus.BonusValue);
+
                     if (resultHealth <= 0)
                     {
                         resultHealth = 0;
@@ -152,29 +147,17 @@ public class PlayerEffector
                     else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
 
                     if (player.Health == 0)
-                    {
-                        Debug.Log("DA 1");
-                        Bullet bullet = bonus.GetComponent<Bullet>();
-
-                        if (bullet != null)
-                        {
-                            Debug.Log("BULLET 1");
-                            _intermediary.DestroyCar(bullet.GetParent());
-                        }
-                        else
-                        {
-                            _intermediary.DestroyCar();
-                        }
-                        //Debug.Log("Destroy in effector");
+                    {   
+                        _intermediary.DestroyCar();
 
                         if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
                     }
 
-                    if (bonus.Value > 0 && isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.Value);
+                    if (bonus.BonusValue > 0 && isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.BonusValue);
 
-                    if (bonus.Value < 0 && isCurrentPlayer)
+                    if (bonus.BonusValue < 0 && isCurrentPlayer)
                     {
-                        float percent = ((bonus.Value * -1f) / defaultHealth) * 100f;
+                        float percent = ((bonus.BonusValue * -1f) / defaultHealth) * 100f;
 
                         if(percent < 10f)
                         {
@@ -194,14 +177,6 @@ public class PlayerEffector
 
                 break;
 
-            //case BonusType.AddSpeed:
-
-            //    break;
-
-            //case BonusType.AddDamage:
-
-            //    break;
-
             case BonusType.AddShield:
                                                 // сейчас мерцает в зависмости от времени действия. 5 раз в течении 1/3 от времени действия
                                                 // можно переделать, чтобы независимо от времени действия, всегда последние 5 секунд, например
@@ -210,7 +185,7 @@ public class PlayerEffector
                     CoroutineRunner.Stop(shieldCoroutine);
                     _intermediary.HideShield();
                 }
-                shieldCoroutine = CoroutineRunner.Run(ShieldActive(bonus.BonusTime));
+                shieldCoroutine = CoroutineRunner.Run(ShieldActive(bonus.BonusValue));
 
                 if (isCurrentPlayer) { }//SendPlayerGetShieldAnalyticEvent();
 
@@ -234,14 +209,14 @@ public class PlayerEffector
                     {
                         CoroutineRunner.Stop(disableWeaponCoroutine);
                     }
-                    disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.Value, thisPlayerGO));
+                    disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.BonusValue, thisPlayerGO));
 
                     _weapon.DisableWeapon(thisPlayerGO);
 
                     if (isCurrentPlayer)
                     {
                         levelUINotifications.BuffsDebuffsNotifications.ShowLightningDebuff();
-                        levelUINotifications.AttackBan.ShowBanImage(bonus.Value);
+                        levelUINotifications.AttackBan.ShowBanImage(bonus.BonusValue);
                     }
                 }
 
@@ -251,12 +226,14 @@ public class PlayerEffector
 
                 if (!isShieldActive)
                 {
+                    SlowdownBonus slowdownBonus = bonus as SlowdownBonus;
+
                     if (slowdownCoroutine != null)
                     {
                         CoroutineRunner.Stop(slowdownCoroutine);
                     }
-                    thisBumper.StartSlowdown(bonus.Value);
-                    slowdownCoroutine = CoroutineRunner.Run(WaitAndDeactivateSlowdown(bonus.BonusTime));
+                    thisBumper.StartSlowdown(slowdownBonus.BonusValue);
+                    slowdownCoroutine = CoroutineRunner.Run(WaitAndDeactivateSlowdown(slowdownBonus.SlowdownTime));
 
                     if (isCurrentPlayer)
                     {
@@ -277,7 +254,7 @@ public class PlayerEffector
                     
                     thisPlayerGO.GetComponent<WheelVehicle>().ChangeTheTurnControllerToInverse();
 
-                    controlInversionCoroutine = CoroutineRunner.Run(WaitAndDeactivateControlInversion(bonus.BonusTime));
+                    controlInversionCoroutine = CoroutineRunner.Run(WaitAndDeactivateControlInversion(bonus.BonusValue));
 
                     if (isCurrentPlayer)
                     {
@@ -291,8 +268,78 @@ public class PlayerEffector
 
     private void ApplyBonus(Bonus bonus, GameObject _gameObject)
     {
-        switch (bonus.Type)
+        switch (bonus.BonusType)
         {
+            case BonusType.AddHealth:
+
+                DeadZone deadZone = _gameObject.GetComponent<DeadZone>();
+
+                if (bonus.BonusValue < 0 && isShieldActive && deadZone == null)// последнее - чтобы получать урон в щите, если выпал со сцены
+                {
+
+                }
+                else if (!isImmortal)
+                {
+                    var resultHealth = player.Health + bonus.BonusValue;
+                    Debug.Log(resultHealth + " = " + player.Health + " + " + bonus.BonusValue);
+                    
+                    if (resultHealth <= 0)
+                    {
+                        resultHealth = 0;
+                    }
+
+                    player.SetHealth(resultHealth);
+
+                    if (isCurrentPlayer) levelUI.UpdateCurrentPlayerHP(player.Health);
+                    else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
+
+                    if (player.Health == 0)
+                    {
+                        Debug.Log("DA 1");
+                        Bullet bullet = _gameObject.GetComponent<Bullet>();
+
+                        if (bullet != null)
+                        {
+                            Debug.Log("BULLET 1");
+                            _intermediary.DestroyCar(bullet.GetParent());
+                        }
+                        else
+                        {
+                            _intermediary.DestroyCar();
+                        }
+                        //Debug.Log("Destroy in effector");
+
+                        if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
+                    }
+                    else
+                    {
+                        if (deadZone != null) deadZone.RespawnCar(thisBumper);
+                    }
+
+                    if (bonus.BonusValue > 0 && isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.BonusValue);
+
+                    if (bonus.BonusValue < 0 && isCurrentPlayer)
+                    {
+                        float percent = ((bonus.BonusValue * -1f) / defaultHealth) * 100f;
+
+                        if (percent < 10f)
+                        {
+                            VibrationManager.Instance.LowDamageVibration();
+                        }
+                        else if (percent >= 10f && percent <= 30f)
+                        {
+                            VibrationManager.Instance.MediumDamageVibration();
+                        }
+                        else
+                        {
+                            VibrationManager.Instance.LargeDamageVibration();
+                        }
+                        Debug.Log($"Percent = {percent}");
+                    }
+                }
+
+                break;
+
             case BonusType.DisableWeapon:
 
                 if (!isShieldActive)
@@ -301,14 +348,14 @@ public class PlayerEffector
                     {
                         CoroutineRunner.Stop(disableWeaponCoroutine);
                     }
-                    disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.Value, _gameObject));
+                    disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.BonusValue, _gameObject));
 
                     Debug.Log($"DisableWeapon = {_gameObject}");
                     _weapon.DisableWeapon(_gameObject);
 
                     if (isCurrentPlayer)
                     {
-                        levelUINotifications.AttackBan.ShowBanImage(bonus.Value);
+                        levelUINotifications.AttackBan.ShowBanImage(bonus.BonusValue);
                     }
                 }
 
@@ -322,14 +369,14 @@ public class PlayerEffector
                     {
                         CoroutineRunner.Stop(disableWeaponCoroutine);
                     }
-                    disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.Value, _gameObject));
+                    disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.BonusValue, _gameObject));
                     
                     _weapon.DisableWeapon(_gameObject);
                     
                     if (isCurrentPlayer)
                     {
                         levelUINotifications.BuffsDebuffsNotifications.ShowLightningDebuff();
-                        levelUINotifications.AttackBan.ShowBanImage(bonus.Value);
+                        levelUINotifications.AttackBan.ShowBanImage(bonus.BonusValue);
                     }
                 }
 

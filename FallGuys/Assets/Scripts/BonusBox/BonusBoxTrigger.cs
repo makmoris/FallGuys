@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BonusBoxTrigger : MonoBehaviour
 {
     private BonusBox _bonusBox;
 
-    public void Initialize(BonusBox bonusBox)
+    private void Awake()
     {
-        _bonusBox = bonusBox;
+        _bonusBox = GetComponentInParent<BonusBox>();
     }
 
     private void OnTriggerEnter(Collider other)

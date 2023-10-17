@@ -1,27 +1,17 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosiveDuck : Bonus, IExplosion
+public class ExplosiveDuck : MonoBehaviour, IExplosion
 {
-    [SerializeField] float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
+    private HealthBonus healthBonus;
 
     [Header("Explosion")]
     public LayerMask ignoreLayer;
     //public bool isBullet;
-    [SerializeField] private float radius = 5;
+    [MaxValue(0)] [SerializeField] private float damage = -5;
+    [MinValue(0)] [SerializeField] private float radius = 5;
     [SerializeField] private float upwards = 1;
     [SerializeField] private float force = 10;
     public ForceMode forceMode = ForceMode.VelocityChange;
@@ -30,14 +20,14 @@ public class ExplosiveDuck : Bonus, IExplosion
     [SerializeField] private int minThrowForce = 20;
     [SerializeField] private int maxThrowForce = 50;
     [Space]
-    [SerializeField] private float minTimeToExplosion = 2f;
-    [SerializeField] private float maxTimeToExplosion = 4f;
+    [MinValue(0)] [SerializeField] private float minTimeToExplosion = 2f;
+    [MinValue(0)] [SerializeField] private float maxTimeToExplosion = 4f;
 
     private Rigidbody _rb;
     private Renderer _renderer;
     private Color startColor;
     [Space]
-    [SerializeField] private float colorChangeTime = 1f;
+    [MinValue(0)] [SerializeField] private float colorChangeTime = 1f;
     [SerializeField] private Color explosionColor;
 
     [Space]
@@ -59,6 +49,8 @@ public class ExplosiveDuck : Bonus, IExplosion
 
         startDuckLocalPosition = duck.transform.localPosition;
         startDuckLocalRotation = duck.transform.localRotation;
+
+        healthBonus = new HealthBonus(damage);
     }
 
     private void Update()
@@ -122,7 +114,7 @@ public class ExplosiveDuck : Bonus, IExplosion
                 rigidbody.AddExplosionForce(force, duck.transform.position, radius, upwards, forceMode);
 
                 Bumper bumper = collider.GetComponent<Bumper>();
-                if (bumper != null) bumper.GetBonus(this);
+                if (bumper != null) bumper.GetBonus(healthBonus);
             }
 
         }

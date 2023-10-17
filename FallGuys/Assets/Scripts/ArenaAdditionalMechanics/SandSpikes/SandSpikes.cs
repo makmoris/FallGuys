@@ -1,25 +1,14 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SandSpikes : Bonus
+public class SandSpikes : MonoBehaviour
 {
-    [SerializeField] float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
+    private HealthBonus healthBonus;
 
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
-    [Space]
     public LayerMask ignoreLayer;
+    [MaxValue(0)][SerializeField] private float damage = -5f;
     [SerializeField] private float radius;
     [SerializeField] private float upwards;
     [SerializeField] private float force;
@@ -47,6 +36,8 @@ public class SandSpikes : Bonus
         spikesCollider.enabled = false;
 
         audioSource = GetComponent<AudioSource>();
+
+        healthBonus = new HealthBonus(damage);
     }
 
     private void Update()
@@ -106,7 +97,7 @@ public class SandSpikes : Bonus
                 rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
 
                 Bumper bumper = collider.GetComponent<Bumper>();
-                if (bumper != null) bumper.GetBonus(this);
+                if (bumper != null) bumper.GetBonus(healthBonus);
             }
 
         }

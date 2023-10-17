@@ -1,24 +1,16 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lightning : Bonus
+public class Lightning : MonoBehaviour
 {
-    [SerializeField] float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
+    [Header("Damage")]
+    [MaxValue(0)] [SerializeField] private float damage;
+    private HealthBonus healthBonus;
 
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
-    public DisableWeaponBonus disableWeaponBonus;
+    [Header("Disable Time")]
+    [SerializeField] private float disableWeaponTime;
 
     [Space]
     [SerializeField] private float timeBeforeLightning;
@@ -29,6 +21,8 @@ public class Lightning : Bonus
 
     private void Awake()
     {
+        healthBonus = new HealthBonus(damage);
+
         lightningCollider.gameObject.SetActive(false);
         appearancePlace.SetActive(false);
     }
@@ -51,8 +45,10 @@ public class Lightning : Bonus
         Bumper bumper = damagableObj.GetComponent<Bumper>();
         if (bumper != null)
         {
-            bumper.GetBonus(this);
-            bumper.GetBonusWithGameObject(disableWeaponBonus, damagableObj);
+            bumper.GetBonus(healthBonus);
+
+            DisableWeaponBonus disableWeaponBonus = new DisableWeaponBonus(disableWeaponTime);
+            bumper.GetBonus(disableWeaponBonus, damagableObj);
         }
     }
 

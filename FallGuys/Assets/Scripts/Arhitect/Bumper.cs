@@ -46,81 +46,81 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         else isPlayer = false;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        var bonus = other.GetComponent<Bonus>();
-        if (bonus != null)
-        {
-            Bullet bullet = bonus.GetComponent<Bullet>();
-            if (bullet != null)// если "бонус" оказался пулей
-            {
-                GameObject bulletParent = bullet.GetParent();// смотрим, кто эту пулю выпустил. Если "стрелок" совпадает с хозяином бампера
-                if (bulletParent != this.gameObject)                 // значит это один и тот же игрок. Не бьем по самому себе.
-                {
-                    OnBonusGot?.Invoke(bonus);
-                    bonus.Got();
-                    Debug.Log($"Прилетела пуля в бампер");
-                }
-            }
-            else
-            {
-                Explosion explosion = bonus.GetComponent<Explosion>();
-                if (explosion == null)// взрыв вызывается через public GetBonus. Самим бампером ловим только баффы. + Взрыв не сразу после наезда
-                {
-                    if(other.GetComponent<DeadZone>() != null && enabled) // сделано, т.к. было по несколько вызовов
-                    {
-                        if (isPlayer)
-                        {
-                            //SendPlayerFallsOutMapAnalyticEvent();
-                        }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    //var bonus = other.GetComponent<IBonus>();
+    //    if (other.TryGetComponent(out Bonus bonus))
+    //    {
+    //        Bullet bullet = other.GetComponent<Bullet>();
+    //        if (bullet != null)// если "бонус" оказался пулей
+    //        {
+    //            GameObject bulletParent = bullet.GetParent();// смотрим, кто эту пулю выпустил. Если "стрелок" совпадает с хозяином бампера
+    //            if (bulletParent != this.gameObject)                 // значит это один и тот же игрок. Не бьем по самому себе.
+    //            {
+    //                OnBonusGot?.Invoke(bonus);
+    //                //bonus.Got();
+    //                Debug.Log($"Прилетела пуля в бампер");
+    //            }
+    //        }
+    //        else
+    //        {
+    //            Explosion explosion = other.GetComponent<Explosion>();
+    //            if (explosion == null)// взрыв вызывается через public GetBonus. Самим бампером ловим только баффы. + Взрыв не сразу после наезда
+    //            {
+    //                if(other.GetComponent<DeadZone>() != null && enabled) // сделано, т.к. было по несколько вызовов
+    //                {
+    //                    if (isPlayer)
+    //                    {
+    //                        //SendPlayerFallsOutMapAnalyticEvent();
+    //                    }
 
-                        OnBonusGot?.Invoke(bonus);
-                        bonus.Got();
+    //                    OnBonusGot?.Invoke(bonus);
+    //                    //bonus.Got();
 
-                        enabled = false; // enabled = true сделает DeadZone на респе
-                    }
+    //                    enabled = false; // enabled = true сделает DeadZone на респе
+    //                }
 
-                    Debug.Log($"{name} Event GetBonus {other.name}");
-                    if (other.name == "MysteryBox" && isPlayer)
-                    {
-                        //SendPlayerPickMysteryBoxAnalyticEvent();
-                        VibrationManager.Instance.BonusBoxVibration();
+    //                Debug.Log($"{name} Event GetBonus {other.name}");
+    //                if (other.name == "MysteryBox" && isPlayer)
+    //                {
+    //                    //SendPlayerPickMysteryBoxAnalyticEvent();
+    //                    VibrationManager.Instance.BonusBoxVibration();
 
-                        if (bonus.Type == BonusType.AddGold)// здесь, т.к. знаем, что это игрок подобрал бокс
-                        {
-                            //BonusBoxGiveGoldEvent?.Invoke((int)bonus.Value);
-                            levelUINotifications.GameUINotifications.ShowGoldNotification((int)bonus.Value);
-                        }
-                        if (bonus.Type == BonusType.AddHealth)
-                        {
-                            //BonusBoxGiveHPEvent?.Invoke((int)bonus.Value);
-                            levelUINotifications.GameUINotifications.ShowHealthNotification((int)bonus.Value);
-                        }
-                    }
+    //                    if (bonus.BonusType == BonusType.AddGold)// здесь, т.к. знаем, что это игрок подобрал бокс
+    //                    {
+    //                        //BonusBoxGiveGoldEvent?.Invoke((int)bonus.Value);
+    //                        levelUINotifications.GameUINotifications.ShowGoldNotification((int)bonus.BonusValue);
+    //                    }
+    //                    if (bonus.BonusType == BonusType.AddHealth)
+    //                    {
+    //                        //BonusBoxGiveHPEvent?.Invoke((int)bonus.Value);
+    //                        levelUINotifications.GameUINotifications.ShowHealthNotification((int)bonus.BonusValue);
+    //                    }
+    //                }
 
-                    if (enabled)
-                    {
-                        OnBonusGot?.Invoke(bonus);
-                        bonus.Got();
-                        Debug.Log($"TEST {bonus.Type}");
-                    }
-                }
-            }
-        }
-    }
+    //                if (enabled)
+    //                {
+    //                    OnBonusGot?.Invoke(bonus);
+    //                    //bonus.Got();
+    //                    Debug.Log($"TEST {bonus.BonusType}");
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     public void GetBonus(Bonus bonus)// вызывается взрывом без коллайдера
     {
-        Debug.Log($"Public GetBonus - {bonus.Type}; {gameObject.name}");
+        Debug.Log($"Public GetBonus - {bonus.BonusType}; {gameObject.name}");
         OnBonusGot?.Invoke(bonus);
-        bonus.Got();
+        //bonus.Got();
     }
 
-    public void GetBonusWithGameObject(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера. Для молнии
+    public void GetBonus(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера. Для молнии
     {
-        Debug.Log($"Public GetBonus - {bonus.Type}; {gameObject.name}");
+        Debug.Log($"Public GetBonus - {bonus.BonusType}; {gameObject.name}");
         OnBonusGotWithGameObject?.Invoke(bonus, _gameObject);
-        bonus.Got();
+        //bonus.Got();
     }
 
     public void ShowAdditionalBulletBonusNotification(AdditionalBulletBonus additionalBulletBonus)
@@ -137,7 +137,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public void GetBonusFromOilPuddle(Bonus bonus, float damageInterval)// вызывается при въезде в лужу из OilPuddle
     {
         OnBonusGot?.Invoke(bonus);
-        bonus.Got();
+        //bonus.Got();
 
         oilPuddleCoroutineCounter++;
 
@@ -159,7 +159,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         yield return new WaitForSeconds(time);
         Debug.Log($"OIL COROUTINE");
         OnBonusGot?.Invoke(bonus);
-        bonus.Got();
+        //bonus.Got();
 
         oilPuddleCoroutine = StartCoroutine(WaitAndGetBonusFromOilPuddle(bonus, time));
     }

@@ -1,27 +1,15 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explosion : Bonus, IExplosion
+public class Explosion : MonoBehaviour, IExplosion
 {
-    [SerializeField] float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
+    private HealthBonus healthBonus;
 
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
-    [Space]
     public LayerMask ignoreLayer; // ignore AttackPointer
-    //public bool isBullet;
-    [SerializeField] private float radius;
+    [MaxValue(0)] [SerializeField] private float damage = -5;
+    [MinValue(0)] [SerializeField] private float radius;
     [SerializeField] private float upwards;
     [SerializeField] private float force;
 
@@ -42,6 +30,11 @@ public class Explosion : Bonus, IExplosion
     [SerializeField] private AudioClip mineActivatedSound;
     [SerializeField] private AudioClip mineActiveSound;
     private Coroutine mineActivatedSoundCoroutine = null;
+
+    private void Awake()
+    {
+        healthBonus = new HealthBonus(damage);
+    }
 
     // метод вызываетс€ пулей при соприкосновении коллайдеров. ≈сли это бочка, то можешь дать врем€ перед взырвом. ≈сли игрок - взрыв сразу
     public void ExplodeWithDelay()
@@ -85,7 +78,7 @@ public class Explosion : Bonus, IExplosion
                 rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
 
                 Bumper bumper = collider.GetComponent<Bumper>();
-                if (bumper != null) bumper.GetBonus(this);
+                if (bumper != null) bumper.GetBonus(healthBonus);
             }
                 
         }

@@ -4,31 +4,17 @@ using UnityEngine;
 
 public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
 {
-    [SerializeField]private float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    [SerializeField] private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusSlowdownOilPuddle;
 
-    [Space]
-    private float puddleLiveTime;
+    private SlowdownBonus slowdownBonus;
+    [SerializeField] private float decelerationAmount = 1.5f;
+
     [Space]
     [SerializeField] private GameObject slowdownGO;
+    [SerializeField] private float puddleLiveTime = 5f;
 
     private void Awake()
     {
-        Type = BonusType.Slowdown;
-        puddleLiveTime = time;
         slowdownGO.SetActive(false);
     }
 
@@ -36,6 +22,12 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
     {
         transform.localPosition = effectPosition;
         StartCoroutine(PuddleMakingAnimation());
+    }
+
+    public override Bonus GetBonus()
+    {
+        slowdownBonus = new SlowdownBonus(decelerationAmount, puddleLiveTime);
+        return slowdownBonus;
     }
 
     IEnumerator PuddleMakingAnimation()

@@ -99,10 +99,7 @@ public class Weapon : MonoBehaviour
         parentShield = parentBodyCollider.transform.GetComponentInChildren<Shield>(true).gameObject;
         parentBumper = _bodyCollider.gameObject.GetComponent<Bumper>();
 
-        disableWeaponBonus = new();
-        disableWeaponBonus.Type = BonusType.DisableWeapon;
-        disableWeaponBonus.Value = rechargeTime;
-
+        disableWeaponBonus = new(rechargeTime);
 
         isAI = _isAI;
         if (isAI)
@@ -123,7 +120,7 @@ public class Weapon : MonoBehaviour
     public void ChangeRechargeTime(float customRechargeTime)
     {
         rechargeTime = customRechargeTime;
-        disableWeaponBonus.Value = rechargeTime;
+        disableWeaponBonus = new(rechargeTime);
     }
 
     public void EnableWeapon(GameObject gameObj)
@@ -221,7 +218,7 @@ public class Weapon : MonoBehaviour
 
     private void ApplyDisableBonus()
     {
-        parentBumper.GetBonusWithGameObject(disableWeaponBonus, parentBumper.gameObject);
+        parentBumper.GetBonus(disableWeaponBonus, parentBumper.gameObject);
     }
 
     IEnumerator Shot()

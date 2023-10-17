@@ -7,6 +7,8 @@ public class VremBonusBox : MonoBehaviour
     public GameObject arenaBox;
     public GameObject ringsBox;
 
+    
+
     private void Awake()
     {
         ShowBox();

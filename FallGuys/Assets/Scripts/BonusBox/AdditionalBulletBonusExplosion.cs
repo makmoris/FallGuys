@@ -1,25 +1,13 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
 {
-    private float value;
-    public override float Value
-    {
-        get => value;
-        set => this.value = value;
-    }
-
-    private float time;
-    public override float BonusTime
-    {
-        get => time;
-        set => time = value;
-    }
-    public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusExplosion;
-
+    private HealthBonus healthBonus;
     [Space]
+
     public LayerMask ignoreLayer; // ignore AttackPointer
     //public bool isBullet;
     [SerializeField] private float radius;
@@ -30,10 +18,18 @@ public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
 
     public ForceMode forceMode = ForceMode.VelocityChange;
 
+    public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusExplosion;
+
     public override void PlayEffect(Vector3 effectPosition)
     {
         transform.localPosition = effectPosition;
         Explode();
+    }
+
+    public override Bonus GetBonus()
+    {
+        healthBonus = new HealthBonus(0);
+        return healthBonus;
     }
 
     private void Explode()
@@ -67,8 +63,8 @@ public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
             {
                 rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
 
-                Bumper bumper = collider.GetComponent<Bumper>();
-                if (bumper != null) bumper.GetBonus(this);
+                //Bumper bumper = collider.GetComponent<Bumper>();
+                //if (bumper != null) bumper.GetBonus(healthBonus);
             }
 
         }

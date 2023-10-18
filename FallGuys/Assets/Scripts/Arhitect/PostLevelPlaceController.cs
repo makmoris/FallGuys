@@ -165,12 +165,12 @@ public class PostLevelPlaceController : MonoBehaviour
             cupsText.text = randCupsValue.ToString();
         }
 
-        Suspension[] allChieldSuspensions = winnerGO.GetComponentsInChildren<Suspension>();
-        foreach (var sus in allChieldSuspensions)
-        {
-            sus.enabled = false;
-            sus.transform.localPosition = new Vector3(sus.transform.localPosition.x, -0.1f, sus.transform.localPosition.z);
-        }
+        //Suspension[] allChieldSuspensions = winnerGO.GetComponentsInChildren<Suspension>();
+        //foreach (var sus in allChieldSuspensions)
+        //{
+        //    sus.enabled = false;
+        //    sus.transform.localPosition = new Vector3(sus.transform.localPosition.x, -0.1f, sus.transform.localPosition.z);
+        //}
 
         Transform[] allChieldTransforms = winnerGO.GetComponentsInChildren<Transform>();
         foreach (var trn in allChieldTransforms)

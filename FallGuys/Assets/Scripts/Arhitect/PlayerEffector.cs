@@ -293,29 +293,6 @@ public class PlayerEffector
                     if (isCurrentPlayer) levelUI.UpdateCurrentPlayerHP(player.Health);
                     else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
 
-                    if (player.Health == 0)
-                    {
-                        Debug.Log("DA 1");
-                        Bullet bullet = _gameObject.GetComponent<Bullet>();
-
-                        if (bullet != null)
-                        {
-                            Debug.Log("BULLET 1");
-                            _intermediary.DestroyCar(bullet.GetParent());
-                        }
-                        else
-                        {
-                            _intermediary.DestroyCar();
-                        }
-                        //Debug.Log("Destroy in effector");
-
-                        if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
-                    }
-                    else
-                    {
-                        if (deadZone != null) deadZone.RespawnCar(thisBumper);
-                    }
-
                     if (bonus.BonusValue > 0 && isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.BonusValue);
 
                     if (bonus.BonusValue < 0 && isCurrentPlayer)
@@ -336,7 +313,30 @@ public class PlayerEffector
                         }
                         Debug.Log($"Percent = {percent}");
                     }
+
+                    if (player.Health == 0)
+                    {
+                        Debug.Log("DA 1");
+                        Bullet bullet = _gameObject.GetComponent<Bullet>();
+
+                        if (bullet != null)
+                        {
+                            Debug.Log("BULLET 1");
+                            _intermediary.DestroyCar(bullet.GetParent());
+                        }
+                        else
+                        {
+                            _intermediary.DestroyCar();
+                        }
+                        //Debug.Log("Destroy in effector");
+
+                        if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
+
+                        return;
+                    }
                 }
+
+                if (deadZone != null) deadZone.RespawnCar(thisBumper);
 
                 break;
 

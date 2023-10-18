@@ -9,7 +9,6 @@ using UnityEngine.UI.Extensions;
 [Serializable]
 public class MapSettings
 {
-    [SerializeField] private string name;
     public SceneField scene; 
     public Image levelImage;
 }

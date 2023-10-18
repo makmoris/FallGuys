@@ -578,14 +578,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 25c60bcd0a080ad418a3afca24ed0cd7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: acbe0adebe0f88d4090080218e38a290, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -661,7 +661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rings clouds
+  m_text: Rings
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea64f64850cf5394584a94d5749dafba, type: 2}
   m_sharedMaterial: {fileID: 4870716944627888722, guid: ea64f64850cf5394584a94d5749dafba, type: 2}
@@ -3605,55 +3605,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   infiniteScroll: {fileID: 7385070260022662438}
   maps:
-  - name: Kitchen
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: f311c8828c1f020458f473ca0bdac118, type: 3}
       m_SceneName: Location_Kitchen_Arena
     levelImage: {fileID: 7385070260561333571}
-  - name: Clouds
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: bde860dc6d45d7843a7de231de003b6f, type: 3}
       m_SceneName: Location_The_Clouds_Arena
     levelImage: {fileID: 7385070260642288470}
-  - name: Beach
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: 958bc827edacf794f83ca4685f27bcfb, type: 3}
       m_SceneName: Location_Beach_Arena
     levelImage: {fileID: 7385070261099895329}
-  - name: Bathroom
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: 1076d3370ca728e45853f22520005526, type: 3}
       m_SceneName: Location_Bathroom_Arena
     levelImage: {fileID: 7385070259895919747}
-  - name: Race 2nd
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: 40dd60d0b3188304aa95d4aa8fa8d4b8, type: 3}
       m_SceneName: 2nd_Race
     levelImage: {fileID: 7385070261133332593}
-  - name: Race 3d
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: 70e7dd091c111474a937f89a15b64aab, type: 3}
       m_SceneName: 3d_Race
     levelImage: {fileID: 7385070261387897191}
-  - name: Race 1st
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: ecf8d070f72cd534fa27ca0b2a1be36e, type: 3}
       m_SceneName: 1st_Race
     levelImage: {fileID: 7385070261847047603}
-  - name: Honeycomb 1
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: 32d50e74376598640a0b5abccaab392e, type: 3}
       m_SceneName: 1st_Honeycomb
     levelImage: {fileID: 7385070260648566521}
-  - name: Honeycomb Floors
-    scene:
+  - scene:
       m_SceneAsset: {fileID: 102900000, guid: 428a18c2fa8cbce4d90f29d4746bde64, type: 3}
       m_SceneName: 1st_HoneycombFloors
     levelImage: {fileID: 7385070261528243599}
-  - name: Rings Clouds
-    scene:
-      m_SceneAsset: {fileID: 102900000, guid: 2e934ca0c23e11048a6f2192015f8af8, type: 3}
-      m_SceneName: Location_The_Clouds_Rings
+  - scene:
+      m_SceneAsset: {fileID: 102900000, guid: f30d69ee5e5d42b45a6dc547f77470aa, type: 3}
+      m_SceneName: Location_Bedroom_Rings
     levelImage: {fileID: 1623358045}
   internetConnectionIsActive: 0
 --- !u!114 &7385070260684021872
@@ -6216,7 +6206,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147549183
 --- !u!114 &7385070261706242145
 MonoBehaviour:
   m_ObjectHideFlags: 0

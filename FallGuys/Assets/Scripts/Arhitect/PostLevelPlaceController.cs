@@ -71,6 +71,8 @@ public class PostLevelPlaceController : MonoBehaviour
             ShowElimination(_winnersList, _losersList, _currentPlayerGO);
             LoadNextGameStage();
         }
+
+        MusicManager.Instance.StopSoundsPlaying();
     }
 
     private void ShowElimination(List<GameObject> _winnersList, List<GameObject> _losersList, GameObject _currentPlayerGO)

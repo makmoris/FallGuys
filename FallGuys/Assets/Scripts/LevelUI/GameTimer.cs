@@ -7,10 +7,12 @@ public class GameTimer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timeText;
 
-    public event System.Action GameTimerFinishedEvent;
+    private event System.Action TimerFinishedEvent;
 
-    public void StartTimer(float time)
+    public void StartTimer(float time, System.Action onTimerFinished)
     {
+        TimerFinishedEvent = onTimerFinished;
+
         StartCoroutine(Timer(time));
     }
 
@@ -35,6 +37,6 @@ public class GameTimer : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        GameTimerFinishedEvent?.Invoke();
+        TimerFinishedEvent?.Invoke();
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class RaceProgressUIController : LevelProgressUIController
 {
@@ -8,6 +9,9 @@ public class RaceProgressUIController : LevelProgressUIController
 
     [Header("Finish")]
     [SerializeField] private RacePassedPanel winnersPanel;
+
+    [Header("Timer")]
+    [SerializeField] private GameTimer gameTimer;
 
     public override void ShowObserverUI()
     {
@@ -21,6 +25,7 @@ public class RaceProgressUIController : LevelProgressUIController
         base.HideElementsBeforeStart();
 
         if (winnersPanel.gameObject.activeSelf) winnersPanel.gameObject.SetActive(false);
+        gameTimer.gameObject.SetActive(false);
     }
 
     public void SetNumberOfWinners(int numberOfWinners)
@@ -38,5 +43,12 @@ public class RaceProgressUIController : LevelProgressUIController
         base.TimerBeforeStartFinished();
 
         winnersPanel.gameObject.SetActive(true);
+    }
+
+    public void StartFinishTimer(float seconds, System.Action onTimerFinished)
+    {
+        gameTimer.gameObject.SetActive(true);
+
+        gameTimer.StartTimer(seconds, onTimerFinished);
     }
 }

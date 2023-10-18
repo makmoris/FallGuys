@@ -24,6 +24,8 @@ public class RingsProgressController : LevelProgressController
     private bool isObserverMode;
     private GameObject currentFollowingPlayer;
 
+    private event System.Action GameTimerFinishedEvent;
+
     protected virtual void Awake()
     {
         ringsProgressUIController = levelProgressUIController as RingsProgressUIController;
@@ -56,8 +58,9 @@ public class RingsProgressController : LevelProgressController
 
         ringsProgressUIController.UpdatePointsText(_playersList.Count, 0, 1, 0);
 
-        gameTimer.GameTimerFinishedEvent += GameTimeIsOver;
-        gameTimer.StartTimer(playTimeSeconds);
+        //gameTimer.GameTimerFinishedEvent += GameTimeIsOver;
+        GameTimerFinishedEvent += GameTimeIsOver;
+        gameTimer.StartTimer(playTimeSeconds, GameTimerFinishedEvent);
     }
 
     protected override void ShowPostWindow()
@@ -87,7 +90,8 @@ public class RingsProgressController : LevelProgressController
 
     private void GameTimeIsOver()
     {
-        gameTimer.GameTimerFinishedEvent -= GameTimeIsOver;
+        //gameTimer.GameTimerFinishedEvent -= GameTimeIsOver;
+        GameTimerFinishedEvent -= GameTimeIsOver;
 
         SortTheWinners();
     }

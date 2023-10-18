@@ -14,9 +14,13 @@ public class RaceProgressController : LevelProgressController
 
     [Header("Finish Sector")]
     [SerializeField] private RaceFinishSector raceFinishSector;
-    
+
     [Header("Race Settings")]
-    [SerializeField]private int numberOfWinners;
+    [SerializeField] private int numberOfPlayersToStartFinishTimer = 2;
+    [SerializeField] private float finishTimerSeconds = 30f;
+    private event System.Action FinishTimerFinished;
+
+    private int numberOfWinners;
     private int currentNumberOfWinners;
     private bool raceNotOver;
 
@@ -112,6 +116,13 @@ public class RaceProgressController : LevelProgressController
             currentNumberOfWinners++;
             if (currentNumberOfWinners <= numberOfWinners) raceProgressUIController.UpdateNumberOfWinners(currentNumberOfWinners);
 
+            if(currentNumberOfWinners == numberOfPlayersToStartFinishTimer)
+            {
+                // запуск таймера
+                FinishTimerFinished += FinishTimeIsOver;
+                raceProgressUIController.StartFinishTimer(finishTimerSeconds, FinishTimerFinished);
+            }
+
             if (raceDriversAIDictionary.ContainsKey(wheelVehicleDriver))
             {
                 RaceDriverAI driverAI = raceDriversAIDictionary[wheelVehicleDriver];
@@ -163,6 +174,8 @@ public class RaceProgressController : LevelProgressController
                 // если приехал противник, но окно победы еще показываетс€, то ждем его завершени€. ѕо завершению окно сплющивание покажетс€ само
 
                 StopRacing();
+
+                FinishTimerFinished -= FinishTimeIsOver;
 
                 Debug.Log("Race ended");// заканчиваем гонку. ѕереходим на следующий этап
             }
@@ -272,6 +285,13 @@ public class RaceProgressController : LevelProgressController
     {
         raceNotOver = false;
 
+        StopEveryone();
+
+        // отправл€ем список лузеров
+    }
+
+    private void StopEveryone()
+    {
         foreach (var driver in raceDriversList) // все остановились
         {
             driver.Handbrake = true;
@@ -283,8 +303,43 @@ public class RaceProgressController : LevelProgressController
                 driverAI.Brake = true;
             }
         }
+    }
 
-        // отправл€ем список лузеров
+    private void FinishTimeIsOver()
+    {
+        FinishTimerFinished -= FinishTimeIsOver;
+
+        // всех остановили
+        StopEveryone();
+
+        // нашли оставшихс€
+        List<GameObject> remainingPlayers = new List<GameObject>();
+        foreach (var player in _playersList)
+        {
+            if (!_winnersList.Contains(player)) remainingPlayers.Add(player);
+        }
+
+        // отсортировали оставшихс€ по тому, кто ближе к финишу
+        GameObject remainingPlayer;
+        for (int i = 0; i < remainingPlayers.Count; i++)
+        {
+            for (int j = i + 1; j < remainingPlayers.Count; j++)
+            {
+                if (remainingPlayers[j].transform.position.z > remainingPlayers[i].transform.position.z)
+                {
+                    remainingPlayer = remainingPlayers[i];
+                    remainingPlayers[i] = remainingPlayers[j];
+                    remainingPlayers[j] = remainingPlayer;
+                }
+            }
+        }
+
+        // вз€ли нужноe число оставшихс€ победителей
+        int length = numberOfWinners - currentNumberOfWinners;
+        for (int i = 0; i < length; i++)
+        {
+            DriverFinished(remainingPlayers[i].GetComponent<WheelVehicle>());
+        }
     }
 
     protected override void OnDisable()

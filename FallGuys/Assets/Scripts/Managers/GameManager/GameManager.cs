@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public class GameMode
     {
         public GameModeEnum gameMode;
-        public GameModeScenes gameModeScenes;
+        //public GameModeScenes gameModeScenes;
     }
 
     [System.Serializable]
@@ -41,8 +41,8 @@ public class GameManager : MonoBehaviour
     [Header("Debug Game Stages")]
     [SerializeField] private int debugIndex;
     [SerializeField] private List<GameStagesList> AllGameStagesList;
-    [Header("Current Debug Game Stages")]
-    [SerializeField]private List<GameStage> gameStagesList = new List<GameStage>();
+    //[Header("Current Debug Game Stages")]
+    private List<GameStage> gameStagesList = new List<GameStage>();
     #endregion
 
     //[Header("Game Stages")] // Correct without Debug GameStagesList
@@ -70,6 +70,9 @@ public class GameManager : MonoBehaviour
 
     private NameGenerator nameGenerator;
     private List<string> namesList = new List<string>();
+
+    [Header("Game Mode Scenes")]
+    [SerializeField] private List<GameModeScenes> gameModeScenes;
 
     private static GameManager Instance { get; set; }
     private void Awake()
@@ -337,9 +340,22 @@ public class GameManager : MonoBehaviour
         }
         PlayerPrefs.SetInt(previousGameModeEnumIndexKey, randomGameModeIndex);
 
-        SceneField scene = gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameModeScenes.GetRandomScene();
+        GameModeScenes _gameModeScene;
+        foreach (var gameMode in gameModeScenes)
+        {
+            if(gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameMode == gameMode.GameMode)
+            {
+                _gameModeScene = gameMode;
+                SceneField scene = _gameModeScene.GetRandomScene();
+                return scene;
+            }
+        }
 
-        return scene;
+        Debug.LogError($"Game mode {gameStagesList[currentGameStage].gameModesList[randomGameModeIndex].gameMode} not found in Game Mode List");
+        return null;
+
+        //SceneField scene = gameStagesList[currentGameStage].gameModesList[randomGameModeIndex]._gameModeScene.GetRandomScene();
+        //return scene;
     }
 
     private void OnDisable()

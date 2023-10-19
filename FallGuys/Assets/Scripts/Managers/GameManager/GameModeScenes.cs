@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New GameModeScenes", menuName = "Game Mode Scenes")]
 public class GameModeScenes : ScriptableObject
 {
+    [SerializeField] private GameModeEnum gameModeEnum;
+    public GameModeEnum GameMode => gameModeEnum;
+
     [SerializeField] private List<SceneField> sceneNamesList;
 
     public SceneField GetRandomScene()

@@ -123,7 +123,7 @@ public class Bullet : MonoBehaviour
 
             if (other != null && parentCollider != null)
             {
-                Debug.Log($"пуля попала в {other.name}. Выстрелил {parentCollider.gameObject.name}");
+                //Debug.Log($"пуля попала в {other.name}. Выстрелил {parentCollider.gameObject.name}");
 
                 if (isAdditionalBulletBonusSetted && !isRing)
                 {

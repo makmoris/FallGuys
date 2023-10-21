@@ -49,163 +49,120 @@ public class FirebaseAnalytics : IAnalytics
     }
 
     #region BATTLE
-    public void BattleStart(int battle_id, string player_car_id, string player_gun_id, int league_id, string level_id, int enemies_amount)
+    public void GameStart(int league_id, int battle_id, string car_id, string gun_id, int config_levels_id)
     {
         var param = new List<Parameter>
         {
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
             new Parameter("league_id", league_id),
-            new Parameter("level_id", level_id),
-            new Parameter("enemies_amount", enemies_amount)
+            new Parameter("battle_id", battle_id),
+            new Parameter("car_id", car_id),
+            new Parameter("gun_id", gun_id),
+            new Parameter("config_levels_id", config_levels_id)
         };
 
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Battle_Start", param.ToArray());
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Game_Start", param.ToArray());
     }
 
-    public void PlayerKillEnemy(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount,
-        int player_gold_earn, int enemies_left, string killed_enemy_car_id, string killed_enemy_gun_id)
+    public void LevelStart(string genre_id, string map_id, int league_id, int battle_id, int players_amount, bool user_play)
     {
+        string isUserPlay = "false";
+        if (user_play) isUserPlay = "true";
+
         var param = new List<Parameter>
         {
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
-            new Parameter("player_hp_left", player_hp_left),
-            new Parameter("player_kills_amount", player_kills_amount),
-            new Parameter("player_gold_earn", player_gold_earn),
-            new Parameter("enemies_left", enemies_left),
-            new Parameter("killed_enemy_car_id", killed_enemy_car_id),
-            new Parameter("killed_enemy_gun_id", killed_enemy_gun_id)
-        };
-
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Kill_Enemy", param.ToArray());
-    }
-
-    public void PlayerPickMysteryBox(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount,
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new List<Parameter>
-        {
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
-            new Parameter("player_hp_left", player_hp_left),
-            new Parameter("player_kills_amount", player_kills_amount),
-            new Parameter("player_gold_earn", player_gold_earn),
-            new Parameter("enemies_left", enemies_left)
-        };
-
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Pick_MysteryBox", param.ToArray());
-    }
-
-    public void PlayerGetShield(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount,
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new List<Parameter>
-        {
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
-            new Parameter("player_hp_left", player_hp_left),
-            new Parameter("player_kills_amount", player_kills_amount),
-            new Parameter("player_gold_earn", player_gold_earn),
-            new Parameter("enemies_left", enemies_left)
-        };
-
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Get_Shield", param.ToArray());
-    }
-
-    public void PlayerGetGold(int gold_amount, int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount,
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new List<Parameter>
-        {
-            new Parameter("gold_amount", gold_amount),
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
-            new Parameter("player_hp_left", player_hp_left),
-            new Parameter("player_kills_amount", player_kills_amount),
-            new Parameter("player_gold_earn", player_gold_earn),
-            new Parameter("enemies_left", enemies_left)
-        };
-
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Get_Gold", param.ToArray());
-    }
-
-    public void PlayerRecoverHP(int hp_amount, int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount,
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new List<Parameter>
-        {
-            new Parameter("hp_amount", hp_amount),
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
-            new Parameter("player_hp_left", player_hp_left),
-            new Parameter("player_kills_amount", player_kills_amount),
-            new Parameter("player_gold_earn", player_gold_earn),
-            new Parameter("enemies_left", enemies_left)
-        };
-
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Recover_HP", param.ToArray());
-    }
-
-    public void PlayerFallsOutMap(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount,
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new List<Parameter>
-        {
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
-            new Parameter("player_hp_left", player_hp_left),
-            new Parameter("player_kills_amount", player_kills_amount),
-            new Parameter("player_gold_earn", player_gold_earn),
-            new Parameter("enemies_left", enemies_left)
-        };
-
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Falls_Out_Map", param.ToArray());
-    }
-
-    public void PlayerDestroyed(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount,
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new List<Parameter>
-        {
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
-            new Parameter("player_hp_left", player_hp_left),
-            new Parameter("player_kills_amount", player_kills_amount),
-            new Parameter("player_gold_earn", player_gold_earn),
-            new Parameter("enemies_left", enemies_left)
-        };
-
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Destroyed", param.ToArray());
-    }
-
-    public void BattleFinish(int battle_id, string player_car_id, string player_gun_id, int league_id, string level_id, int enemies_amount,
-        int player_took_place, int player_kills_amount, int player_gold_earn, int player_cups_earned)
-    {
-        var param = new List<Parameter>
-        {
-            new Parameter("battle_id", battle_id),
-            new Parameter("player_car_id", player_car_id),
-            new Parameter("player_gun_id", player_gun_id),
+            new Parameter("genre_id", genre_id),
+            new Parameter("map_id", map_id),
             new Parameter("league_id", league_id),
-            new Parameter("level_id", level_id),
-            new Parameter("enemies_amount", enemies_amount),
-            new Parameter("player_took_place", player_took_place),
-            new Parameter("player_kills_amount", player_kills_amount),
-            new Parameter("player_gold_earn", player_gold_earn),
-            new Parameter("player_cups_earned", player_cups_earned)
+            new Parameter("battle_id", battle_id),
+            new Parameter("players_amount", players_amount),
+            new Parameter("user_play", isUserPlay)
         };
 
-        Firebase.Analytics.FirebaseAnalytics.LogEvent("Battle_Finish", param.ToArray());
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Level_Start", param.ToArray());
     }
+
+    public void PlayerCompleteLevel(string genre_id, string map_id, int league_id, int battle_id)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("genre_id", genre_id),
+            new Parameter("map_id", map_id),
+            new Parameter("league_id", league_id),
+            new Parameter("battle_id", battle_id)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Complete_Level", param.ToArray());
+    }
+
+    public void PlayerFailLevel(string genre_id, string map_id, int league_id, int battle_id)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("genre_id", genre_id),
+            new Parameter("map_id", map_id),
+            new Parameter("league_id", league_id),
+            new Parameter("battle_id", battle_id)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Fail_Level", param.ToArray());
+    }
+
+    public void LevelFinish(string genre_id, string map_id, int league_id, int battle_id, int players_amount, int player_place, bool user_play)
+    {
+        string isUserPlay = "false";
+        if (user_play) isUserPlay = "true";
+
+        var param = new List<Parameter>
+        {
+            new Parameter("genre_id", genre_id),
+            new Parameter("map_id", map_id),
+            new Parameter("league_id", league_id),
+            new Parameter("battle_id", battle_id),
+            new Parameter("players_amount", players_amount),
+            new Parameter("player_place", player_place),
+            new Parameter("user_play", isUserPlay)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Level_Finish", param.ToArray());
+    }
+
+    public void PlayerLeaveGame(int league_id, int battle_id)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("league_id", league_id),
+            new Parameter("battle_id", battle_id)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Leave_Game", param.ToArray());
+    }
+
+    public void GameFinish(int league_id, int battle_id, int player_place, int config_levels_id)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("league_id", league_id),
+            new Parameter("battle_id", battle_id),
+            new Parameter("player_place", player_place),
+            new Parameter("config_levels_id", config_levels_id)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Game_Finish", param.ToArray());
+    }
+
+    public void PlayerGetBattleReward(int league_id, int battle_id, int player_gold_earn, int player_cups_earn)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("league_id", league_id),
+            new Parameter("battle_id", battle_id),
+            new Parameter("player_gold_earn", player_gold_earn),
+            new Parameter("player_cups_earn", player_cups_earn)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Get_Battle_Reward", param.ToArray());
+    }
+
     #endregion
 
     #region GENERAL
@@ -272,16 +229,29 @@ public class FirebaseAnalytics : IAnalytics
         Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Changed_Gun", param.ToArray());
     }
 
-    public void PlayerBuySkin(string new_skin_id, int gold_spent, int gold)
+    public void PlayerBuySkin(string car_id, string skin_id, int gold_spent, int gold)
     {
         var param = new List<Parameter>
         {
-            new Parameter("new_skin_id", new_skin_id),
+            new Parameter("car_id", car_id),
+            new Parameter("skin_id", skin_id),
             new Parameter("gold_spent", gold_spent),
             new Parameter("gold", gold)
         };
 
         Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Buy_Skin", param.ToArray());
+    }
+
+    public void PlayerChangedSkin(string car_id, string new_skin_id, string old_skin_id)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("car_id", car_id),
+            new Parameter("new_skin_id", new_skin_id),
+            new Parameter("old_skin_id", old_skin_id)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Changed_Skin", param.ToArray());
     }
 
     public void PlayerChangedControls(string new_control_type, string old_control_type)

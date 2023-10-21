@@ -49,6 +49,12 @@ public class ColorButton : MonoBehaviour
         thisLobbyVehicleCustomizer.ChangeColor(colorMaterial);
 
         parentColorContent.InfoWasUpdate();
+
+        #region Analytics
+        string new_skin_id = colorData.GetSkinID();
+
+        AnalyticsManager.Instance.PlayerChangedSkin(new_skin_id);
+        #endregion
     }
 
     public void ShowColor()// вызывается кнопой при выборе цвета, чтобы посмотреть. Смотреть можно все кнопы
@@ -133,6 +139,10 @@ public class ColorButton : MonoBehaviour
             CheckBuyAndApplyButtonStatus();
 
             parentColorContent.ShowColorWasChanged();
+
+            #region Analytics
+            AnalyticsManager.Instance.CheckCurrentSkinIDValue(colorData.GetSkinID());
+            #endregion
         }
         else
         {

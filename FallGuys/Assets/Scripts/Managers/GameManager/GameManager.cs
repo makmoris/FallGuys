@@ -74,6 +74,10 @@ public class GameManager : MonoBehaviour
     [Header("Game Mode Scenes")]
     [SerializeField] private List<GameModeScenes> gameModeScenes;
 
+    #region Analytics
+    private int currentPlayerTookPlaceInGameStage;
+    #endregion
+
     private static GameManager Instance { get; set; }
     private void Awake()
     {
@@ -108,7 +112,11 @@ public class GameManager : MonoBehaviour
         #endregion
 
         SceneField sceneToLoad;
-       
+
+        #region Analytics
+        AnalyticsManager.Instance.UpdateUserPlay(!isObserverMode);
+        #endregion
+
         if (isFirstStart)
         {
             // получаем локацию для загрузки, на которой будем играть
@@ -122,6 +130,16 @@ public class GameManager : MonoBehaviour
             isShowPlayerStatisticsWindowAfterGameInTheLobby = false;
 
             sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
+
+            #region Analytics
+            AnalyticsManager.Instance.UpdateUserPlay(!isObserverMode);
+
+            AnalyticsManager.Instance.UpdateBattleId();
+            AnalyticsManager.Instance.UpdateBattlesAmount();
+            AnalyticsManager.Instance.UpdateConfigLevelsID(debugIndex);
+
+            AnalyticsManager.Instance.GameStart();
+            #endregion
         }
         else
         {
@@ -134,24 +152,46 @@ public class GameManager : MonoBehaviour
 
                 sceneLoader.LoadNextLevelSceneWithAnimation(sceneToLoad);
             }
-            else // значит текущий режим последний. После него переходить не надо, ничего не подгружаем
-            {
-                currentGameStage = 0;
+            //else // значит текущий режим последний. После него переходить не надо, ничего не подгружаем
+            //{
+            //    currentGameStage = 0;
 
-                //sceneLoader.PrepareLobbyScene(); // сделать загрузку через окно
-            }
+            //    //sceneLoader.PrepareLobbyScene(); // сделать загрузку через окно
+            //}
+
+            #region Analytics
+            AnalyticsManager.Instance.UpdatePlayersAmount(gameStagesList[currentGameStage].numberOfPlayers);
+            #endregion
         }
+
+        #region Analytics
+        AnalyticsManager.Instance.LevelStart();
+        #endregion
     }
 
     public void StartGameStageFromTutorialWindow()
     {
+        #region Analytics
+        AnalyticsManager.Instance.UpdateUserPlay(!isObserverMode);
+        #endregion
+
         CreatePlayersForOneGameSession();
 
         isFirstStart = false;
+
+        #region Analytics
+        AnalyticsManager.Instance.UpdateBattleId();
+        AnalyticsManager.Instance.UpdateBattlesAmount();
+        AnalyticsManager.Instance.UpdateConfigLevelsID(debugIndex);
+
+        AnalyticsManager.Instance.GameStart();
+        #endregion
     }
 
     public void EliminateLosersFromList(List<string> losersNames)
     {
+        currentPlayerTookPlaceInGameStage = 0;
+
         for (int i = 0; i < losersNames.Count; i++)
         {
             foreach (var player in players)
@@ -169,6 +209,12 @@ public class GameManager : MonoBehaviour
                         if (loserName == currentPlayer.Name)
                         {
                             isObserverMode = true;
+
+                            #region Analytics
+                            currentPlayerTookPlaceInGameStage = players.Count + 1;
+
+                            AnalyticsManager.Instance.PlayerFailLevel();
+                            #endregion
                         }
 
                         break;
@@ -176,6 +222,39 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+        #region Analytics
+        if (!isObserverMode) AnalyticsManager.Instance.PlayerCompleteLevel();
+        #endregion
+    }
+
+    public void SetWinnersNamesList(List<string> winnersNames)
+    {
+        if (!isObserverMode)
+        {
+            currentPlayerTookPlaceInGameStage = 0;
+            int counter = 0;
+
+            foreach (var winnerName in winnersNames)
+            {
+                counter++;
+                if(winnerName == currentPlayer.Name)
+                {
+                    currentPlayerTookPlaceInGameStage = counter;
+                    break;
+                }
+            }
+        }
+
+        #region Analytics
+        AnalyticsManager.Instance.LevelFinish(currentPlayerTookPlaceInGameStage);
+
+        if (currentGameStage == gameStagesList.Count - 1)
+        {
+            UpdateCurrentPlayerPlace();
+            AnalyticsManager.Instance.GameFinish(currentPlayerPlace);
+        }
+        #endregion
     }
 
     public int GetNumberOfWinners()
@@ -186,15 +265,23 @@ public class GameManager : MonoBehaviour
     public void PlayerClickedExitToLobby()
     {
         // получаем место игрока
-        GetCurrentPlayerPlace();
+        UpdateCurrentPlayerPlace();
         // переходим в лобби с пометкой, что надо показать окно статистики игрока
         isShowPlayerStatisticsWindowAfterGameInTheLobby = true;
         sceneLoader.LoadLobbyScene();
+
+        #region Analytics
+        AnalyticsManager.Instance.PlayerLeaveGame();
+        #endregion
     }
 
     public void PlayerClickedExitToLobbyFromSettingsWindow()
     {
         sceneLoader.LoadLobbyScene();
+
+        #region Analytics
+        AnalyticsManager.Instance.PlayerLeaveGame();
+        #endregion
     }
 
     public int GetCurrentPlayerCupsValue()
@@ -218,6 +305,10 @@ public class GameManager : MonoBehaviour
 
     private void CreatePlayersForOneGameSession()
     {
+        #region Debug GameStagesList
+        gameStagesList = AllGameStagesList[debugIndex].gameStagesList;
+        #endregion
+
         ClearPlayersForOneGameSession();
 
         Player player = CreatePlayer();
@@ -230,34 +321,38 @@ public class GameManager : MonoBehaviour
             PlayerAI aiPlayer = CreateAIPlayer();
             players.Add(aiPlayer);
         }
+
+        #region Analytics
+        AnalyticsManager.Instance.UpdatePlayersAmount(gameStagesList[currentGameStage].numberOfPlayers);
+        #endregion
     }
 
-    private void GetCurrentPlayerPlace()// called when player click leave button or when game ower with one winner
+    private void UpdateCurrentPlayerPlace()// called when player click leave button or when game ower with one winner
     {
-        if (isObserverMode)
+        bool playerPlaceIsKnown = false;
+
+        int counter = 0;
+        foreach (var loser in losersList)
         {
-            int index = 0;
-
-            if (players.Count > 0) index = players.Count - 1;
-
-            losersList.Reverse();
-
-            foreach (var loser in losersList)
+            if (loser.Name == currentPlayer.Name)
             {
-                string loserName = loser.Name;
+                playerPlaceIsKnown = true;
 
-                if (loserName == currentPlayer.Name)
-                {
-                    currentPlayerPlace = index + 1;
-                    break;
-                }
+                currentPlayerPlace = (players.Count + losersList.Count) - counter;
 
-                index++;
+                break;
             }
+
+            counter++;
         }
-        else // значит игрок остался один, у него первое место
+
+        if (!playerPlaceIsKnown)
         {
-            currentPlayerPlace = 0;
+            if (players.Count == 1)
+            {
+                currentPlayerPlace = 1;
+            }
+            else Debug.LogError("Player is still playing");
         }
     }
 
@@ -347,6 +442,12 @@ public class GameManager : MonoBehaviour
             {
                 _gameModeScene = gameMode;
                 SceneField scene = _gameModeScene.GetRandomScene();
+
+                #region Analytics
+                AnalyticsManager.Instance.UpdateGenreID(_gameModeScene.GameMode.ToString());
+                AnalyticsManager.Instance.UpdateMapID(scene.SceneName);
+                #endregion
+
                 return scene;
             }
         }

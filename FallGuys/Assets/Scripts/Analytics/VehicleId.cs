@@ -6,6 +6,6 @@ public class VehicleId : MonoBehaviour
 
     public string VehicleID
     {
-        get { return _vehicleId; }
+        get { return _vehicleId.ToLower(); }
     }
 }

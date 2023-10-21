@@ -6,6 +6,6 @@ public class WeaponId : MonoBehaviour
 
     public string WeaponID
     {
-        get { return _weaponId; }
+        get { return _weaponId.ToLower(); }
     }
 }

@@ -29,18 +29,18 @@ public class PlayerStatisticsAfterBattleWindow : MonoBehaviour
     private string key = "IsNotFirstLobbyEnterFromLocation";
     private int previousCupValue;
 
-    public void ShowStatistics(int playerPlaceIndex)
+    public void ShowStatistics(int playerPlace)
     {
         HideUIElements();
 
         previousCupValue = CurrencyManager.Instance.Cups;
 
-        int playerPlace = playerPlaceIndex + 1;
+        int _playerPlace = playerPlace;
 
-        goldAwardValue = awardsManager.GetGoldsAward(playerPlaceIndex);
-        cupsAwardValue = awardsManager.GetCupsAward(playerPlaceIndex);
+        goldAwardValue = awardsManager.GetGoldsAward(playerPlace);
+        cupsAwardValue = awardsManager.GetCupsAward(playerPlace);
 
-        placeText.text = playerPlace.ToString();
+        placeText.text = _playerPlace.ToString();
         goldText.text = goldAwardValue.ToString();
         cupsText.text = cupsAwardValue.ToString();
 
@@ -50,6 +50,10 @@ public class PlayerStatisticsAfterBattleWindow : MonoBehaviour
         continueButton.interactable = false;
         SetOnClickEventOnContinueButton();
         continueButton.interactable = true;
+
+        #region Analytics
+        AnalyticsManager.Instance.PlayerGetBattleReward(goldAwardValue, cupsAwardValue);
+        #endregion
     }
 
     private void ShowCupsProgressInLeagueWindow()

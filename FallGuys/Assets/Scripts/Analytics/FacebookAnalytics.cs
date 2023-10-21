@@ -58,145 +58,98 @@ public class FacebookAnalytics : IAnalytics
     }
 
     #region BATTLE
-    public void BattleStart(int battle_id, string player_car_id, string player_gun_id, int league_id, string level_id, int enemies_amount)
+    public void GameStart(int league_id, int battle_id, string car_id, string gun_id, int config_levels_id)
     {
         var param = new Dictionary<string, object>();
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
         param["league_id"] = league_id;
-        param["level_id"] = level_id;
-        param["enemies_amount"] = enemies_amount;
+        param["battle_id"] = battle_id;
+        param["car_id"] = car_id;
+        param["gun_id"] = gun_id;
+        param["config_levels_id"] = config_levels_id;
 
-        FB.LogAppEvent("Battle_Start", parameters : param);
+        FB.LogAppEvent("Game_Start", parameters: param);
     }
 
-    public void PlayerKillEnemy(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount, 
-        int player_gold_earn, int enemies_left, string killed_enemy_car_id, string killed_enemy_gun_id)
+    public void LevelStart(string genre_id, string map_id, int league_id, int battle_id, int players_amount, bool user_play)
     {
         var param = new Dictionary<string, object>();
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
-        param["player_hp_left"] = player_hp_left;
-        param["player_kills_amount"] = player_kills_amount;
-        param["player_gold_earn"] = player_gold_earn;
-        param["enemies_left"] = enemies_left;
-        param["killed_enemy_car_id"] = killed_enemy_car_id;
-        param["killed_enemy_gun_id"] = killed_enemy_gun_id;
-
-        FB.LogAppEvent("Player_Kill_Enemy", parameters: param);
-    }
-
-    public void PlayerPickMysteryBox(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount, 
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new Dictionary<string, object>();
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
-        param["player_hp_left"] = player_hp_left;
-        param["player_kills_amount"] = player_kills_amount;
-        param["player_gold_earn"] = player_gold_earn;
-        param["enemies_left"] = enemies_left;
-
-        FB.LogAppEvent("Player_Pick_MysteryBox", parameters: param);
-    }
-
-    public void PlayerGetShield(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount, 
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new Dictionary<string, object>();
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
-        param["player_hp_left"] = player_hp_left;
-        param["player_kills_amount"] = player_kills_amount;
-        param["player_gold_earn"] = player_gold_earn;
-        param["enemies_left"] = enemies_left;
-
-        FB.LogAppEvent("Player_Get_Shield", parameters: param);
-    }
-
-    public void PlayerGetGold(int gold_amount, int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount, 
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new Dictionary<string, object>();
-        param["gold_amount"] = gold_amount;
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
-        param["player_hp_left"] = player_hp_left;
-        param["player_kills_amount"] = player_kills_amount;
-        param["player_gold_earn"] = player_gold_earn;
-        param["enemies_left"] = enemies_left;
-
-        FB.LogAppEvent("Player_Get_Gold", parameters: param);
-    }
-
-    public void PlayerRecoverHP(int hp_amount, int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount, 
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new Dictionary<string, object>();
-        param["hp_amount"] = hp_amount;
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
-        param["player_hp_left"] = player_hp_left;
-        param["player_kills_amount"] = player_kills_amount;
-        param["player_gold_earn"] = player_gold_earn;
-        param["enemies_left"] = enemies_left;
-
-        FB.LogAppEvent("Player_Recover_HP", parameters: param);
-    }
-
-    public void PlayerFallsOutMap(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount, 
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new Dictionary<string, object>();
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
-        param["player_hp_left"] = player_hp_left;
-        param["player_kills_amount"] = player_kills_amount;
-        param["player_gold_earn"] = player_gold_earn;
-        param["enemies_left"] = enemies_left;
-
-        FB.LogAppEvent("Player_Falls_Out_Map", parameters: param);
-    }
-
-    public void PlayerDestroyed(int battle_id, string player_car_id, string player_gun_id, int player_hp_left, int player_kills_amount, 
-        int player_gold_earn, int enemies_left)
-    {
-        var param = new Dictionary<string, object>();
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
-        param["player_hp_left"] = player_hp_left;
-        param["player_kills_amount"] = player_kills_amount;
-        param["player_gold_earn"] = player_gold_earn;
-        param["enemies_left"] = enemies_left;
-
-        FB.LogAppEvent("Player_Destroyed", parameters: param);
-    }
-
-    public void BattleFinish(int battle_id, string player_car_id, string player_gun_id, int league_id, string level_id, int enemies_amount, 
-        int player_took_place, int player_kills_amount, int player_gold_earn, int player_cups_earned)
-    {
-        var param = new Dictionary<string, object>();
-        param["battle_id"] = battle_id;
-        param["player_car_id"] = player_car_id;
-        param["player_gun_id"] = player_gun_id;
+        param["genre_id"] = genre_id;
+        param["map_id"] = map_id;
         param["league_id"] = league_id;
-        param["level_id"] = level_id;
-        param["enemies_amount"] = enemies_amount;
-        param["player_took_place"] = player_took_place;
-        param["player_kills_amount"] = player_kills_amount;
-        param["player_gold_earn"] = player_gold_earn;
-        param["player_cups_earned"] = player_cups_earned;
+        param["battle_id"] = battle_id;
+        param["players_amount"] = players_amount;
+        param["user_play"] = user_play;
 
-        FB.LogAppEvent("Battle_Finish", parameters: param);
+        FB.LogAppEvent("Level_Start", parameters: param);
     }
+
+    public void PlayerCompleteLevel(string genre_id, string map_id, int league_id, int battle_id)
+    {
+        var param = new Dictionary<string, object>();
+        param["genre_id"] = genre_id;
+        param["map_id"] = map_id;
+        param["league_id"] = league_id;
+        param["battle_id"] = battle_id;
+
+        FB.LogAppEvent("Player_Complete_Level", parameters: param);
+    }
+
+    public void PlayerFailLevel(string genre_id, string map_id, int league_id, int battle_id)
+    {
+        var param = new Dictionary<string, object>();
+        param["genre_id"] = genre_id;
+        param["map_id"] = map_id;
+        param["league_id"] = league_id;
+        param["battle_id"] = battle_id;
+
+        FB.LogAppEvent("Player_Fail_Level", parameters: param);
+    }
+
+    public void LevelFinish(string genre_id, string map_id, int league_id, int battle_id, int players_amount, int player_place, bool user_play)
+    {
+        var param = new Dictionary<string, object>();
+        param["genre_id"] = genre_id;
+        param["map_id"] = map_id;
+        param["league_id"] = league_id;
+        param["battle_id"] = battle_id;
+        param["players_amount"] = players_amount;
+        param["player_place"] = player_place;
+        param["user_play"] = user_play;
+
+        FB.LogAppEvent("Level_Finish", parameters: param);
+    }
+
+    public void PlayerLeaveGame(int league_id, int battle_id)
+    {
+        var param = new Dictionary<string, object>();
+        param["league_id"] = league_id;
+        param["battle_id"] = battle_id;
+
+        FB.LogAppEvent("Player_Leave_Game", parameters: param);
+    }
+
+    public void GameFinish(int league_id, int battle_id, int player_place, int config_levels_id)
+    {
+        var param = new Dictionary<string, object>();
+        param["league_id"] = league_id;
+        param["battle_id"] = battle_id;
+        param["player_place"] = player_place;
+        param["config_levels_id"] = config_levels_id;
+
+        FB.LogAppEvent("Game_Finish", parameters: param);
+    }
+
+    public void PlayerGetBattleReward(int league_id, int battle_id, int player_gold_earn, int player_cups_earn)
+    {
+        var param = new Dictionary<string, object>();
+        param["league_id"] = league_id;
+        param["battle_id"] = battle_id;
+        param["player_gold_earn"] = player_gold_earn;
+        param["player_cups_earn"] = player_cups_earn;
+
+        FB.LogAppEvent("Player_Get_Battle_Reward", parameters: param);
+    }
+
     #endregion
 
     #region GENERAL
@@ -253,14 +206,25 @@ public class FacebookAnalytics : IAnalytics
         FB.LogAppEvent("Player_Changed_Gun", parameters: param);
     }
 
-    public void PlayerBuySkin(string new_skin_id, int gold_spent, int gold)
+    public void PlayerBuySkin(string car_id, string skin_id, int gold_spent, int gold)
     {
         var param = new Dictionary<string, object>();
-        param["new_skin_id"] = new_skin_id;
+        param["car_id"] = car_id;
+        param["skin_id"] = skin_id;
         param["gold_spent"] = gold_spent;
         param["gold"] = gold;
 
         FB.LogAppEvent("Player_Buy_Skin", parameters: param);
+    }
+
+    public void PlayerChangedSkin(string car_id, string new_skin_id, string old_skin_id)
+    {
+        var param = new Dictionary<string, object>();
+        param["car_id"] = car_id;
+        param["new_skin_id"] = new_skin_id;
+        param["old_skin_id"] = old_skin_id;
+
+        FB.LogAppEvent("Player_Changed_Skin", parameters: param);
     }
 
     public void PlayerChangedControls(string new_control_type, string old_control_type)

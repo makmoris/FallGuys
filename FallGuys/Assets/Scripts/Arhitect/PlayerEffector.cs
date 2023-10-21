@@ -149,11 +149,8 @@ public class PlayerEffector
                     if (player.Health == 0)
                     {   
                         _intermediary.DestroyCar();
-
-                        if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
                     }
 
-                    if (bonus.BonusValue > 0 && isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.BonusValue);
 
                     if (bonus.BonusValue < 0 && isCurrentPlayer)
                     {
@@ -171,7 +168,6 @@ public class PlayerEffector
                         {
                             VibrationManager.Instance.LargeDamageVibration();
                         }
-                        Debug.Log($"Percent = {percent}");
                     }
                 }
 
@@ -293,8 +289,6 @@ public class PlayerEffector
                     if (isCurrentPlayer) levelUI.UpdateCurrentPlayerHP(player.Health);
                     else levelUI.UpdateEnemyHP(player.Health, enemyPointer);
 
-                    if (bonus.BonusValue > 0 && isCurrentPlayer) SendPlayerRecoverHPAnalyticEvent((int)bonus.BonusValue);
-
                     if (bonus.BonusValue < 0 && isCurrentPlayer)
                     {
                         float percent = ((bonus.BonusValue * -1f) / defaultHealth) * 100f;
@@ -311,26 +305,20 @@ public class PlayerEffector
                         {
                             VibrationManager.Instance.LargeDamageVibration();
                         }
-                        Debug.Log($"Percent = {percent}");
                     }
 
                     if (player.Health == 0)
                     {
-                        Debug.Log("DA 1");
                         Bullet bullet = _gameObject.GetComponent<Bullet>();
 
                         if (bullet != null)
                         {
-                            Debug.Log("BULLET 1");
                             _intermediary.DestroyCar(bullet.GetParent());
                         }
                         else
                         {
                             _intermediary.DestroyCar();
                         }
-                        //Debug.Log("Destroy in effector");
-
-                        if (isCurrentPlayer) SendPlayerDestroyedAnalyticEvent();
 
                         return;
                     }
@@ -350,7 +338,7 @@ public class PlayerEffector
                     }
                     disableWeaponCoroutine = CoroutineRunner.Run(WaitAndEnableWeapon(bonus.BonusValue, _gameObject));
 
-                    Debug.Log($"DisableWeapon = {_gameObject}");
+                    //Debug.Log($"DisableWeapon = {_gameObject}");
                     _weapon.DisableWeapon(_gameObject);
 
                     if (isCurrentPlayer)
@@ -387,7 +375,7 @@ public class PlayerEffector
     IEnumerator WaitAndEnableWeapon(float time, GameObject _gameObject)
     {
         yield return new WaitForSeconds(time);
-        Debug.Log($"Enable = {_gameObject}");
+        //Debug.Log($"Enable = {_gameObject}");
         _weapon.EnableWeapon(_gameObject);
 
         if (isCurrentPlayer)
@@ -429,11 +417,11 @@ public class PlayerEffector
 
         isShieldActive = true;
         _intermediary.ShowShield(time);
-        Debug.Log("Щит активирован");
+        //Debug.Log("Щит активирован");
         yield return new WaitForSeconds(time);
         isShieldActive = false;
         _intermediary.HideShield();
-        Debug.Log("Щит отключен");
+        //Debug.Log("Щит отключен");
 
         if (isCurrentPlayer)
         {
@@ -445,89 +433,5 @@ public class PlayerEffector
     private IEnumerator Timer(float time)
     {
         yield return new WaitForSeconds(time);
-    }
-
-    private void SendPlayerGetShieldAnalyticEvent()
-    {
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = (int)player.Health;
-
-        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
-
-        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
-
-        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
-
-        AnalyticsManager.Instance.PlayerGetShield(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left);
-    }
-
-    private void SendPlayerGetGoldAnalyticEvent(int goldAmountValue)
-    {
-        int _gold_amount = goldAmountValue;
-
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = (int)player.Health;
-
-        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
-
-        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
-
-        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
-
-        AnalyticsManager.Instance.PlayerGetGold(_gold_amount, _battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left);
-    }
-
-    private void SendPlayerRecoverHPAnalyticEvent(int hpAmountValue)
-    {
-        int _hp_amount = hpAmountValue;
-
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = (int)player.Health;
-
-        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
-
-        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
-
-        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
-
-        AnalyticsManager.Instance.PlayerRecoverHP(_hp_amount, _battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left);
-    }
-
-    private void SendPlayerDestroyedAnalyticEvent()
-    {
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = 0;
-
-        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
-
-        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
-
-        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft() + 1;
-
-        AnalyticsManager.Instance.PlayerDestroyed(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left);
     }
 }

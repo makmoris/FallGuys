@@ -9,8 +9,6 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public event Action<Bonus> OnBonusGot;
     public event Action<Bonus, GameObject> OnBonusGotWithGameObject;
 
-    //public static event Action PlayerSlowedEvent;
-    //public static event Action PlayerStoppedSlowingEvent;
     private Coroutine oilPuddleCoroutine = null;
     private int oilPuddleCoroutineCounter;
 
@@ -18,9 +16,6 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     private float _defaultDragValue;
 
     [SerializeField]private int slowdownsCounter;
-
-    //public static event Action<int> BonusBoxGiveGoldEvent;// для дополнительной нотификации на экране о подборе бонуса
-    //public static event Action<int> BonusBoxGiveHPEvent;
 
     private LevelUINotifications levelUINotifications;
 
@@ -46,81 +41,16 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         else isPlayer = false;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    //var bonus = other.GetComponent<IBonus>();
-    //    if (other.TryGetComponent(out Bonus bonus))
-    //    {
-    //        Bullet bullet = other.GetComponent<Bullet>();
-    //        if (bullet != null)// если "бонус" оказался пулей
-    //        {
-    //            GameObject bulletParent = bullet.GetParent();// смотрим, кто эту пулю выпустил. Если "стрелок" совпадает с хозяином бампера
-    //            if (bulletParent != this.gameObject)                 // значит это один и тот же игрок. Не бьем по самому себе.
-    //            {
-    //                OnBonusGot?.Invoke(bonus);
-    //                //bonus.Got();
-    //                Debug.Log($"Прилетела пуля в бампер");
-    //            }
-    //        }
-    //        else
-    //        {
-    //            Explosion explosion = other.GetComponent<Explosion>();
-    //            if (explosion == null)// взрыв вызывается через public GetBonus. Самим бампером ловим только баффы. + Взрыв не сразу после наезда
-    //            {
-    //                if(other.GetComponent<DeadZone>() != null && enabled) // сделано, т.к. было по несколько вызовов
-    //                {
-    //                    if (isPlayer)
-    //                    {
-    //                        //SendPlayerFallsOutMapAnalyticEvent();
-    //                    }
-
-    //                    OnBonusGot?.Invoke(bonus);
-    //                    //bonus.Got();
-
-    //                    enabled = false; // enabled = true сделает DeadZone на респе
-    //                }
-
-    //                Debug.Log($"{name} Event GetBonus {other.name}");
-    //                if (other.name == "MysteryBox" && isPlayer)
-    //                {
-    //                    //SendPlayerPickMysteryBoxAnalyticEvent();
-    //                    VibrationManager.Instance.BonusBoxVibration();
-
-    //                    if (bonus.BonusType == BonusType.AddGold)// здесь, т.к. знаем, что это игрок подобрал бокс
-    //                    {
-    //                        //BonusBoxGiveGoldEvent?.Invoke((int)bonus.Value);
-    //                        levelUINotifications.GameUINotifications.ShowGoldNotification((int)bonus.BonusValue);
-    //                    }
-    //                    if (bonus.BonusType == BonusType.AddHealth)
-    //                    {
-    //                        //BonusBoxGiveHPEvent?.Invoke((int)bonus.Value);
-    //                        levelUINotifications.GameUINotifications.ShowHealthNotification((int)bonus.BonusValue);
-    //                    }
-    //                }
-
-    //                if (enabled)
-    //                {
-    //                    OnBonusGot?.Invoke(bonus);
-    //                    //bonus.Got();
-    //                    Debug.Log($"TEST {bonus.BonusType}");
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
     public void GetBonus(Bonus bonus)// вызывается взрывом без коллайдера
     {
-        Debug.Log($"Public GetBonus - {bonus.BonusType}; {gameObject.name}");
+       //Debug.Log($"Public GetBonus - {bonus.BonusType}; {gameObject.name}");
         OnBonusGot?.Invoke(bonus);
-        //bonus.Got();
     }
 
     public void GetBonus(Bonus bonus, GameObject _gameObject)// вызывается взрывом без коллайдера. Для молнии
     {
-        Debug.Log($"Public GetBonus - {bonus.BonusType}; {gameObject.name}");
+        //Debug.Log($"Public GetBonus - {bonus.BonusType}; {gameObject.name}");
         OnBonusGotWithGameObject?.Invoke(bonus, _gameObject);
-        //bonus.Got();
     }
 
     public void ShowAdditionalBulletBonusNotification(AdditionalBulletBonus additionalBulletBonus)
@@ -137,7 +67,6 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public void GetBonusFromOilPuddle(Bonus bonus, float damageInterval)// вызывается при въезде в лужу из OilPuddle
     {
         OnBonusGot?.Invoke(bonus);
-        //bonus.Got();
 
         oilPuddleCoroutineCounter++;
 
@@ -149,7 +78,6 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         if (isPlayer)
         {
             // нотификация
-            //PlayerSlowedEvent?.Invoke();
             levelUINotifications.BuffsDebuffsNotifications.ShowSlowdownDebuff();
         }
     }
@@ -159,7 +87,6 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         yield return new WaitForSeconds(time);
         Debug.Log($"OIL COROUTINE");
         OnBonusGot?.Invoke(bonus);
-        //bonus.Got();
 
         oilPuddleCoroutine = StartCoroutine(WaitAndGetBonusFromOilPuddle(bonus, time));
     }
@@ -181,7 +108,6 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                 if (isPlayer)
                 {
                     // нотификация стоп
-                    //PlayerStoppedSlowingEvent?.Invoke();
                     levelUINotifications.BuffsDebuffsNotifications.HideSlowdownDebuff();
                 }
             }
@@ -200,7 +126,6 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         if (isPlayer)
         {
             // нотификация
-            //PlayerSlowedEvent?.Invoke();
             levelUINotifications.BuffsDebuffsNotifications.ShowSlowdownDebuff();
         }
     }
@@ -216,7 +141,6 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
             if (isPlayer)
             {
                 // нотификация стоп
-                //PlayerStoppedSlowingEvent?.Invoke();
                 levelUINotifications.BuffsDebuffsNotifications.HideSlowdownDebuff();
             }
         }
@@ -227,45 +151,5 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     private void OnDisable()
     {
         StopSlowDown();
-    }
-
-    private void SendPlayerPickMysteryBoxAnalyticEvent()
-    {
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
-
-        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
-
-        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
-
-        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
-
-        AnalyticsManager.Instance.PlayerPickMysteryBox(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left);
-    }
-
-    private void SendPlayerFallsOutMapAnalyticEvent()
-    {
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
-
-        int _player_kills_amount = ArenaProgressController.Instance.GetCurrentNumberOfFrags();
-
-        int _player_gold_earn = ArenaProgressController.Instance.GetCurrentAmountOfGoldReward();
-
-        int _enemies_left = ArenaProgressController.Instance.GetCurrentEnemiesLeft();
-
-        AnalyticsManager.Instance.PlayerFallsOutMap(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left);
     }
 }

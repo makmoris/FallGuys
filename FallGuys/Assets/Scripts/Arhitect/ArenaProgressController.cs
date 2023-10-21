@@ -175,13 +175,6 @@ public class ArenaProgressController : LevelProgressController
 
         CurrencyManager.Instance.AddGold(amountOfGoldReward);
         CurrencyManager.Instance.AddCup(amountOfCupReward);
-
-        if (place == 1)
-        {
-            BattleStatisticsManager.Instance.AddFirstPlace();
-        }
-
-        BattleStatisticsManager.Instance.AddBattle();
     }
 
     private void DisabledAllChildElements()
@@ -256,58 +249,5 @@ public class ArenaProgressController : LevelProgressController
         base.OnDisable();
 
         VisualIntermediary.PlayerWasDeadEvent -= ReduceNumberOfPlayers;
-    }
-
-    public void SendBattleFinishAnalyticEvent()// вызывается из VisualIntermediary после AddFrag()
-    {
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _league_id = LeagueManager.Instance.GetCurrentLeagueLevel();
-
-        string _level_id = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-
-        int _enemies_amount = startNumberOfPlayers;
-
-        int _player_took_place = playerFinishPlace;
-
-        int _player_kills_amount = numberOfFrags;
-
-        int _player_gold_earn = amountOfGoldReward;
-
-        int player_cups_earned = amountOfCupReward;
-
-        AnalyticsManager.Instance.BattleFinish(_battle_id, _player_car_id, _player_gun_id, _league_id, _level_id, _enemies_amount, _player_took_place,
-            _player_kills_amount, _player_gold_earn, player_cups_earned);
-
-        _battle_id++;
-        PlayerPrefs.SetInt(_battle_id_key, _battle_id);
-    }
-
-    public void SendPlayerKillEnemyAnalyticEvent(GameObject killedEnemyObj)// вызывается из VisualIntermediary после AddFrag()
-    {
-        string _battle_id_key = AnalyticsManager.battle_id_key;
-        int _battle_id = PlayerPrefs.GetInt(_battle_id_key, 1);
-
-        string _player_car_id = AnalyticsManager.Instance.GetCurrentPlayerCarId();
-        string _player_gun_id = AnalyticsManager.Instance.GetCurrentPlayerGunId();
-
-        int _player_hp_left = AnalyticsManager.Instance.GetCurrentPlayerHealth();
-
-        int _player_kills_amount = numberOfFrags;
-
-        int _player_gold_earn = amountOfGoldReward;
-
-        int _enemies_left = numberOfPlayers - 2;
-
-        string _killed_enemy_car_id = killedEnemyObj.GetComponent<VehicleId>().VehicleID;
-
-        string _killed_enemy_gun_id = killedEnemyObj.transform.GetComponentInChildren<Weapon>().GetComponent<WeaponId>().WeaponID;
-
-        AnalyticsManager.Instance.PlayerKillEnemy(_battle_id, _player_car_id, _player_gun_id, _player_hp_left, _player_kills_amount,
-            _player_gold_earn, _enemies_left, _killed_enemy_car_id, _killed_enemy_gun_id);
     }
 }

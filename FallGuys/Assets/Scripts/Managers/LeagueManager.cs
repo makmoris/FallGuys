@@ -32,6 +32,7 @@ public class LeagueManager : MonoBehaviour
 
     [SerializeField] private List<RewardLevel> leagueLevels;
 
+    private const string currentLeagueLevelKey = "current_league_level";
 
     public static LeagueManager Instance { get; private set; }
     private void Awake()
@@ -111,6 +112,8 @@ public class LeagueManager : MonoBehaviour
         currentLeagueLevel = _leagueLevel;
 
         LeagueLevelUpdateEvent?.Invoke(currentLeagueLevel);
+
+        PlayerPrefs.SetInt(currentLeagueLevelKey, currentLeagueLevel);
     }
 
     public int GetNeededCupsForLeagueLevel(int leagueLevelIndex)// גûחûגאועסÿ LeagueWindowProgressVisualizer
@@ -128,6 +131,8 @@ public class LeagueManager : MonoBehaviour
 
     public int GetCurrentLeagueLevel()
     {
+        currentLeagueLevel = PlayerPrefs.GetInt(currentLeagueLevelKey, 1);
+
         return currentLeagueLevel;
     }
 

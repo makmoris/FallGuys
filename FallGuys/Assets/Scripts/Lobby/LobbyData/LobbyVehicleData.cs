@@ -9,7 +9,7 @@ public class LobbyVehicleData : ScriptableObject
     private Sprite vehicleIcon;
     [SerializeField] private int vehicleCost;
     [SerializeField] private int vehicleCupsToUnlock;
-    [SerializeField] private bool isVehicleAvailable;// если false - то оно заблочено, нужно его купить/открыть 
+    private bool isVehicleAvailable;// если false - то оно заблочено, нужно его купить/открыть 
     [SerializeField] private PlayerDefaultData vehicleDefaultData;// данные, откуда можно будет подтягивать характеристики тачки
     [Space]
     [SerializeField] private bool alwaysAvailable;// если true, значит игнорируем то, что в памяти. Объект всегда доступен

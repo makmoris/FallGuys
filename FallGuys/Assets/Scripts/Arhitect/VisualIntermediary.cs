@@ -51,7 +51,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
             {
                 Debug.Log($"игрока {gameObject.name} вытолкнул и убил {playerGO.name}");
                 ArenaProgressController.Instance.AddFrag();
-                ArenaProgressController.Instance.SendPlayerKillEnemyAnalyticEvent(gameObject);
             }
         }
 
@@ -66,7 +65,6 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
             if (killer == playerGO)
             {
                 ArenaProgressController.Instance.AddFrag();
-                ArenaProgressController.Instance.SendPlayerKillEnemyAnalyticEvent(gameObject);
             }
         }
 

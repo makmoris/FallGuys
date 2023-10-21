@@ -16,13 +16,13 @@ public class AwardsManager : MonoBehaviour
     [SerializeField] internal List<PlaceAwards> placeAwards;
 
 
-    public int GetGoldsAward(int placeIndex)
+    public int GetGoldsAward(int place)
     {
-        return placeAwards[placeIndex].goldsValue;
+        return placeAwards[place - 1].goldsValue;
     }
 
-    public int GetCupsAward(int placeIndex)
+    public int GetCupsAward(int place)
     {
-        return placeAwards[placeIndex].cupsValue;
+        return placeAwards[place - 1].cupsValue;
     }
 }

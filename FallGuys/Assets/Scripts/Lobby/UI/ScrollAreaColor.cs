@@ -52,7 +52,7 @@ public class ScrollAreaColor : MonoBehaviour
 
     private void ShowContentForActiveVehicle()
     {
-        SetActiveVehicle();
+        if (activeVehicle == null) activeVehicle = GetActiveVehicle();
 
         foreach (var cont in colorContents)
         {
@@ -71,9 +71,9 @@ public class ScrollAreaColor : MonoBehaviour
         }
     }
 
-    private void SetActiveVehicle()
+    private GameObject GetActiveVehicle()
     {
-        activeVehicle = LobbyManager.Instance.GetActiveLobbyVehicle();
+       return LobbyManager.Instance.GetActiveLobbyVehicle();
     }
 
     //private void CheckInactivity(List<ColorContent> list)

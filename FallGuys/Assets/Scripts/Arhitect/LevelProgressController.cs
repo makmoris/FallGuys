@@ -37,11 +37,17 @@ public abstract class LevelProgressController : MonoBehaviour
             if (playerName != null) losersNameList.Add(playerName.Name);
         }
 
-        //_losersList.Clear();
+        List<string> winnersNameList = new List<string>();
+        foreach (var winner in _winnersList)
+        {
+            PlayerName playerName = winner.GetComponent<PlayerName>();
+            if (playerName != null) winnersNameList.Add(playerName.Name);
+        }
 
         _gameManager.EliminateLosersFromList(losersNameList);
+        _gameManager.SetWinnersNamesList(winnersNameList);
     }
-    
+
     public abstract void AddPlayer(GameObject playerGO, bool isCurrentPlayer);
 
     public abstract void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners);
@@ -53,5 +59,30 @@ public abstract class LevelProgressController : MonoBehaviour
     protected virtual void OnDisable()
     {
         levelProgressUIController.GameCanStartEvent -= StartGame;
+    }
+
+    private int GetCurrentPlayerTookPlace()
+    {
+        int counter = _losersList.Count + _winnersList.Count;
+
+        foreach (var loser in _losersList)
+        {
+            if(loser == _currentPlayer)
+            {
+                return counter;
+            }
+
+            counter--;
+        }
+
+        foreach (var winner in _winnersList)
+        {
+            if (winner == _currentPlayer) return counter;
+
+            counter--;
+        }
+
+        Debug.LogError("Player is not found");
+        return 0;
     }
 }

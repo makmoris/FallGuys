@@ -235,7 +235,12 @@ public class Weapon : MonoBehaviour
         bullet.transform.position = startBulletPosition.position;
         bullet.transform.rotation = startBulletPosition.rotation;
 
-        if (isAdditionalBulletBonusSetted) bullet.SetAdditionalBulletBonus(additionalBulletBonus, this);
+        if (isAdditionalBulletBonusSetted)
+        {
+            bullet.SetAdditionalBulletBonus(additionalBulletBonus, this);
+
+            parentBumper.HideAdditionalBulletBonusNotification();
+        }
 
         bullet.Shot();
 

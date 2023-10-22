@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class BuffsDebuffsNotifications : MonoBehaviour
 {
+    [SerializeField] private Image banImage;
+
     [Header("Buffs")]
     [SerializeField] private Image shieldBuff;
 
@@ -112,6 +114,8 @@ public class BuffsDebuffsNotifications : MonoBehaviour
                 break;
 
         }
+
+        banImage.enabled = false;
     }
 
     public void HideAdditionalBulletBonusNotification()
@@ -119,6 +123,8 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         if (additionalBulletBonusLightning.activeSelf) additionalBulletBonusLightning.SetActive(false);
         if (additionalBulletBonusSlowdownOilPuddle.activeSelf) additionalBulletBonusSlowdownOilPuddle.SetActive(false);
         if (additionalBulletBonusExplosion.activeSelf) additionalBulletBonusExplosion.SetActive(false);
+
+        banImage.enabled = true;
     }
 
     private void ShowAdditionalBulletBonusLightning()

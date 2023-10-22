@@ -26,9 +26,9 @@ public class AttackBan : MonoBehaviour
 
         if (fillingBanTimeCoroutine != null)
         {
-            StopCoroutine(fillingBanTimeCoroutine);
+            CoroutineRunner.Stop(fillingBanTimeCoroutine);
         }
-        fillingBanTimeCoroutine = StartCoroutine(FillingBanScale(banTime));
+        fillingBanTimeCoroutine = CoroutineRunner.Run(FillingBanScale(banTime));
     }
 
     public void HideBanImage()

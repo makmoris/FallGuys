@@ -50,7 +50,7 @@ public class LobbyManager : MonoBehaviour
         CheckInactivity(lobbyWeapons);
 
         activeVehicle = GetActiveLobbyVehicle();
-        activeWeapon = GetActiveWeapon();
+        activeWeapon = GetActiveLobbyWeapon();
 
         ShowActiveVehicle();
         ShowActiveWeapon();
@@ -63,7 +63,7 @@ public class LobbyManager : MonoBehaviour
     public void SetCharacter()// вызывается в момент запуска игрового уровня
     {
         GameObject _activeVehicle = GetActiveSaveVehicle();
-        GameObject _activeWeapon = GetActiveWeapon();
+        GameObject _activeWeapon = GetActiveLobbyWeapon();
 
         GameObject selectedVehicle = _activeVehicle.GetComponent<LobbyVehicle>().GetVehiclePrefab();
         GameObject selectedWeapon = _activeWeapon.GetComponent<LobbyWeapon>().GetWeaponPrefab();
@@ -78,7 +78,7 @@ public class LobbyManager : MonoBehaviour
 
         activeLobbyVehicleIndex = saveActiveVehicleIndex;
         activeVehicle = GetActiveSaveVehicle();
-        activeWeapon = GetActiveWeapon();
+        activeWeapon = GetActiveLobbyWeapon();
 
         ShowActiveVehicle();
         ShowActiveWeapon();
@@ -128,7 +128,7 @@ public class LobbyManager : MonoBehaviour
         activeLobbyWeaponIndex = newActiveIndex;
 
         activeWeapon.SetActive(false);
-        activeWeapon = GetActiveWeapon();
+        activeWeapon = GetActiveLobbyWeapon();
         ShowActiveWeapon();
 
         // сейвить выбранный индекс пушки
@@ -155,7 +155,7 @@ public class LobbyManager : MonoBehaviour
         if (activeWeapon != null)
         {
             activeWeapon.SetActive(false);
-            activeWeapon = GetActiveWeapon();
+            activeWeapon = GetActiveLobbyWeapon();
             ShowActiveWeapon();
         }
     }
@@ -171,7 +171,7 @@ public class LobbyManager : MonoBehaviour
         return activeVehicle;
     }
 
-    public GameObject GetActiveWeapon()
+    public GameObject GetActiveLobbyWeapon()
     {
         GameObject activeWeapon = lobbyWeapons[activeLobbyWeaponIndex].gameObject;
         return activeWeapon;

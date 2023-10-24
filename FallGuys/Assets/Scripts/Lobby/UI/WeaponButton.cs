@@ -304,7 +304,7 @@ public class WeaponButton : MonoBehaviour
     {
         if (lobbyWeaponData == null) SetLobbyWeaponData(); 
 
-        return LobbyManager.Instance.GetActiveWeapon();
+        return LobbyManager.Instance.GetActiveLobbyWeapon();
     }
 
     private void ResetInfo()

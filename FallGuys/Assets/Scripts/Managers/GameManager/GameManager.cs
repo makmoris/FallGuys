@@ -75,6 +75,8 @@ public class GameManager : MonoBehaviour
     [Header("Game Mode Scenes")]
     [SerializeField] private List<GameModeScenes> gameModeScenes;
 
+    private int numberOfFragsForStatistics = -1;// -1 чтобы не показывать фраги в других режимах
+
     #region Analytics
     private int currentPlayerTookPlaceInGameStage;
     #endregion
@@ -292,6 +294,11 @@ public class GameManager : MonoBehaviour
         return CurrencyManager.Instance.Cups;
     }
 
+    public void SetNumberOfFrags(int fragsValue)
+    {
+        numberOfFragsForStatistics = fragsValue;
+    }
+
     private void CheckTheDisplayOfThePlayerStatisticsWindowAfterGameInTheLobby()
     {
         if (isShowPlayerStatisticsWindowAfterGameInTheLobby)
@@ -301,7 +308,7 @@ public class GameManager : MonoBehaviour
             if (playerStatisticsAfterBattleWindow != null)
             {
                 playerStatisticsAfterBattleWindow.gameObject.SetActive(true);
-                playerStatisticsAfterBattleWindow.ShowStatistics(currentPlayerPlace);
+                playerStatisticsAfterBattleWindow.ShowStatistics(currentPlayerPlace, numberOfFragsForStatistics);
             }
         }
     }

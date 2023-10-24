@@ -141,7 +141,7 @@ public class CharacteristicVisualizer : MonoBehaviour
 
     private float GetActiveWeaponValueOfType()
     {
-        WeaponCharacteristicsData data = LobbyManager.Instance.GetActiveWeapon().GetComponent<LobbyWeapon>().GetLobbyWeaponData().WeaponDefaultData;
+        WeaponCharacteristicsData data = LobbyManager.Instance.GetActiveLobbyWeapon().GetComponent<LobbyWeapon>().GetLobbyWeaponData().WeaponDefaultData;
 
         float value = 0;
 

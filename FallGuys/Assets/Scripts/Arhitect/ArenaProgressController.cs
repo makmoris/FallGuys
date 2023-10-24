@@ -234,6 +234,7 @@ public class ArenaProgressController : LevelProgressController
     protected override void ShowPostWindow()
     {
         SendListOfLosersNamesToGameManager();
+        _gameManager.SetNumberOfFrags(numberOfFrags);
 
         postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner, _currentPlayer);
     }

@@ -62,7 +62,6 @@ public class RingsProgressController : LevelProgressController
         {
             string nearestEnemyName = _playersList[_playersList.Count - 1].GetComponent<PlayerName>().Name;
             ringsProgressUIController.UpdatePointsText(_playersList.Count, 0, 1, 0, "You", nearestEnemyName, false);
-            Debug.LogError($"Current Player != null; currentPlayer = {_currentPlayer}");
         }
 
         //gameTimer.GameTimerFinishedEvent += GameTimeIsOver;

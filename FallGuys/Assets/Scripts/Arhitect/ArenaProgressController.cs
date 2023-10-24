@@ -78,6 +78,8 @@ public class ArenaProgressController : LevelProgressController
         amountOfCupReward += LeagueManager.Instance.GetCupRewardForFrag();
         Debug.Log("Add FRAG");
         UpdateFragText();
+
+        _gameManager.SetNumberOfFrags(numberOfFrags);
     }
 
     public void AddGold(int value)// вызывается из PlayerEffector за подбор бонуса
@@ -234,7 +236,6 @@ public class ArenaProgressController : LevelProgressController
     protected override void ShowPostWindow()
     {
         SendListOfLosersNamesToGameManager();
-        _gameManager.SetNumberOfFrags(numberOfFrags);
 
         postLevelPlaceController.ShowPostPlace(_winnersList, _losersList, _isCurrentPlayerWinner, _currentPlayer);
     }

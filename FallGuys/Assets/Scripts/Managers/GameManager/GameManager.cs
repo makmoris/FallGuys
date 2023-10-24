@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
     public void StartGameStage()// начальная точка. Вызывается по кнопке "Play"
     {
         #region Debug GameStagesList
-        if(useRandomDebugIndex) debugIndex = Random.Range(0, AllGameStagesList.Count);
+        if(useRandomDebugIndex && isFirstStart) debugIndex = Random.Range(0, AllGameStagesList.Count);
 
         gameStagesList = AllGameStagesList[debugIndex].gameStagesList;
         #endregion
@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
 
             AnalyticsManager.Instance.UpdateBattleId();
             AnalyticsManager.Instance.UpdateBattlesAmount();
-            AnalyticsManager.Instance.UpdateConfigLevelsID(debugIndex);
+            AnalyticsManager.Instance.UpdateConfigLevelsID(debugIndex + 1);
 
             AnalyticsManager.Instance.GameStart();
             #endregion
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
         #region Analytics
         AnalyticsManager.Instance.UpdateBattleId();
         AnalyticsManager.Instance.UpdateBattlesAmount();
-        AnalyticsManager.Instance.UpdateConfigLevelsID(debugIndex);
+        AnalyticsManager.Instance.UpdateConfigLevelsID(debugIndex + 1);
 
         AnalyticsManager.Instance.GameStart();
         #endregion

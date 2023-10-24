@@ -14,6 +14,9 @@ public class RingsProgressController : LevelProgressController
     [Header("Points for Ring")]
     [SerializeField] private int pointsValue = 1;
 
+    [Header("Disable Weapon On Start")]
+    [SerializeField] private float disableWeaponTimeOnStart = 5f;
+
     private Dictionary<GameObject, int> playerPointsDictionary = new Dictionary<GameObject, int>();
 
     private RingsProgressUIController ringsProgressUIController;
@@ -22,7 +25,7 @@ public class RingsProgressController : LevelProgressController
     private bool gameUntilTheFirstWinner;
 
     private bool isObserverMode;
-    [SerializeField]private GameObject currentFollowingPlayer;
+    private GameObject currentFollowingPlayer;
 
     private event System.Action GameTimerFinishedEvent;
 
@@ -48,6 +51,11 @@ public class RingsProgressController : LevelProgressController
         numberOfWinners = _numberOfWinners;
 
         ringsProgressUIController.SetNumberOfWinners(numberOfWinners);
+
+        foreach (var player in _playersList)
+        {
+            ApplyDisableBonus(player, disableWeaponTimeOnStart);
+        }
     }
 
     protected override void StartGame()
@@ -231,5 +239,13 @@ public class RingsProgressController : LevelProgressController
         cameraFollowingOnOtherPlayers.EnableObserverMode();
 
         ShowPostWindow();
+    }
+
+    private void ApplyDisableBonus(GameObject driverGO, float disableTime)
+    {
+        DisableWeaponBonus disableWeaponBonus = new(disableTime);
+
+        Bumper bumper = driverGO.GetComponent<Bumper>();
+        bumper.GetBonus(disableWeaponBonus, driverGO);
     }
 }

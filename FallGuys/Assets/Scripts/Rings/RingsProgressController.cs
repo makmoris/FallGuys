@@ -22,7 +22,7 @@ public class RingsProgressController : LevelProgressController
     private bool gameUntilTheFirstWinner;
 
     private bool isObserverMode;
-    private GameObject currentFollowingPlayer;
+    [SerializeField]private GameObject currentFollowingPlayer;
 
     private event System.Action GameTimerFinishedEvent;
 
@@ -46,6 +46,8 @@ public class RingsProgressController : LevelProgressController
     public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
     {
         numberOfWinners = _numberOfWinners;
+
+        ringsProgressUIController.SetNumberOfWinners(numberOfWinners);
     }
 
     protected override void StartGame()
@@ -56,7 +58,12 @@ public class RingsProgressController : LevelProgressController
             wheelVehicle.Handbrake = false;
         }
 
-        ringsProgressUIController.UpdatePointsText(_playersList.Count, 0, 1, 0);
+        if(_currentPlayer != null)
+        {
+            string nearestEnemyName = _playersList[_playersList.Count - 1].GetComponent<PlayerName>().Name;
+            ringsProgressUIController.UpdatePointsText(_playersList.Count, 0, 1, 0, "You", nearestEnemyName, false);
+            Debug.LogError($"Current Player != null; currentPlayer = {_currentPlayer}");
+        }
 
         //gameTimer.GameTimerFinishedEvent += GameTimeIsOver;
         GameTimerFinishedEvent += GameTimeIsOver;
@@ -84,7 +91,11 @@ public class RingsProgressController : LevelProgressController
     {
         this.isObserverMode = isObserverMode;
 
-        if (isObserverMode) cameraFollowingOnOtherPlayers.StartFollowingANewPlayerEvent += CurrentFollowingPlayerChanged;
+        if (isObserverMode)
+        {
+            cameraFollowingOnOtherPlayers.StartFollowingANewPlayerEvent += CurrentFollowingPlayerChanged;
+            currentFollowingPlayer = cameraFollowingOnOtherPlayers.GetCurrentDriver();
+        }
         else currentFollowingPlayer = _currentPlayer;
     }
 
@@ -156,9 +167,17 @@ public class RingsProgressController : LevelProgressController
     {
         List<KeyValuePair<GameObject, int>> sortingPlayersPlaces = playerPointsDictionary.OrderByDescending(d => d.Value).ToList();
 
+        if(currentFollowingPlayer == null && isObserverMode) currentFollowingPlayer = cameraFollowingOnOtherPlayers.GetCurrentDriver();
+
         if (sortingPlayersPlaces[0].Key == currentFollowingPlayer)
         {
-            ringsProgressUIController.UpdatePointsText(1, playerPointsDictionary[currentFollowingPlayer], 2, sortingPlayersPlaces[1].Value);
+            string currentFollowingPlayerName = currentFollowingPlayer.GetComponent<PlayerName>().Name;
+            if (currentFollowingPlayerName == "Player") currentFollowingPlayerName = "You";
+
+            string nearestEnemyName = sortingPlayersPlaces[1].Key.GetComponent<PlayerName>().Name;
+
+            ringsProgressUIController.UpdatePointsText(1, playerPointsDictionary[currentFollowingPlayer], 2, sortingPlayersPlaces[1].Value,
+                currentFollowingPlayerName, nearestEnemyName, true);
         }
         else
         {
@@ -176,7 +195,17 @@ public class RingsProgressController : LevelProgressController
                 }
             }
 
-            ringsProgressUIController.UpdatePointsText(playerPlace, playerPoints, 1, sortingPlayersPlaces[0].Value);
+            string currentFollowingPlayerName = currentFollowingPlayer.GetComponent<PlayerName>().Name;
+            if (currentFollowingPlayerName == "Player") currentFollowingPlayerName = "You";
+
+            string nearestEnemyName = sortingPlayersPlaces[0].Key.GetComponent<PlayerName>().Name;
+
+            bool isCurrentFollowingPlayerPass;
+            if (playerPlace <= numberOfWinners) isCurrentFollowingPlayerPass = true;
+            else isCurrentFollowingPlayerPass = false;
+
+            ringsProgressUIController.UpdatePointsText(playerPlace, playerPoints, 1, sortingPlayersPlaces[0].Value,
+                currentFollowingPlayerName, nearestEnemyName, isCurrentFollowingPlayerPass);
         }
 
         if (gameUntilTheFirstWinner) SortTheWinners();

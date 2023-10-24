@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +11,8 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     [Header("Debuffs")]
     [SerializeField] private Image slowDebuff;
     private bool slowDebuffNeedToShow;
+    [SerializeField] private Image healthDamageDebuff;
+    private bool healthDamageDebuffNeedToShow;
     [SerializeField] private Image lightningDebuff;
     [SerializeField] private Image controlInversion;
 
@@ -26,6 +26,7 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         shieldBuff.gameObject.SetActive(false);
 
         slowDebuff.gameObject.SetActive(false);
+        healthDamageDebuff.gameObject.SetActive(false);
         lightningDebuff.gameObject.SetActive(false);
         controlInversion.gameObject.SetActive(false);
 
@@ -34,17 +35,15 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         additionalBulletBonusExplosion.SetActive(false);
     }
 
-    //private void OnEnable()
-    //{
-    //    Bumper.PlayerSlowedEvent += ShowSlowdownDebuff;
-    //    Bumper.PlayerStoppedSlowingEvent += HideSlowdownDebuff;
-    //}
-
     public void ShowShieldBuff()
     {
         shieldBuff.gameObject.SetActive(true);
 
-        if (slowDebuff.gameObject.activeSelf) HideSlowdownDebuff();
+        if (slowDebuff.gameObject.activeSelf)
+        {
+            HideSlowdownDebuff();
+            HideHealthDamageDebuff();
+        }
     }
     public void HideShieldBuff()
     {
@@ -52,6 +51,7 @@ public class BuffsDebuffsNotifications : MonoBehaviour
 
         // если щит отключился, но в этой время игрок был в луже, значит нужно показать дебафф лужи
         if (slowDebuffNeedToShow) ShowSlowdownDebuff();
+        if (healthDamageDebuffNeedToShow) ShowHealthDamageDebuff();
     }
 
     public void ShowSlowdownDebuff()
@@ -66,6 +66,20 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         slowDebuffNeedToShow = false;
 
         slowDebuff.gameObject.SetActive(false);
+    }
+
+    public void ShowHealthDamageDebuff()
+    {
+        healthDamageDebuffNeedToShow = true;
+
+        // если щит отключен, то показываем дебаф скорости
+        if (!shieldBuff.gameObject.activeSelf) healthDamageDebuff.gameObject.SetActive(true);
+    }
+    public void HideHealthDamageDebuff()
+    {
+        healthDamageDebuffNeedToShow = false;
+
+        healthDamageDebuff.gameObject.SetActive(false);
     }
 
     public void ShowLightningDebuff()
@@ -143,10 +157,4 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     }
 
     #endregion
-
-    //private void OnDisable()
-    //{
-    //    Bumper.PlayerSlowedEvent -= ShowSlowdownDebuff;
-    //    Bumper.PlayerStoppedSlowingEvent -= HideSlowdownDebuff;
-    //}
 }

@@ -21357,9 +21357,10 @@ MonoBehaviour:
   levelProgressUIController: {fileID: 2840997851410847268}
   postLevelPlaceController: {fileID: 169798293}
   cameraFollowingOnOtherPlayers: {fileID: 1858392600}
-  playTimeSeconds: 150
+  playTimeSeconds: 10
   gameTimer: {fileID: 1292417581}
   pointsValue: 1
+  currentFollowingPlayer: {fileID: 0}
 --- !u!1001 &2041485716
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22709,6 +22710,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: RingsUI
       objectReference: {fileID: 0}
+    - target: {fileID: 1080558984614401746, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080558984614401746, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080558984614401746, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080558984614401746, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080558984614401746, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1080558984614401746, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1690970814890684225, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -22781,6 +22806,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4791902930930562263, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791902930930562263, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791902930930562263, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4791902930930562263, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5490736310450388536, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
       propertyPath: m_Name
       value: RingsLevelUI
@@ -22825,6 +22866,30 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 1858392602}
+    - target: {fileID: 7663194622073975677, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7663194622073975677, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7663194622073975677, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7663194622073975677, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7663194622073975677, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7663194622073975677, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8824494617827979664, guid: dff9459ed17a0de4fbf847267c066177, type: 3}
       propertyPath: trackCutScene
       value: 

@@ -79,6 +79,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         {
             // нотификация
             levelUINotifications.BuffsDebuffsNotifications.ShowSlowdownDebuff();
+            levelUINotifications.BuffsDebuffsNotifications.ShowHealthDamageDebuff();
         }
     }
 
@@ -109,6 +110,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
                 {
                     // нотификация стоп
                     levelUINotifications.BuffsDebuffsNotifications.HideSlowdownDebuff();
+                    levelUINotifications.BuffsDebuffsNotifications.HideHealthDamageDebuff();
                 }
             }
             else if (oilPuddleCoroutineCounter < 0) oilPuddleCoroutineCounter = 0;

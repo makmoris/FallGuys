@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     #region Debug GameStagesList
     [Space]
     [Header("Debug Game Stages")]
+    [SerializeField] private bool useRandomDebugIndex;
     [SerializeField] private int debugIndex;
     [SerializeField] private List<GameStagesList> AllGameStagesList;
     //[Header("Current Debug Game Stages")]
@@ -108,6 +109,8 @@ public class GameManager : MonoBehaviour
     public void StartGameStage()// начальная точка. Вызывается по кнопке "Play"
     {
         #region Debug GameStagesList
+        if(useRandomDebugIndex) debugIndex = Random.Range(0, AllGameStagesList.Count);
+
         gameStagesList = AllGameStagesList[debugIndex].gameStagesList;
         #endregion
 

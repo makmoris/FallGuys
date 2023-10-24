@@ -6,11 +6,11 @@ using UnityEngine;
 public class LobbyVehicleData : ScriptableObject
 {
     [SerializeField] private string vehicleName;
-    private Sprite vehicleIcon;
     [SerializeField] private int vehicleCost;
     [SerializeField] private int vehicleCupsToUnlock;
     private bool isVehicleAvailable;// если false - то оно заблочено, нужно его купить/открыть 
     [SerializeField] private PlayerDefaultData vehicleDefaultData;// данные, откуда можно будет подтягивать характеристики тачки
+    [SerializeField] private Sprite vehicleImage;
     [Space]
     [SerializeField] private bool alwaysAvailable;// если true, значит игнорируем то, что в памяти. Объект всегда доступен
 
@@ -65,4 +65,5 @@ public class LobbyVehicleData : ScriptableObject
             return vehicleDefaultData;
         }
     }
+    public Sprite VehicleImage => vehicleImage;
 }

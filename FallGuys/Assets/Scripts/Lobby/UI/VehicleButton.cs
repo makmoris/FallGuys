@@ -8,6 +8,7 @@ public class VehicleButton : MonoBehaviour
     private LobbyVehicleData lobbyVehicleData;
 
     [Header("Button Components")]
+    [SerializeField] private Image vehicleImage;
     [SerializeField] private TextMeshProUGUI vehicleNameOnButton;
     [SerializeField] private GameObject activeImage;
     [SerializeField] private GameObject selectImage;
@@ -30,7 +31,7 @@ public class VehicleButton : MonoBehaviour
     private VehicleContent vehicleContent;
 
     [Space]
-    [Header("---------")]
+    [Header("DEBUG")]
     [SerializeField] private bool isActiveVehicle;
 
     [Header("Data values")]
@@ -79,6 +80,7 @@ public class VehicleButton : MonoBehaviour
 
 
         vehicleNameOnButton.text = _vehicleName;
+        vehicleImage.sprite = lobbyVehicleData.VehicleImage;
     }
 
     private void SetLobbyVehicleData()

@@ -4719,8 +4719,10 @@ struct CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C  : public MonoB
 	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___colorScroll_8;
 	// UnityEngine.GameObject CustomizationUI::weaponScroll
 	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___weaponScroll_9;
+	// UnityEngine.GameObject CustomizationUI::WeaponCharacteristicsGO
+	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___WeaponCharacteristicsGO_10;
 	// System.Boolean CustomizationUI::notFirstActive
-	bool ___notFirstActive_10;
+	bool ___notFirstActive_11;
 };
 
 // DriverAI
@@ -7242,8 +7244,8 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CurrencyManager_remove_CupsUpdateEvent_m
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CustomizationUI_ScrollsActivation_mACE131722B05C1BB203074E9D78AD4A027E8A82A (CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C* __this, const RuntimeMethod* method) ;
 // System.Boolean UnityEngine.GameObject::get_activeSelf()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool GameObject_get_activeSelf_m4F3E5240E138B66AAA080EA30759A3D0517DA368 (GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* __this, const RuntimeMethod* method) ;
-// System.Void CustomizationUI::SetColorButtonActive()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CustomizationUI_SetColorButtonActive_mEC9DA4225D2673A864035AB2A4911D55376B7026 (CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C* __this, const RuntimeMethod* method) ;
+// System.Void CustomizationUI::SetWeaponButtonActive()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CustomizationUI_SetWeaponButtonActive_mA134711B2BB4F8A8D264C55F847D77E599126680 (CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C* __this, const RuntimeMethod* method) ;
 // System.Void UnityEngine.UI.Image::set_sprite(UnityEngine.Sprite)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Image_set_sprite_mC0C248340BA27AAEE56855A3FAFA0D8CA12956DE (Image_tBC1D03F63BF71132E9A5E472B8742F172A011E7E* __this, Sprite_tAFF74BC83CD68037494CB0B4F28CBDF8971CAB99* ___value0, const RuntimeMethod* method) ;
 // T UnityEngine.Component::GetComponent<UnityEngine.UI.Image>()
@@ -9478,7 +9480,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CustomizationUI_OnEnable_mBC4C9133AA0A7E
 {
 	{
 		// if (notFirstActive)
-		bool L_0 = __this->___notFirstActive_10;
+		bool L_0 = __this->___notFirstActive_11;
 		if (!L_0)
 		{
 			goto IL_000e;
@@ -9502,7 +9504,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CustomizationUI_Start_m670378A1E09CCFDB4
 		// ScrollsActivation();
 		CustomizationUI_ScrollsActivation_mACE131722B05C1BB203074E9D78AD4A027E8A82A(__this, NULL);
 		// notFirstActive = true;
-		__this->___notFirstActive_10 = (bool)1;
+		__this->___notFirstActive_11 = (bool)1;
 		// }
 		return;
 	}
@@ -9511,46 +9513,50 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CustomizationUI_Start_m670378A1E09CCFDB4
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CustomizationUI_ScrollsActivation_mACE131722B05C1BB203074E9D78AD4A027E8A82A (CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C* __this, const RuntimeMethod* method) 
 {
 	{
-		// if (!colorScroll.activeSelf) colorScroll.SetActive(true);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_0 = __this->___colorScroll_8;
+		// if (!weaponScroll.activeSelf)
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_0 = __this->___weaponScroll_9;
 		NullCheck(L_0);
 		bool L_1;
 		L_1 = GameObject_get_activeSelf_m4F3E5240E138B66AAA080EA30759A3D0517DA368(L_0, NULL);
 		if (L_1)
 		{
-			goto IL_0019;
+			goto IL_0025;
 		}
 	}
 	{
-		// if (!colorScroll.activeSelf) colorScroll.SetActive(true);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_2 = __this->___colorScroll_8;
+		// WeaponCharacteristicsGO.SetActive(true);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_2 = __this->___WeaponCharacteristicsGO_10;
 		NullCheck(L_2);
 		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_2, (bool)1, NULL);
-	}
-
-IL_0019:
-	{
-		// if (weaponScroll.activeSelf) weaponScroll.SetActive(false);
+		// weaponScroll.SetActive(true);
 		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_3 = __this->___weaponScroll_9;
 		NullCheck(L_3);
-		bool L_4;
-		L_4 = GameObject_get_activeSelf_m4F3E5240E138B66AAA080EA30759A3D0517DA368(L_3, NULL);
-		if (!L_4)
+		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_3, (bool)1, NULL);
+	}
+
+IL_0025:
+	{
+		// if (colorScroll.activeSelf)
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_4 = __this->___colorScroll_8;
+		NullCheck(L_4);
+		bool L_5;
+		L_5 = GameObject_get_activeSelf_m4F3E5240E138B66AAA080EA30759A3D0517DA368(L_4, NULL);
+		if (!L_5)
 		{
-			goto IL_0032;
+			goto IL_003e;
 		}
 	}
 	{
-		// if (weaponScroll.activeSelf) weaponScroll.SetActive(false);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_5 = __this->___weaponScroll_9;
-		NullCheck(L_5);
-		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_5, (bool)0, NULL);
+		// colorScroll.SetActive(false);
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_6 = __this->___colorScroll_8;
+		NullCheck(L_6);
+		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_6, (bool)0, NULL);
 	}
 
-IL_0032:
+IL_003e:
 	{
-		// SetColorButtonActive();
-		CustomizationUI_SetColorButtonActive_mEC9DA4225D2673A864035AB2A4911D55376B7026(__this, NULL);
+		// SetWeaponButtonActive();
+		CustomizationUI_SetWeaponButtonActive_mA134711B2BB4F8A8D264C55F847D77E599126680(__this, NULL);
 		// }
 		return;
 	}

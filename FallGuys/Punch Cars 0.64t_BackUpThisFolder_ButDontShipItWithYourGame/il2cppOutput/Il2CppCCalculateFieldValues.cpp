@@ -29904,8 +29904,10 @@ struct CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C  : public MonoB
 	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___colorScroll_8;
 	// UnityEngine.GameObject CustomizationUI::weaponScroll
 	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___weaponScroll_9;
+	// UnityEngine.GameObject CustomizationUI::WeaponCharacteristicsGO
+	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___WeaponCharacteristicsGO_10;
 	// System.Boolean CustomizationUI::notFirstActive
-	bool ___notFirstActive_10;
+	bool ___notFirstActive_11;
 };
 
 // Jumpy.Cylinder
@@ -41975,9 +41977,9 @@ IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable2034[1] =
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable2035[1] = 
 {
 	static_cast<int32_t>(offsetof(CupsVisualizer_t68D5F4E9EC637889C915F584D66D5D29B5FF64B5, ___cupsText_4)),};
-IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable2036[7] = 
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable2036[8] = 
 {
-	static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___activeButtonImage_4)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___deactiveButtonImage_5)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___colorButton_6)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___weaponButton_7)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___colorScroll_8)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___weaponScroll_9)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___notFirstActive_10)),};
+	static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___activeButtonImage_4)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___deactiveButtonImage_5)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___colorButton_6)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___weaponButton_7)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___colorScroll_8)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___weaponScroll_9)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___WeaponCharacteristicsGO_10)),static_cast<int32_t>(offsetof(CustomizationUI_t8107F9F8DCE09FFFE236B1FDDAD7FA0E806ABD2C, ___notFirstActive_11)),};
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable2037[3] = 
 {
 	static_cast<int32_t>(offsetof(LeagueLevelVisualizer_t8D51D09C1FC8EA01E784B19E74C3FED9F78A91A2, ___leagueIcons_4)),static_cast<int32_t>(offsetof(LeagueLevelVisualizer_t8D51D09C1FC8EA01E784B19E74C3FED9F78A91A2, ___leaguLevel_5)),static_cast<int32_t>(offsetof(LeagueLevelVisualizer_t8D51D09C1FC8EA01E784B19E74C3FED9F78A91A2, ____image_6)),};

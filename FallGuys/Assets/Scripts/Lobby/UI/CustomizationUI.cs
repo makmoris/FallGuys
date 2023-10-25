@@ -10,7 +10,9 @@ public class CustomizationUI : MonoBehaviour
 
     [Space]
     [SerializeField] private GameObject colorScroll;
+
     [SerializeField] private GameObject weaponScroll;
+    [SerializeField] private GameObject WeaponCharacteristicsGO;
 
     private bool notFirstActive;
 
@@ -30,10 +32,18 @@ public class CustomizationUI : MonoBehaviour
 
     private void ScrollsActivation()
     {
-        if (!colorScroll.activeSelf) colorScroll.SetActive(true);
-        if (weaponScroll.activeSelf) weaponScroll.SetActive(false);
+        if (!weaponScroll.activeSelf)
+        {
+            WeaponCharacteristicsGO.SetActive(true);
+            weaponScroll.SetActive(true);
+        }
+        if (colorScroll.activeSelf)
+        {
+            colorScroll.SetActive(false);
+        }
 
-        SetColorButtonActive();
+        //SetColorButtonActive();
+        SetWeaponButtonActive();
     }
 
     public void SetColorButtonActive()

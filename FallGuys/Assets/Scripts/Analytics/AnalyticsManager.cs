@@ -294,7 +294,7 @@ public class AnalyticsManager : MonoBehaviour
         {
             // Посылаем событие, что инициализация выполнена
             InitializeCompletedEvent?.Invoke();
-
+            Debug.Log("[A] InitializationCompleted");
 
             foreach (var item in analytics)// инициализация выполняется один раз. Отписываемся от событий
             {

@@ -64,20 +64,27 @@ public class LoadingScene : MonoBehaviour
 
         if (isFirstGameLaunch)
         {
-            gameManager.StartGameStageFromTutorialWindow();
+            if (analyticsInitializeCompleted)
+            {
+                gameManager.StartGameStageFromTutorialWindow();
 
-            string sceneName = gameModeScenesAfterTutorial.GetRandomScene();
+                string sceneName = gameModeScenesAfterTutorial.GetRandomScene();
 
-            #region Analytics
-            AnalyticsManager.Instance.UpdateGenreID(gameModeScenesAfterTutorial.GameMode.ToString());
-            AnalyticsManager.Instance.UpdateMapID(sceneName);
-            #endregion
+                #region Analytics
+                AnalyticsManager.Instance.UpdateGenreID(gameModeScenesAfterTutorial.GameMode.ToString());
+                AnalyticsManager.Instance.UpdateMapID(sceneName);
+                #endregion
 
-            StartCoroutine(LoadScene(sceneName));
+                StartCoroutine(LoadScene(sceneName));
 
-            #region Analytics
-            AnalyticsManager.Instance.LevelStart();
-            #endregion
+                #region Analytics
+                AnalyticsManager.Instance.LevelStart();
+                #endregion
+            }
+            else
+            {
+                StartCoroutine(WaitAnalyticsInitialize());
+            }
         }
         else
         {
@@ -159,6 +166,31 @@ public class LoadingScene : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private IEnumerator WaitAnalyticsInitialize()
+    {
+        while (!analyticsInitializeCompleted)
+        {
+            yield return null;
+        }
+
+        gameManager.StartGameStageFromTutorialWindow();
+
+        string sceneName = gameModeScenesAfterTutorial.GetRandomScene();
+
+        #region Analytics
+        AnalyticsManager.Instance.UpdateGenreID(gameModeScenesAfterTutorial.GameMode.ToString());
+        AnalyticsManager.Instance.UpdateMapID(sceneName);
+        #endregion
+
+        StartCoroutine(LoadScene(sceneName));
+
+        #region Analytics
+        AnalyticsManager.Instance.LevelStart();
+        #endregion
+
+        yield return null;
     }
 
     // for analytics

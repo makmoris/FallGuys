@@ -128,12 +128,13 @@ public class RingsProgressController : LevelProgressController
             }
             else
             {
-                _winnersList.Add(sortingPlayersPlaces[0].Key);
+                if(!_winnersList.Contains(sortingPlayersPlaces[0].Key)) _winnersList.Add(sortingPlayersPlaces[0].Key);
+
                 if (sortingPlayersPlaces[0].Key == _currentPlayer) _isCurrentPlayerWinner = true;
 
                 for (int i = 1; i < sortingPlayersPlaces.Count; i++)
                 {
-                    _losersList.Add(sortingPlayersPlaces[i].Key);
+                    if(!_losersList.Contains(sortingPlayersPlaces[i].Key)) _losersList.Add(sortingPlayersPlaces[i].Key);
                 }
             }
         }
@@ -141,13 +142,14 @@ public class RingsProgressController : LevelProgressController
         {
             for (int i = 0; i < numberOfWinners; i++)
             {
-                _winnersList.Add(sortingPlayersPlaces[i].Key);
+                if (!_winnersList.Contains(sortingPlayersPlaces[i].Key)) _winnersList.Add(sortingPlayersPlaces[i].Key);
+
                 if (sortingPlayersPlaces[i].Key == _currentPlayer) _isCurrentPlayerWinner = true;
             }
 
             for (int i = numberOfWinners; i < sortingPlayersPlaces.Count; i++)
             {
-                _losersList.Add(sortingPlayersPlaces[i].Key);
+                if (!_losersList.Contains(sortingPlayersPlaces[i].Key)) _losersList.Add(sortingPlayersPlaces[i].Key);
             }
         }
 
@@ -229,6 +231,8 @@ public class RingsProgressController : LevelProgressController
         ringsProgressUIController.CongratulationsOverEvent -= CongratulationsOver;
 
         ShowPostWindow();
+
+        Debug.Log($"<color=red>[ShowPostWindow]</color> CongratulationsOver");
     }
 
     private void LoseShowingOver()
@@ -239,6 +243,8 @@ public class RingsProgressController : LevelProgressController
         cameraFollowingOnOtherPlayers.EnableObserverMode();
 
         ShowPostWindow();
+
+        Debug.Log($"<color=red>[ShowPostWindow]</color> LoseShowingOver");
     }
 
     private void ApplyDisableBonus(GameObject driverGO, float disableTime)

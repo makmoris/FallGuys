@@ -62,6 +62,8 @@ public class PostLevelPlaceController : MonoBehaviour
         DisableAudioListeners(_winnersList);
         DisableAudioListeners(_losersList);
 
+        Debug.Log($"<color=red>[PostPlace]</color> winnersCount = {_winnersList.Count}; losersCount = {_losersList.Count}");
+
         if (_winnersList.Count == 1)// игра завершена, остался победитель. Показываем вин окно
         {
             if (_isCurrentPlayerWinner)

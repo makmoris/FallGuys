@@ -191,9 +191,9 @@ public class PostLevelPlaceController : MonoBehaviour
     {
         foreach (var player in playersList)
         {
-            player.GetComponent<AudioListener>().enabled = false;
-
-            Debug.Log($"Disable Audio in {player.GetComponent<PlayerName>().Name}");
+            PlayerAudioListener playerAudioListener = player.GetComponent<PlayerAudioListener>();
+            playerAudioListener.DisableAudioListener();
+            playerAudioListener.BlockEnabling();
         }
     }
 

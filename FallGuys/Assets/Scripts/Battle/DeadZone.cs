@@ -35,6 +35,8 @@ public class DeadZone : MonoBehaviour
         {
             bumper.GetBonus(healthBonus, this.gameObject);
 
+            bumper.gameObject.SetActive(false);
+
             Debug.Log("DeadZone");
         }
     }
@@ -53,7 +55,7 @@ public class DeadZone : MonoBehaviour
         {
             GameObject car = bumper.gameObject;
 
-            car.SetActive(false);
+            //car.SetActive(false);
             car.SetActive(true);
 
             Vector3 pos = arenaSpawnController.GetRespawnPosition().position;

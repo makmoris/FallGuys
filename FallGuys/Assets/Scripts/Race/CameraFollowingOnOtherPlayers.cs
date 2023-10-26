@@ -9,7 +9,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
     [SerializeField] private UIEnemyPointers uIEnemyPointers;
 
     private CinemachineVirtualCamera camCinema;
-    private AudioListener audioListener;
+    private AudioListener _audioListener;
 
     [SerializeField]private List<GameObject> drivers = new List<GameObject>();
     [SerializeField]private GameObject currentDriver;
@@ -26,7 +26,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
     private void Awake()
     {
         camCinema = GetComponent<CinemachineVirtualCamera>();
-        audioListener = GetComponent<AudioListener>();
+        _audioListener = GetComponent<AudioListener>();
 
         isMobile = Application.isMobilePlatform;
     }
@@ -73,8 +73,8 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
     {
         drivers.Add(driver);
 
-        AudioListener driverAL = driver.GetComponent<AudioListener>();
-        driverAL.enabled = false;
+        PlayerAudioListener playerAudioListener = driver.GetComponent<PlayerAudioListener>();
+        playerAudioListener.DisableAudioListener();
 
         if (isCurrentPlayer)
         {
@@ -83,8 +83,8 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
             camCinema.m_Follow = currentDriver.transform;
             camCinema.m_LookAt = currentDriver.transform;
 
-            driverAL.enabled = true;
-            audioListener.enabled = false;
+            playerAudioListener.EnableAudioListener();
+            _audioListener.enabled = false;
 
             uIEnemyPointers.ChangeCurrentTransform(currentDriver.transform);
         }
@@ -113,13 +113,13 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
             camCinema.m_Follow = drivers[targetIndex].transform;
             camCinema.m_LookAt = drivers[targetIndex].transform;
 
-            AudioListener audioListener;
-            if (currentDriver == null) audioListener = drivers[targetIndex].GetComponent<AudioListener>();
-            else audioListener = currentDriver.GetComponent<AudioListener>();
+            PlayerAudioListener playerAudioListener;
+            if (currentDriver == null) playerAudioListener = drivers[targetIndex].GetComponent<PlayerAudioListener>();
+            else playerAudioListener = currentDriver.GetComponent<PlayerAudioListener>();
 
-            audioListener.enabled = false;
+            playerAudioListener.DisableAudioListener();
             currentDriver = drivers[targetIndex];
-            currentDriver.GetComponent<AudioListener>().enabled = true;
+            currentDriver.GetComponent<PlayerAudioListener>().EnableAudioListener();
 
             uIEnemyPointers.ChangeCurrentTransform(currentDriver.transform);
 
@@ -136,7 +136,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
 
     private void SetTarget()
     {
-        audioListener.enabled = false;
+        _audioListener.enabled = false;
 
         string lastObservableName = PlayerPrefs.GetString(key, "default");
 
@@ -158,7 +158,7 @@ public class CameraFollowingOnOtherPlayers : MonoBehaviour
 
                     uIEnemyPointers.ChangeCurrentTransform(currentDriver.transform);
 
-                    currentDriver.GetComponent<AudioListener>().enabled = true;
+                    currentDriver.GetComponent<PlayerAudioListener>().EnableAudioListener();
 
                     targetIndex = currentDriverIndex;
 

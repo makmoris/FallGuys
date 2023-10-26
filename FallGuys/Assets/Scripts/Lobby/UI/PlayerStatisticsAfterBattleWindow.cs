@@ -122,11 +122,13 @@ public class PlayerStatisticsAfterBattleWindow : MonoBehaviour
         mainCamera.gameObject.SetActive(true);
         mainCanvas.gameObject.SetActive(true);
 
-        if (IsNotFirstLobbyEnterFromLocation())
-        {
-            leagueWindow.gameObject.SetActive(true);
-            leagueWindow.ShowCupsProgressAnimation(previousCupValue);
-        }
+        //if (IsNotFirstLobbyEnterFromLocation())
+        //{
+        //    leagueWindow.gameObject.SetActive(true);
+        //    leagueWindow.ShowCupsProgressAnimation(previousCupValue);
+        //}
+        leagueWindow.gameObject.SetActive(true);
+        leagueWindow.ShowCupsProgressAnimation(previousCupValue);
 
         gameObject.SetActive(false);
     }

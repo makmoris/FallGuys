@@ -231,8 +231,6 @@ public class RingsProgressController : LevelProgressController
         ringsProgressUIController.CongratulationsOverEvent -= CongratulationsOver;
 
         ShowPostWindow();
-
-        Debug.Log($"<color=red>[ShowPostWindow]</color> CongratulationsOver");
     }
 
     private void LoseShowingOver()
@@ -243,8 +241,6 @@ public class RingsProgressController : LevelProgressController
         cameraFollowingOnOtherPlayers.EnableObserverMode();
 
         ShowPostWindow();
-
-        Debug.Log($"<color=red>[ShowPostWindow]</color> LoseShowingOver");
     }
 
     private void ApplyDisableBonus(GameObject driverGO, float disableTime)

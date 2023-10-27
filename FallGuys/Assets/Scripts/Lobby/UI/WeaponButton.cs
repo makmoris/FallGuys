@@ -169,7 +169,7 @@ public class WeaponButton : MonoBehaviour
     private void CheckBuyAndApplyButtonStatus()
     {
         // если выбранное авто куплено, значит можно давать доступ к кнопкам
-        if (LobbyManager.Instance.CurrentVehicleIsAvailable())
+        if (/*LobbyManager.Instance.CurrentVehicleIsAvailable()*/ true)
         {
             if (_isWeaponAvailable)// если пушка открыта 
             {

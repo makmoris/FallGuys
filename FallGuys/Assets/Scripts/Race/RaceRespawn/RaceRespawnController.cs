@@ -16,6 +16,8 @@ public class RaceRespawnController : MonoBehaviour
     [Header("DEBAG")]
     [SerializeField] private List<RaceRespawnZone> raceRespawnZonesFellOffTheRoadList;
     [SerializeField] private List<RaceRespawnZone> raceRespawnZonesStuckList;
+    private Dictionary<RaceRespawnZone, RaceRespawnCheckpoint> raceRespawnZoneRaceRespawnCheckpointPairs = 
+        new Dictionary<RaceRespawnZone, RaceRespawnCheckpoint>();
 
     private void Awake()
     {
@@ -26,6 +28,11 @@ public class RaceRespawnController : MonoBehaviour
 
         SortRaceRespawnZonesList(raceRespawnZonesFellOffTheRoadList);
         SortRaceRespawnZonesList(raceRespawnZonesStuckList);
+
+        foreach (var zone in raceRespawnZonesFellOffTheRoadList)
+        {
+            raceRespawnZoneRaceRespawnCheckpointPairs.Add(zone, zone.GetComponent<RaceRespawnCheckpoint>());
+        }
     }
 
     private void OnEnable()
@@ -37,32 +44,31 @@ public class RaceRespawnController : MonoBehaviour
     public void CarGotIntoRespawnZone(GameObject car)
     {
         car.SetActive(false);
-        RespawnCar(car, raceRespawnZonesFellOffTheRoadList);
+        RespawnCarOnNearestRespawnPoint(true, car, raceRespawnZonesFellOffTheRoadList);
     }
 
     private void RespawnCarAfterStuck(WheelVehicle wheelVehicle)
     {
-        //if (canRespawnCarAfterStuck)
-        //{
-        //    //wheelVehicle.transform.rotation = Quaternion.Euler(0f, wheelVehicle.transform.rotation.y, 0f);
-        //    //wheelVehicle.transform.position = new Vector3(wheelVehicle.transform.position.x, wheelVehicle.transform.position.y,
-        //    //    wheelVehicle.transform.position.z);
-
-        //    //RespawnCar(wheelVehicle.gameObject, raceRespawnZonesStuck);
-
-        //    //StartCoroutine(PauseAfterRespawnCarAfterStuck());
-        //}
-
         wheelVehicle.gameObject.SetActive(false);
-        RespawnCar(wheelVehicle.gameObject, raceRespawnZonesStuckList);
+        RespawnCarOnNearestRespawnPoint(false, wheelVehicle.gameObject, raceRespawnZonesStuckList);
     }
 
-    private void RespawnCar(GameObject car, List<RaceRespawnZone> raceRespawnZonesList)
+    private void RespawnCarOnNearestRespawnPoint(bool respawnOnCheckPoint, GameObject car, List<RaceRespawnZone> raceRespawnZonesList)
     {
-        RaceRespawnZone raceRespawnZone = GetNearestRespawnPoint(car.transform.position, raceRespawnZonesList);
+        RaceRespawnZone raceRespawnZone = new RaceRespawnZone();
+
+        if (respawnOnCheckPoint)
+        {
+            raceRespawnZone = GetLastRespawnCheckpoint(car);
+        }
+        else
+        {
+            raceRespawnZone = GetNearestRespawnPoint(car.transform.position, raceRespawnZonesList);
+            
+        }
 
         car.transform.position = raceRespawnZone.GetRespawnPosition();
-        car.transform.rotation = raceRespawnZone.transform.rotation; 
+        car.transform.rotation = raceRespawnZone.transform.rotation;
         car.transform.SetParent(null);
         car.gameObject.SetActive(true);
 
@@ -94,6 +100,25 @@ public class RaceRespawnController : MonoBehaviour
         }
 
         return raceRespawnZonesList[indexMinDistance];
+    }
+
+    private RaceRespawnZone GetLastRespawnCheckpoint(GameObject carGO)
+    {
+        RaceRespawnZone lastRespawnZone = raceRespawnZonesFellOffTheRoadList[0];
+
+        foreach (var kvp in raceRespawnZoneRaceRespawnCheckpointPairs)
+        {
+            RaceRespawnZone raceRespawnZone = kvp.Key;
+            RaceRespawnCheckpoint raceRespawnCheckpoint = kvp.Value;
+
+            if (raceRespawnCheckpoint.PlayerHasPassedThisCheckpointpoint(carGO))
+            {
+                lastRespawnZone = raceRespawnZone;
+            }
+            else break;
+        }
+
+        return lastRespawnZone;
     }
 
     private void SortRaceRespawnZonesList(List<RaceRespawnZone> raceRespawnZonesList)

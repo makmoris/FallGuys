@@ -22,36 +22,8 @@ public class RaceRespawnZone : MonoBehaviour
         ShuffleList(allPositionsList);
     }
 
-    internal Vector3 GetRespawnPosition()
+    public Vector3 GetRespawnPosition()
     {
-        //if (allPositionsList.Count > 0)
-        //{
-        //    int rand = Random.Range(0, allPositionsList.Count);
-        //    Vector3 pos = allPositionsList[rand];
-        //    busyPositionsList.Add(pos);
-        //    allPositionsList.Remove(pos);
-
-        //    if(allPositionsList.Count == 0)
-        //    {
-        //        allPositionsList.AddRange(busyPositionsList);
-        //        busyPositionsList.Clear();
-        //    }
-
-        //    return pos;
-        //}
-        //else
-        //{
-        //    allPositionsList.AddRange(busyPositionsList);
-        //    busyPositionsList.Clear();
-
-        //    int rand = Random.Range(0, allPositionsList.Count);
-        //    Vector3 pos = allPositionsList[rand];
-        //    busyPositionsList.Add(pos);
-        //    allPositionsList.Remove(pos);
-
-        //    return pos;
-        //}
-
         int rand = Random.Range(0, allPositionsList.Count);
         Vector3 pos = allPositionsList[rand];
         busyPositionsList.Add(pos);

@@ -311,7 +311,6 @@ namespace VehicleBehaviour {
 
                     if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
                     {
-                        Debug.Log("Застрял");
                         //Debug.Log("Жмем на газ. Застрял");
                         //immobilityValue2++;
                         stuckTime_PlayerPressesOnGasButDoesntMove += Time.deltaTime;

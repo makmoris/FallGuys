@@ -10,6 +10,7 @@ public class WeaponButton : MonoBehaviour
     private LobbyWeaponData lobbyWeaponData;
 
     [Header("Button Components")]
+    [SerializeField] private Image weaponImage;
     [SerializeField] private TextMeshProUGUI weaponNameOnButton;
     [SerializeField] private GameObject activeImage;
     [SerializeField] private GameObject selectImage;
@@ -84,6 +85,7 @@ public class WeaponButton : MonoBehaviour
 
 
         weaponNameOnButton.text = _weaponName;
+        weaponImage.sprite = lobbyWeaponData.WeaponImage;
     }
 
     private void SetLobbyWeaponData()

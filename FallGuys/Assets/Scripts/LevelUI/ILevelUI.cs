@@ -11,7 +11,8 @@ public interface ILevelUI
 
     public void ShowAttackPointer(Transform targetTransform);
     public void ShowingAttackPointer(Transform targetTransform);
-    public void HideAttackPointer(Transform targetTransform);
+    public void HideAttackPointerWithTarget(Transform targetTransform);
+    public void HideAttackPointer();
     public void ObjectWithAttackPointerWasDestroyed();
 
     public void ShowEnemyPositionPointer(EnemyPointer enemyPointer);

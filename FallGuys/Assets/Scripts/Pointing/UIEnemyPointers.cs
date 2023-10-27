@@ -20,6 +20,8 @@ public class UIEnemyPointers : MonoBehaviour
     [SerializeField] PointerIcon _positionPointerPrefab;
     [SerializeField] PointerIconToAttack _attackPointerPrefab;
 
+    private bool isNotFirstPlayer;
+
     private bool isInit;
 
 
@@ -179,12 +181,16 @@ public class UIEnemyPointers : MonoBehaviour
     {
         _attackPointerPrefab.SetIconPosition(GetAttackTargetPosition(transformToAttack), Quaternion.identity);
     }
-    public void HideAttackPointer(Transform transformToAttack)
+    public void HideAttackPointerWithTarget(Transform transformToAttack)
     {
         _attackPointerPrefab.Hide();
         _attackPointerPrefab.SetIconPosition(GetAttackTargetPosition(transformToAttack), Quaternion.identity);
     }
     public void ObjectWithAttackPointerWasDestroyed()
+    {
+        _attackPointerPrefab.Hide();
+    }
+    public void HideAttackPointer()
     {
         _attackPointerPrefab.Hide();
     }

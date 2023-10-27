@@ -15,13 +15,17 @@ public class RingsUI : LevelUI
     {
         uiEnemyPointers.ShowingAttackPointer(targetTransform);
     }
-    public override void HideAttackPointer(Transform targetTransform)
+    public override void HideAttackPointerWithTarget(Transform targetTransform)
     {
-        uiEnemyPointers.HideAttackPointer(targetTransform);
+        uiEnemyPointers.HideAttackPointerWithTarget(targetTransform);
     }
     public override void ObjectWithAttackPointerWasDestroyed()
     {
         uiEnemyPointers.ObjectWithAttackPointerWasDestroyed();
+    }
+    public override void HideAttackPointer()
+    {
+        uiEnemyPointers.HideAttackPointer();
     }
     #endregion
 

@@ -82,7 +82,7 @@ public class AttackTargetDetector : MonoBehaviour
     {
         if (other.gameObject == currentTargetObject)
         {
-            if (!isAI) levelUI.HideAttackPointer(currentTargetObject.transform);
+            if (!isAI) levelUI.HideAttackPointerWithTarget(currentTargetObject.transform);
             else if (arenaDriverAI != null) arenaDriverAI.DetectorLostTarget();
 
             currentTargetObject = null;
@@ -115,5 +115,7 @@ public class AttackTargetDetector : MonoBehaviour
     private void OnDisable()
     {
         AttackPointer.attackPointerWasDeactivatedEvent -= CurrentTargetObjectWasDeactivated;
+
+        if (!isAI) levelUI.HideAttackPointer();
     }
 }

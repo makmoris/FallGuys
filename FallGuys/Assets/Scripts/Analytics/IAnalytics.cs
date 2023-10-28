@@ -11,7 +11,7 @@ public interface IAnalytics
     public void PlayerCompleteLevel(string genre_id, string map_id, int league_id, int battle_id);
     public void PlayerFailLevel(string genre_id, string map_id, int league_id, int battle_id);
     public void LevelFinish(string genre_id, string map_id, int league_id, int battle_id, int players_amount, int player_took_place, bool user_play);
-    public void PlayerLeaveGame(int league_id, int battle_id);
+    public void PlayerLeaveGame(int league_id, int battle_id, string leave_type);
     public void GameFinish(int league_id, int battle_id, int player_place, int config_levels_id);
     public void PlayerGetBattleReward(int league_id, int battle_id, int player_gold_earn, int player_cups_earn);
     #endregion

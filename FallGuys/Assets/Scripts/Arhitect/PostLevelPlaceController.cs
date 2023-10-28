@@ -66,6 +66,10 @@ public class PostLevelPlaceController : MonoBehaviour
         {
             if (_isCurrentPlayerWinner)
             {
+                #region Analytics
+                AnalyticsManager.Instance.UpdateNumberOfFirstPlace();
+                #endregion
+
                 _gameManager.PlayerClickedExitToLobby();
             }
             else ShowWinnerWindow(_winnersList[0], _isCurrentPlayerWinner);

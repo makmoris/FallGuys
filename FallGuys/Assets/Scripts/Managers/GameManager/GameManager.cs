@@ -276,7 +276,13 @@ public class GameManager : MonoBehaviour
         sceneLoader.LoadLobbyScene();
 
         #region Analytics
-        AnalyticsManager.Instance.PlayerLeaveGame();
+        AnalyticsManager.Instance.GameFinish(currentPlayerPlace);
+
+        if(players.Count == 1)
+        {
+            AnalyticsManager.Instance.PlayerLeaveGame(AnalyticsManager.LeaveType.game_finish);
+        }
+        else AnalyticsManager.Instance.PlayerLeaveGame(AnalyticsManager.LeaveType.player_lost);
         #endregion
     }
 
@@ -285,7 +291,15 @@ public class GameManager : MonoBehaviour
         sceneLoader.LoadLobbyScene();
 
         #region Analytics
-        AnalyticsManager.Instance.PlayerLeaveGame();
+        bool isCurrentPlaceSetted = UpdateCurrentPlayerPlace();
+        int _currentPlace;
+
+        if (isCurrentPlaceSetted) _currentPlace = currentPlayerPlace;
+        else _currentPlace = gameStagesList[currentGameStage].numberOfPlayers;
+
+        AnalyticsManager.Instance.GameFinish(_currentPlace);
+
+        AnalyticsManager.Instance.PlayerLeaveGame(AnalyticsManager.LeaveType.from_menu);
         #endregion
     }
 
@@ -337,7 +351,7 @@ public class GameManager : MonoBehaviour
         #endregion
     }
 
-    private void UpdateCurrentPlayerPlace()// called when player click leave button or when game ower with one winner
+    private bool UpdateCurrentPlayerPlace()// called when player click leave button or when game ower with one winner
     {
         bool playerPlaceIsKnown = false;
 
@@ -362,8 +376,14 @@ public class GameManager : MonoBehaviour
             {
                 currentPlayerPlace = 1;
             }
-            else Debug.LogError("Player is still playing");
+            else
+            {
+                Debug.LogError("Player is still playing");
+                return false;
+            }
         }
+
+        return true;
     }
 
     private void ClearPlayersForOneGameSession()

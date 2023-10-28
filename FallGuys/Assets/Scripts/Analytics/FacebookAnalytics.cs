@@ -78,7 +78,13 @@ public class FacebookAnalytics : IAnalytics
         param["league_id"] = league_id;
         param["battle_id"] = battle_id;
         param["players_amount"] = players_amount;
-        param["user_play"] = user_play;
+
+        string boolToString_UserPlay = "false";
+        if (user_play)
+        {
+            boolToString_UserPlay = "true";
+        }
+        param["user_play"] = boolToString_UserPlay;
 
         FB.LogAppEvent("Level_Start", parameters: param);
     }
@@ -114,16 +120,23 @@ public class FacebookAnalytics : IAnalytics
         param["battle_id"] = battle_id;
         param["players_amount"] = players_amount;
         param["player_place"] = player_place;
-        param["user_play"] = user_play;
+
+        string boolToString_UserPlay = "false";
+        if (user_play)
+        {
+            boolToString_UserPlay = "true";
+        }
+        param["user_play"] = boolToString_UserPlay;
 
         FB.LogAppEvent("Level_Finish", parameters: param);
     }
 
-    public void PlayerLeaveGame(int league_id, int battle_id)
+    public void PlayerLeaveGame(int league_id, int battle_id, string leave_type)
     {
         var param = new Dictionary<string, object>();
         param["league_id"] = league_id;
         param["battle_id"] = battle_id;
+        param["leave_type"] = leave_type;
 
         FB.LogAppEvent("Player_Leave_Game", parameters: param);
     }

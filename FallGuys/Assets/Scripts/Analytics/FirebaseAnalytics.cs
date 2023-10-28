@@ -126,12 +126,13 @@ public class FirebaseAnalytics : IAnalytics
         Firebase.Analytics.FirebaseAnalytics.LogEvent("Level_Finish", param.ToArray());
     }
 
-    public void PlayerLeaveGame(int league_id, int battle_id)
+    public void PlayerLeaveGame(int league_id, int battle_id, string leave_type)
     {
         var param = new List<Parameter>
         {
             new Parameter("league_id", league_id),
-            new Parameter("battle_id", battle_id)
+            new Parameter("battle_id", battle_id),
+            new Parameter("leave_type", leave_type)
         };
 
         Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Leave_Game", param.ToArray());

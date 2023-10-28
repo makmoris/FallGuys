@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class AnalyticsManager : MonoBehaviour
 {
+    public enum LeaveType
+    {
+        player_lost,
+        game_finish,
+        from_menu
+    }
+
         #region BATTLE ID
 
     private const string battle_id_key = "battle_id";
@@ -429,18 +436,19 @@ public class AnalyticsManager : MonoBehaviour
         }
     }
 
-    public void PlayerLeaveGame()
+    public void PlayerLeaveGame(LeaveType leaveType)
     {
         int league_id = GetLeagueLevel();
         int battle_id = GetBattleId();
+        string leave_type = leaveType.ToString();
 
         foreach (var item in analytics)
         {
             try
             {
-                item.PlayerLeaveGame(league_id, battle_id);
+                item.PlayerLeaveGame(league_id, battle_id, leave_type);
 
-                Debug.Log($"league_id = {league_id}; battle_id = {battle_id};");
+                Debug.Log($"league_id = {league_id}; battle_id = {battle_id}; leave_type = {leave_type}");
                 Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Leave_Game");
             }
             catch (Exception ex)

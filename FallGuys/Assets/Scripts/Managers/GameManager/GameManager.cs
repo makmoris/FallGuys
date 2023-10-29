@@ -252,15 +252,17 @@ public class GameManager : MonoBehaviour
         }
 
         #region Analytics
-        AnalyticsManager.Instance.LevelFinish(currentPlayerTookPlaceInGameStage);
+        //AnalyticsManager.Instance.LevelFinish(currentPlayerTookPlaceInGameStage);
 
         if (currentGameStage == gameStagesList.Count - 1)
         {
             UpdateCurrentPlayerPlace();
-            AnalyticsManager.Instance.GameFinish(currentPlayerPlace);
+            //AnalyticsManager.Instance.GameFinish(currentPlayerPlace);
         }
         #endregion
     }
+
+    public int CurrentPlayerTookPlaceInGameStage => currentPlayerTookPlaceInGameStage;
 
     public int GetNumberOfWinners()
     {
@@ -278,9 +280,9 @@ public class GameManager : MonoBehaviour
         #region Analytics
         AnalyticsManager.Instance.GameFinish(currentPlayerPlace);
 
-        if(players.Count == 1)
+        if(players.Count == 1 && players[0] == currentPlayer)
         {
-            AnalyticsManager.Instance.PlayerLeaveGame(AnalyticsManager.LeaveType.game_finish);
+            AnalyticsManager.Instance.PlayerLeaveGame(AnalyticsManager.LeaveType.player_win);
         }
         else AnalyticsManager.Instance.PlayerLeaveGame(AnalyticsManager.LeaveType.player_lost);
         #endregion

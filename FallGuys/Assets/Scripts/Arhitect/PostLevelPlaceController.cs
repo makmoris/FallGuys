@@ -59,6 +59,10 @@ public class PostLevelPlaceController : MonoBehaviour
 
     public void ShowPostPlace(List<GameObject> _winnersList, List<GameObject> _losersList, bool _isCurrentPlayerWinner, GameObject _currentPlayerGO)
     {
+        #region Analytics
+        AnalyticsManager.Instance.LevelFinish(_gameManager.CurrentPlayerTookPlaceInGameStage);
+        #endregion
+
         DisableAudioListeners(_winnersList);
         DisableAudioListeners(_losersList);
 

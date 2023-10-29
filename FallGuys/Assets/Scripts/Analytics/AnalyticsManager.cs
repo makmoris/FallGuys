@@ -8,7 +8,7 @@ public class AnalyticsManager : MonoBehaviour
     public enum LeaveType
     {
         player_lost,
-        game_finish,
+        player_win,
         from_menu
     }
 

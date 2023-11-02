@@ -8,7 +8,7 @@ public class InAppReviewsManager : MonoBehaviour
     private ReviewManager _reviewManager;
     private PlayReviewInfo _playReviewInfo;
 
-    [SerializeField] private int numberOfWinsToShow = 5;
+    [SerializeField] private int numberOfWinsToShow = 3;
     private string key = "InAppReviewsCounter";
 
     public static InAppReviewsManager Instance { get; private set; }
@@ -25,7 +25,7 @@ public class InAppReviewsManager : MonoBehaviour
         }
     }
 
-    public void ShowReviewWindow()// вызывается из LevelProgressController
+    public void ShowReviewWindow()
     {
         int value = PlayerPrefs.GetInt(key, 1);
 

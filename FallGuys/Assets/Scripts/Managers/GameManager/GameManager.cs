@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
     {
         sceneLoader.lobbyOpenEvent += ResetValuesAfterLeavingToLobby;
         sceneLoader.lobbyOpenEvent += CheckTheDisplayOfThePlayerStatisticsWindowAfterGameInTheLobby;
+        sceneLoader.lobbyOpenEvent += ShowReviewWindow;
     }
 
     private void Update()
@@ -491,9 +492,15 @@ public class GameManager : MonoBehaviour
         //return scene;
     }
 
+    private void ShowReviewWindow()
+    {
+        if(currentPlayerPlace == 1) InAppReviewsManager.Instance.ShowReviewWindow();
+    }
+
     private void OnDisable()
     {
         sceneLoader.lobbyOpenEvent -= ResetValuesAfterLeavingToLobby;
         sceneLoader.lobbyOpenEvent -= CheckTheDisplayOfThePlayerStatisticsWindowAfterGameInTheLobby;
+        sceneLoader.lobbyOpenEvent -= ShowReviewWindow;
     }
 }

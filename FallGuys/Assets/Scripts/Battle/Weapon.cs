@@ -123,6 +123,12 @@ public class Weapon : MonoBehaviour
         disableWeaponBonus = new(rechargeTime);
     }
 
+    public void ChangeDamageByPercentage(float percent)
+    {
+        float newDamage = damage * (percent / 100f);
+        damage = newDamage;
+    }
+
     public void EnableWeapon(GameObject gameObj)
     {
         GameObject thisGO = parentBodyCollider.gameObject;

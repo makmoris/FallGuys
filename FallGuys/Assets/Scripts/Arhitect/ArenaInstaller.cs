@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
+using Sirenix.OdinInspector;
 
 public class ArenaInstaller : Installer
 {
@@ -11,6 +12,14 @@ public class ArenaInstaller : Installer
 
     [Header("Arena AI")]
     [SerializeField] PlayerDefaultData playerAIDefaultData;
+
+    [Header("Damage Percentage")]
+    [SerializeField] private bool useDamagePercentage;
+    [ShowIf("useDamagePercentage", true)]
+    [SerializeField] private List<float> damagePercetageList;
+
+    private const string arenaFightNumberKey = "ArenaFightNumber";
+    private int arenaFightNumber;
 
     private int spawnCounter;
 
@@ -95,6 +104,21 @@ public class ArenaInstaller : Installer
                 Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
                 weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
+
+                if (useDamagePercentage)
+                {
+                    arenaFightNumber = PlayerPrefs.GetInt(arenaFightNumberKey, 0);
+
+                    if(arenaFightNumber < damagePercetageList.Count)
+                    {
+                        float damagePercent = damagePercetageList[arenaFightNumber];
+                        
+                        weaponAI.ChangeDamageByPercentage(damagePercent);
+                    }
+
+                    arenaFightNumber++;
+                    PlayerPrefs.SetInt(arenaFightNumberKey, arenaFightNumber);
+                }
 
                 // Camera
                 cameraFollowingOnOtherPlayers.AddDriver(aiPlayerGO, false);

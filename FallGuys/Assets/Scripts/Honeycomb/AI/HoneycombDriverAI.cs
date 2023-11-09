@@ -29,7 +29,17 @@ public class HoneycombDriverAI : DriverAI
         if (!obstacle) Moving();
         else
         {
-            targetReached = true;
+            //targetReached = true;
+            if(wheelVehicle.Speed > 30f)
+            {
+                wheelVehicle.Steering = obstacleSteer;
+                wheelVehicle.Throttle = -1f;
+            }
+            else
+            {
+                wheelVehicle.Steering = obstacleSteer;
+                wheelVehicle.Throttle = 1f;
+            }
         }
         // если есть препятствие, то надо взять другую цель
 

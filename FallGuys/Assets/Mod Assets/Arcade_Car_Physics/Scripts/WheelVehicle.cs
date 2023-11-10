@@ -146,7 +146,7 @@ namespace VehicleBehaviour {
         } 
 
         // When IsPlayer is false you can use this to control the throttle
-        float throttle;
+        [SerializeField]float throttle;
         public float Throttle { get => throttle;
             set => throttle = Mathf.Clamp(value, -1f, 1f);
         } 
@@ -168,6 +168,7 @@ namespace VehicleBehaviour {
         [SerializeField] float speed = 0.0f;
         public float Speed => speed;
 
+        private float defaultMaxSpeed;
         [SerializeField] internal float maxSpeed = 200f;
         public float MaxSpeed
         {
@@ -275,6 +276,7 @@ namespace VehicleBehaviour {
                 wheel.motorTorque = 0.0001f;
             }
 
+            defaultMaxSpeed = maxSpeed;
 
             ////AI
             //if (isBot && isPlayer) isPlayer = false;

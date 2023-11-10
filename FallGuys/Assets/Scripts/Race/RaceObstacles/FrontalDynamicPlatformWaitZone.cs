@@ -9,7 +9,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
     [Space]
     [SerializeField] private List<ObstalceMovement> platforms;
     
-    private List<RaceDriverAI> carsAIInWaitZone = new List<RaceDriverAI>();
+    [SerializeField]private List<RaceDriverAI> carsAIInWaitZone = new List<RaceDriverAI>();
 
     private void OnEnable()
     {
@@ -66,7 +66,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
             RaceDriverAI carAI = other.GetComponentInChildren<RaceDriverAI>();
             if (carAI != null)
             {
-                carsAIInWaitZone.Add(carAI);
+                if(!carsAIInWaitZone.Contains(carAI)) carsAIInWaitZone.Add(carAI);
 
                 ObstalceMovement platformForThisCar = raceSectorWithDynamicPlatform.GetPlatformForThisCar(carAI);
 
@@ -93,7 +93,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
             RaceDriverAI carAI = other.GetComponentInChildren<RaceDriverAI>();
             if (carAI != null)
             {
-                carsAIInWaitZone.Remove(carAI);
+                if (carsAIInWaitZone.Contains(carAI)) carsAIInWaitZone.Remove(carAI);
             }
         }
     }

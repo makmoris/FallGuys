@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PunchCars.DifficultyAILevels;
 
 public class AILogics : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class AILogics : MonoBehaviour
             if (arenaAI != null)
             {
                 arenaAI.gameObject.SetActive(true);
-                arenaAI.Initialize(aiPlayerGO, currentPlayerGO);
+                arenaAI.Initialize(aiPlayerGO, currentPlayerGO, GetDifficultyAILevel());
                 obstacleDetection.SetAILogic(arenaAI, frontSideRayLength, sidesRayLength, angleForSides);
             }
         }
@@ -45,7 +46,7 @@ public class AILogics : MonoBehaviour
             if (raceAI != null)
             {
                 raceAI.gameObject.SetActive(true);
-                raceAI.Initialize(aiPlayerGO, currentPlayerGO);
+                raceAI.Initialize(aiPlayerGO, currentPlayerGO, GetDifficultyAILevel());
                 obstacleDetection.SetAILogic(raceAI, frontSideRayLength, sidesRayLength, angleForSides);
 
                 groundDetectionAI.Initialize(raceAI);
@@ -64,7 +65,7 @@ public class AILogics : MonoBehaviour
             if (HoneycombAI != null)
             {
                 HoneycombAI.gameObject.SetActive(true);
-                HoneycombAI.Initialize(aiPlayerGO, currentPlayerGO);
+                HoneycombAI.Initialize(aiPlayerGO, currentPlayerGO, GetDifficultyAILevel());
                 obstacleDetection.SetAILogic(HoneycombAI, frontSideRayLength, sidesRayLength, angleForSides);
             }
         }
@@ -81,9 +82,20 @@ public class AILogics : MonoBehaviour
             if (ringsAI != null)
             {
                 ringsAI.gameObject.SetActive(true);
-                ringsAI.Initialize(aiPlayerGO, currentPlayerGO);
+                ringsAI.Initialize(aiPlayerGO, currentPlayerGO, GetDifficultyAILevel());
                 obstacleDetection.SetAILogic(ringsAI, frontSideRayLength, sidesRayLength, angleForSides);
             }
         }
+    }
+
+    // здесь нужен метод, который будет обращаться к лиге и смотреть ее уровень. В зависимости от этого будет выбираться уровень сложности бота
+    private EnumDifficultyAILevels GetDifficultyAILevel()
+    {
+        int numberOfLeagueLevels = LeagueManager.Instance.GetNumberOfLeagueLevels();
+        int currentLeagueLevel = LeagueManager.Instance.GetCurrentLeagueLevel();
+
+        if (currentLeagueLevel == 1) return EnumDifficultyAILevels.Low;
+        else if (currentLeagueLevel > 1 && currentLeagueLevel < numberOfLeagueLevels) return EnumDifficultyAILevels.Normal;
+        else return EnumDifficultyAILevels.High;
     }
 }

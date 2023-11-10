@@ -1,3 +1,4 @@
+using PunchCars.DifficultyAILevels;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,10 +88,24 @@ public class RaceDriverAI : DriverAI
 
     private bool isPathMovement;
 
-    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO)
+    private GameObject currentPlayer;
+    private float speedCoefficient = 1f;
+
+    private bool isInit;
+
+    private Coroutine _coroutine;
+
+    private void OnEnable()
+    {
+        if(_coroutine == null && isInit) _coroutine = StartCoroutine(CheckForPlayerFellBehindInRace());
+    }
+
+    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
         wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
         rb = aiPlayerGO.GetComponent<Rigidbody>();
+
+        currentPlayer = currentPlayerGO;
 
         maxSpeed = wheelVehicle.MaxSpeed;
         maximumSteerAngle = wheelVehicle.SteerAngle;
@@ -114,45 +129,28 @@ public class RaceDriverAI : DriverAI
         #endregion
 
         isGround = true;
+
+        ChoseDifficultyLevel(difficultyAILevel);
+
+        isInit = true;
     }
 
-    //private void Start()
-    //{
-    //    maxSpeed = wheelVehicle.MaxSpeed;
-    //    maximumSteerAngle = wheelVehicle.SteerAngle;
+    #region Difficulty AI Levels
+    public override void SetLowDifficultyAILevel()
+    {
+        if (_coroutine == null) _coroutine = StartCoroutine(CheckForPlayerFellBehindInRace());
+    }
 
-    //    #region FEATURES SCRIPTS
+    public override void SetNormalDifficultyAILevel()
+    {
+        
+    }
 
-    //    raceAIInputs = gameObject.AddComponent<RaceAIInputs>();
-    //    raceAIWaypointTracker = gameObject.AddComponent<RaceAIWaipointTracker>();
-
-    //    raceObstacleDetectionAI = GetComponentInParent<RaceObstacleDetectionAI>();
-    //    raceObstacleDetectionAI.Initialize(raceAIInputs);
-
-    //    #endregion
-
-    //    #region AI REFERENCES
-
-    //    carAItargetObj = new GameObject("WaypointsTarget");
-    //    //carAItargetObj.transform.parent = this.transform.GetChild(1);
-    //    carAItarget = carAItargetObj.transform;
-
-    //    #endregion
-
-    //    isGround = true;
-
-    //    //moveForward = true;
-    //}
-
-    //private void Update()
-    //{
-    //    currentSpeed = wheelVehicle.Speed;
-
-    //    if (moveForward)
-    //    {
-    //        MoveForward();
-    //    }
-    //}
+    public override void SetHighDifficultyAILevel()
+    {
+        
+    }
+    #endregion
 
     private void FixedUpdate()
     {
@@ -187,7 +185,7 @@ public class RaceDriverAI : DriverAI
     private void MoveForward()
     {
         wheelVehicle.Steering = 0f;
-        wheelVehicle.Throttle = 1f;
+        wheelVehicle.Throttle = 1f * speedCoefficient;
     }
 
     public void Move(float steering, float accel)
@@ -199,7 +197,7 @@ public class RaceDriverAI : DriverAI
                 if (!brake && isGround)
                 {
                     wheelVehicle.Steering = steering;
-                    wheelVehicle.Throttle = accel;
+                    wheelVehicle.Throttle = accel * speedCoefficient;
                     wheelVehicle.Handbrake = false;
                 }
                 else
@@ -217,7 +215,7 @@ public class RaceDriverAI : DriverAI
         else
         {
             wheelVehicle.Steering = obstacleSteer;
-            wheelVehicle.Throttle = accel;
+            wheelVehicle.Throttle = accel * speedCoefficient;
         }
     }
 
@@ -264,11 +262,46 @@ public class RaceDriverAI : DriverAI
         while (currentSpeed > desiredSpeed)
         {
             brake = true;
-            wheelVehicle.Throttle = -1f;
+            wheelVehicle.Throttle = -1f * speedCoefficient;
             yield return null;
         }
 
         brake = false;
-        wheelVehicle.Throttle = 0f;
+        wheelVehicle.Throttle = 0f * speedCoefficient;
+    }
+
+    IEnumerator CheckForPlayerFellBehindInRace()
+    {
+        while (true)
+        {
+            if (IsPlayerBehind())
+            {
+                speedCoefficient = 0.5f;
+            }
+            else speedCoefficient = 1f;
+
+            yield return new WaitForSeconds(0.25f);
+        }
+    }
+
+    private bool IsPlayerBehind()
+    {
+        Vector3 forward = Vector3.forward;
+        Vector3 toOther = currentPlayer.transform.position - transform.position;
+
+        if (Vector3.Dot(forward, toOther) < 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    private void OnDisable()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
     }
 }

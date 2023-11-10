@@ -1,3 +1,4 @@
+using PunchCars.DifficultyAILevels;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,7 @@ public class HoneycombDriverAI : DriverAI
 
     [SerializeField]private TargetsControllerHoneycomb targetsControllerHoneycomb;
 
-    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO)
+    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
         wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
     }
@@ -230,4 +231,21 @@ public class HoneycombDriverAI : DriverAI
     {
         targetsControllerHoneycomb.PlatformFellEvent -= RemoveFromTargetsList;
     }
+
+    #region Difficulty AI Levels
+    public override void SetLowDifficultyAILevel()
+    {
+        
+    }
+
+    public override void SetNormalDifficultyAILevel()
+    {
+        
+    }
+
+    public override void SetHighDifficultyAILevel()
+    {
+        
+    }
+    #endregion
 }

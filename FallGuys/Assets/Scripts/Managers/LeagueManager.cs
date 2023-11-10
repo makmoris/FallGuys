@@ -136,6 +136,11 @@ public class LeagueManager : MonoBehaviour
         return currentLeagueLevel;
     }
 
+    public int GetNumberOfLeagueLevels()
+    {
+        return leagueLevels.Count;
+    }
+
     private void OnEnable()
     {
         CurrencyManager.CupsUpdateEvent += UpdateLeagueLevel;

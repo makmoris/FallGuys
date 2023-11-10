@@ -44,7 +44,11 @@ public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
 
     internal ObstalceMovement GetPlatformForThisCar(RaceDriverAI raceDriverAI)
     {
-        return raceDriverAIWithPathAndPlatformDictionary[raceDriverAI].platform;
+        if (raceDriverAIWithPathAndPlatformDictionary.ContainsKey(raceDriverAI))
+        {
+            return raceDriverAIWithPathAndPlatformDictionary[raceDriverAI].platform;
+        }
+        else return null;
     }
 
     internal List<RaceDriverAI> GetCarsForThisPlatform(ObstalceMovement platform)
@@ -96,7 +100,10 @@ public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
 
     private void CarLeftTheSector(WheelVehicle car)
     {
-        carsInSector.Remove(car);
+        if(carsInSector.Contains(car)) carsInSector.Remove(car);
+
+        RaceDriverAI carAI = car.GetComponentInChildren<RaceDriverAI>();
+        if (carAI != null && raceDriverAIWithPathAndPlatformDictionary.ContainsKey(carAI)) raceDriverAIWithPathAndPlatformDictionary.Remove(carAI);
         // отписаться от событий плафтормы и удалить из всех списокв и словарей
     }
 

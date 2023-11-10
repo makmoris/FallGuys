@@ -1,3 +1,4 @@
+using PunchCars.DifficultyAILevels;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,7 @@ public class RingsDriverAI : DriverAI
 
     private List<Ring> ringsList = new List<Ring>();
 
-    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO)
+    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
         wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
     }
@@ -222,4 +223,21 @@ public class RingsDriverAI : DriverAI
             targetReached = true;
         }
     }
+
+    #region Difficulty AI Levels
+    public override void SetLowDifficultyAILevel()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void SetNormalDifficultyAILevel()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void SetHighDifficultyAILevel()
+    {
+        throw new System.NotImplementedException();
+    }
+    #endregion
 }

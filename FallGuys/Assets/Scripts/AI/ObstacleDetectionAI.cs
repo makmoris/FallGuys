@@ -218,4 +218,13 @@ public class ObstacleDetectionAI : MonoBehaviour
             collisionCounter = 0;
         }
     }
+
+    private void OnDisable()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+    }
 }

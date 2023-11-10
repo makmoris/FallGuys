@@ -1,3 +1,4 @@
+using PunchCars.DifficultyAILevels;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +37,7 @@ public class ArenaCarDriverAI : DriverAI
     //    wheelVehicle = GetComponentInParent<WheelVehicle>();
     //}
 
-    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO)
+    public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
         wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
 
@@ -404,4 +405,21 @@ public class ArenaCarDriverAI : DriverAI
     {
         VisualIntermediary.PlayerWasDeadEvent -= RemoveFromTargetsList;
     }
+
+    #region Difficulty AI Levels
+    public override void SetLowDifficultyAILevel()
+    {
+       
+    }
+
+    public override void SetNormalDifficultyAILevel()
+    {
+        
+    }
+
+    public override void SetHighDifficultyAILevel()
+    {
+        
+    }
+    #endregion
 }

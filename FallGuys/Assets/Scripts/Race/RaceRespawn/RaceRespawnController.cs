@@ -26,8 +26,8 @@ public class RaceRespawnController : MonoBehaviour
 
         raceRespawnZonesStuckList.AddRange(raceRespawnZonesFellOffTheRoadList);
 
-        SortRaceRespawnZonesList(raceRespawnZonesFellOffTheRoadList);
-        SortRaceRespawnZonesList(raceRespawnZonesStuckList);
+        //SortRaceRespawnZonesList(raceRespawnZonesFellOffTheRoadList);
+        //SortRaceRespawnZonesList(raceRespawnZonesStuckList);
 
         foreach (var zone in raceRespawnZonesFellOffTheRoadList)
         {
@@ -44,13 +44,15 @@ public class RaceRespawnController : MonoBehaviour
     public void CarGotIntoRespawnZone(GameObject car)
     {
         car.SetActive(false);
-        RespawnCarOnNearestRespawnPoint(true, car, raceRespawnZonesFellOffTheRoadList);
+        //RespawnCarOnNearestRespawnPoint(true, car, raceRespawnZonesFellOffTheRoadList);
+        RespawnCarOnNearestRespawnPoint(true, car, raceRespawnZonesStuckList);
     }
 
     private void RespawnCarAfterStuck(WheelVehicle wheelVehicle)
     {
         wheelVehicle.gameObject.SetActive(false);
-        RespawnCarOnNearestRespawnPoint(false, wheelVehicle.gameObject, raceRespawnZonesStuckList);
+        //RespawnCarOnNearestRespawnPoint(false, wheelVehicle.gameObject, raceRespawnZonesStuckList);
+        RespawnCarOnNearestRespawnPoint(true, wheelVehicle.gameObject, raceRespawnZonesStuckList);
     }
 
     private void RespawnCarOnNearestRespawnPoint(bool respawnOnCheckPoint, GameObject car, List<RaceRespawnZone> raceRespawnZonesList)

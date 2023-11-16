@@ -138,7 +138,7 @@ public class RaceDriverAI : DriverAI
     #region Difficulty AI Levels
     public override void SetLowDifficultyAILevel()
     {
-        if (_coroutine == null) _coroutine = StartCoroutine(CheckForPlayerFellBehindInRace());
+        //if (_coroutine == null) _coroutine = StartCoroutine(CheckForPlayerFellBehindInRace());
     }
 
     public override void SetNormalDifficultyAILevel()
@@ -238,9 +238,15 @@ public class RaceDriverAI : DriverAI
         else ResetMovementToTarget();
     }
 
+    public void SaveCheckpoint()
+    {
+        raceAIWaypointTracker.SaveCheckpoint();
+    }
+
     private void ResetWaypointsPath()
     {
-        raceAIWaypointTracker.SetNewWaypointsPath(raceWaypointsPath);
+        //raceAIWaypointTracker.SetNewWaypointsPath(raceWaypointsPath);
+        raceAIWaypointTracker.CarWasRespawn();
         moveForward = false;
     }
 

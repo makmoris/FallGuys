@@ -305,11 +305,14 @@ namespace VehicleBehaviour {
             speed = Math.Clamp(speed, -maxSpeed, maxSpeed);
 
             // Get all the inputs!
-            if (isPlayer) {
+            if (isPlayer)
+            {
                 // Accelerate & brake
                 if (throttleInput != "" && throttleInput != null)
                 {
                     throttle = GetInput(throttleInput) - GetInput(brakeInput);
+
+                    throttle = Mathf.Clamp(throttle, -0.7f, 0.7f);
 
                     if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
                     {

@@ -22,6 +22,9 @@ public class RaceAIWaipointTracker : MonoBehaviour
     [SerializeField] private Vector3 lastPosition;
     [SerializeField] private float speed;
 
+    private int checkpointProgressNum;
+    private float checkpointProgressDistance;
+
 
     #region KEY POINTS
 
@@ -71,6 +74,18 @@ public class RaceAIWaipointTracker : MonoBehaviour
     {
         raceWaypointsPath = newPath;
         Reset();
+    }
+
+    public void CarWasRespawn()
+    {
+        progressNum = checkpointProgressNum;
+        progressDistance = checkpointProgressDistance;
+    }
+
+    public void SaveCheckpoint()
+    {
+        checkpointProgressNum = progressNum;
+        checkpointProgressDistance = progressDistance;
     }
 
     private void Update()

@@ -7,7 +7,16 @@ public class RaceRespawnCheckpoint : MonoBehaviour
 
     public void AddPlayer(GameObject player)
     {
-        if (!playersInCheckpoint.Contains(player)) playersInCheckpoint.Add(player);
+        if (!playersInCheckpoint.Contains(player))
+        {
+            playersInCheckpoint.Add(player);
+
+            RaceDriverAI raceDriverAI = player.GetComponentInChildren<RaceDriverAI>();
+            if(raceDriverAI != null)
+            {
+                raceDriverAI.SaveCheckpoint();
+            }
+        }
     }
 
     public bool PlayerHasPassedThisCheckpointpoint(GameObject playerGO)

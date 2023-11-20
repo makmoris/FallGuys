@@ -312,7 +312,7 @@ namespace VehicleBehaviour {
                 {
                     throttle = GetInput(throttleInput) - GetInput(brakeInput);
 
-                    throttle = Mathf.Clamp(throttle, -0.7f, 0.7f);
+                    //throttle = Mathf.Clamp(throttle, -0.7f, 0.7f);
 
                     if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
                     {

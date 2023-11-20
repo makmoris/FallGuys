@@ -442,11 +442,22 @@ public class AnyCarAI : MonoBehaviour
 
     #endregion
 
+    [Header("MY AI")]
+    [SerializeField] private bool defaultAI = true;
+    [Space]
+    [SerializeField] private ParticleSystem customSmoke;
+    [Space]
+    [SerializeField] private Transform _frontSensor;
+    [SerializeField] private Transform _rightSensor;
+    [SerializeField] private Transform _leftSensor;
+
     void Start()
     {
         #region INITIALIZE COMPONENTS
 
-        rb = GetComponent<Rigidbody>();
+        if(defaultAI) rb = GetComponent<Rigidbody>();
+        else rb = GetComponentInParent<Rigidbody>();
+
         rb.mass = vehicleMass;
         centerOfMass = rb.centerOfMass;
         currentTorque = motorTorque - (tractionControl * motorTorque);
@@ -454,14 +465,19 @@ public class AnyCarAI : MonoBehaviour
 
         #region LIGHTS INITIALIZATION
 
-        rearLights = transform.GetChild(1).GetChild(2).gameObject;
-        rearLights.SetActive(false);
+        if (defaultAI)
+        {
+            rearLights = transform.GetChild(1).GetChild(2).gameObject;
+            rearLights.SetActive(false);
+        }
+
 
         #endregion
 
         #region SMOKE
 
-        smokeParticles = transform.root.GetComponentInChildren<ParticleSystem>();
+        if (defaultAI) smokeParticles = transform.root.GetComponentInChildren<ParticleSystem>();
+        else smokeParticles = customSmoke;
 
         if (!smokeOn)
         {
@@ -476,18 +492,38 @@ public class AnyCarAI : MonoBehaviour
 
         #region FEATURES SCRIPTS
 
-        carAIInputs = gameObject.AddComponent<CarAIInputs>();
-        carAIWaypointTracker = gameObject.AddComponent<CarAIWaipointTracker>();
-        EngineAudioAI audioScript = gameObject.AddComponent<EngineAudioAI>();
-        DamageSystemAI damageScript = gameObject.AddComponent<DamageSystemAI>();
+        if (defaultAI)
+        {
+            carAIInputs = gameObject.AddComponent<CarAIInputs>();
+            carAIInputs.Initialize(true);
+            carAIWaypointTracker = gameObject.AddComponent<CarAIWaipointTracker>();
+            EngineAudioAI audioScript = gameObject.AddComponent<EngineAudioAI>();
+            DamageSystemAI damageScript = gameObject.AddComponent<DamageSystemAI>();
+        }
+        else
+        {
+            carAIInputs = gameObject.AddComponent<CarAIInputs>();
+            carAIInputs.Initialize(false, _frontSensor, _rightSensor, _leftSensor);
+            carAIWaypointTracker = gameObject.AddComponent<CarAIWaipointTracker>();
+            EngineAudioAI audioScript = gameObject.AddComponent<EngineAudioAI>();
+            DamageSystemAI damageScript = gameObject.AddComponent<DamageSystemAI>();
+        }       
 
         #endregion
 
         #region AI REFERENCES
 
-        carAItargetObj = new GameObject("WaypointsTarget");
-        carAItargetObj.transform.parent = this.transform.GetChild(1);
-        carAItarget = carAItargetObj.transform;
+        if (defaultAI)
+        {
+            carAItargetObj = new GameObject("WaypointsTarget");
+            carAItargetObj.transform.parent = this.transform.GetChild(1);
+            carAItarget = carAItargetObj.transform;
+        }
+        else
+        {
+            carAItargetObj = new GameObject("WaypointsTarget");
+            carAItarget = carAItargetObj.transform;
+        }
 
         #endregion
 
@@ -796,16 +832,16 @@ public class AnyCarAI : MonoBehaviour
 
                 if (footbrake > 0)
                 {
-                    rearLights.SetActive(true);
+                    if(defaultAI) rearLights.SetActive(true);
                 }
                 else
                 {
-                    rearLights.SetActive(false);
+                    if (defaultAI) rearLights.SetActive(false);
                 }
             }
             else if (footbrake > 0)
             {
-                rearLights.SetActive(false);
+                if (defaultAI) rearLights.SetActive(false);
 
                 frontLeftCol.GetComponent<WheelCollider>().brakeTorque = 0f;
                 frontRightCol.GetComponent<WheelCollider>().brakeTorque = 0f;
@@ -831,16 +867,16 @@ public class AnyCarAI : MonoBehaviour
 
                 if (footbrake > 0)
                 {
-                    rearLights.SetActive(true);
+                    if (defaultAI) rearLights.SetActive(true);
                 }
                 else
                 {
-                    rearLights.SetActive(false);
+                    if (defaultAI) rearLights.SetActive(false);
                 }
             }
             else if (footbrake > 0)
             {
-                rearLights.SetActive(false);
+                if (defaultAI) rearLights.SetActive(false);
 
                 frontLeftCol.GetComponent<WheelCollider>().brakeTorque = 0f;
                 frontRightCol.GetComponent<WheelCollider>().brakeTorque = 0f;

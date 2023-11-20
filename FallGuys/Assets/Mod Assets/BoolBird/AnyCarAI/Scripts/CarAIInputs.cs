@@ -35,22 +35,50 @@ public class CarAIInputs : MonoBehaviour
 
     #endregion
 
-    private void Awake()
+    //private void Awake()
+    //{
+    //    #region REFERENCES
+
+    //    carAIReference = GetComponent<AnyCarAI>();
+    //    frontSensor = this.transform.GetChild(1).GetChild(3).GetChild(0);
+    //    rightSensor = this.transform.GetChild(1).GetChild(3).GetChild(1);
+    //    leftSensor = this.transform.GetChild(1).GetChild(3).GetChild(2);
+
+    //    persuitAiOn = carAIReference.persuitAiOn;
+
+    //    #endregion
+
+    //    randomValue = Random.value * 100;
+    //}
+
+
+    public void Initialize(bool defaultAI, Transform _frontSensor = null, Transform _rightSensor = null, Transform _leftSensor = null)
     {
         #region REFERENCES
 
-        carAIReference = GetComponent<AnyCarAI>();
-        frontSensor = this.transform.GetChild(1).GetChild(3).GetChild(0);
-        rightSensor = this.transform.GetChild(1).GetChild(3).GetChild(1);
-        leftSensor = this.transform.GetChild(1).GetChild(3).GetChild(2);
+        if (defaultAI)
+        {
+            carAIReference = GetComponent<AnyCarAI>();
+            frontSensor = this.transform.GetChild(1).GetChild(3).GetChild(0);
+            rightSensor = this.transform.GetChild(1).GetChild(3).GetChild(1);
+            leftSensor = this.transform.GetChild(1).GetChild(3).GetChild(2);
 
-        persuitAiOn = carAIReference.persuitAiOn;
+            persuitAiOn = carAIReference.persuitAiOn;
+        }
+        else
+        {
+            carAIReference = GetComponent<AnyCarAI>();
+            frontSensor = _frontSensor;
+            rightSensor = _rightSensor;
+            leftSensor = _leftSensor;
+
+            persuitAiOn = carAIReference.persuitAiOn;
+        }
 
         #endregion
 
         randomValue = Random.value * 100;
     }
-
 
     private void FixedUpdate()
     {

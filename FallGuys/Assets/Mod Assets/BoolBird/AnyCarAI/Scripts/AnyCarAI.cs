@@ -80,54 +80,59 @@ public class AnyCarAI : MonoBehaviour
 {
     #region EDITOR
 
-    public int toolbarTab;
-    public string currentTab;
-
-    #endregion
-    
-    #region WHEELS REFERENCES
-
-    public List<CarWheelsAI> extraWheels;
-    public List<CarWheelsColsAI> extraWheelsColList = new List<CarWheelsColsAI>();
-    public CarWheelsColsAI extraWheelCol;
-    public GameObject frontLeft;
-    public GameObject frontRight;
-    public GameObject backLeft;
-    public GameObject backRight;
-    public GameObject frontLeftCol;
-    public GameObject frontRightCol;
-    public GameObject backLeftCol;
-    public GameObject backRightCol;
-
-    public float extraWheelRadius;
-    private float FLRadius;
-    private float FRRadius;
-    private float BLRadius;
-    private float BRRadius;
-
-    #region WHEELS VALUES
-
-    public float wheelsMass = 20;
-    public float forcePoint = 0;
-    public float dumpingRate = 0.025f;
-    public float suspensionDistance = 0.2f;
-    public Vector3 wheelsPosition;
-    public Vector3 wheelsRotation;
-    [Range(0.1f, 1f)] public float wheelStiffness = 1f;
-    public float suspensionSpring = 70000f;
-    public float suspensionDamper = 3500f;
-    [Range(0.1f, 1)] public float targetPosition = 0.5f;
-
-    [Range(0.5f, 2)] public float wheelsRadius = 1f;
-
-    #endregion
+    [HideInInspector] public int toolbarTab;
+    [HideInInspector] public string currentTab;
 
     #endregion
 
     #region CAR REFERENCES
 
+    [Header("----- BODY -----")]
     public GameObject bodyMesh;
-    public GameObject extraBodyCol;
+    [HideInInspector] public GameObject extraBodyCol;
+
+    #endregion
+
+    #region WHEELS REFERENCES
+
+    [HideInInspector] public List<CarWheelsAI> extraWheels;
+    [HideInInspector] public List<CarWheelsColsAI> extraWheelsColList = new List<CarWheelsColsAI>();
+    [HideInInspector] public CarWheelsColsAI extraWheelCol;
+
+    [Header("----- WHEELS -----")]
+    [Header("Wheel objects")]
+    public GameObject frontLeft;
+    public GameObject frontRight;
+    public GameObject backLeft;
+    public GameObject backRight;
+    [Header("Wheel Colliders")]
+    public GameObject frontLeftCol;
+    public GameObject frontRightCol;
+    public GameObject backLeftCol;
+    public GameObject backRightCol;
+
+    [HideInInspector] public float extraWheelRadius;
+    [HideInInspector] private float FLRadius;
+    [HideInInspector] private float FRRadius;
+    [HideInInspector] private float BLRadius;
+    [HideInInspector] private float BRRadius;
+
+    #region WHEELS VALUES
+
+    [HideInInspector] public float wheelsMass = 20;
+    [HideInInspector] public float forcePoint = 0;
+    [HideInInspector] public float dumpingRate = 0.025f;
+    [HideInInspector] public float suspensionDistance = 0.2f;
+    [HideInInspector] public Vector3 wheelsPosition;
+    [HideInInspector] public Vector3 wheelsRotation;
+    
+    [HideInInspector] public float suspensionSpring = 70000f;
+    [HideInInspector] public float suspensionDamper = 3500f;
+    [HideInInspector] [Range(0.1f, 1)] public float targetPosition = 0.5f;
+
+    [HideInInspector] [Range(0.5f, 2)] public float wheelsRadius = 1f;
+
+    #endregion
 
     #endregion
 
@@ -140,97 +145,109 @@ public class AnyCarAI : MonoBehaviour
 
     #region CUSTOM CONTROLS
 
-    public AnimationCurve enginePower;
-
+    [Header("Drift Controls")]
     public float maximumSteerAngle;
+    [Range(0.1f, 1f)] public float wheelStiffness = 1f;
     [Range(0, 1)] public float steerHelper; // 0 = raw physics , 1 grip in the facing direction
     [Range(0, 0.5f)] public float tractionControl;
     [Range(0, 0.5f)] public float slipLimit = 0.3f;
 
+    //
+    [Header("----- ENGINE -----")]
+    [Header("Type of Engine")]
     [SerializeField] public CarDriveTypeAI carDriveType = CarDriveTypeAI.FourWheelDrive;
-    [SerializeField] public SpeedTypeAI speedType = SpeedTypeAI.KPH;
+    public int numberOfGears = 5;
 
-    public Vector3 centerOfMass;
-    public float vehicleMass = 1000f;
-
+    [Header("Engine Power")]
+    public AnimationCurve enginePower;
     public float motorTorque = 2500f;
     public float brakeTorque = 20000f;
     public float reverseTorque = 500f;
     public float handbrakeTorque = 10000000f;
+
+    [Header("Speed Controls")]
+    [SerializeField] public SpeedTypeAI speedType = SpeedTypeAI.KPH;
     public float maxSpeed = 200f;
+    public float vehicleMass = 1000f;
+    public Vector3 centerOfMass;
+    //
 
-    public int numberOfGears = 5;
-    public float downForce = 300f;
+    [HideInInspector] public float downForce = 300f;
 
-    public bool ABS = true;
-    public bool skidMarks = true;
+    [HideInInspector] public bool ABS = true;
+    [HideInInspector] public bool skidMarks = true;
 
-    public bool smokeOn = false;
+    [HideInInspector] public bool smokeOn = false;
     private ParticleSystem smokeParticles;
 
     #endregion
 
     #region TURBO
 
-    public bool turboON = false;
-    public AudioClip turboAudioClip;
-    [Range(0, 1f)] public float turboVolume = 0.5f;
+    [HideInInspector] public bool turboON = false;
+    [HideInInspector] public AudioClip turboAudioClip;
+    [HideInInspector] [Range(0, 1f)] public float turboVolume = 0.5f;
 
     #endregion
 
     #region EXHAUST
 
-    public Transform exhaustObjectPrefab;
-    public Transform exhaustObject;
-    public GameObject exhaustObj;
-    public bool exhaustFlame;
-    public ParticleSystem exhaustVisual;
-    public AudioSource exhaustSoundSource;
-    public AudioClip exhaustSound;
-    [Range(0.01f, 1)] public float exhaustVolume;
+    [HideInInspector] public Transform exhaustObjectPrefab;
+    [HideInInspector] public Transform exhaustObject;
+    [HideInInspector] public GameObject exhaustObj;
+    [HideInInspector] public bool exhaustFlame;
+    [HideInInspector] public ParticleSystem exhaustVisual;
+    [HideInInspector] public AudioSource exhaustSoundSource;
 
     #endregion
 
     #region UTILITY
 
     private float oldRotation;
+    [HideInInspector]
     public Rigidbody rb
     {
         get;
         set;
     }
 
+    [Header("Debug")]
     public float currentSpeed;
     private float currentTorque;
     private float rpmRange = 1f;
     public int currentGear;
     private float gearFactor;
-    public bool reverseGearOn;
-    public float RPM { get; private set; }
+    [HideInInspector] public bool reverseGearOn;
+    [HideInInspector] public float RPM { get; private set; }
 
-    public GameObject objToUnpack;
+    [HideInInspector] public GameObject objToUnpack;
 
-    public GameObject frontLights;
-    public GameObject rearLights;
+    [HideInInspector] public GameObject frontLights;
+    [HideInInspector] public GameObject rearLights;
 
     #endregion
 
     #region COLLISION SYSTEM
 
-    public bool collisionSystem = false;
-    public AudioClip collisionSound;
-    [Range(0.01f, 1f)] public float collisionVolume;
+    [HideInInspector] public bool collisionSystem = false;
 
-    public OptionalMeshesAI[] optionalMeshList;
+    [HideInInspector] public OptionalMeshesAI[] optionalMeshList;
 
-    [Range(0.01f, 50)] public float demolutionStrenght;
-    [Range(0.1f, 500)] public float demolutionRange;
-    public bool customMesh = false;
-    public bool collisionParticles = false;
+    [HideInInspector] [Range(0.01f, 50)] public float demolutionStrenght;
+    [HideInInspector] [Range(0.1f, 500)] public float demolutionRange;
+    [HideInInspector] public bool customMesh = false;
+    [HideInInspector] public bool collisionParticles = false;
 
     #endregion
 
     #region AUDIO REFERENCES
+
+    [Header("----- AUDIO -----")]
+    public AudioClip exhaustSound;
+    [Range(0.01f, 1)] public float exhaustVolume;
+
+    public AudioClip collisionSound;
+    [Range(0.01f, 1f)] public float collisionVolume;
 
     public AudioClip skidSound;
     [Range(0.01f, 1)] public float skidVolume = 0.3f;
@@ -247,8 +264,8 @@ public class AnyCarAI : MonoBehaviour
 
     #region SUSPENSIONS SOUND
 
-    public AudioSource suspensionsSource;
-    public AudioSource skidSource;
+    [HideInInspector] public AudioSource suspensionsSource;
+    [HideInInspector] public AudioSource skidSource;
     public AudioClip suspensionsSound;
     [Range(0, 1)] public float suspensionsVolume;
 
@@ -382,33 +399,44 @@ public class AnyCarAI : MonoBehaviour
 
     #region AI CONTROLLER
 
-    public CarAIInputs carAIInputs;
-    public CarAIWaipointTracker carAIWaypointTracker;
+    [HideInInspector] public CarAIInputs carAIInputs;
+    [HideInInspector] public CarAIWaipointTracker carAIWaypointTracker;
 
     #region INPUTS
 
-    [SerializeField] public BrakeCondition brakeCondition = BrakeCondition.TargetDistance;
+    [Header("----- AI -----")]
 
-    [SerializeField] [Range(0, 1)] public float cautiousSpeedFactor = 0.05f;
-    [SerializeField] [Range(0, 180)] public float cautiousAngle = 50f;
-    [SerializeField] [Range(0, 200)] public float cautiousDistance = 100f;
-    [SerializeField] public float cautiousAngularVelocityFactor = 30f;
-    [SerializeField] [Range(0, 0.1f)] public float steerSensitivity = 0.05f;
-    [SerializeField] [Range(0, 0.1f)] public float accelSensitivity = 0.04f;
-    [SerializeField] [Range(0, 1)] public float brakeSensitivity = 1f;
-    [SerializeField] [Range(0, 10)] public float lateralWander = 3f;
-    [SerializeField] public float lateralWanderSpeed = 0.5f;
-    [SerializeField] [Range(0, 1)] public float wanderAmount = 0.1f;
-    [SerializeField] public float accelWanderSpeed = 0.1f;
+    [Header("1) Humanizator")]
 
-    [SerializeField] public bool isDriving;
-    [SerializeField] public Transform carAItarget;
+    [Header("1.1) Accelerating")]
+    [Range(0, 0.1f)] public float accelSensitivity = 0.04f;
+    [Range(0, 1)] public float wanderAmount = 0.1f;
+
+    [Header("1.2) Steering")]
+    [Range(0, 0.1f)] public float steerSensitivity = 0.05f;
+    [Range(0, 10)] public float lateralWander = 3f;
+
+    [Header("1.3) Competitive Driving")]
+    [Range(0, 180)] public float cautiousAngle = 50f;
+    [Range(0, 200)] public float cautiousDistance = 100f;
+
+    [Header("1.4) Braking")]
+    public BrakeCondition brakeCondition = BrakeCondition.TargetDistance;
+    [Range(0, 1)] public float brakeSensitivity = 1f;
+
+    [HideInInspector] [Range(0, 1)] public float cautiousSpeedFactor = 0.05f;
+    [HideInInspector] public float cautiousAngularVelocityFactor = 30f;
+    [HideInInspector] public float lateralWanderSpeed = 0.5f;
+    [HideInInspector] public float accelWanderSpeed = 0.1f;
+
+    [HideInInspector] public bool isDriving;
+    [HideInInspector] public Transform carAItarget;
     private GameObject carAItargetObj;
-    [SerializeField] public bool stopWhenTargetReached; 
-    [SerializeField] public float reachTargetThreshold = 2;
+    [HideInInspector] public bool stopWhenTargetReached;
+    [HideInInspector] public float reachTargetThreshold = 2;
 
     #region SENSORS
-
+    [Header("2) Sensors")]
     [SerializeField] [Range(15, 50)] public float sensorsAngle;
     [SerializeField] public float avoidDistance = 10;
     [SerializeField] public float brakeDistance = 6;
@@ -420,29 +448,32 @@ public class AnyCarAI : MonoBehaviour
 
     #region PERSUIT AI
 
-    public bool persuitAiOn;
-    public GameObject persuitTarget;
-    public float persuitDistance;
+    [HideInInspector] public bool persuitAiOn;
+    [HideInInspector] public GameObject persuitTarget;
+    [HideInInspector] public float persuitDistance;
 
     #endregion
 
     #region PROGRESS TRACKER
 
-    [SerializeField] public ProgressStyle progressStyle = ProgressStyle.SmoothAlongRoute;
+    [Header("3) Waypoints Path")]
     [SerializeField] public WaypointsPath AIcircuit;
-    //[SerializeField] public MYWayPointPath AIcircuit;
+
+    [Header("4) Follow Options")]
+    [SerializeField] public ProgressStyle progressStyle = ProgressStyle.SmoothAlongRoute;
     [SerializeField] [Range(5,50)]public float lookAheadForTarget = 5;
-    [SerializeField] public float lookAheadForTargetFactor = .1f;
-    [SerializeField] public float lookAheadForSpeedOffset = 10;
-    [SerializeField] public float lookAheadForSpeedFactor = .2f;
-    [SerializeField] [Range(1, 10)] public float pointThreshold = 4;
-    public Transform AItarget;
+
+    [HideInInspector] public float lookAheadForTargetFactor = .1f;
+    [HideInInspector] public float lookAheadForSpeedOffset = 10;
+    [HideInInspector] public float lookAheadForSpeedFactor = .2f;
+    [HideInInspector] [Range(1, 10)] public float pointThreshold = 4;
+    [HideInInspector] public Transform AItarget;
 
     #endregion
 
     #endregion
 
-    [Header("MY AI")]
+    [Header("----- MY AI ------")]
     [SerializeField] private bool defaultAI = true;
     [Space]
     [SerializeField] private ParticleSystem customSmoke;

@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 287744723789405625}
   - component: {fileID: 287744723789405626}
   - component: {fileID: 287744723789405627}
-  - component: {fileID: 2922484909292981966}
+  - component: {fileID: 5921672449984118298}
   m_Layer: 10
-  m_Name: Car_1A_Game
+  m_Name: JUKE_Game
   m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,6 +210,7 @@ MonoBehaviour:
   centerOfMass: {fileID: 8939899596359181450}
   downforce: 8
   steering: 0
+  throttle: 0
   handbrake: 0
   allowDrift: 1
   speed: 0
@@ -405,20 +406,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resetLastShooterTime: 2
---- !u!64 &2922484909292981966
-MeshCollider:
+--- !u!114 &5921672449984118298
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284850691298600790}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3274738982779690596
 GameObject:
   m_ObjectHideFlags: 0

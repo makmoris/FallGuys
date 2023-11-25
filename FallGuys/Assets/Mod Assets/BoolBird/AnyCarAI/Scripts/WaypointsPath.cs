@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Dreamteck.Splines;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WaypointsPath : MonoBehaviour
@@ -30,6 +31,9 @@ public class WaypointsPath : MonoBehaviour
     private Vector3 P3;
 
     #endregion
+
+    [Space]
+    public bool updatePath;
 
     private void Awake()
     {
@@ -152,6 +156,32 @@ public class WaypointsPath : MonoBehaviour
 
     private void DrawGizmos(bool selected)
     {
+        if (updatePath)
+        {
+            updatePath = false;
+            
+            // delete old
+            int numChildren = transform.childCount;
+            if (numChildren != 0)
+            {
+                for (int i = numChildren - 1; i >= 0; i--)
+                {
+                    DestroyImmediate(transform.GetChild(i).gameObject, false);
+                }
+            }
+           
+            // create new
+            SplineComputer splineComputer = GetComponent<SplineComputer>();
+            SplinePoint[] splinePoints = splineComputer.GetPoints(SplineComputer.Space.World);
+            
+            for (int i = 0; i < splinePoints.Length; i++)
+            {
+                GameObject waypoint = new GameObject("Waypoint");
+                waypoint.transform.SetParent(this.transform);
+                waypoint.transform.position = splinePoints[i].position;
+            }
+        }
+
         Transform[] pathTransforms = GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
 

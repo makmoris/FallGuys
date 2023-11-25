@@ -10,6 +10,8 @@ public class PathEditor : Editor
     private SerializedProperty smoothRoute;
     private SerializedProperty editorVisualisationSubsteps;
 
+    private SerializedProperty updatePath;
+
     public Texture pathLabel;
     
     private void OnEnable()
@@ -20,6 +22,8 @@ public class PathEditor : Editor
 
         smoothRoute = soTarget.FindProperty("smoothRoute");
         editorVisualisationSubsteps = soTarget.FindProperty("editorVisualisationSubsteps");
+
+        updatePath = soTarget.FindProperty("updatePath");
     }
 
 
@@ -54,6 +58,39 @@ public class PathEditor : Editor
         }
 
         if (smoothRoute.boolValue)
+        {
+            GUI.color = Color.white;
+            GUILayout.BeginVertical("", "box");
+
+            EditorGUILayout.PropertyField(editorVisualisationSubsteps, GUIContent.none, true);
+
+
+            GUILayout.EndVertical();
+        }
+
+
+        if (updatePath.boolValue == true)
+        {
+            GUI.color = Color.Lerp(Color.gray, Color.white, 0.5f);
+        }
+        else
+        {
+            GUI.color = Color.white;
+        }
+
+        if (GUILayout.Button("Update Path"))
+        {
+            if (updatePath.boolValue == true)
+            {
+                updatePath.boolValue = false;
+            }
+            else
+            {
+                updatePath.boolValue = true;
+            }
+        }
+
+        if (updatePath.boolValue)
         {
             GUI.color = Color.white;
             GUILayout.BeginVertical("", "box");

@@ -106,10 +106,10 @@ public class AnyCarAI : MonoBehaviour
     public GameObject backLeft;
     public GameObject backRight;
     [Header("Wheel Colliders")]
-    public GameObject frontLeftCol;
-    public GameObject frontRightCol;
-    public GameObject backLeftCol;
-    public GameObject backRightCol;
+    public WheelCollider frontLeftCol;
+    public WheelCollider frontRightCol;
+    public WheelCollider backLeftCol;
+    public WheelCollider backRightCol;
 
     [HideInInspector] public float extraWheelRadius;
     [HideInInspector] private float FLRadius;
@@ -168,8 +168,10 @@ public class AnyCarAI : MonoBehaviour
     [Header("Speed Controls")]
     [SerializeField] public SpeedTypeAI speedType = SpeedTypeAI.KPH;
     public float maxSpeed = 200f;
-    public float vehicleMass = 1000f;
-    public Vector3 centerOfMass;
+    private float vehicleMass;
+    public Transform centerOfMass;
+    [Header("Debug")]
+    public Vector3 _centerOfMass;
     //
 
     [HideInInspector] public float downForce = 300f;
@@ -288,10 +290,10 @@ public class AnyCarAI : MonoBehaviour
         backRight.AddComponent(typeof(SphereCollider));
 
         // Create Wheel Colliders Objects
-        frontLeftCol = new GameObject("FLCOL");
-        frontRightCol = new GameObject("FRCOL");
-        backLeftCol = new GameObject("BLCOL");
-        backRightCol = new GameObject("BRCOL");
+        //frontLeftCol = new GameObject("FLCOL");
+        //frontRightCol = new GameObject("FRCOL");
+        //backLeftCol = new GameObject("BLCOL");
+        //backRightCol = new GameObject("BRCOL");
 
 
         // Front Left Wheel
@@ -315,18 +317,18 @@ public class AnyCarAI : MonoBehaviour
         backRightCol.transform.rotation = backRight.transform.rotation;
 
         // Add Wheel Colliders
-        frontLeftCol.AddComponent(typeof(WheelCollider));
-        frontRightCol.AddComponent(typeof(WheelCollider));
-        backLeftCol.AddComponent(typeof(WheelCollider));
-        backRightCol.AddComponent(typeof(WheelCollider));
+        //frontLeftCol.AddComponent(typeof(WheelCollider));
+        //frontRightCol.AddComponent(typeof(WheelCollider));
+        //backLeftCol.AddComponent(typeof(WheelCollider));
+        //backRightCol.AddComponent(typeof(WheelCollider));
 
 
 
         // Add Skid Marks
-        frontLeftCol.AddComponent(typeof(WheelsFXAI));
-        frontRightCol.AddComponent(typeof(WheelsFXAI));
-        backLeftCol.AddComponent(typeof(WheelsFXAI));
-        backRightCol.AddComponent(typeof(WheelsFXAI));
+        //frontLeftCol.AddComponent(typeof(WheelsFXAI));
+        //frontRightCol.AddComponent(typeof(WheelsFXAI));
+        //backLeftCol.AddComponent(typeof(WheelsFXAI));
+        //backRightCol.AddComponent(typeof(WheelsFXAI));
 
         // Get Wheel Radius
         FLRadius = frontLeft.GetComponent<SphereCollider>().radius * frontLeft.transform.lossyScale.x;
@@ -489,8 +491,12 @@ public class AnyCarAI : MonoBehaviour
         if(defaultAI) rb = GetComponent<Rigidbody>();
         else rb = GetComponentInParent<Rigidbody>();
 
-        rb.mass = vehicleMass;
-        centerOfMass = rb.centerOfMass;
+        //rb.mass = vehicleMass;
+        vehicleMass = rb.mass;
+
+        if(defaultAI) _centerOfMass = rb.centerOfMass;
+        else _centerOfMass = centerOfMass.localPosition;
+
         currentTorque = motorTorque - (tractionControl * motorTorque);
 
 
@@ -672,25 +678,25 @@ public class AnyCarAI : MonoBehaviour
         Vector3 BRPos;
 
         // Front Left
-        frontLeftCol.GetComponent<WheelCollider>().GetWorldPose(out FLPos, out FLRot);
+        frontLeftCol.GetWorldPose(out FLPos, out FLRot);
         FLRot = FLRot * Quaternion.Euler(wheelsRotation);
         frontLeft.transform.position = FLPos;
         frontLeft.transform.rotation = FLRot;
 
         // Front Right
-        frontRightCol.GetComponent<WheelCollider>().GetWorldPose(out FRPos, out FRRot);
+        frontRightCol.GetWorldPose(out FRPos, out FRRot);
         FRRot = FRRot * Quaternion.Euler(wheelsRotation);
         frontRight.transform.position = FRPos;
         frontRight.transform.rotation = FRRot;
 
         // Back Left
-        backLeftCol.GetComponent<WheelCollider>().GetWorldPose(out BLPos, out BLRot);
+        backLeftCol.GetWorldPose(out BLPos, out BLRot);
         BLRot = BLRot * Quaternion.Euler(wheelsRotation);
         backLeft.transform.position = BLPos;
         backLeft.transform.rotation = BLRot;
 
         // Back Right
-        backRightCol.GetComponent<WheelCollider>().GetWorldPose(out BRPos, out BRRot);
+        backRightCol.GetWorldPose(out BRPos, out BRRot);
         BRRot = BRRot * Quaternion.Euler(wheelsRotation);
         backRight.transform.position = BRPos;
         backRight.transform.rotation = BRRot;
@@ -713,8 +719,8 @@ public class AnyCarAI : MonoBehaviour
     private void Steering(float steering)
     {
         var steerAngle = steering * maximumSteerAngle;
-        frontLeftCol.GetComponent<WheelCollider>().steerAngle = Mathf.Lerp(frontLeftCol.GetComponent<WheelCollider>().steerAngle, steerAngle, 0.5f);
-        frontRightCol.GetComponent<WheelCollider>().steerAngle = Mathf.Lerp(frontRightCol.GetComponent<WheelCollider>().steerAngle, steerAngle, 0.5f);
+        frontLeftCol.steerAngle = Mathf.Lerp(frontLeftCol.steerAngle, steerAngle, 0.5f);
+        frontRightCol.steerAngle = Mathf.Lerp(frontRightCol.steerAngle, steerAngle, 0.5f);
 
         foreach (var wheelCol in extraWheelsColList)
         {
@@ -733,10 +739,10 @@ public class AnyCarAI : MonoBehaviour
         WheelHit wHBL;
         WheelHit wHBR;
 
-        frontLeftCol.GetComponent<WheelCollider>().GetGroundHit(out wHFL);
-        frontRightCol.GetComponent<WheelCollider>().GetGroundHit(out wHFR);
-        backLeftCol.GetComponent<WheelCollider>().GetGroundHit(out wHBL);
-        backRightCol.GetComponent<WheelCollider>().GetGroundHit(out wHBR);
+        frontLeftCol.GetGroundHit(out wHFL);
+        frontRightCol.GetGroundHit(out wHFR);
+        backLeftCol.GetGroundHit(out wHBL);
+        backRightCol.GetGroundHit(out wHBR);
 
         if (wHFL.normal == Vector3.zero)
             return;
@@ -778,10 +784,10 @@ public class AnyCarAI : MonoBehaviour
 
                 thrustTorque = Accel * (currentTorque / 4f) * enginePower.Evaluate(1);
 
-                frontLeftCol.GetComponent<WheelCollider>().motorTorque = thrustTorque;
-                frontRightCol.GetComponent<WheelCollider>().motorTorque = thrustTorque;
-                backLeftCol.GetComponent<WheelCollider>().motorTorque = thrustTorque;
-                backRightCol.GetComponent<WheelCollider>().motorTorque = thrustTorque;
+                frontLeftCol.motorTorque = thrustTorque;
+                frontRightCol.motorTorque = thrustTorque;
+                backLeftCol.motorTorque = thrustTorque;
+                backRightCol.motorTorque = thrustTorque;
 
                 foreach (var wheelCol in extraWheelsColList)
                 {
@@ -797,8 +803,8 @@ public class AnyCarAI : MonoBehaviour
 
                 thrustTorque = Accel * (currentTorque / 2f) * enginePower.Evaluate(1);
 
-                frontLeftCol.GetComponent<WheelCollider>().motorTorque = thrustTorque;
-                frontRightCol.GetComponent<WheelCollider>().motorTorque = thrustTorque;
+                frontLeftCol.motorTorque = thrustTorque;
+                frontRightCol.motorTorque = thrustTorque;
 
                 foreach (var wheelCol in extraWheelsColList)
                 {
@@ -814,8 +820,8 @@ public class AnyCarAI : MonoBehaviour
 
                 thrustTorque = Accel * (currentTorque / 2f) * enginePower.Evaluate(1);
 
-                backLeftCol.GetComponent<WheelCollider>().motorTorque = thrustTorque;
-                backRightCol.GetComponent<WheelCollider>().motorTorque = thrustTorque;
+                backLeftCol.motorTorque = thrustTorque;
+                backRightCol.motorTorque = thrustTorque;
 
                 foreach (var wheelCol in extraWheelsColList)
                 {
@@ -851,10 +857,10 @@ public class AnyCarAI : MonoBehaviour
         {
             if (currentSpeed > 5 && Vector3.Angle(transform.forward, rb.velocity) < 50f)
             {
-                frontLeftCol.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
-                frontRightCol.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
-                backLeftCol.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
-                backRightCol.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
+                frontLeftCol.brakeTorque = brakeTorque * footbrake;
+                frontRightCol.brakeTorque = brakeTorque * footbrake;
+                backLeftCol.brakeTorque = brakeTorque * footbrake;
+                backRightCol.brakeTorque = brakeTorque * footbrake;
 
                 foreach (var wheelCol in extraWheelsColList)
                 {
@@ -874,14 +880,14 @@ public class AnyCarAI : MonoBehaviour
             {
                 if (defaultAI) rearLights.SetActive(false);
 
-                frontLeftCol.GetComponent<WheelCollider>().brakeTorque = 0f;
-                frontRightCol.GetComponent<WheelCollider>().brakeTorque = 0f;
-                backLeftCol.GetComponent<WheelCollider>().brakeTorque = 0f;
-                backRightCol.GetComponent<WheelCollider>().brakeTorque = 0f;
-                frontLeftCol.GetComponent<WheelCollider>().motorTorque = -reverseTorque * footbrake;
-                frontRightCol.GetComponent<WheelCollider>().motorTorque = -reverseTorque * footbrake;
-                backLeftCol.GetComponent<WheelCollider>().motorTorque = -reverseTorque * footbrake;
-                backRightCol.GetComponent<WheelCollider>().motorTorque = -reverseTorque * footbrake;
+                frontLeftCol.brakeTorque = 0f;
+                frontRightCol.brakeTorque = 0f;
+                backLeftCol.brakeTorque = 0f;
+                backRightCol.brakeTorque = 0f;
+                frontLeftCol.motorTorque = -reverseTorque * footbrake;
+                frontRightCol.motorTorque = -reverseTorque * footbrake;
+                backLeftCol.motorTorque = -reverseTorque * footbrake;
+                backRightCol.motorTorque = -reverseTorque * footbrake;
 
                 foreach (var wheelCol in extraWheelsColList)
                 {
@@ -909,14 +915,14 @@ public class AnyCarAI : MonoBehaviour
             {
                 if (defaultAI) rearLights.SetActive(false);
 
-                frontLeftCol.GetComponent<WheelCollider>().brakeTorque = 0f;
-                frontRightCol.GetComponent<WheelCollider>().brakeTorque = 0f;
-                backLeftCol.GetComponent<WheelCollider>().brakeTorque = 0f;
-                backRightCol.GetComponent<WheelCollider>().brakeTorque = 0f;
-                frontLeftCol.GetComponent<WheelCollider>().motorTorque = -reverseTorque * footbrake;
-                frontRightCol.GetComponent<WheelCollider>().motorTorque = -reverseTorque * footbrake;
-                backLeftCol.GetComponent<WheelCollider>().motorTorque = -reverseTorque * footbrake;
-                backRightCol.GetComponent<WheelCollider>().motorTorque = -reverseTorque * footbrake;
+                frontLeftCol.brakeTorque = 0f;
+                frontRightCol.brakeTorque = 0f;
+                backLeftCol.brakeTorque = 0f;
+                backRightCol.brakeTorque = 0f;
+                frontLeftCol.motorTorque = -reverseTorque * footbrake;
+                frontRightCol.motorTorque = -reverseTorque * footbrake;
+                backLeftCol.motorTorque = -reverseTorque * footbrake;
+                backRightCol.motorTorque = -reverseTorque * footbrake;
 
                 foreach (var wheelCol in extraWheelsColList)
                 {
@@ -960,10 +966,10 @@ public class AnyCarAI : MonoBehaviour
 
     IEnumerator ABSCoroutine(float footbrake)
     {
-        frontLeftCol.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
-        frontRightCol.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
-        backLeftCol.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
-        backRightCol.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
+        frontLeftCol.brakeTorque = brakeTorque * footbrake;
+        frontRightCol.brakeTorque = brakeTorque * footbrake;
+        backLeftCol.brakeTorque = brakeTorque * footbrake;
+        backRightCol.brakeTorque = brakeTorque * footbrake;
 
         foreach (var wheelCol in extraWheelsColList)
         {
@@ -972,10 +978,10 @@ public class AnyCarAI : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        frontLeftCol.GetComponent<WheelCollider>().brakeTorque = 0;
-        frontRightCol.GetComponent<WheelCollider>().brakeTorque = 0;
-        backLeftCol.GetComponent<WheelCollider>().brakeTorque = 0;
-        backRightCol.GetComponent<WheelCollider>().brakeTorque = 0;
+        frontLeftCol.brakeTorque = 0;
+        frontRightCol.brakeTorque = 0;
+        backLeftCol.brakeTorque = 0;
+        backRightCol.brakeTorque = 0;
 
         foreach (var wheelCol in extraWheelsColList)
         {
@@ -1009,40 +1015,40 @@ public class AnyCarAI : MonoBehaviour
 
     private void SetWheelsValues()
     {
-        frontLeftCol.GetComponent<WheelCollider>().mass = wheelsMass;
-        frontRightCol.GetComponent<WheelCollider>().mass = wheelsMass;
-        backLeftCol.GetComponent<WheelCollider>().mass = wheelsMass;
-        backRightCol.GetComponent<WheelCollider>().mass = wheelsMass;
+        frontLeftCol.mass = wheelsMass;
+        frontRightCol.mass = wheelsMass;
+        backLeftCol.mass = wheelsMass;
+        backRightCol.mass = wheelsMass;
 
-        frontLeftCol.GetComponent<WheelCollider>().radius *= wheelsRadius;
-        frontRightCol.GetComponent<WheelCollider>().radius *= wheelsRadius;
-        backLeftCol.GetComponent<WheelCollider>().radius *= wheelsRadius;
-        backRightCol.GetComponent<WheelCollider>().radius *= wheelsRadius;
+        frontLeftCol.radius *= wheelsRadius;
+        frontRightCol.radius *= wheelsRadius;
+        backLeftCol.radius *= wheelsRadius;
+        backRightCol.radius *= wheelsRadius;
 
-        frontLeftCol.GetComponent<WheelCollider>().forceAppPointDistance = forcePoint;
-        frontRightCol.GetComponent<WheelCollider>().forceAppPointDistance = forcePoint;
-        backLeftCol.GetComponent<WheelCollider>().forceAppPointDistance = forcePoint;
-        backRightCol.GetComponent<WheelCollider>().forceAppPointDistance = forcePoint;
+        frontLeftCol.forceAppPointDistance = forcePoint;
+        frontRightCol.forceAppPointDistance = forcePoint;
+        backLeftCol.forceAppPointDistance = forcePoint;
+        backRightCol.forceAppPointDistance = forcePoint;
 
-        frontLeftCol.GetComponent<WheelCollider>().wheelDampingRate = dumpingRate;
-        frontRightCol.GetComponent<WheelCollider>().wheelDampingRate = dumpingRate;
-        backLeftCol.GetComponent<WheelCollider>().wheelDampingRate = dumpingRate;
-        backRightCol.GetComponent<WheelCollider>().wheelDampingRate = dumpingRate;
+        frontLeftCol.wheelDampingRate = dumpingRate;
+        frontRightCol.wheelDampingRate = dumpingRate;
+        backLeftCol.wheelDampingRate = dumpingRate;
+        backRightCol.wheelDampingRate = dumpingRate;
 
-        frontLeftCol.GetComponent<WheelCollider>().suspensionDistance = suspensionDistance;
-        frontRightCol.GetComponent<WheelCollider>().suspensionDistance = suspensionDistance;
-        backLeftCol.GetComponent<WheelCollider>().suspensionDistance = suspensionDistance;
-        backRightCol.GetComponent<WheelCollider>().suspensionDistance = suspensionDistance;
+        frontLeftCol.suspensionDistance = suspensionDistance;
+        frontRightCol.suspensionDistance = suspensionDistance;
+        backLeftCol.suspensionDistance = suspensionDistance;
+        backRightCol.suspensionDistance = suspensionDistance;
 
-        frontLeftCol.GetComponent<WheelCollider>().center = wheelsPosition;
-        frontRightCol.GetComponent<WheelCollider>().center = wheelsPosition;
-        backLeftCol.GetComponent<WheelCollider>().center = wheelsPosition;
-        backRightCol.GetComponent<WheelCollider>().center = wheelsPosition;
+        frontLeftCol.center = wheelsPosition;
+        frontRightCol.center = wheelsPosition;
+        backLeftCol.center = wheelsPosition;
+        backRightCol.center = wheelsPosition;
 
-        var leftCol = frontLeftCol.GetComponent<WheelCollider>().suspensionSpring;
-        var rightCol = frontRightCol.GetComponent<WheelCollider>().suspensionSpring;
-        var bLeft = backLeftCol.GetComponent<WheelCollider>().suspensionSpring;
-        var bRight = backRightCol.GetComponent<WheelCollider>().suspensionSpring;
+        var leftCol = frontLeftCol.suspensionSpring;
+        var rightCol = frontRightCol.suspensionSpring;
+        var bLeft = backLeftCol.suspensionSpring;
+        var bRight = backRightCol.suspensionSpring;
         leftCol.spring = suspensionSpring;
         rightCol.spring = suspensionSpring;
         bLeft.spring = suspensionSpring;
@@ -1055,37 +1061,37 @@ public class AnyCarAI : MonoBehaviour
         rightCol.targetPosition = targetPosition;
         bLeft.targetPosition = targetPosition;
         bRight.targetPosition = targetPosition;
-        frontLeftCol.GetComponent<WheelCollider>().suspensionSpring = leftCol;
-        frontRightCol.GetComponent<WheelCollider>().suspensionSpring = rightCol;
-        backLeftCol.GetComponent<WheelCollider>().suspensionSpring = bLeft;
-        backRightCol.GetComponent<WheelCollider>().suspensionSpring = bRight;
+        frontLeftCol.suspensionSpring = leftCol;
+        frontRightCol.suspensionSpring = rightCol;
+        backLeftCol.suspensionSpring = bLeft;
+        backRightCol.suspensionSpring = bRight;
 
-        var fl = frontLeftCol.GetComponent<WheelCollider>().sidewaysFriction;
-        var fr = frontRightCol.GetComponent<WheelCollider>().sidewaysFriction;
-        var bl = backLeftCol.GetComponent<WheelCollider>().sidewaysFriction;
-        var br = backRightCol.GetComponent<WheelCollider>().sidewaysFriction;
+        var fl = frontLeftCol.sidewaysFriction;
+        var fr = frontRightCol.sidewaysFriction;
+        var bl = backLeftCol.sidewaysFriction;
+        var br = backRightCol.sidewaysFriction;
         fl.stiffness = wheelStiffness;
         fr.stiffness = wheelStiffness;
         bl.stiffness = wheelStiffness;
         br.stiffness = wheelStiffness;
-        frontLeftCol.GetComponent<WheelCollider>().sidewaysFriction = fl;
-        frontRightCol.GetComponent<WheelCollider>().sidewaysFriction = fr;
-        backLeftCol.GetComponent<WheelCollider>().sidewaysFriction = bl;
-        backRightCol.GetComponent<WheelCollider>().sidewaysFriction = br;
+        frontLeftCol.sidewaysFriction = fl;
+        frontRightCol.sidewaysFriction = fr;
+        backLeftCol.sidewaysFriction = bl;
+        backRightCol.sidewaysFriction = br;
 
 
-        var flf = frontLeftCol.GetComponent<WheelCollider>().forwardFriction;
-        var frf = frontRightCol.GetComponent<WheelCollider>().forwardFriction;
-        var blf = backLeftCol.GetComponent<WheelCollider>().forwardFriction;
-        var brf = backRightCol.GetComponent<WheelCollider>().forwardFriction;
+        var flf = frontLeftCol.forwardFriction;
+        var frf = frontRightCol.forwardFriction;
+        var blf = backLeftCol.forwardFriction;
+        var brf = backRightCol.forwardFriction;
         flf.stiffness = wheelStiffness;
         frf.stiffness = wheelStiffness;
         blf.stiffness = wheelStiffness;
         brf.stiffness = wheelStiffness;
-        frontLeftCol.GetComponent<WheelCollider>().forwardFriction = flf;
-        frontRightCol.GetComponent<WheelCollider>().forwardFriction = frf;
-        backLeftCol.GetComponent<WheelCollider>().forwardFriction = blf;
-        backRightCol.GetComponent<WheelCollider>().forwardFriction = brf;
+        frontLeftCol.forwardFriction = flf;
+        frontRightCol.forwardFriction = frf;
+        backLeftCol.forwardFriction = blf;
+        backRightCol.forwardFriction = brf;
 
         foreach (var wheelCol in extraWheelsColList)
         {
@@ -1194,16 +1200,16 @@ public class AnyCarAI : MonoBehaviour
         {
             case CarDriveTypeAI.FourWheelDrive:
 
-                frontLeftCol.GetComponent<WheelCollider>().GetGroundHit(out flHit);
+                frontLeftCol.GetGroundHit(out flHit);
                 AdjustTorque(flHit.forwardSlip);
 
-                frontRightCol.GetComponent<WheelCollider>().GetGroundHit(out frHit);
+                frontRightCol.GetGroundHit(out frHit);
                 AdjustTorque(frHit.forwardSlip);
 
-                backLeftCol.GetComponent<WheelCollider>().GetGroundHit(out blHit);
+                backLeftCol.GetGroundHit(out blHit);
                 AdjustTorque(blHit.forwardSlip);
 
-                backRightCol.GetComponent<WheelCollider>().GetGroundHit(out brHit);
+                backRightCol.GetGroundHit(out brHit);
                 AdjustTorque(brHit.forwardSlip);
 
                 foreach (var wheelCol in extraWheelsColList)
@@ -1216,10 +1222,10 @@ public class AnyCarAI : MonoBehaviour
 
             case CarDriveTypeAI.RearWheelDrive:
 
-                backLeftCol.GetComponent<WheelCollider>().GetGroundHit(out blHit);
+                backLeftCol.GetGroundHit(out blHit);
                 AdjustTorque(blHit.forwardSlip);
 
-                backRightCol.GetComponent<WheelCollider>().GetGroundHit(out brHit);
+                backRightCol.GetGroundHit(out brHit);
                 AdjustTorque(brHit.forwardSlip);
 
                 foreach (var wheelCol in extraWheelsColList)
@@ -1235,10 +1241,10 @@ public class AnyCarAI : MonoBehaviour
 
             case CarDriveTypeAI.FrontWheelDrive:
 
-                frontLeftCol.GetComponent<WheelCollider>().GetGroundHit(out flHit);
+                frontLeftCol.GetGroundHit(out flHit);
                 AdjustTorque(flHit.forwardSlip);
 
-                frontRightCol.GetComponent<WheelCollider>().GetGroundHit(out frHit);
+                frontRightCol.GetGroundHit(out frHit);
                 AdjustTorque(frHit.forwardSlip);
 
                 foreach (var wheelCol in extraWheelsColList)
@@ -1282,10 +1288,10 @@ public class AnyCarAI : MonoBehaviour
         WheelHit blnHit;
         WheelHit brnHit;
 
-        frontLeftCol.GetComponent<WheelCollider>().GetGroundHit(out flnHit);
-        frontRightCol.GetComponent<WheelCollider>().GetGroundHit(out frnHit);
-        backLeftCol.GetComponent<WheelCollider>().GetGroundHit(out blnHit);
-        backRightCol.GetComponent<WheelCollider>().GetGroundHit(out brnHit);
+        frontLeftCol.GetGroundHit(out flnHit);
+        frontRightCol.GetGroundHit(out frnHit);
+        backLeftCol.GetGroundHit(out blnHit);
+        backRightCol.GetGroundHit(out brnHit);
 
         #region FRONT LEFT SLIP
 

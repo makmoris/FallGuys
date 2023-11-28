@@ -3,6 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BrakeCondition
+{
+    NeverBrake,
+    TargetDirectionDifference,
+    TargetDistance,
+}
+public enum ProgressStyle
+{
+    SmoothAlongRoute,
+    PointToPoint,
+}
+
 #region CUSTOM DRIVING
 
 [Serializable]
@@ -169,9 +181,12 @@ public class AnyCarAI : MonoBehaviour
     [SerializeField] public SpeedTypeAI speedType = SpeedTypeAI.KPH;
     public float maxSpeed = 200f;
     private float vehicleMass;
+    [Space]
     public Transform centerOfMass;
     [Header("Debug")]
     public Vector3 _centerOfMass;
+
+    private float defaultMaxSpeed;
     //
 
     [HideInInspector] public float downForce = 300f;
@@ -180,7 +195,7 @@ public class AnyCarAI : MonoBehaviour
     [HideInInspector] public bool skidMarks = true;
 
     [HideInInspector] public bool smokeOn = false;
-    private ParticleSystem smokeParticles;
+    private List<ParticleSystem> smokeParticles = new List<ParticleSystem>();
 
     #endregion
 
@@ -260,8 +275,6 @@ public class AnyCarAI : MonoBehaviour
     public AudioClip highDeceleration;
     [Range(0.01f, 1)] public float engineVolume;
 
-
-
     #endregion
 
     #region SUSPENSIONS SOUND
@@ -270,132 +283,6 @@ public class AnyCarAI : MonoBehaviour
     [HideInInspector] public AudioSource skidSource;
     public AudioClip suspensionsSound;
     [Range(0, 1)] public float suspensionsVolume;
-
-    #endregion
-
-    #region CREATE COLLIDERS
-
-    public void UnpackPrefab()
-    {
-        Transform _parent = this.transform.parent;
-        objToUnpack = _parent.gameObject;
-    }
-
-    public void CreateColliders()
-    {
-        // Create and Set Wheel Colliders
-        frontLeft.AddComponent(typeof(SphereCollider));
-        frontRight.AddComponent(typeof(SphereCollider));
-        backLeft.AddComponent(typeof(SphereCollider));
-        backRight.AddComponent(typeof(SphereCollider));
-
-        // Create Wheel Colliders Objects
-        //frontLeftCol = new GameObject("FLCOL");
-        //frontRightCol = new GameObject("FRCOL");
-        //backLeftCol = new GameObject("BLCOL");
-        //backRightCol = new GameObject("BRCOL");
-
-
-        // Front Left Wheel
-        frontLeftCol.transform.parent = this.transform.GetChild(0);
-        frontLeftCol.transform.position = frontLeft.transform.position;
-        frontLeftCol.transform.rotation = frontLeft.transform.rotation;
-
-        // Front Right Wheel
-        frontRightCol.transform.parent = this.transform.GetChild(0);
-        frontRightCol.transform.position = frontRight.transform.position;
-        frontRightCol.transform.rotation = frontRight.transform.rotation;
-
-        // Back Left Wheel
-        backLeftCol.transform.parent = this.transform.GetChild(0);
-        backLeftCol.transform.position = backLeft.transform.position;
-        backLeftCol.transform.rotation = backLeft.transform.rotation;
-
-        // Back Right Wheel
-        backRightCol.transform.parent = this.transform.GetChild(0);
-        backRightCol.transform.position = backRight.transform.position;
-        backRightCol.transform.rotation = backRight.transform.rotation;
-
-        // Add Wheel Colliders
-        //frontLeftCol.AddComponent(typeof(WheelCollider));
-        //frontRightCol.AddComponent(typeof(WheelCollider));
-        //backLeftCol.AddComponent(typeof(WheelCollider));
-        //backRightCol.AddComponent(typeof(WheelCollider));
-
-
-
-        // Add Skid Marks
-        //frontLeftCol.AddComponent(typeof(WheelsFXAI));
-        //frontRightCol.AddComponent(typeof(WheelsFXAI));
-        //backLeftCol.AddComponent(typeof(WheelsFXAI));
-        //backRightCol.AddComponent(typeof(WheelsFXAI));
-
-        // Get Wheel Radius
-        FLRadius = frontLeft.GetComponent<SphereCollider>().radius * frontLeft.transform.lossyScale.x;
-        FRRadius = frontRight.GetComponent<SphereCollider>().radius * frontLeft.transform.lossyScale.x;
-        BLRadius = backLeft.GetComponent<SphereCollider>().radius * frontLeft.transform.lossyScale.x;
-        BRRadius = backRight.GetComponent<SphereCollider>().radius * frontLeft.transform.lossyScale.x;
-
-        // Set Wheel Radius
-        frontLeftCol.GetComponent<WheelCollider>().radius = Mathf.Abs(FLRadius);
-        frontRightCol.GetComponent<WheelCollider>().radius = Mathf.Abs(FRRadius);
-        backLeftCol.GetComponent<WheelCollider>().radius = Mathf.Abs(BLRadius);
-        backRightCol.GetComponent<WheelCollider>().radius = Mathf.Abs(BRRadius);
-
-        // Destroy Sphere Colliders
-        DestroyImmediate(frontLeft.GetComponent<SphereCollider>());
-        DestroyImmediate(frontRight.GetComponent<SphereCollider>());
-        DestroyImmediate(backLeft.GetComponent<SphereCollider>());
-        DestroyImmediate(backRight.GetComponent<SphereCollider>());
-
-        // Create Body Convex Mesh Collider
-        if (bodyMesh != null)
-        {
-            bodyMesh.AddComponent(typeof(MeshCollider));
-            bodyMesh.AddComponent(typeof(CompetitiveDrivingCheck));
-            bodyMesh.GetComponent<MeshCollider>().convex = true;
-        }
-
-
-        // Extra Wheels
-        extraWheelsColList.Clear();
-        int c = 1;
-        foreach (var wheel in extraWheels)
-        {
-            wheel.model.AddComponent(typeof(SphereCollider));
-
-            extraWheelCol.collider = new GameObject("extraWheel " + c);
-            extraWheelCol.axel = wheel.axel;
-            extraWheelCol.type = wheel.type;
-
-            extraWheelCol.collider.transform.parent = this.transform.GetChild(0);
-            extraWheelCol.collider.transform.position = wheel.model.transform.position;
-            extraWheelCol.collider.transform.rotation = wheel.model.transform.rotation;
-
-
-            extraWheelCol.collider.AddComponent(typeof(WheelCollider));
-            extraWheelCol.collider.AddComponent(typeof(WheelsFXAI));
-
-            extraWheelRadius = wheel.model.GetComponent<SphereCollider>().radius * wheel.model.transform.lossyScale.x;
-            extraWheelCol.collider.GetComponent<WheelCollider>().radius = Mathf.Abs(extraWheelRadius);
-
-            DestroyImmediate(wheel.model.GetComponent<SphereCollider>());
-
-            extraWheelsColList.Add(extraWheelCol);
-
-            c++;
-        }
-    }
-
-    public void CreateDebugBodyCol()
-    {
-        extraBodyCol = Instantiate(Resources.Load("BodyCollider"), this.transform.position, Quaternion.identity) as GameObject;
-        extraBodyCol.transform.parent = this.transform;
-        extraBodyCol.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
-        extraBodyCol.transform.rotation = this.transform.rotation;
-        bodyMesh = extraBodyCol;
-        bodyMesh.AddComponent(typeof(CompetitiveDrivingCheck));
-    }
 
     #endregion
 
@@ -458,10 +345,9 @@ public class AnyCarAI : MonoBehaviour
 
     #region PROGRESS TRACKER
 
-    [Header("3) Waypoints Path")]
-    [SerializeField] public WaypointsPath AIcircuit;
+    [HideInInspector] public WaypointsPath AIcircuit;
 
-    [Header("4) Follow Options")]
+    [Header("3) Follow Options")]
     [SerializeField] public ProgressStyle progressStyle = ProgressStyle.SmoothAlongRoute;
     [SerializeField] [Range(5,50)]public float lookAheadForTarget = 5;
 
@@ -476,91 +362,83 @@ public class AnyCarAI : MonoBehaviour
     #endregion
 
     [Header("----- MY AI ------")]
-    [SerializeField] private bool defaultAI = true;
-    [Space]
-    [SerializeField] private ParticleSystem customSmoke;
+    [SerializeField] private List<ParticleSystem> customSmokes = new List<ParticleSystem>();
     [Space]
     [SerializeField] private Transform _frontSensor;
-    [SerializeField] private Transform _rightSensor;
     [SerializeField] private Transform _leftSensor;
+    [SerializeField] private Transform _rightSensor;
 
-    void Start()
+    [SerializeField]private bool handbrake;
+    public bool Handbrake
     {
+        get => handbrake;
+        set
+        {
+            handbrake = value;
+            carAIInputs.Handbrake = handbrake;
+            carAIWaypointTracker.Handbrake = handbrake;
+        }
+    }
+
+    private bool useSpeedControl;
+    private CarPlayerWaipointTracker carPlayerWaipointTracker;
+
+    public void Initialize(WaypointsPath waypointsPath, bool handbrake)
+    {
+        this.handbrake = handbrake;
+        if (handbrake) UseHandbrake();
+
         #region INITIALIZE COMPONENTS
 
-        if(defaultAI) rb = GetComponent<Rigidbody>();
-        else rb = GetComponentInParent<Rigidbody>();
+        AIcircuit = waypointsPath;
+
+        rb = GetComponentInParent<Rigidbody>();
 
         //rb.mass = vehicleMass;
         vehicleMass = rb.mass;
 
-        if(defaultAI) _centerOfMass = rb.centerOfMass;
-        else _centerOfMass = centerOfMass.localPosition;
+        _centerOfMass = centerOfMass.localPosition;
 
         currentTorque = motorTorque - (tractionControl * motorTorque);
 
-
-        #region LIGHTS INITIALIZATION
-
-        if (defaultAI)
-        {
-            rearLights = transform.GetChild(1).GetChild(2).gameObject;
-            rearLights.SetActive(false);
-        }
-
-
-        #endregion
-
         #region SMOKE
 
-        if (defaultAI) smokeParticles = transform.root.GetComponentInChildren<ParticleSystem>();
-        else smokeParticles = customSmoke;
+        foreach (var smoke in customSmokes)
+        {
+            smokeParticles.Add(smoke);
+        }
 
         if (!smokeOn)
         {
-            smokeParticles.Stop();
+            foreach (var smoke in smokeParticles)
+            {
+                smoke.Stop();
+            }
         }
         else
         {
-            smokeParticles.Play();
+            foreach (var smoke in smokeParticles)
+            {
+                smoke.Play();
+            }
         }
 
         #endregion
 
         #region FEATURES SCRIPTS
 
-        if (defaultAI)
-        {
-            carAIInputs = gameObject.AddComponent<CarAIInputs>();
-            carAIInputs.Initialize(true);
-            carAIWaypointTracker = gameObject.AddComponent<CarAIWaipointTracker>();
-            EngineAudioAI audioScript = gameObject.AddComponent<EngineAudioAI>();
-            DamageSystemAI damageScript = gameObject.AddComponent<DamageSystemAI>();
-        }
-        else
-        {
-            carAIInputs = gameObject.AddComponent<CarAIInputs>();
-            carAIInputs.Initialize(false, _frontSensor, _rightSensor, _leftSensor);
-            carAIWaypointTracker = gameObject.AddComponent<CarAIWaipointTracker>();
-            EngineAudioAI audioScript = gameObject.AddComponent<EngineAudioAI>();
-            DamageSystemAI damageScript = gameObject.AddComponent<DamageSystemAI>();
-        }       
+        carAIInputs = gameObject.AddComponent<CarAIInputs>();
+        carAIInputs.Initialize(false, _frontSensor, _rightSensor, _leftSensor);
+        carAIWaypointTracker = gameObject.AddComponent<CarAIWaipointTracker>();
+        EngineAudioAI audioScript = gameObject.AddComponent<EngineAudioAI>();
+        DamageSystemAI damageScript = gameObject.AddComponent<DamageSystemAI>();
 
         #endregion
 
         #region AI REFERENCES
 
-        if (defaultAI)
-        {
-            carAItargetObj = new GameObject("WaypointsTarget");
-            carAItargetObj.transform.parent = this.transform.GetChild(1);
-            carAItarget = carAItargetObj.transform;
-        }
-        else
-        {
-            carAItargetObj = new GameObject("WaypointsTarget");
-            carAItarget = carAItargetObj.transform;
-        }
+        carAItargetObj = new GameObject("WaypointsTarget");
+        carAItarget = carAItargetObj.transform;
 
         #endregion
 
@@ -585,6 +463,8 @@ public class AnyCarAI : MonoBehaviour
         SetWheelsValues();
 
         #endregion
+
+        defaultMaxSpeed = maxSpeed;
     }
 
     private void Update()
@@ -610,58 +490,102 @@ public class AnyCarAI : MonoBehaviour
         isDrivingDebug();
     }
 
+    public void SaveCheckpoint()
+    {
+        carAIWaypointTracker.SaveCheckpoint();
+    }
+    public void WasRespawn()
+    {
+        carAIWaypointTracker.CarWasRespawn();
+    }
+
     public void Move(float steering, float Accel, float footbrake, float handbrake)
     {
-        AnimateWheels();
-
-        #region GETINPUTS
-
-        //clamp input values
-        steering = Mathf.Clamp(steering, -1, 1);
-        AccelInput = Accel = Mathf.Clamp(Accel, 0, 1);
-        BrakeInput = footbrake = -1 * Mathf.Clamp(footbrake, -1, 0);
-        handbrake = Mathf.Clamp(handbrake, 0, 1);
-
-        #endregion
-
-        #region GEARS
-
-        CalculateRPM();
-
-        #region TRANSMISSION
-
-        AutoGearSystem();
-
-        #endregion
-
-        #endregion
-
-        #region DRIVING
-
-        Steering(steering);
-
-        SteerHelper();
-
-        ApplyDrive(Accel, footbrake);
-
-        MaxSpeedReached();
-
-        HandBreaking(handbrake);
-
-        #endregion
-
-        #region AERODYNAMICS
-
-        AddDownForce();
-
-        if (skidMarks == true)
+        if (handbrake > 0) UseHandbrake();
+        else
         {
-            CheckForWheelSpin();
+            AnimateWheels();
+
+            #region GETINPUTS
+
+            //clamp input values
+            steering = Mathf.Clamp(steering, -1, 1);
+            AccelInput = Accel = Mathf.Clamp(Accel, 0, 1);
+            BrakeInput = footbrake = -1 * Mathf.Clamp(footbrake, -1, 0);
+            handbrake = Mathf.Clamp(handbrake, 0, 1);
+
+            #endregion
+
+            #region GEARS
+
+            CalculateRPM();
+
+            #region TRANSMISSION
+
+            AutoGearSystem();
+
+            #endregion
+
+            #endregion
+
+            #region DRIVING
+
+            Steering(steering);
+
+            SteerHelper();
+
+            ApplyDrive(Accel, footbrake);
+
+            MaxSpeedReached();
+
+            HandBreaking(handbrake);
+
+            #endregion
+
+            #region AERODYNAMICS
+
+            AddDownForce();
+
+            if (skidMarks == true)
+            {
+                CheckForWheelSpin();
+            }
+
+            TractionControl();
+
+            #endregion
+
+            if (useSpeedControl)
+            {
+                if(carAIWaypointTracker.ProgressDistance > carPlayerWaipointTracker.ProgressDistance)
+                {
+                    maxSpeed = defaultMaxSpeed * 0.75f;
+                }
+                else
+                {
+                    maxSpeed = defaultMaxSpeed;
+                }
+            }
         }
+    }
 
-        TractionControl();
+    public void ActivateSpeedControlWithPlayer(CarPlayerWaipointTracker carPlayerWaipointTracker)
+    {
+        useSpeedControl = true;
+        this.carPlayerWaipointTracker = carPlayerWaipointTracker;
+    }
 
-        #endregion       
+    private void UseHandbrake()
+    {
+        frontLeftCol.motorTorque = 0.0001f;
+        frontRightCol.motorTorque = 0.0001f;
+        backLeftCol.motorTorque = 0.0001f;
+        backRightCol.motorTorque = 0.0001f;
+
+        frontLeftCol.brakeTorque = handbrakeTorque;
+        frontRightCol.brakeTorque = handbrakeTorque;
+        backLeftCol.brakeTorque = handbrakeTorque;
+        backRightCol.brakeTorque = handbrakeTorque;
     }
 
     #region DRIVING
@@ -866,20 +790,9 @@ public class AnyCarAI : MonoBehaviour
                 {
                     wheelCol.collider.GetComponent<WheelCollider>().brakeTorque = brakeTorque * footbrake;
                 }
-
-                if (footbrake > 0)
-                {
-                    if(defaultAI) rearLights.SetActive(true);
-                }
-                else
-                {
-                    if (defaultAI) rearLights.SetActive(false);
-                }
             }
             else if (footbrake > 0)
             {
-                if (defaultAI) rearLights.SetActive(false);
-
                 frontLeftCol.brakeTorque = 0f;
                 frontRightCol.brakeTorque = 0f;
                 backLeftCol.brakeTorque = 0f;
@@ -901,20 +814,9 @@ public class AnyCarAI : MonoBehaviour
             if (currentSpeed > 5 && Vector3.Angle(transform.forward, rb.velocity) < 50f)
             {
                 StartCoroutine(ABSCoroutine(footbrake));
-
-                if (footbrake > 0)
-                {
-                    if (defaultAI) rearLights.SetActive(true);
-                }
-                else
-                {
-                    if (defaultAI) rearLights.SetActive(false);
-                }
             }
             else if (footbrake > 0)
             {
-                if (defaultAI) rearLights.SetActive(false);
-
                 frontLeftCol.brakeTorque = 0f;
                 frontRightCol.brakeTorque = 0f;
                 backLeftCol.brakeTorque = 0f;

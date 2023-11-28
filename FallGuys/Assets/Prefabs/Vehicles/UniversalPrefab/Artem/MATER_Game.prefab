@@ -1081,7 +1081,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7106468934116169931}
   m_Layer: 0
-  m_Name: Wheel
+  m_Name: FLWheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1662,7 +1662,7 @@ GameObject:
   - component: {fileID: 7106468934633981682}
   - component: {fileID: 7106468934633981683}
   m_Layer: 0
-  m_Name: FRWheel
+  m_Name: FRWheelCol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6767,7 +6767,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7106468935165870072}
   m_Layer: 0
-  m_Name: Wheel
+  m_Name: FRWheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6802,7 +6802,7 @@ GameObject:
   - component: {fileID: 7106468935205499453}
   - component: {fileID: 7106468935205499450}
   m_Layer: 0
-  m_Name: BLWheel
+  m_Name: BLWheelCol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7353,7 +7353,7 @@ GameObject:
   - component: {fileID: 7106468935536831236}
   - component: {fileID: 7106468935536831237}
   m_Layer: 0
-  m_Name: FLWheel
+  m_Name: FLWheelCol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7737,7 +7737,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7106468935842244882}
   m_Layer: 0
-  m_Name: Wheel
+  m_Name: BRWheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7827,7 +7827,7 @@ GameObject:
   - component: {fileID: 7106468935927940829}
   - component: {fileID: 7106468935927940826}
   m_Layer: 0
-  m_Name: BRWheel
+  m_Name: BRWheelCol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7924,7 +7924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7106468935934707160}
   m_Layer: 0
-  m_Name: Wheel
+  m_Name: BLWheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7953,6 +7953,66 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7106468934016368628}
     m_Modifications:
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: backLeft
+      value: 
+      objectReference: {fileID: 7106468935934707161}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: bodyMesh
+      value: 
+      objectReference: {fileID: 304899398640949361}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: backRight
+      value: 
+      objectReference: {fileID: 7106468935842244883}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: frontLeft
+      value: 
+      objectReference: {fileID: 7106468934116169928}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: frontRight
+      value: 
+      objectReference: {fileID: 7106468935165870073}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: _leftSensor
+      value: 
+      objectReference: {fileID: 7106468934429980400}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: backLeftCol
+      value: 
+      objectReference: {fileID: 7106468935205499452}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: _frontSensor
+      value: 
+      objectReference: {fileID: 7106468934452967365}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: _rightSensor
+      value: 
+      objectReference: {fileID: 7106468934448446176}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: backRightCol
+      value: 
+      objectReference: {fileID: 7106468935927940828}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: centerOfMass
+      value: 
+      objectReference: {fileID: 7106468934392847789}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: frontLeftCol
+      value: 
+      objectReference: {fileID: 7106468935536831239}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: frontRightCol
+      value: 
+      objectReference: {fileID: 7106468934633981685}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: customSmokes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1942597002700953659, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
+      propertyPath: customSmokes.Array.data[0]
+      value: 
+      objectReference: {fileID: 7106468934696790370}
     - target: {fileID: 5638888297239585504, guid: 403eee435c9f40842bbe293d14e71dbb, type: 3}
       propertyPath: groundDetectionAI
       value: 

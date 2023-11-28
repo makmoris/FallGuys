@@ -57,7 +57,7 @@ public class RaceSectorWithHorizontalDynamicPlatform : RaceSectorLogic
                     }
                 }
 
-                raceDriverAI.SetTargets(newList);
+                //raceDriverAI.SetTargets(newList);
 
                 GroundDetectionAI raceGroundDetectionAI = car.GetComponentInChildren<GroundDetectionAI>();
                 raceGroundDetectionAI.enabled = true;

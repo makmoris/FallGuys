@@ -14,7 +14,7 @@ public class ExitSectorTrigger : MonoBehaviour
             CarLeftTheSectorEvent?.Invoke(car);
 
             RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
-            if (raceDriverAI != null) raceDriverAI.StartMoveForward();
+            //if (raceDriverAI != null) raceDriverAI.StartMoveForward();
         }
     }
 }

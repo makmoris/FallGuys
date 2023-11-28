@@ -12,7 +12,7 @@ public class EnterSectorTrigger : MonoBehaviour
         if (car != null)
         {
             RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
-            if (raceDriverAI != null) raceDriverAI.StopMoveForward();
+            //if (raceDriverAI != null) raceDriverAI.StopMoveForward();
 
             SendCarEnteredEvent(car);
         }

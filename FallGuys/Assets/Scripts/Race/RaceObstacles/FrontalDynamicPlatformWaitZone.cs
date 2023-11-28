@@ -78,7 +78,7 @@ public class FrontalDynamicPlatformWaitZone : MonoBehaviour
                 {
                     if (carAI.CurrentSpeed > desiredSpeedInZone)
                     {
-                        carAI.SlowDownToDesiredSpeed(desiredSpeedInZone);
+                        //carAI.SlowDownToDesiredSpeed(desiredSpeedInZone);
                     }
                 }
             }

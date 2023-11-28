@@ -33,6 +33,9 @@ public class RaceInstaller : Installer
 
                 playerGO.GetComponent<WheelVehicle>().IsPlayer = true;
 
+                CarPlayerWaipointTracker carPlayerWaipointTracker = playerGO.AddComponent<CarPlayerWaipointTracker>();
+                carPlayerWaipointTracker.Initialize(raceProgressController.GetWaypointsPath());
+
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
                 playerName.Initialize(player.Name, cameraFollowingOnOtherPlayers.transform);

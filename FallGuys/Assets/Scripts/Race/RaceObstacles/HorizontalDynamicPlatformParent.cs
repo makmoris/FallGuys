@@ -52,7 +52,7 @@ public class HorizontalDynamicPlatformParent : MonoBehaviour
             
             if(raceDriverAI.CurrentSpeed > desiredSpeed)
             {
-                raceDriverAI.SlowDownToDesiredSpeed(desiredSpeed);
+                //raceDriverAI.SlowDownToDesiredSpeed(desiredSpeed);
             }
         }
     }

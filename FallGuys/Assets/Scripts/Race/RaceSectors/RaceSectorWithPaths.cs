@@ -9,7 +9,7 @@ public class RaceSectorWithPaths : RaceSectorLogic
     [SerializeField] private ExitSectorTrigger exitSectorTrigger;
 
     [Header("AI Behavior")]
-    [SerializeField] private BrakeCondition brakeCondition = BrakeCondition.NeverBrake;
+    //[SerializeField] private BrakeCondition brakeCondition = BrakeCondition.NeverBrake;
 
     [Header("Path")]
     [SerializeField] private WaypointsPathOutputType waypointsPathType = WaypointsPathOutputType.nearestPath;
@@ -32,8 +32,8 @@ public class RaceSectorWithPaths : RaceSectorLogic
         RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
         if (raceDriverAI != null)
         {
-            raceDriverAI.SetNewWaypointsPath(GetWaypointsPath(raceDriverAI.transform.position));
-            raceDriverAI.brakeCondition = brakeCondition;
+            //raceDriverAI.SetNewWaypointsPath(GetWaypointsPath(raceDriverAI.transform.position));
+            //raceDriverAI.brakeCondition = brakeCondition;
         }
     }
 

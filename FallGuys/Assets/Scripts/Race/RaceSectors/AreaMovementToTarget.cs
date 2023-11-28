@@ -23,7 +23,7 @@ public class AreaMovementToTarget : MonoBehaviour
                     transforms.Add(targetsVariantList[rand].GetChild(i));
                 }
 
-                raceDriverAI.SetTargets(transforms);
+                //raceDriverAI.SetTargets(transforms);
             }
         }
     }

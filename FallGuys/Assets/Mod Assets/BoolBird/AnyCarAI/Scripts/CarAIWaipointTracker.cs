@@ -5,7 +5,6 @@ public class CarAIWaipointTracker : MonoBehaviour
     //[HideInInspector]
     public Transform target;
     private WaypointsPath circuit;
-    //[SerializeField] private MYWayPointPath circuit;
     [SerializeField] private AnyCarAI ACAI;
 
     [SerializeField] private float lookAheadForTargetOffset = 5;
@@ -16,6 +15,7 @@ public class CarAIWaipointTracker : MonoBehaviour
     [SerializeField] private float pointToPointThreshold = 4;
 
     [SerializeField] private float progressDistance;
+    public float ProgressDistance => progressDistance;
     [SerializeField] private int progressNum;
     [SerializeField] private Vector3 lastPosition;
     [SerializeField] private float speed;
@@ -28,15 +28,18 @@ public class CarAIWaipointTracker : MonoBehaviour
 
     //[HideInInspector]
     public WaypointsPath.RoutePoint targetPoint { get; private set; }
-    //public MYWayPointPath.RoutePoint targetPoint { get; private set; }
     //[HideInInspector]
     public WaypointsPath.RoutePoint speedPoint { get; private set; }
-    //public MYWayPointPath.RoutePoint speedPoint { get; private set; }
     //[HideInInspector]
     public WaypointsPath.RoutePoint progressPoint { get; private set; }
-    //public MYWayPointPath.RoutePoint progressPoint { get; private set; }
 
     #endregion
+
+    [SerializeField]private bool handbrake;
+    public bool Handbrake { get => handbrake; set => handbrake = value; }
+
+    private int checkpointProgressNum;
+    private float checkpointProgressDistance;
 
     private void Start()
     {
@@ -73,25 +76,39 @@ public class CarAIWaipointTracker : MonoBehaviour
         }
     }
 
+    public void SaveCheckpoint()
+    {
+        checkpointProgressNum = progressNum;
+        checkpointProgressDistance = progressDistance;
+    }
+
+    public void CarWasRespawn()
+    {
+        progressNum = checkpointProgressNum;
+        progressDistance = checkpointProgressDistance;
+    }
 
     private void Update()
     {
-        if (!this.transform.GetComponent<AnyCarAI>().persuitAiOn)
+        if (!handbrake)
         {
-            this.transform.GetComponent<CarAIInputs>().persuitAiOn = false;
-            FollowPath();
-        }
-        else
-        {
-            if(ACAI.persuitTarget != null)
+            if (!this.transform.GetComponent<AnyCarAI>().persuitAiOn)
             {
-                Transform tempPersuitCollider = ACAI.persuitTarget.GetComponentInChildren<MeshCollider>().transform;
-
-                target = tempPersuitCollider;
+                this.transform.GetComponent<CarAIInputs>().persuitAiOn = false;
+                FollowPath();
             }
             else
             {
-                FollowPath();
+                if (ACAI.persuitTarget != null)
+                {
+                    Transform tempPersuitCollider = ACAI.persuitTarget.GetComponentInChildren<MeshCollider>().transform;
+
+                    target = tempPersuitCollider;
+                }
+                else
+                {
+                    FollowPath();
+                }
             }
         }
     }

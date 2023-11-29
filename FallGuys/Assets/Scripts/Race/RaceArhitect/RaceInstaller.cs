@@ -60,7 +60,7 @@ public class RaceInstaller : Installer
                 // Spawn Place
                 Transform spawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
                 Vector3 pos = spawnPlace.position;
-                playerGO.transform.position = new Vector3(pos.x, 5f, pos.z);
+                playerGO.transform.position = new Vector3(pos.x, pos.y + 5f, pos.z);
                 playerGO.transform.rotation = spawnPlace.rotation;
 
                 // Player Effector
@@ -107,7 +107,7 @@ public class RaceInstaller : Installer
                 // Spawn Place
                 Transform aiSpawnPlace = raceProgressController.GetRaceStartSector().GetStartSpawnPlace();
                 Vector3 posAI = aiSpawnPlace.position;
-                aiPlayerGO.transform.position = new Vector3(posAI.x, 5f, posAI.z);
+                aiPlayerGO.transform.position = new Vector3(posAI.x, posAI.y + 5f, posAI.z);
                 aiPlayerGO.transform.rotation = aiSpawnPlace.rotation;
 
                 // Enemy Pointer

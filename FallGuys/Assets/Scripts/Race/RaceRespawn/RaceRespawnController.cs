@@ -19,6 +19,8 @@ public class RaceRespawnController : MonoBehaviour
     private Dictionary<RaceRespawnZone, RaceRespawnCheckpoint> raceRespawnZoneRaceRespawnCheckpointPairs = 
         new Dictionary<RaceRespawnZone, RaceRespawnCheckpoint>();
 
+    private LevelProgressUIController levelProgressUIController;
+
     private void Awake()
     {
         raceRespawnZonesFellOffTheRoadList.AddRange(raceRespawnZonesFellOffTheRoad.transform.GetComponentsInChildren<RaceRespawnZone>());
@@ -33,11 +35,14 @@ public class RaceRespawnController : MonoBehaviour
         {
             raceRespawnZoneRaceRespawnCheckpointPairs.Add(zone, zone.GetComponent<RaceRespawnCheckpoint>());
         }
+
+        levelProgressUIController = FindObjectOfType<LevelProgressUIController>();
     }
 
     private void OnEnable()
     {
-        WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent += RespawnCarAfterStuck;
+        WheelVehicle.GetRespanwPositionForWheelVehicleEvent += RespawnCarAfterStuck;
+        WheelVehicle.HideRespawnButtonEvent += HideRespawnButton;
         canRespawnCarAfterStuck = true;
     }
 
@@ -48,11 +53,23 @@ public class RaceRespawnController : MonoBehaviour
         RespawnCarOnNearestRespawnPoint(true, car, raceRespawnZonesStuckList);
     }
 
-    private void RespawnCarAfterStuck(WheelVehicle wheelVehicle)
+    private void HideRespawnButton()
     {
-        wheelVehicle.gameObject.SetActive(false);
-        //RespawnCarOnNearestRespawnPoint(false, wheelVehicle.gameObject, raceRespawnZonesStuckList);
-        RespawnCarOnNearestRespawnPoint(true, wheelVehicle.gameObject, raceRespawnZonesStuckList);
+        levelProgressUIController.HideRespawnButton();
+    }
+
+    private void RespawnCarAfterStuck(WheelVehicle wheelVehicle, bool showRespawnButton)
+    {
+        if (showRespawnButton)
+        {
+            levelProgressUIController.ShowRespawnButton(wheelVehicle);
+        }
+        else
+        {
+            wheelVehicle.gameObject.SetActive(false);
+            //RespawnCarOnNearestRespawnPoint(false, wheelVehicle.gameObject, raceRespawnZonesStuckList);
+            RespawnCarOnNearestRespawnPoint(true, wheelVehicle.gameObject, raceRespawnZonesStuckList);
+        }
     }
 
     private void RespawnCarOnNearestRespawnPoint(bool respawnOnCheckPoint, GameObject car, List<RaceRespawnZone> raceRespawnZonesList)
@@ -146,6 +163,7 @@ public class RaceRespawnController : MonoBehaviour
 
     private void OnDisable()
     {
-        WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent -= RespawnCarAfterStuck;
+        WheelVehicle.GetRespanwPositionForWheelVehicleEvent -= RespawnCarAfterStuck;
+        WheelVehicle.HideRespawnButtonEvent -= HideRespawnButton;
     }
 }

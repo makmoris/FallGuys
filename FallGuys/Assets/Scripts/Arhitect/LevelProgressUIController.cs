@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using VehicleBehaviour;
 
 public abstract class LevelProgressUIController : MonoBehaviour
 {
@@ -35,6 +36,10 @@ public abstract class LevelProgressUIController : MonoBehaviour
     [SerializeField] private GameObject goalPanel;
     [SerializeField] private TimerBeforeStart timerBeforeStart;
     [SerializeField] private int time = 3;
+
+    [Header("Respawn Button")]
+    [SerializeField] private Button respawnButton;
+    private WheelVehicle playerWheelVehicle;
 
     public event System.Action GameCanStartEvent;
 
@@ -119,6 +124,23 @@ public abstract class LevelProgressUIController : MonoBehaviour
         StartCoroutine(WaitAndHideLosingPanel(showingTime));
     }
 
+    public void ShowRespawnButton(WheelVehicle playerWV)
+    {
+        playerWheelVehicle = playerWV;
+
+        respawnButton.enabled = true;
+        respawnButton.gameObject.SetActive(true);
+
+        respawnButton.onClick.RemoveAllListeners();
+        respawnButton.onClick.AddListener(RespawnPlayer);
+    }
+
+    public void HideRespawnButton()
+    {
+        respawnButton.enabled = false;
+        respawnButton.gameObject.SetActive(false);
+    }
+
     IEnumerator WaitAndHideLosingPanel(float congratulationsTime)
     {
         yield return new WaitForSeconds(congratulationsTime);
@@ -132,9 +154,17 @@ public abstract class LevelProgressUIController : MonoBehaviour
         if (congratulationsPanel.activeSelf) congratulationsPanel.SetActive(false);
         if (losePanel.activeSelf) losePanel.SetActive(false);
         if (cameraHint.activeSelf) cameraHint.SetActive(false);
+        if (respawnButton.gameObject.activeSelf) respawnButton.gameObject.SetActive(false);
 
         if (!layouts.activeSelf) layouts.SetActive(true);
         if (!goalPanel.activeSelf) goalPanel.SetActive(true);
+    }
+
+    private void RespawnPlayer()
+    {
+        playerWheelVehicle.RespawnPlayerAfterStuckFromButton();
+
+        HideRespawnButton();
     }
 
     private void SetLeaveButtonInLevelCanvasEvent()

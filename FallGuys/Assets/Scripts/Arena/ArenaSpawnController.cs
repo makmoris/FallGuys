@@ -11,14 +11,19 @@ public class ArenaSpawnController : MonoBehaviour
     [Header("DEBUG")]
     [SerializeField] private List<Transform> spawnPoints;
 
+    private LevelProgressUIController levelProgressUIController;
+
     private void Awake()
     {
         AddChieldSpawnPoints();
+
+        levelProgressUIController = FindObjectOfType<LevelProgressUIController>();
     }
 
     private void OnEnable()
     {
-        WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent += SendRespawnPositionToWheelVehicle;
+        WheelVehicle.GetRespanwPositionForWheelVehicleEvent += SendRespawnPositionToWheelVehicle;
+        WheelVehicle.HideRespawnButtonEvent += HideRespawnButton;
     }
 
     public Transform GetStartSpawnPosition(int index)
@@ -84,13 +89,26 @@ public class ArenaSpawnController : MonoBehaviour
         }
     }
 
-    private void SendRespawnPositionToWheelVehicle(WheelVehicle wheelVehicle)
+    private void SendRespawnPositionToWheelVehicle(WheelVehicle wheelVehicle, bool showRespawnButton)
     {
-        wheelVehicle.GetRespawnTransform(GetRespawnPosition());
+        if (showRespawnButton)
+        {
+            levelProgressUIController.ShowRespawnButton(wheelVehicle);
+        }
+        else
+        {
+            wheelVehicle.GetRespawnTransform(GetRespawnPosition());
+        }
+    }
+
+    private void HideRespawnButton()
+    {
+        levelProgressUIController.HideRespawnButton();
     }
 
     private void OnDisable()
     {
-        WheelVehicle.NotifyGetRespanwPositionForWheelVehicleEvent -= SendRespawnPositionToWheelVehicle;
+        WheelVehicle.GetRespanwPositionForWheelVehicleEvent -= SendRespawnPositionToWheelVehicle;
+        WheelVehicle.HideRespawnButtonEvent -= HideRespawnButton;
     }
 }

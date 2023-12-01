@@ -238,17 +238,13 @@ namespace VehicleBehaviour {
 
         [SerializeField] private float stuckTime_BotAIPressesOnGasButDoesntMove;
         private bool isAnyCarAI;
-        //[SerializeField]private bool aiIsTriedToPutItBack;
-        //[SerializeField]private bool aiGiveBack;
 
-        //[SerializeField]private int immobilityValue;// сколько игрок провел в неподвижном состоянии
-        //[SerializeField] private int immobilityValue2;
-        //[SerializeField] private int immobilityValue3;
-        //[SerializeField] private int immobilityValueOnlyForBot;
+        private bool isShowingRestartButton;
 
         private bool isInverseTurnController;
 
-        public static event Action<WheelVehicle> NotifyGetRespanwPositionForWheelVehicleEvent;
+        public static event Action<WheelVehicle, bool> GetRespanwPositionForWheelVehicleEvent;
+        public static event Action HideRespawnButtonEvent;
 
         void Start() {
 #if MULTIOSCONTROLS
@@ -278,9 +274,6 @@ namespace VehicleBehaviour {
             }
 
             defaultMaxSpeed = maxSpeed;
-
-            ////AI
-            //if (isBot && isPlayer) isPlayer = false;
         }
 
         // Visual feedbacks and boost regen
@@ -305,6 +298,11 @@ namespace VehicleBehaviour {
             speed = transform.InverseTransformDirection(rb.velocity).z * 3.6f;
             speed = Math.Clamp(speed, -maxSpeed, maxSpeed);
 
+            if (isShowingRestartButton && Mathf.Abs(Mathf.RoundToInt(speed)) >= 5f)
+            {
+                HideRespawnButtonEvent?.Invoke();
+            }
+
             // Get all the inputs!
             if (isPlayer)
             {
@@ -313,12 +311,10 @@ namespace VehicleBehaviour {
                 {
                     throttle = GetInput(throttleInput) - GetInput(brakeInput);
 
-                    //throttle = Mathf.Clamp(throttle, -0.7f, 0.7f);
-
-                    if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+                    if (throttle != 0 && (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f) && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
                     {
                         //Debug.Log("Жмем на газ. Застрял");
-                        //immobilityValue2++;
+                        
                         stuckTime_PlayerPressesOnGasButDoesntMove += Time.deltaTime;
 
                         if (stuckTime_PlayerPressesOnGasButDoesntMove >= stuckTimeThreshold)
@@ -327,8 +323,6 @@ namespace VehicleBehaviour {
                             stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
                             stuckTime_StuckInSomething = 0f;
                             RespanwAfterStuck();
-                            //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                            //transform.position = GetAppearPosition();
                         }
                     }
                     else if (throttle == 0)
@@ -357,34 +351,14 @@ namespace VehicleBehaviour {
 
                 if ((throttle != 0 || isAnyCarAI) && Mathf.RoundToInt(speed) == 0 && !handbrake)
                 {
-                    //if (aiGiveBack) throttle = -1f;
-
                     //Debug.Log("Газует бот, но застрял");
-                    //immobilityValueOnlyForBot++;
+
                     stuckTime_BotAIPressesOnGasButDoesntMove += Time.deltaTime;
 
                     if (stuckTime_BotAIPressesOnGasButDoesntMove >= stuckTimeThreshold)
                     {
                         stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
                         RespanwAfterStuck();
-
-                        //if (aiIsTriedToPutItBack)
-                        //{
-                        //    aiIsTriedToPutItBack = false;
-
-                        //    stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
-                        //    RespanwAfterStuck();
-                        //}
-                        //else
-                        //{
-                        //    aiIsTriedToPutItBack = true;
-
-                        //    stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
-                        //    TryAIToGiveBack();
-                        //}
-
-                        //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                        //transform.position = GetAppearPosition();
                     }
                 }
                 else stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
@@ -401,8 +375,6 @@ namespace VehicleBehaviour {
                 wheel.motorTorque = 0.0001f;
                 wheel.brakeTorque = 0;
             }
-
-            //if (aiGiveBack) throttle = -1f;
 
             // Handbrake
             if (handbrake)
@@ -492,17 +464,6 @@ namespace VehicleBehaviour {
             // Проверка, что игрок не упал на бок или крышу
             if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
             {
-                //immobilityValue++;
-                //if (immobilityValue >= 100)
-                //{
-                //    immobilityValue = 0;
-                //    immobilityValue2 = 0;
-                //    immobilityValue3 = 0;
-                //    RespanwAfterStuck();
-                //    //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                //    //transform.position = GetAppearPosition();
-                //}
-
                 //Debug.Log("Перевернулся на крышу или на бок");
 
                 stuckTime_RolledOntoRoofOfSide += Time.deltaTime;
@@ -513,16 +474,16 @@ namespace VehicleBehaviour {
                     stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
                     stuckTime_StuckInSomething = 0f;
                     RespanwAfterStuck();
-                    //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                    //transform.position = GetAppearPosition();
                 }
 
             }
-            else stuckTime_RolledOntoRoofOfSide = 0f;
-
-            if (Mathf.RoundToInt(speed) == 0 && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+            else
             {
-                //immobilityValue3++;
+                stuckTime_RolledOntoRoofOfSide = 0f;
+            }
+
+            if (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+            {
                 //Debug.Log("Просто застрял");
 
                 stuckTime_StuckInSomething += Time.deltaTime;
@@ -533,16 +494,12 @@ namespace VehicleBehaviour {
                     stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
                     stuckTime_StuckInSomething = 0f;
                     RespanwAfterStuck();
-                    //transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
-                    //transform.position = GetAppearPosition();
                 }
             }
-            else stuckTime_StuckInSomething = 0f;
-
-            //if (Mathf.RoundToInt(speed) == 0)
-            //{
-            //    Debug.Log("STOIT");
-            //}
+            else
+            {
+                stuckTime_StuckInSomething = 0f;
+            }
         }
 
         // Reposition the car to the start position
@@ -618,7 +575,24 @@ namespace VehicleBehaviour {
 
         private void RespanwAfterStuck()
         {
-            NotifyGetRespanwPositionForWheelVehicleEvent?.Invoke(this);
+            if (isPlayer)
+            {
+                // показ кнопки
+                GetRespanwPositionForWheelVehicleEvent?.Invoke(this, true);
+
+                isShowingRestartButton = true;
+            }
+            else
+            {
+                GetRespanwPositionForWheelVehicleEvent?.Invoke(this, false);
+            }
+        }
+
+        public void RespawnPlayerAfterStuckFromButton()
+        {
+            GetRespanwPositionForWheelVehicleEvent?.Invoke(this, false);
+
+            isShowingRestartButton = false;
         }
 
         public void GetRespawnTransform(Transform respTransform)

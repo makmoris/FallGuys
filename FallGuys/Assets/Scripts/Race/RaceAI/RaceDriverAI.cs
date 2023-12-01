@@ -54,6 +54,8 @@ public class RaceDriverAI : DriverAI
         wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
         rb = aiPlayerGO.GetComponent<Rigidbody>();
 
+        wheelVehicle.SetIsAnyCarAI();
+
         currentPlayer = currentPlayerGO;
 
         isGround = true;

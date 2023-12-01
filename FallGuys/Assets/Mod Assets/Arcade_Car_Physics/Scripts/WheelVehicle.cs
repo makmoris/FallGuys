@@ -237,6 +237,7 @@ namespace VehicleBehaviour {
         [SerializeField] private float stuckTime_StuckInSomething;
 
         [SerializeField] private float stuckTime_BotAIPressesOnGasButDoesntMove;
+        private bool isAnyCarAI;
         //[SerializeField]private bool aiIsTriedToPutItBack;
         //[SerializeField]private bool aiGiveBack;
 
@@ -354,7 +355,7 @@ namespace VehicleBehaviour {
             {
                 steering = turnInputCurve.Evaluate(steering) * steerAngle;
 
-                if (throttle != 0 && Mathf.RoundToInt(speed) == 0 && !handbrake)
+                if ((throttle != 0 || isAnyCarAI) && Mathf.RoundToInt(speed) == 0 && !handbrake)
                 {
                     //if (aiGiveBack) throttle = -1f;
 
@@ -604,6 +605,11 @@ namespace VehicleBehaviour {
 
         //    aiGiveBack = false;
         //}
+
+        public void SetIsAnyCarAI()
+        {
+            isAnyCarAI = true;
+        }
 
         public void PlayerStuckUnder()// from UderPlayerCar. Only on Player car
         {

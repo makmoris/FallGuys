@@ -601,25 +601,25 @@ public class AnyCarAI : MonoBehaviour
         Quaternion BRRot;
         Vector3 BRPos;
 
-        // Front Left
+        //Front Left
         frontLeftCol.GetWorldPose(out FLPos, out FLRot);
         FLRot = FLRot * Quaternion.Euler(wheelsRotation);
         frontLeft.transform.position = FLPos;
         frontLeft.transform.rotation = FLRot;
 
-        // Front Right
+        //Front Right
         frontRightCol.GetWorldPose(out FRPos, out FRRot);
         FRRot = FRRot * Quaternion.Euler(wheelsRotation);
         frontRight.transform.position = FRPos;
         frontRight.transform.rotation = FRRot;
 
-        // Back Left
+        //Back Left
         backLeftCol.GetWorldPose(out BLPos, out BLRot);
         BLRot = BLRot * Quaternion.Euler(wheelsRotation);
         backLeft.transform.position = BLPos;
         backLeft.transform.rotation = BLRot;
 
-        // Back Right
+        //Back Right
         backRightCol.GetWorldPose(out BRPos, out BRRot);
         BRRot = BRRot * Quaternion.Euler(wheelsRotation);
         backRight.transform.position = BRPos;
@@ -917,103 +917,103 @@ public class AnyCarAI : MonoBehaviour
 
     private void SetWheelsValues()
     {
-        frontLeftCol.mass = wheelsMass;
-        frontRightCol.mass = wheelsMass;
-        backLeftCol.mass = wheelsMass;
-        backRightCol.mass = wheelsMass;
+        //frontLeftCol.mass = wheelsMass;
+        //frontRightCol.mass = wheelsMass;
+        //backLeftCol.mass = wheelsMass;
+        //backRightCol.mass = wheelsMass;
 
-        frontLeftCol.radius *= wheelsRadius;
-        frontRightCol.radius *= wheelsRadius;
-        backLeftCol.radius *= wheelsRadius;
-        backRightCol.radius *= wheelsRadius;
+        //frontLeftCol.radius *= wheelsRadius;
+        //frontRightCol.radius *= wheelsRadius;
+        //backLeftCol.radius *= wheelsRadius;
+        //backRightCol.radius *= wheelsRadius;
 
-        frontLeftCol.forceAppPointDistance = forcePoint;
-        frontRightCol.forceAppPointDistance = forcePoint;
-        backLeftCol.forceAppPointDistance = forcePoint;
-        backRightCol.forceAppPointDistance = forcePoint;
+        //frontLeftCol.forceAppPointDistance = forcePoint;
+        //frontRightCol.forceAppPointDistance = forcePoint;
+        //backLeftCol.forceAppPointDistance = forcePoint;
+        //backRightCol.forceAppPointDistance = forcePoint;
 
-        frontLeftCol.wheelDampingRate = dumpingRate;
-        frontRightCol.wheelDampingRate = dumpingRate;
-        backLeftCol.wheelDampingRate = dumpingRate;
-        backRightCol.wheelDampingRate = dumpingRate;
+        //frontLeftCol.wheelDampingRate = dumpingRate;
+        //frontRightCol.wheelDampingRate = dumpingRate;
+        //backLeftCol.wheelDampingRate = dumpingRate;
+        //backRightCol.wheelDampingRate = dumpingRate;
 
-        frontLeftCol.suspensionDistance = suspensionDistance;
-        frontRightCol.suspensionDistance = suspensionDistance;
-        backLeftCol.suspensionDistance = suspensionDistance;
-        backRightCol.suspensionDistance = suspensionDistance;
+        //frontLeftCol.suspensionDistance = suspensionDistance;
+        //frontRightCol.suspensionDistance = suspensionDistance;
+        //backLeftCol.suspensionDistance = suspensionDistance;
+        //backRightCol.suspensionDistance = suspensionDistance;
 
-        frontLeftCol.center = wheelsPosition;
-        frontRightCol.center = wheelsPosition;
-        backLeftCol.center = wheelsPosition;
-        backRightCol.center = wheelsPosition;
+        //frontLeftCol.center = wheelsPosition;
+        //frontRightCol.center = wheelsPosition;
+        //backLeftCol.center = wheelsPosition;
+        //backRightCol.center = wheelsPosition;
 
-        var leftCol = frontLeftCol.suspensionSpring;
-        var rightCol = frontRightCol.suspensionSpring;
-        var bLeft = backLeftCol.suspensionSpring;
-        var bRight = backRightCol.suspensionSpring;
-        leftCol.spring = suspensionSpring;
-        rightCol.spring = suspensionSpring;
-        bLeft.spring = suspensionSpring;
-        bRight.spring = suspensionSpring;
-        leftCol.damper = suspensionDamper;
-        rightCol.damper = suspensionDamper;
-        bLeft.damper = suspensionDamper;
-        bRight.damper = suspensionDamper;
-        leftCol.targetPosition = targetPosition;
-        rightCol.targetPosition = targetPosition;
-        bLeft.targetPosition = targetPosition;
-        bRight.targetPosition = targetPosition;
-        frontLeftCol.suspensionSpring = leftCol;
-        frontRightCol.suspensionSpring = rightCol;
-        backLeftCol.suspensionSpring = bLeft;
-        backRightCol.suspensionSpring = bRight;
+        //var leftCol = frontLeftCol.suspensionSpring;
+        //var rightCol = frontRightCol.suspensionSpring;
+        //var bLeft = backLeftCol.suspensionSpring;
+        //var bRight = backRightCol.suspensionSpring;
+        //leftCol.spring = suspensionSpring;
+        //rightCol.spring = suspensionSpring;
+        //bLeft.spring = suspensionSpring;
+        //bRight.spring = suspensionSpring;
+        //leftCol.damper = suspensionDamper;
+        //rightCol.damper = suspensionDamper;
+        //bLeft.damper = suspensionDamper;
+        //bRight.damper = suspensionDamper;
+        //leftCol.targetPosition = targetPosition;
+        //rightCol.targetPosition = targetPosition;
+        //bLeft.targetPosition = targetPosition;
+        //bRight.targetPosition = targetPosition;
+        //frontLeftCol.suspensionSpring = leftCol;
+        //frontRightCol.suspensionSpring = rightCol;
+        //backLeftCol.suspensionSpring = bLeft;
+        //backRightCol.suspensionSpring = bRight;
 
-        var fl = frontLeftCol.sidewaysFriction;
-        var fr = frontRightCol.sidewaysFriction;
-        var bl = backLeftCol.sidewaysFriction;
-        var br = backRightCol.sidewaysFriction;
-        fl.stiffness = wheelStiffness;
-        fr.stiffness = wheelStiffness;
-        bl.stiffness = wheelStiffness;
-        br.stiffness = wheelStiffness;
-        frontLeftCol.sidewaysFriction = fl;
-        frontRightCol.sidewaysFriction = fr;
-        backLeftCol.sidewaysFriction = bl;
-        backRightCol.sidewaysFriction = br;
+        //var fl = frontLeftCol.sidewaysFriction;
+        //var fr = frontRightCol.sidewaysFriction;
+        //var bl = backLeftCol.sidewaysFriction;
+        //var br = backRightCol.sidewaysFriction;
+        //fl.stiffness = wheelStiffness;
+        //fr.stiffness = wheelStiffness;
+        //bl.stiffness = wheelStiffness;
+        //br.stiffness = wheelStiffness;
+        //frontLeftCol.sidewaysFriction = fl;
+        //frontRightCol.sidewaysFriction = fr;
+        //backLeftCol.sidewaysFriction = bl;
+        //backRightCol.sidewaysFriction = br;
 
 
-        var flf = frontLeftCol.forwardFriction;
-        var frf = frontRightCol.forwardFriction;
-        var blf = backLeftCol.forwardFriction;
-        var brf = backRightCol.forwardFriction;
-        flf.stiffness = wheelStiffness;
-        frf.stiffness = wheelStiffness;
-        blf.stiffness = wheelStiffness;
-        brf.stiffness = wheelStiffness;
-        frontLeftCol.forwardFriction = flf;
-        frontRightCol.forwardFriction = frf;
-        backLeftCol.forwardFriction = blf;
-        backRightCol.forwardFriction = brf;
+        //var flf = frontLeftCol.forwardFriction;
+        //var frf = frontRightCol.forwardFriction;
+        //var blf = backLeftCol.forwardFriction;
+        //var brf = backRightCol.forwardFriction;
+        //flf.stiffness = wheelStiffness;
+        //frf.stiffness = wheelStiffness;
+        //blf.stiffness = wheelStiffness;
+        //brf.stiffness = wheelStiffness;
+        //frontLeftCol.forwardFriction = flf;
+        //frontRightCol.forwardFriction = frf;
+        //backLeftCol.forwardFriction = blf;
+        //backRightCol.forwardFriction = brf;
 
-        foreach (var wheelCol in extraWheelsColList)
-        {
-            wheelCol.collider.GetComponent<WheelCollider>().mass = wheelsMass;
-            wheelCol.collider.GetComponent<WheelCollider>().radius = extraWheelRadius * wheelsRadius;
-            wheelCol.collider.GetComponent<WheelCollider>().forceAppPointDistance = forcePoint;
-            wheelCol.collider.GetComponent<WheelCollider>().wheelDampingRate = dumpingRate;
-            wheelCol.collider.GetComponent<WheelCollider>().suspensionDistance = suspensionDistance;
-            wheelCol.collider.GetComponent<WheelCollider>().center = wheelsPosition;
+        //foreach (var wheelCol in extraWheelsColList)
+        //{
+        //    wheelCol.collider.GetComponent<WheelCollider>().mass = wheelsMass;
+        //    wheelCol.collider.GetComponent<WheelCollider>().radius = extraWheelRadius * wheelsRadius;
+        //    wheelCol.collider.GetComponent<WheelCollider>().forceAppPointDistance = forcePoint;
+        //    wheelCol.collider.GetComponent<WheelCollider>().wheelDampingRate = dumpingRate;
+        //    wheelCol.collider.GetComponent<WheelCollider>().suspensionDistance = suspensionDistance;
+        //    wheelCol.collider.GetComponent<WheelCollider>().center = wheelsPosition;
 
-            var susp = wheelCol.collider.GetComponent<WheelCollider>().suspensionSpring;
-            susp.spring = suspensionSpring;
-            susp.damper = suspensionDamper;
-            susp.targetPosition = targetPosition;
-            wheelCol.collider.GetComponent<WheelCollider>().suspensionSpring = susp;
+        //    var susp = wheelCol.collider.GetComponent<WheelCollider>().suspensionSpring;
+        //    susp.spring = suspensionSpring;
+        //    susp.damper = suspensionDamper;
+        //    susp.targetPosition = targetPosition;
+        //    wheelCol.collider.GetComponent<WheelCollider>().suspensionSpring = susp;
 
-            var stifn = wheelCol.collider.GetComponent<WheelCollider>().sidewaysFriction;
-            stifn.stiffness = wheelStiffness;
-            wheelCol.collider.GetComponent<WheelCollider>().sidewaysFriction = stifn;
-        }
+        //    var stifn = wheelCol.collider.GetComponent<WheelCollider>().sidewaysFriction;
+        //    stifn.stiffness = wheelStiffness;
+        //    wheelCol.collider.GetComponent<WheelCollider>().sidewaysFriction = stifn;
+        //}
     }
 
     #endregion

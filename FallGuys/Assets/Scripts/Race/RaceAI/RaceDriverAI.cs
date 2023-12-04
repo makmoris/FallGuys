@@ -56,15 +56,18 @@ public class RaceDriverAI : DriverAI
 
         wheelVehicle.SetIsAnyCarAI();
 
-        currentPlayer = currentPlayerGO;
-
         isGround = true;
 
         anyCarAI = GetComponent<AnyCarAI>();
         RaceProgressController raceProgressController = FindObjectOfType<RaceProgressController>();
         anyCarAI.Initialize(raceProgressController.GetWaypointsPath(), true);
 
-        ChoseDifficultyLevel(difficultyAILevel);
+        if (currentPlayerGO != null)
+        {
+            currentPlayer = currentPlayerGO;
+
+            ChoseDifficultyLevel(difficultyAILevel);
+        }
     }
 
     #region Difficulty AI Levels

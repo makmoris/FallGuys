@@ -430,8 +430,8 @@ public class AnyCarAI : MonoBehaviour
         carAIInputs = gameObject.AddComponent<CarAIInputs>();
         carAIInputs.Initialize(false, _frontSensor, _rightSensor, _leftSensor);
         carAIWaypointTracker = gameObject.AddComponent<CarAIWaipointTracker>();
-        EngineAudioAI audioScript = gameObject.AddComponent<EngineAudioAI>();
-        DamageSystemAI damageScript = gameObject.AddComponent<DamageSystemAI>();
+        //EngineAudioAI audioScript = gameObject.AddComponent<EngineAudioAI>();
+        //DamageSystemAI damageScript = gameObject.AddComponent<DamageSystemAI>();
 
         #endregion
 

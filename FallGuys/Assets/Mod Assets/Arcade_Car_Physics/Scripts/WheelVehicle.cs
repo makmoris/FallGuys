@@ -237,6 +237,9 @@ namespace VehicleBehaviour {
         [SerializeField] private float stuckTime_StuckInSomething;
 
         [SerializeField] private float stuckTime_BotAIPressesOnGasButDoesntMove;
+        [Space]
+        [SerializeField] private float idleTime = 2f;
+        private float playerIdleTime;
         private bool isAnyCarAI;
 
         private bool isShowingRestartButton;
@@ -325,14 +328,21 @@ namespace VehicleBehaviour {
                             RespanwAfterStuck();
                         }
                     }
-                    else if (throttle == 0)
+                    else if (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f && !handbrake)
                     {
-                        //Debug.Log("Отпустили кнопку");
+                        playerIdleTime += Time.deltaTime;
+
+                        if (playerIdleTime >= idleTime)
+                        {
+                            playerIdleTime = 0;
+                            RespanwAfterStuck();
+                        }
                     }
                     else
                     {
                         //Debug.Log("Жмем кнопку");
                         stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        playerIdleTime = 0f;
                     }
                 }
                 // Boost

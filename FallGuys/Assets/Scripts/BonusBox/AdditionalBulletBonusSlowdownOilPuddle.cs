@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
 {
+    [Header("Ignore Parent")]
+    public bool isIgnoreParent;
+
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusSlowdownOilPuddle;
 
     private SlowdownBonus slowdownBonus;
+    [Space]
     [SerializeField] private float decelerationAmount = 1.5f;
 
     [Space]
     [SerializeField] private GameObject slowdownGO;
     [SerializeField] private float puddleLiveTime = 5f;
 
+    private SlowdownObstacle slowdownObstacle;
+
     private void Awake()
     {
         slowdownGO.SetActive(false);
+        slowdownObstacle = GetComponentInChildren<SlowdownObstacle>(true);
     }
 
-    public override void PlayEffect(Vector3 effectPosition)
+    public override void PlayEffect(Vector3 effectPosition, GameObject parentGO)
     {
         transform.localPosition = effectPosition;
-        StartCoroutine(PuddleMakingAnimation());
+        StartCoroutine(PuddleMakingAnimation(parentGO));
     }
 
     public override Bonus GetBonus()
@@ -30,9 +37,15 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
         return slowdownBonus;
     }
 
-    IEnumerator PuddleMakingAnimation()
+    IEnumerator PuddleMakingAnimation(GameObject parentGO)
     {
         slowdownGO.SetActive(true);
+
+        if (isIgnoreParent)
+        {
+            slowdownObstacle.SetIgnoreParent(parentGO);
+        }
+
         slowdownGO.transform.localScale = new Vector3(0.125f, 0.125f, 0.125f);
         for (float t = 0; t < 1f; t += Time.deltaTime * 3f)
         {

@@ -8,7 +8,7 @@ public class AdditionalBulletBonusControlInversion : AdditionalBulletBonus
     private ControlInversionBonus controlInversionBonus;
 
 
-    public override void PlayEffect(Vector3 effectPosition)
+    public override void PlayEffect(Vector3 effectPosition, GameObject ignorePlayer)
     {
         Destroy(gameObject);
     }

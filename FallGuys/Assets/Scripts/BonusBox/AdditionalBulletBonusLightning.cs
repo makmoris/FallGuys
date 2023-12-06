@@ -15,7 +15,7 @@ public class AdditionalBulletBonusLightning : AdditionalBulletBonus
         lightningEffect.gameObject.SetActive(false);
     }
 
-    public override void PlayEffect(Vector3 effectPosition)
+    public override void PlayEffect(Vector3 effectPosition, GameObject ignorePlayer)
     {
         transform.localPosition = effectPosition;
         lightningEffect.gameObject.SetActive(true);

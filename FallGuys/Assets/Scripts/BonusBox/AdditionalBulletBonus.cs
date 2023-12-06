@@ -12,7 +12,6 @@ public enum AdditionalBulletBonusTypeEnum
 public abstract class AdditionalBulletBonus : MonoBehaviour, IBonusForBonusBox
 {
     public abstract AdditionalBulletBonusTypeEnum AdditionalBulletBonusType { get; }
-    public abstract void PlayEffect(Vector3 effectPosition);
+    public abstract void PlayEffect(Vector3 effectPosition, GameObject parentGO);
     public abstract Bonus GetBonus();
-
 }

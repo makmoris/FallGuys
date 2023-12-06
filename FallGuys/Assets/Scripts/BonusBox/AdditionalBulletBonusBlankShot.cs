@@ -8,7 +8,7 @@ public class AdditionalBulletBonusBlankShot : AdditionalBulletBonus
 
     private HealthBonus healthBonus;
 
-    public override void PlayEffect(Vector3 effectPosition)
+    public override void PlayEffect(Vector3 effectPosition, GameObject ignorePlayer)
     {
         Destroy(gameObject);
     }

@@ -92,7 +92,7 @@ public class Bullet : MonoBehaviour
                     {
                         bumper.GetBonus(additionalBulletBonus.GetBonus());
                         AdditionalBulletBonus additionalBulletBonusGO = Instantiate(additionalBulletBonus, other.transform.position, Quaternion.identity);
-                        additionalBulletBonusGO.PlayEffect(other.transform.position);
+                        additionalBulletBonusGO.PlayEffect(other.transform.position, parentCollider.gameObject);
 
                         RemoveAdditionalBulletBonus();
                     }
@@ -117,6 +117,19 @@ public class Bullet : MonoBehaviour
                     else
                     {
                         isRing = false;
+                    }
+
+                    if (!isRing)
+                    {
+                        if (isAdditionalBulletBonusSetted)
+                        {
+                            Vector3 hitPosition = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.localPosition);
+
+                            AdditionalBulletBonus additionalBulletBonusGO = Instantiate(additionalBulletBonus, hitPosition, Quaternion.identity);
+                            additionalBulletBonusGO.PlayEffect(hitPosition, parentCollider.gameObject);
+
+                            RemoveAdditionalBulletBonus();
+                        }
                     }
                 }
             }

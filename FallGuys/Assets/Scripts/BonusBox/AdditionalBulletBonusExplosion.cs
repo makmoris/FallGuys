@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
 {
+    [Header("Ignore Parent")]
+    public bool isIgnoreParent;
+
     private HealthBonus healthBonus;
     [Space]
 
@@ -20,10 +23,10 @@ public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
 
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusExplosion;
 
-    public override void PlayEffect(Vector3 effectPosition)
+    public override void PlayEffect(Vector3 effectPosition, GameObject parentGO)
     {
         transform.localPosition = effectPosition;
-        Explode();
+        Explode(parentGO);
     }
 
     public override Bonus GetBonus()
@@ -32,7 +35,7 @@ public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
         return healthBonus;
     }
 
-    private void Explode()
+    private void Explode(GameObject parentGO)
     {
         Collider[] overLappedColliders = Physics.OverlapSphere(transform.position, radius);
 
@@ -61,7 +64,17 @@ public class AdditionalBulletBonusExplosion : AdditionalBulletBonus
             Rigidbody rigidbody = collider.GetComponent<Rigidbody>();
             if (rigidbody != null)
             {
-                rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
+                if (isIgnoreParent)
+                {
+                    if(rigidbody.gameObject != parentGO)
+                    {
+                        rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
+                    }
+                }
+                else
+                {
+                    rigidbody.AddExplosionForce(force, transform.position, radius, upwards, forceMode);
+                }
 
                 //Bumper bumper = collider.GetComponent<Bumper>();
                 //if (bumper != null) bumper.GetBonus(healthBonus);

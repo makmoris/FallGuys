@@ -55,8 +55,8 @@ namespace ArcadeVP
         }
         private void Update()
         {
-            horizontalInput = Input.GetAxis("Horizontal"); //turning input
-            verticalInput = Input.GetAxis("Vertical");     //accelaration input
+            horizontalInput = SimpleInput.GetAxis("CarHorizontal"); //turning input
+            verticalInput = SimpleInput.GetAxis("CarVertical");     //accelaration input
             Visuals();
             AudioManager();
 

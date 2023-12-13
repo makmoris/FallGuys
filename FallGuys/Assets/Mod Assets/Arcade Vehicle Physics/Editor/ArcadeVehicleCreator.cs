@@ -89,6 +89,7 @@ namespace ArcadeVP
             NewVehicle.transform.Find("Mesh").transform.Find("Wheels").Find("Skid marks RL").position = wheelRL.position - Vector3.up * (wheelMesh.bounds.size.y / 2 - 0.02f);
             NewVehicle.transform.Find("Mesh").transform.Find("Wheels").Find("Skid marks RR").position = wheelRR.position - Vector3.up * (wheelMesh.bounds.size.y / 2 - 0.02f);
 
+            NewVehicle.transform.Find("SphereRB").gameObject.layer = 17;
         }
 
         private void createVehicle()
@@ -140,22 +141,23 @@ namespace ArcadeVP
                 wheelRR.parent = NewVehicle.transform.Find("Mesh").transform.Find("Wheels").Find("WheelRR").Find("WheelRR Axel");
             }
 
+            NewVehicle.layer = 16;
         }
 
         private void Make_Vehicle_Ready_For_Setup()
         {
 
-            var AllVehicleColliders = VehicleParent.GetComponentsInChildren<Collider>();
-            foreach (var collider in AllVehicleColliders)
-            {
-                DestroyImmediate(collider);
-            }
+            //var AllVehicleColliders = VehicleParent.GetComponentsInChildren<Collider>();
+            //foreach (var collider in AllVehicleColliders)
+            //{
+            //    DestroyImmediate(collider);
+            //}
 
-            var AllRigidBodies = VehicleParent.GetComponentsInChildren<Rigidbody>();
-            foreach (var rb in AllRigidBodies)
-            {
-                DestroyImmediate(rb);
-            }
+            //var AllRigidBodies = VehicleParent.GetComponentsInChildren<Rigidbody>();
+            //foreach (var rb in AllRigidBodies)
+            //{
+            //    DestroyImmediate(rb);
+            //}
 
         }
     }

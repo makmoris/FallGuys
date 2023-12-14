@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,8 +19,8 @@ public class EndGameController : MonoBehaviour
 
     private void MakeEndGameObject()
     {
-        WheelVehicle wheelVehicle = playerVehicleClone.GetComponent<WheelVehicle>();
-        if (wheelVehicle != null) wheelVehicle.enabled = false;
+        ArcadeVehicleController arcadeVehicleController = playerVehicleClone.GetComponent<ArcadeVehicleController>();
+        if (arcadeVehicleController != null) arcadeVehicleController.enabled = false;
 
         EngineSoundManager engineSoundManager = playerVehicleClone.GetComponent<EngineSoundManager>();
         if (engineSoundManager != null) engineSoundManager.enabled = false;

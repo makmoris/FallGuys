@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +33,7 @@ public class RingsInstaller : Installer
                 playerGO.transform.Find("Player Components").gameObject.SetActive(true);
                 playerGO.transform.Find("AI Components").gameObject.SetActive(false);
 
-                playerGO.GetComponent<WheelVehicle>().IsPlayer = true;
+                playerGO.GetComponent<ArcadeVehicleController>().IsPlayer = true;
 
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
@@ -84,7 +85,7 @@ public class RingsInstaller : Installer
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
                 aILogics.EnableRingsAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
 
-                aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
+                aiPlayerGO.GetComponent<ArcadeVehicleController>().IsPlayer = false;
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();

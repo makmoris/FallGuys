@@ -1,10 +1,10 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CarPlayerWaipointTracker : MonoBehaviour
 {
-    private WaypointsPath circuit;
     private Transform target;
 
     [SerializeField] private float progressDistance;
@@ -13,27 +13,25 @@ public class CarPlayerWaipointTracker : MonoBehaviour
     [SerializeField] private Vector3 lastPosition;
     [SerializeField] private float speed;
 
+    private WaypointCircuit circuit;
 
-    #region KEY POINTS
+    private ArcadeVehicleController arcadeVehicleController;
 
-    //[HideInInspector]
-    public Transform[] pathTransform;
+    [SerializeField] private float lookAheadForTargetOffset = 5;
+    [SerializeField] private float lookAheadForTargetFactor = .1f;
+    private float lookAheadForSpeedOffset = 50;
+    private float lookAheadForSpeedFactor = .2f;
 
-    //[HideInInspector]
-    public WaypointsPath.RoutePoint targetPoint { get; private set; }
-    //[HideInInspector]
-    public WaypointsPath.RoutePoint speedPoint { get; private set; }
-    //[HideInInspector]
-    public WaypointsPath.RoutePoint progressPoint { get; private set; }
+    public WaypointCircuit.RoutePoint progressPoint { get; private set; }
 
-    #endregion
-
-    public void Initialize(WaypointsPath waypointsPath)
+    public void Initialize()
     {
-        circuit = waypointsPath;
+        circuit = FindObjectOfType<WaypointCircuit>();
 
         var targetObj = new GameObject("WaypointsTarget");
         target = targetObj.transform;
+
+        arcadeVehicleController = transform.GetComponentInParent<ArcadeVehicleController>();
 
         Reset();
     }
@@ -53,11 +51,18 @@ public class CarPlayerWaipointTracker : MonoBehaviour
     {
         if (Time.deltaTime > 0)
         {
-            speed = Mathf.Lerp(speed, (lastPosition - transform.position).magnitude / Time.deltaTime, Time.deltaTime);
+            speed = arcadeVehicleController.carVelocity.z;
         }
-        target.position = circuit.GetRoutePoint(progressDistance * speed).position;
-        target.rotation = Quaternion.LookRotation(circuit.GetRoutePoint(progressDistance * speed).direction);
+        target.position =
+            circuit.GetRoutePoint(progressDistance + lookAheadForTargetOffset + lookAheadForTargetFactor * speed)
+                   .position;
+        target.rotation =
+            Quaternion.LookRotation(
+                circuit.GetRoutePoint(progressDistance + lookAheadForSpeedOffset + lookAheadForSpeedFactor * speed)
+                       .direction);
 
+
+        // get our current progress along the route
         progressPoint = circuit.GetRoutePoint(progressDistance);
         Vector3 progressDelta = progressPoint.position - transform.position;
         if (Vector3.Dot(progressDelta, progressPoint.direction) < 0)

@@ -190,7 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targets: []
   targetPositionTransform: {fileID: 0}
-  wheelVehicle: {fileID: 0}
+  arcadeVehicleController: {fileID: 0}
   bonusBoxes: []
   isDuel: 0
   playerWasTargetCounter: 0
@@ -218,7 +218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5638888298018085229}
   - component: {fileID: 5638888298018085226}
-  - component: {fileID: 1942597002700953659}
+  - component: {fileID: 8409147688817607364}
   m_Layer: 0
   m_Name: Race AI
   m_TagString: Untagged
@@ -257,7 +257,7 @@ MonoBehaviour:
   currentSpeed: 0
   brake: 1
   handbrake: 0
---- !u!114 &1942597002700953659
+--- !u!114 &8409147688817607364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,152 +266,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5638888298018085228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80b948690da13d047bc6c8510feb3e85, type: 3}
+  m_Script: {fileID: 11500000, guid: c5cb22d331ef7d64796f917c6a455a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toolbarTab: 3
-  currentTab: Features
-  bodyMesh: {fileID: 0}
-  extraBodyCol: {fileID: 0}
-  extraWheels: []
-  extraWheelsColList: []
-  extraWheelCol:
-    collider: {fileID: 0}
-    axel: 0
-    type: 0
-  frontLeft: {fileID: 0}
-  frontRight: {fileID: 0}
-  backLeft: {fileID: 0}
-  backRight: {fileID: 0}
-  frontLeftCol: {fileID: 0}
-  frontRightCol: {fileID: 0}
-  backLeftCol: {fileID: 0}
-  backRightCol: {fileID: 0}
-  extraWheelRadius: 0
-  wheelsMass: 20
-  forcePoint: 0
-  dumpingRate: 0.025
-  suspensionDistance: 0.2
-  wheelsPosition: {x: 0, y: 0, z: 0}
-  wheelsRotation: {x: 0, y: 0, z: 0}
-  suspensionSpring: 70000
-  suspensionDamper: 3500
-  targetPosition: 0.5
-  wheelsRadius: 1
-  maximumSteerAngle: 45
-  wheelStiffness: 0.904
-  steerHelper: 0.477
-  tractionControl: 0.45
-  slipLimit: 0.395
-  carDriveType: 2
-  numberOfGears: 5
-  enginePower:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  motorTorque: 6000
-  brakeTorque: 20000
-  reverseTorque: 500
-  handbrakeTorque: 10000000
-  speedType: 1
-  maxSpeed: 100
-  centerOfMass: {fileID: 0}
-  _centerOfMass: {x: 0, y: 0, z: 0}
-  downForce: 300
-  ABS: 0
-  skidMarks: 0
-  smokeOn: 0
-  turboON: 0
-  turboAudioClip: {fileID: 8300000, guid: 8d05bcfbc4aaccf41b6261607dafd5ff, type: 3}
-  turboVolume: 0.4
-  exhaustObjectPrefab: {fileID: 0}
-  exhaustObject: {fileID: 0}
-  exhaustObj: {fileID: 0}
-  exhaustFlame: 0
-  exhaustVisual: {fileID: 0}
-  exhaustSoundSource: {fileID: 0}
-  currentSpeed: 0
-  currentGear: 0
-  reverseGearOn: 0
-  objToUnpack: {fileID: 0}
-  frontLights: {fileID: 0}
-  rearLights: {fileID: 0}
-  collisionSystem: 0
-  optionalMeshList: []
-  demolutionStrenght: 10
-  demolutionRange: 10
-  customMesh: 0
-  collisionParticles: 0
-  exhaustSound: {fileID: 8300000, guid: 78bcd2ef1e3d5d547b208cdd52bcc744, type: 3}
-  exhaustVolume: 0.5
-  collisionSound: {fileID: 8300000, guid: 989db38f635a16341b85a666f3639e72, type: 3}
-  collisionVolume: 0.8
-  skidSound: {fileID: 8300000, guid: 9c6ac371467d8c54da9d9a79155cd93a, type: 3}
-  skidVolume: 0.3
-  lowAcceleration: {fileID: 8300000, guid: b0e7088e045e82d458b40290a56348f8, type: 3}
-  lowDeceleration: {fileID: 8300000, guid: b1c978a1bf56cb747b43f8ca5e0e3820, type: 3}
-  highAcceleration: {fileID: 8300000, guid: 656542850b7367f40b286d4a867ca7f1, type: 3}
-  highDeceleration: {fileID: 8300000, guid: ad8d069ae11c17841bf7ff64f7a87739, type: 3}
-  engineVolume: 0.5
-  suspensionsSource: {fileID: 0}
-  skidSource: {fileID: 0}
-  suspensionsSound: {fileID: 8300000, guid: 0671792d318672348af8232ba22858f2, type: 3}
-  suspensionsVolume: 0.3
-  carAIInputs: {fileID: 0}
-  carAIWaypointTracker: {fileID: 0}
-  accelSensitivity: 0.05
-  wanderAmount: 0.3
-  steerSensitivity: 0.04
-  lateralWander: 2.56
-  cautiousAngle: 30
-  cautiousDistance: 100
-  brakeCondition: 1
-  brakeSensitivity: 1
-  cautiousSpeedFactor: 0.5
-  cautiousAngularVelocityFactor: 30
-  lateralWanderSpeed: 0.5
-  accelWanderSpeed: 0.1
-  isDriving: 1
-  carAItarget: {fileID: 0}
-  stopWhenTargetReached: 0
-  reachTargetThreshold: 2
-  sensorsAngle: 45
-  avoidDistance: 5
-  brakeDistance: 5
-  reverseDistance: 5
-  persuitAiOn: 0
-  persuitTarget: {fileID: 0}
-  persuitDistance: 30
-  AIcircuit: {fileID: 0}
-  progressStyle: 0
-  lookAheadForTarget: 10
+  circuit: {fileID: 0}
+  lookAheadForTargetOffset: 5
   lookAheadForTargetFactor: 0.1
-  lookAheadForSpeedOffset: 10
-  lookAheadForSpeedFactor: 0.2
-  pointThreshold: 4
-  AItarget: {fileID: 0}
-  customSmokes: []
-  _frontSensor: {fileID: 0}
-  _leftSensor: {fileID: 0}
-  _rightSensor: {fileID: 0}
-  handbrake: 0
+  progressStyle: 0
+  target: {fileID: 0}
+  progressDistance: 0

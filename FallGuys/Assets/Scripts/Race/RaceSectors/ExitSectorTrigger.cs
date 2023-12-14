@@ -1,14 +1,15 @@
 using UnityEngine;
 using System;
 using VehicleBehaviour;
+using ArcadeVP;
 
 public class ExitSectorTrigger : MonoBehaviour
 {
-    public event Action<WheelVehicle> CarLeftTheSectorEvent;
+    public event Action<ArcadeVehicleController> CarLeftTheSectorEvent;
 
     private void OnTriggerEnter(Collider other)
     {
-        WheelVehicle car = other.GetComponent<WheelVehicle>();
+        ArcadeVehicleController car = other.GetComponent<ArcadeVehicleController>();
         if (car != null)
         {
             CarLeftTheSectorEvent?.Invoke(car);

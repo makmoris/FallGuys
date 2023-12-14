@@ -1,3 +1,4 @@
+using ArcadeVP;
 using UnityEngine;
 using VehicleBehaviour;
 
@@ -14,11 +15,11 @@ public class RaceFinishTrigger : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
-            WheelVehicle wheelVehicleDriver = other.GetComponent<WheelVehicle>();
+            ArcadeVehicleController arcadeVehicleController = other.GetComponent<ArcadeVehicleController>();
 
-            if (wheelVehicleDriver != null)
+            if (arcadeVehicleController != null)
             {
-                raceFinishSector.FinishTrigger(wheelVehicleDriver);
+                raceFinishSector.FinishTrigger(arcadeVehicleController);
             }
         }
     }

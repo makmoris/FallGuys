@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class RaceSectorWithPaths : RaceSectorLogic
     [SerializeField] private List<RaceWaypointsPath> raceWaypointsPathsList;
     private int queuePathIndex;
 
-    private List<WheelVehicle> carsInSector = new List<WheelVehicle>();
+    private List<ArcadeVehicleController> carsInSector = new List<ArcadeVehicleController>();
 
     private void OnEnable()
     {
@@ -25,7 +26,7 @@ public class RaceSectorWithPaths : RaceSectorLogic
         exitSectorTrigger.CarLeftTheSectorEvent += CarLeftTheSector;
     }
 
-    protected override void CarEnteredTheSector(WheelVehicle car)
+    protected override void CarEnteredTheSector(ArcadeVehicleController car)
     {
         carsInSector.Add(car);
 
@@ -37,7 +38,7 @@ public class RaceSectorWithPaths : RaceSectorLogic
         }
     }
 
-    protected override void CarLeftTheSector(WheelVehicle car)
+    protected override void CarLeftTheSector(ArcadeVehicleController car)
     {
         carsInSector.Remove(car);
     }

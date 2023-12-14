@@ -142,6 +142,7 @@ namespace ArcadeVP
             }
 
             NewVehicle.layer = 16;
+            NewVehicle.tag = "Car";
         }
 
         private void Make_Vehicle_Ready_For_Setup()

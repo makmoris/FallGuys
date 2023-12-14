@@ -16,6 +16,8 @@ namespace ArcadeVP
         public bool AirControl = false;
         public Rigidbody rb, carBody;
 
+        private float defaultMaxSpeed;
+
         [HideInInspector]
         public RaycastHit hit;
         public AnimationCurve frictionCurve;
@@ -45,6 +47,80 @@ namespace ArcadeVP
         private float radius, horizontalInput, verticalInput;
         private Vector3 origin;
 
+        //
+
+        [SerializeField]bool isPlayer = true;
+        public bool IsPlayer
+        {
+            get => isPlayer;
+            set => isPlayer = value;
+        }
+
+        [Header("Stucking")]
+        [SerializeField] private float stuckTimeThreshold = 2f;
+        [Space]
+        [SerializeField] private float stuckTime_RolledOntoRoofOfSide;
+        [SerializeField] private float stuckTime_PlayerPressesOnGasButDoesntMove;
+        [SerializeField] private float stuckTime_StuckInSomething;
+
+        [SerializeField] private float stuckTime_BotAIPressesOnGasButDoesntMove;
+        [Space]
+        [SerializeField] private float idleTime = 2f;
+        private float playerIdleTime;
+
+        private bool isShowingRestartButton;
+
+        float steering;
+        public float Steering
+        {
+            get => steering;
+            set => steering = Mathf.Clamp(value, -1f, 1f);
+        }
+        
+        float throttle;
+        public float Throttle
+        {
+            get => throttle;
+            set => throttle = Mathf.Clamp(value, -1f, 1f);
+        }
+
+        [SerializeField]bool handbrake;
+        public bool Handbrake
+        {
+            get => handbrake;
+            set => handbrake = value;
+        }
+
+        float speed = 0.0f;
+        public float Speed => speed;
+
+        private bool isInverseTurnController;
+
+        [Header("Arcade Race AI")]
+        [SerializeField] private bool isArcadeRaceAI;
+        [Space]
+        public Transform target;
+
+        //Ai stuff
+        //[HideInInspector]
+        public float TurnAI = 1f;
+        //[HideInInspector]
+        public float SpeedAI = 1f;
+        //[HideInInspector]
+        public float brakeAI = 0f;
+        public float brakeAngle = 30f;
+
+        private float desiredTurning;
+
+        private bool useSpeedControl;
+        private CarPlayerWaipointTracker carPlayerWaipointTracker;
+
+        private WaypointProgressTracker waypointProgressTracker;
+
+        // events
+        public static event System.Action<ArcadeVehicleController, bool> GetRespanwPositionForArcadeVehicleControllerEvent;// проверить
+        public static event System.Action HideRespawnButtonEvent;// проверить
+
         private void Start()
         {
             radius = rb.GetComponent<SphereCollider>().radius;
@@ -52,11 +128,41 @@ namespace ArcadeVP
             {
                 Physics.defaultMaxAngularSpeed = 100;
             }
+
+            defaultMaxSpeed = MaxSpeed;
         }
         private void Update()
         {
-            horizontalInput = SimpleInput.GetAxis("CarHorizontal"); //turning input
-            verticalInput = SimpleInput.GetAxis("CarVertical");     //accelaration input
+            if (isPlayer)
+            {
+                horizontalInput = SimpleInput.GetAxis("CarHorizontal"); //turning input
+                verticalInput = SimpleInput.GetAxis("CarVertical");     //accelaration input
+            }
+            else
+            {
+                if (isArcadeRaceAI)
+                {
+                    CalculatingRaceAITurnValue();
+                }
+                else
+                {
+                    horizontalInput = steering;
+                    verticalInput = throttle;
+                }
+
+                if (useSpeedControl)
+                {
+                    if (waypointProgressTracker.ProgressDistance > carPlayerWaipointTracker.ProgressDistance)
+                    {
+                        MaxSpeed = defaultMaxSpeed * 0.75f;
+                    }
+                    else
+                    {
+                        MaxSpeed = defaultMaxSpeed;
+                    }
+                }
+            }
+            
             Visuals();
             AudioManager();
 
@@ -77,6 +183,26 @@ namespace ArcadeVP
 
         void FixedUpdate()
         {
+            speed = carBody.velocity.magnitude;
+
+            if (isInverseTurnController)
+            {
+                horizontalInput *= -1f;
+                verticalInput *= -1f;
+            }
+
+            if (isArcadeRaceAI)
+            {
+                RaceAIMovement();
+            }
+            else
+            {
+                NotRaceAIMovement();
+            }
+        }
+
+        private void NotRaceAIMovement()
+        {
             carVelocity = carBody.transform.InverseTransformDirection(carBody.velocity);
 
             if (Mathf.Abs(carVelocity.x) > 0)
@@ -88,6 +214,103 @@ namespace ArcadeVP
 
             if (grounded())
             {
+                #region Stuck Check
+                if (isPlayer)
+                {
+                    if (isShowingRestartButton && Mathf.Abs(Mathf.RoundToInt(speed)) >= 5f)
+                    {
+                        HideRespawnButtonEvent?.Invoke();
+                    }
+
+                    if (verticalInput != 0 && (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f) && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+                    {
+                        //Debug.Log("Жмем на газ. Застрял");
+
+                        stuckTime_PlayerPressesOnGasButDoesntMove += Time.deltaTime;
+
+                        if (stuckTime_PlayerPressesOnGasButDoesntMove >= stuckTimeThreshold)
+                        {
+                            stuckTime_RolledOntoRoofOfSide = 0f;
+                            stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                            stuckTime_StuckInSomething = 0f;
+                            RespanwAfterStuck();
+                        }
+                    }
+                    else if (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f && !handbrake)
+                    {
+                        playerIdleTime += Time.deltaTime;
+
+                        if (playerIdleTime >= idleTime)
+                        {
+                            playerIdleTime = 0;
+                            RespanwAfterStuck();
+                        }
+                    }
+                    else
+                    {
+                        //Debug.Log("Жмем кнопку");
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        playerIdleTime = 0f;
+                    }
+                }
+                else
+                {
+                    if ((verticalInput != 0 || isArcadeRaceAI) && Mathf.RoundToInt(speed) == 0 && !handbrake)
+                    {
+                        //Debug.Log("Газует бот, но застрял");
+
+                        stuckTime_BotAIPressesOnGasButDoesntMove += Time.deltaTime;
+
+                        if (stuckTime_BotAIPressesOnGasButDoesntMove >= stuckTimeThreshold)
+                        {
+                            stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                            RespanwAfterStuck();
+                        }
+                    }
+                    else stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                }
+
+                // Проверка, что игрок не упал на бок или крышу
+                if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
+                {
+                    //Debug.Log("Перевернулся на крышу или на бок");
+
+                    stuckTime_RolledOntoRoofOfSide += Time.deltaTime;
+
+                    if (stuckTime_RolledOntoRoofOfSide >= stuckTimeThreshold)
+                    {
+                        stuckTime_RolledOntoRoofOfSide = 0f;
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        stuckTime_StuckInSomething = 0f;
+                        RespanwAfterStuck();
+                    }
+
+                }
+                else
+                {
+                    stuckTime_RolledOntoRoofOfSide = 0f;
+                }
+
+                if (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+                {
+                    //Debug.Log("Просто застрял");
+
+                    stuckTime_StuckInSomething += Time.deltaTime;
+
+                    if (stuckTime_StuckInSomething >= stuckTimeThreshold)
+                    {
+                        stuckTime_RolledOntoRoofOfSide = 0f;
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        stuckTime_StuckInSomething = 0f;
+                        RespanwAfterStuck();
+                    }
+                }
+                else
+                {
+                    stuckTime_StuckInSomething = 0f;
+                }
+                #endregion
+
                 //turnlogic
                 float sign = Mathf.Sign(carVelocity.z);
                 float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude / MaxSpeed);
@@ -132,6 +355,12 @@ namespace ArcadeVP
 
                 //body tilt
                 carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, hit.normal) * carBody.transform.rotation, 0.12f));
+
+                if (handbrake)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
             }
             else
             {
@@ -146,8 +375,131 @@ namespace ArcadeVP
                 carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, Vector3.up) * carBody.transform.rotation, 0.02f));
                 rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity + Vector3.down * gravity, Time.deltaTime * gravity);
             }
-
         }
+
+        private void RaceAIMovement()
+        {
+            carVelocity = carBody.transform.InverseTransformDirection(carBody.velocity);
+
+            if (Mathf.Abs(carVelocity.x) > 0)
+            {
+                //changes friction according to sideways speed of car
+                frictionMaterial.dynamicFriction = frictionCurve.Evaluate(Mathf.Abs(carVelocity.x / 100));
+            }
+
+
+            if (grounded())
+            {
+                #region Stuck Check
+                if ((verticalInput != 0 || isArcadeRaceAI) && Mathf.RoundToInt(speed) == 0 && !handbrake)
+                {
+                    //Debug.Log("Газует бот, но застрял");
+
+                    stuckTime_BotAIPressesOnGasButDoesntMove += Time.deltaTime;
+
+                    if (stuckTime_BotAIPressesOnGasButDoesntMove >= stuckTimeThreshold)
+                    {
+                        stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                        RespanwAfterStuck();
+                    }
+                }
+                else stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+
+                // Проверка, что игрок не упал на бок или крышу
+                if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
+                {
+                    //Debug.Log("Перевернулся на крышу или на бок");
+
+                    stuckTime_RolledOntoRoofOfSide += Time.deltaTime;
+
+                    if (stuckTime_RolledOntoRoofOfSide >= stuckTimeThreshold)
+                    {
+                        stuckTime_RolledOntoRoofOfSide = 0f;
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        stuckTime_StuckInSomething = 0f;
+                        RespanwAfterStuck();
+                    }
+
+                }
+                else
+                {
+                    stuckTime_RolledOntoRoofOfSide = 0f;
+                }
+
+                if (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+                {
+                    //Debug.Log("Просто застрял");
+
+                    stuckTime_StuckInSomething += Time.deltaTime;
+
+                    if (stuckTime_StuckInSomething >= stuckTimeThreshold)
+                    {
+                        stuckTime_RolledOntoRoofOfSide = 0f;
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        stuckTime_StuckInSomething = 0f;
+                        RespanwAfterStuck();
+                    }
+                }
+                else
+                {
+                    stuckTime_StuckInSomething = 0f;
+                }
+                #endregion
+
+                //turnlogic
+                float sign = Mathf.Sign(carVelocity.z);
+                float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude / MaxSpeed);
+                if (SpeedAI > 0.1f || carVelocity.z > 1)
+                {
+                    carBody.AddTorque(Vector3.up * TurnAI * sign * turn * 100 * TurnMultiplyer);
+                }
+                else if (SpeedAI < -0.1f || carVelocity.z < -1)
+                {
+                    carBody.AddTorque(Vector3.up * TurnAI * sign * turn * 100 * TurnMultiplyer);
+                }
+
+                //brakelogic
+                if (brakeAI > 0.1f)
+                {
+                    rb.constraints = RigidbodyConstraints.FreezeRotationX;
+                }
+                else
+                {
+                    rb.constraints = RigidbodyConstraints.None;
+                }
+
+                //accelaration logic
+
+                if (movementMode == MovementMode.AngularVelocity)
+                {
+                    if (Mathf.Abs(SpeedAI) > 0.1f)
+                    {
+                        rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, carBody.transform.right * SpeedAI * MaxSpeed / radius, accelaration * Time.deltaTime);
+                    }
+                }
+                else if (movementMode == MovementMode.Velocity)
+                {
+                    if (Mathf.Abs(SpeedAI) > 0.1f && brakeAI < 0.1f)
+                    {
+                        rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * SpeedAI * MaxSpeed, accelaration / 10 * Time.deltaTime);
+                    }
+                }
+
+                //body tilt
+                carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, hit.normal) * carBody.transform.rotation, 0.12f));
+
+                if (handbrake)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+            }
+            else
+            {
+                carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, Vector3.up) * carBody.transform.rotation, 0.02f));
+            }
+        }
+
         public void Visuals()
         {
             //tires
@@ -226,5 +578,151 @@ namespace ArcadeVP
 
         }
 
+        public void SetIsRaceAI()
+        {
+            isArcadeRaceAI = true;
+        }
+
+        public void PlayerStuckUnder()// from UderPlayerCar. Only on Player car
+        {
+            RespanwAfterStuck();
+        }
+
+        private void RespanwAfterStuck()
+        {
+            if (isPlayer)
+            {
+                // показ кнопки
+                GetRespanwPositionForArcadeVehicleControllerEvent?.Invoke(this, true);
+
+                isShowingRestartButton = true;
+            }
+            else
+            {
+                GetRespanwPositionForArcadeVehicleControllerEvent?.Invoke(this, false);
+            }
+        }
+
+        public void RespawnPlayerAfterStuckFromButton()
+        {
+            GetRespanwPositionForArcadeVehicleControllerEvent?.Invoke(this, false);
+
+            isShowingRestartButton = false;
+        }
+
+        public void GetRespawnTransform(Transform respTransform)
+        {
+            transform.rotation = respTransform.rotation;
+            transform.position = new Vector3(respTransform.position.x, 5f, respTransform.position.z);
+        }
+
+
+        #region Invers Turn
+        public void ChangeTheTurnControllerToInverse()
+        {
+            isInverseTurnController = true;
+        }
+        public void ChangeTheTurnControllerToNormal()
+        {
+            isInverseTurnController = false;
+        }
+        #endregion
+
+        #region AI
+
+        private void CalculatingRaceAITurnValue()
+        {
+            // the new method of calculating turn value
+            Vector3 aimedPoint = target.position;
+            aimedPoint.y = transform.position.y;
+            Vector3 aimedDir = (aimedPoint - transform.position).normalized;
+            Vector3 myDir = transform.forward;
+            myDir.Normalize();
+            desiredTurning = Mathf.Abs(Vector3.Angle(myDir, Vector3.ProjectOnPlane(aimedDir, transform.up)));
+            //
+
+            float reachedTargetDistance = 1f;
+            float distanceToTarget = Vector3.Distance(transform.position, target.position);
+            Vector3 dirToMovePosition = (target.position - transform.position).normalized;
+            float dot = Vector3.Dot(transform.forward, dirToMovePosition);
+            float angleToMove = Vector3.Angle(transform.forward, dirToMovePosition);
+            if (angleToMove > brakeAngle)
+            {
+                if (carVelocity.z > 15)
+                {
+                    brakeAI = 1;
+                }
+                else
+                {
+                    brakeAI = 0;
+                }
+
+            }
+            else { brakeAI = 0; }
+
+            if (distanceToTarget > reachedTargetDistance)
+            {
+
+                if (dot > 0)
+                {
+                    SpeedAI = 1f;
+
+                    float stoppingDistance = 5f;
+                    if (distanceToTarget < stoppingDistance)
+                    {
+                        //brakeAI = 1f;
+                    }
+                    else
+                    {
+                        brakeAI = 0f;
+                    }
+                }
+                else
+                {
+                    float reverseDistance = 5f;
+                    if (distanceToTarget > reverseDistance)
+                    {
+                        SpeedAI = 1f;
+                    }
+                    else
+                    {
+                        brakeAI = -1f;
+                    }
+                }
+
+                float angleToDir = Vector3.SignedAngle(transform.forward, dirToMovePosition, Vector3.up);
+
+                if (angleToDir > 0)
+                {
+                    TurnAI = 1f * turnCurve.Evaluate(desiredTurning / 90);
+                }
+                else
+                {
+                    TurnAI = -1f * turnCurve.Evaluate(desiredTurning / 90);
+                }
+
+            }
+            else
+            {
+                if (carVelocity.z > 1f)
+                {
+                    brakeAI = -1f;
+                }
+                else
+                {
+                    brakeAI = 0f;
+                }
+                TurnAI = 0f;
+            }
+        }
+
+        public void ActivateSpeedControlWithPlayer(CarPlayerWaipointTracker carPlayerWaipointTracker, WaypointProgressTracker waypointProgressTracker)
+        {
+            useSpeedControl = true;
+            this.carPlayerWaipointTracker = carPlayerWaipointTracker;
+            this.waypointProgressTracker = waypointProgressTracker;
+        }
+
+        #endregion
     }
 }

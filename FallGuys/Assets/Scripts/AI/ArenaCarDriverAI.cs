@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VehicleBehaviour;
+using ArcadeVP;
 
 public class ArenaCarDriverAI : DriverAI
 {
@@ -16,7 +17,7 @@ public class ArenaCarDriverAI : DriverAI
     private bool targetReached;
     private bool isTargetReachedFirst;
 
-    [SerializeField]private WheelVehicle wheelVehicle;
+    [SerializeField]private ArcadeVehicleController arcadeVehicleController;
     
     //private bool obstacle;
     //public bool Obstacle { get => obstacle;
@@ -39,7 +40,7 @@ public class ArenaCarDriverAI : DriverAI
 
     public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
-        wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
+        arcadeVehicleController = aiPlayerGO.GetComponent<ArcadeVehicleController>();
 
         if(currentPlayerGO != null) playerTransform = currentPlayerGO.transform;
     }
@@ -49,8 +50,8 @@ public class ArenaCarDriverAI : DriverAI
         if(!obstacle) Moving();
         else
         {
-            wheelVehicle.Steering = obstacleSteer;
-            wheelVehicle.Throttle = 1f;
+            arcadeVehicleController.Steering = obstacleSteer;
+            arcadeVehicleController.Throttle = 1f;
         }
     }
     
@@ -118,7 +119,7 @@ public class ArenaCarDriverAI : DriverAI
         {
             // reached target
 
-            if (wheelVehicle.Speed > 1f)// если скорость больше 1, то тормозим 
+            if (arcadeVehicleController.Speed > 1f)// если скорость больше 1, то тормозим 
             {
                 forwardAmount = -1f;
             }
@@ -138,10 +139,10 @@ public class ArenaCarDriverAI : DriverAI
         }
 
         // для движения
-        wheelVehicle.Throttle = forwardAmount;
+        arcadeVehicleController.Throttle = forwardAmount;
 
         // для поворотов
-        wheelVehicle.Steering = turnAmount;
+        arcadeVehicleController.Steering = turnAmount;
 
         // для нитро
         //wheelVehicle.boosting = true;
@@ -272,7 +273,7 @@ public class ArenaCarDriverAI : DriverAI
         
         for (int i = 0; i < targets.Count; i++)
         {
-            if (targets[i].gameObject == wheelVehicle.gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
+            if (targets[i].gameObject == arcadeVehicleController.gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
             {
                 targets.RemoveAt(i);
                 break;

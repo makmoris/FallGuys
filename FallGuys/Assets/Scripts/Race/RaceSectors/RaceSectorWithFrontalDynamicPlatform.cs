@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
     [Header("Platforms")]
     [SerializeField] private List<PathAndPlatform> pathAndPlatformList;
     
-    private List<WheelVehicle> carsInSector = new List<WheelVehicle>();
+    private List<ArcadeVehicleController> carsInSector = new List<ArcadeVehicleController>();
 
     private Dictionary<RaceDriverAI, PathAndPlatform> raceDriverAIWithPathAndPlatformDictionary = new Dictionary<RaceDriverAI, PathAndPlatform>();
 
@@ -82,7 +83,7 @@ public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
         return null;
     }
 
-    private void CarEnteredTheSector(WheelVehicle car)
+    private void CarEnteredTheSector(ArcadeVehicleController car)
     {
         if (!carsInSector.Contains(car))
         {
@@ -98,7 +99,7 @@ public class RaceSectorWithFrontalDynamicPlatform : MonoBehaviour
         }
     }
 
-    private void CarLeftTheSector(WheelVehicle car)
+    private void CarLeftTheSector(ArcadeVehicleController car)
     {
         if(carsInSector.Contains(car)) carsInSector.Remove(car);
 

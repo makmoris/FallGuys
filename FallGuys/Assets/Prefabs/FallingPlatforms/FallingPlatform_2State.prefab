@@ -240,7 +240,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3908427306746438838}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: State 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -469,7 +469,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2543903338522989789}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: State 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,7 +758,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8085637636314686535}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PlatformStates
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -836,6 +836,7 @@ MonoBehaviour:
     stateGO: {fileID: 6714778476460466401}
   - stateName: End State
     stateGO: {fileID: 3454563695477900554}
+  isPlatformCompletedStateChange: 1
   platformTrigger: {fileID: 8085637636231142673}
   platformStates: {fileID: 8085637636314686532}
   layerMask:
@@ -896,6 +897,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8749bb517adf6234dbce2879e727dae8, type: 3}
       propertyPath: m_Name
       value: Platform yellow 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8749bb517adf6234dbce2879e727dae8, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8749bb517adf6234dbce2879e727dae8, type: 3}
       propertyPath: m_IsActive
@@ -983,6 +988,10 @@ PrefabInstance:
       value: Platform red 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 89c1d7e0ff90048428ec8d2e1c02308e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 89c1d7e0ff90048428ec8d2e1c02308e, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1066,6 +1075,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f906984e12b41544cabf41e233e62f55, type: 3}
       propertyPath: m_Name
       value: Platform yellow 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f906984e12b41544cabf41e233e62f55, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f906984e12b41544cabf41e233e62f55, type: 3}
       propertyPath: m_IsActive
@@ -1153,6 +1166,10 @@ PrefabInstance:
       value: Platform red 4
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 694acac32047bf041a3bb4323338f9c3, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 694acac32047bf041a3bb4323338f9c3, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1236,6 +1253,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 21d5c3aa801204e4ba2de1e2a2dacdb6, type: 3}
       propertyPath: m_Name
       value: Platform blue 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 21d5c3aa801204e4ba2de1e2a2dacdb6, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 21d5c3aa801204e4ba2de1e2a2dacdb6, type: 3}
       propertyPath: m_IsActive
@@ -1324,7 +1345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 487ff893d83df9d48a9822ca5eefe64a, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 487ff893d83df9d48a9822ca5eefe64a, type: 3}
       propertyPath: m_IsActive
@@ -1413,7 +1434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3f3ea62039768114d8c0fa8a61618463, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3f3ea62039768114d8c0fa8a61618463, type: 3}
       propertyPath: m_IsActive
@@ -1499,6 +1520,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 6c20f39dc59168c42ad5250be1806a72, type: 3}
       propertyPath: m_Name
       value: Platform blue 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6c20f39dc59168c42ad5250be1806a72, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6c20f39dc59168c42ad5250be1806a72, type: 3}
       propertyPath: m_IsActive

@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,19 +6,19 @@ using VehicleBehaviour;
 
 public class RaceFinishSector : MonoBehaviour
 {
-    private List<WheelVehicle> finishedDriversList = new List<WheelVehicle>();
+    private List<ArcadeVehicleController> finishedDriversList = new List<ArcadeVehicleController>();
 
-    public event System.Action<WheelVehicle> ThisDriverFinishedEvent;
+    public event System.Action<ArcadeVehicleController> ThisDriverFinishedEvent;
 
-    public void FinishTrigger(WheelVehicle wheelVehicleDriver)
+    public void FinishTrigger(ArcadeVehicleController arcadeVehicleController)
     {
-        if (!finishedDriversList.Contains(wheelVehicleDriver))
+        if (!finishedDriversList.Contains(arcadeVehicleController))
         {
-            finishedDriversList.Add(wheelVehicleDriver);
+            finishedDriversList.Add(arcadeVehicleController);
 
-            ThisDriverFinishedEvent?.Invoke(wheelVehicleDriver);
+            ThisDriverFinishedEvent?.Invoke(arcadeVehicleController);
 
-            wheelVehicleDriver.gameObject.SetActive(false);
+            arcadeVehicleController.gameObject.SetActive(false);
         }
     }
 }

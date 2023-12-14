@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,16 +45,16 @@ public class HoneycombProgressController : LevelProgressController
 
         if (isCurrentPlayer) _currentPlayer = playerGO;
 
-        WheelVehicle wheelVehicle = playerGO.GetComponent<WheelVehicle>();
-        wheelVehicle.Handbrake = true;
+        ArcadeVehicleController arcadeVehicleController = playerGO.GetComponent<ArcadeVehicleController>();
+        arcadeVehicleController.Handbrake = true;
     }
 
     protected override void StartGame()
     {
         foreach (var player in _playersList)
         {
-            WheelVehicle wheelVehicle = player.GetComponent<WheelVehicle>();
-            wheelVehicle.Handbrake = false;
+            ArcadeVehicleController arcadeVehicleController = player.GetComponent<ArcadeVehicleController>();
+            arcadeVehicleController.Handbrake = false;
         }
 
         targetsControllerHoneycomb.EnableSpawnPlaces();
@@ -69,7 +70,7 @@ public class HoneycombProgressController : LevelProgressController
             currentNumberOfFallens++;
 
             playerGO.SetActive(false);
-            playerGO.GetComponent<WheelVehicle>().Handbrake = true;
+            playerGO.GetComponent<ArcadeVehicleController>().Handbrake = true;
 
             ApplyDisableBonus(playerGO, Mathf.Infinity);
 
@@ -89,7 +90,7 @@ public class HoneycombProgressController : LevelProgressController
                 {
                     _winnersList.Add(player);
 
-                    player.GetComponent<WheelVehicle>().Handbrake = true;
+                    player.GetComponent<ArcadeVehicleController>().Handbrake = true;
 
                     if(player == _currentPlayer)
                     {

@@ -1,3 +1,4 @@
+using ArcadeVP;
 using UnityEngine;
 using VehicleBehaviour;
 
@@ -29,7 +30,7 @@ public class DirectionSetterHorizontalDP : MonoBehaviour
         }
     }
 
-    private void CarLeftTheSector(WheelVehicle car)
+    private void CarLeftTheSector(ArcadeVehicleController car)
     {
         if(car.gameObject == carGO) Destroy(this.gameObject);
     }

@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,8 +42,8 @@ public class RaceRespawnController : MonoBehaviour
 
     private void OnEnable()
     {
-        WheelVehicle.GetRespanwPositionForWheelVehicleEvent += RespawnCarAfterStuck;
-        WheelVehicle.HideRespawnButtonEvent += HideRespawnButton;
+        ArcadeVehicleController.GetRespanwPositionForArcadeVehicleControllerEvent += RespawnCarAfterStuck;
+        ArcadeVehicleController.HideRespawnButtonEvent += HideRespawnButton;
         canRespawnCarAfterStuck = true;
     }
 
@@ -58,17 +59,17 @@ public class RaceRespawnController : MonoBehaviour
         levelProgressUIController.HideRespawnButton();
     }
 
-    private void RespawnCarAfterStuck(WheelVehicle wheelVehicle, bool showRespawnButton)
+    private void RespawnCarAfterStuck(ArcadeVehicleController arcadeVehicleController, bool showRespawnButton)
     {
         if (showRespawnButton)
         {
-            levelProgressUIController.ShowRespawnButton(wheelVehicle);
+            levelProgressUIController.ShowRespawnButton(arcadeVehicleController);
         }
         else
         {
-            wheelVehicle.gameObject.SetActive(false);
+            arcadeVehicleController.gameObject.SetActive(false);
             //RespawnCarOnNearestRespawnPoint(false, wheelVehicle.gameObject, raceRespawnZonesStuckList);
-            RespawnCarOnNearestRespawnPoint(true, wheelVehicle.gameObject, raceRespawnZonesStuckList);
+            RespawnCarOnNearestRespawnPoint(true, arcadeVehicleController.gameObject, raceRespawnZonesStuckList);
         }
     }
 
@@ -163,7 +164,7 @@ public class RaceRespawnController : MonoBehaviour
 
     private void OnDisable()
     {
-        WheelVehicle.GetRespanwPositionForWheelVehicleEvent -= RespawnCarAfterStuck;
-        WheelVehicle.HideRespawnButtonEvent -= HideRespawnButton;
+        ArcadeVehicleController.GetRespanwPositionForArcadeVehicleControllerEvent -= RespawnCarAfterStuck;
+        ArcadeVehicleController.HideRespawnButtonEvent -= HideRespawnButton;
     }
 }

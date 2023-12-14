@@ -1,3 +1,4 @@
+using ArcadeVP;
 using PunchCars.DifficultyAILevels;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,13 +17,13 @@ public class RingsDriverAI : DriverAI
     private bool targetReached;
     private bool isTargetReachedFirst;
 
-    private WheelVehicle wheelVehicle;
+    private ArcadeVehicleController arcadeVehicleController;
 
     private List<Ring> ringsList = new List<Ring>();
 
     public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
-        wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
+        arcadeVehicleController = aiPlayerGO.GetComponent<ArcadeVehicleController>();
     }
 
     private void Update()
@@ -30,8 +31,8 @@ public class RingsDriverAI : DriverAI
         if (!obstacle) Moving();
         else
         {
-            wheelVehicle.Steering = obstacleSteer;
-            wheelVehicle.Throttle = 1f;
+            arcadeVehicleController.Steering = obstacleSteer;
+            arcadeVehicleController.Throttle = 1f;
         }
     }
 
@@ -41,7 +42,7 @@ public class RingsDriverAI : DriverAI
 
         for (int i = 0; i < targets.Count; i++)
         {
-            if (targets[i].gameObject == wheelVehicle.gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
+            if (targets[i].gameObject == arcadeVehicleController.gameObject) // исключаем из целей этого же бота, чтобы не ездил сам за собой
             {
                 targets.RemoveAt(i);
                 break;
@@ -70,7 +71,7 @@ public class RingsDriverAI : DriverAI
 
             for (int i = 0; i < activeRingTransformList.Count; i++)
             {
-                float distance = (activeRingTransformList[i].position - wheelVehicle.transform.position).sqrMagnitude;
+                float distance = (activeRingTransformList[i].position - arcadeVehicleController.transform.position).sqrMagnitude;
 
                 if (distance < minDistance)
                 {
@@ -151,7 +152,7 @@ public class RingsDriverAI : DriverAI
         {
             // reached target
 
-            if (wheelVehicle.Speed > 1f)// если скорость больше 1, то тормозим 
+            if (arcadeVehicleController.Speed > 1f)// если скорость больше 1, то тормозим 
             {
                 forwardAmount = -1f;
             }
@@ -168,8 +169,8 @@ public class RingsDriverAI : DriverAI
             }
         }
 
-        wheelVehicle.Throttle = forwardAmount;
-        wheelVehicle.Steering = turnAmount;
+        arcadeVehicleController.Throttle = forwardAmount;
+        arcadeVehicleController.Steering = turnAmount;
     }
 
     private void ChooseTargetPosition(Vector3 targetPosition)

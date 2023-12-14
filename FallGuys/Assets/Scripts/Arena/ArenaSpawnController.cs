@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,8 +23,8 @@ public class ArenaSpawnController : MonoBehaviour
 
     private void OnEnable()
     {
-        WheelVehicle.GetRespanwPositionForWheelVehicleEvent += SendRespawnPositionToWheelVehicle;
-        WheelVehicle.HideRespawnButtonEvent += HideRespawnButton;
+        ArcadeVehicleController.GetRespanwPositionForArcadeVehicleControllerEvent += SendRespawnPositionToWheelVehicle;
+        ArcadeVehicleController.HideRespawnButtonEvent += HideRespawnButton;
     }
 
     public Transform GetStartSpawnPosition(int index)
@@ -89,15 +90,15 @@ public class ArenaSpawnController : MonoBehaviour
         }
     }
 
-    private void SendRespawnPositionToWheelVehicle(WheelVehicle wheelVehicle, bool showRespawnButton)
+    private void SendRespawnPositionToWheelVehicle(ArcadeVehicleController arcadeVehicleController, bool showRespawnButton)
     {
         if (showRespawnButton)
         {
-            levelProgressUIController.ShowRespawnButton(wheelVehicle);
+            levelProgressUIController.ShowRespawnButton(arcadeVehicleController);
         }
         else
         {
-            wheelVehicle.GetRespawnTransform(GetRespawnPosition());
+            arcadeVehicleController.GetRespawnTransform(GetRespawnPosition());
         }
     }
 
@@ -108,7 +109,7 @@ public class ArenaSpawnController : MonoBehaviour
 
     private void OnDisable()
     {
-        WheelVehicle.GetRespanwPositionForWheelVehicleEvent -= SendRespawnPositionToWheelVehicle;
-        WheelVehicle.HideRespawnButtonEvent -= HideRespawnButton;
+        ArcadeVehicleController.GetRespanwPositionForArcadeVehicleControllerEvent -= SendRespawnPositionToWheelVehicle;
+        ArcadeVehicleController.HideRespawnButtonEvent -= HideRespawnButton;
     }
 }

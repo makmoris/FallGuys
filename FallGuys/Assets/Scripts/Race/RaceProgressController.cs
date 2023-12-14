@@ -1,3 +1,4 @@
+using ArcadeVP;
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ public class RaceProgressController : LevelProgressController
     private bool congratulationWasShowing;
 
     private List<GameObject> raceDriversList = new List<GameObject>();
-    private Dictionary<GameObject, WheelVehicle> raceDriversPlayersDictionary = new Dictionary<GameObject, WheelVehicle>();
+    private Dictionary<GameObject, ArcadeVehicleController> raceDriversPlayersDictionary = new Dictionary<GameObject, ArcadeVehicleController>();
     private Dictionary<GameObject, RaceDriverAI> raceDriversAIDictionary = new Dictionary<GameObject, RaceDriverAI>();
     [SerializeField]private List<GameObject> winnersList = new List<GameObject>();
 
@@ -73,10 +74,10 @@ public class RaceProgressController : LevelProgressController
         }
         else
         {
-            WheelVehicle wheelVehiclePlayer = playerGO.GetComponent<WheelVehicle>();
+            ArcadeVehicleController arcadeVehicleControllerPlayer = playerGO.GetComponent<ArcadeVehicleController>();
 
-            raceDriversPlayersDictionary.Add(playerGO, wheelVehiclePlayer);
-            wheelVehiclePlayer.Handbrake = true;
+            raceDriversPlayersDictionary.Add(playerGO, arcadeVehicleControllerPlayer);
+            arcadeVehicleControllerPlayer.Handbrake = true;
         }
 
         if (isCurrentPlayer) _currentPlayer = playerGO;
@@ -98,9 +99,9 @@ public class RaceProgressController : LevelProgressController
         {
             if (raceDriversPlayersDictionary.ContainsKey(driver))
             {
-                WheelVehicle wheelVehicle = raceDriversPlayersDictionary[driver];
+                ArcadeVehicleController arcadeVehicleController = raceDriversPlayersDictionary[driver];
 
-                wheelVehicle.Handbrake = false;
+                arcadeVehicleController.Handbrake = false;
             }
 
             if (raceDriversAIDictionary.ContainsKey(driver))
@@ -125,7 +126,7 @@ public class RaceProgressController : LevelProgressController
         bumper.GetBonus(disableWeaponBonus, driverGO);
     }
 
-    private void DriverFinished(WheelVehicle wheelVehicleDriver)
+    private void DriverFinished(ArcadeVehicleController arcadeVehicleController)
     {
         if (raceNotOver)
         {
@@ -140,25 +141,25 @@ public class RaceProgressController : LevelProgressController
                 raceProgressUIController.StartFinishTimer(finishTimerSeconds, FinishTimerFinished);
             }
 
-            if (raceDriversAIDictionary.ContainsKey(wheelVehicleDriver.gameObject))
+            if (raceDriversAIDictionary.ContainsKey(arcadeVehicleController.gameObject))
             {
-                RaceDriverAI driverAI = raceDriversAIDictionary[wheelVehicleDriver.gameObject];
+                RaceDriverAI driverAI = raceDriversAIDictionary[arcadeVehicleController.gameObject];
 
                 //driverAI.Brake = true;
                 //driverAI.SlowDownToDesiredSpeed(0f);
                 driverAI.Handbrake = true;
 
-                ApplyDisableBonus(wheelVehicleDriver.gameObject, Mathf.Infinity);
+                ApplyDisableBonus(arcadeVehicleController.gameObject, Mathf.Infinity);
             }
 
-            wheelVehicleDriver.Handbrake = true;
+            arcadeVehicleController.Handbrake = true;
 
             if (currentNumberOfWinners < numberOfWinners)
             {
-                winnersList.Add(wheelVehicleDriver.gameObject);
-                _winnersList.Add(wheelVehicleDriver.gameObject);
+                winnersList.Add(arcadeVehicleController.gameObject);
+                _winnersList.Add(arcadeVehicleController.gameObject);
 
-                if (wheelVehicleDriver.gameObject == _currentPlayer)
+                if (arcadeVehicleController.gameObject == _currentPlayer)
                 {
                     currentPlayerWasFinished = true;
                     raceProgressUIController.ShowCongratilationsPanel();
@@ -168,10 +169,10 @@ public class RaceProgressController : LevelProgressController
             }
             else
             {
-                winnersList.Add(wheelVehicleDriver.gameObject);
-                _winnersList.Add(wheelVehicleDriver.gameObject);
+                winnersList.Add(arcadeVehicleController.gameObject);
+                _winnersList.Add(arcadeVehicleController.gameObject);
 
-                if (wheelVehicleDriver.gameObject == _currentPlayer)
+                if (arcadeVehicleController.gameObject == _currentPlayer)
                 {
                     currentPlayerWasFinished = true;
                     raceProgressUIController.ShowCongratilationsPanel();
@@ -198,7 +199,7 @@ public class RaceProgressController : LevelProgressController
                 Debug.Log("Race ended");// заканчиваем гонку. ѕереходим на следующий этап
             }
 
-            cameraFollowingOnOtherPlayers.RemoveDriver(wheelVehicleDriver.gameObject);
+            cameraFollowingOnOtherPlayers.RemoveDriver(arcadeVehicleController.gameObject);
         }
     }
 
@@ -217,9 +218,9 @@ public class RaceProgressController : LevelProgressController
 
                 if (raceDriversPlayersDictionary.ContainsKey(driver))
                 {
-                    WheelVehicle wheelVehicle = raceDriversPlayersDictionary[driver];
+                    ArcadeVehicleController arcadeVehicleController = raceDriversPlayersDictionary[driver];
 
-                    wheelVehicle.Handbrake = true;
+                    arcadeVehicleController.Handbrake = true;
                 }
 
                 if (raceDriversAIDictionary.ContainsKey(driver))
@@ -326,9 +327,9 @@ public class RaceProgressController : LevelProgressController
         {
             if (raceDriversPlayersDictionary.ContainsKey(driver))
             {
-                WheelVehicle wheelVehicle = raceDriversPlayersDictionary[driver];
+                ArcadeVehicleController arcadeVehicleController = raceDriversPlayersDictionary[driver];
 
-                wheelVehicle.Handbrake = true;
+                arcadeVehicleController.Handbrake = true;
             }
 
             if (raceDriversAIDictionary.ContainsKey(driver))
@@ -373,7 +374,7 @@ public class RaceProgressController : LevelProgressController
         int length = numberOfWinners - currentNumberOfWinners;
         for (int i = 0; i < length; i++)
         {
-            DriverFinished(remainingPlayers[i].GetComponent<WheelVehicle>());
+            DriverFinished(remainingPlayers[i].GetComponent<ArcadeVehicleController>());
         }
     }
 

@@ -1,3 +1,4 @@
+using ArcadeVP;
 using PunchCars.DifficultyAILevels;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using VehicleBehaviour;
 
 public class RaceDriverAI : DriverAI
 {
-    private WheelVehicle wheelVehicle;
+    private ArcadeVehicleController arcadeVehicleController;
     internal Rigidbody rb;
     internal float maxSpeed;
     internal float maximumSteerAngle;
@@ -40,27 +41,26 @@ public class RaceDriverAI : DriverAI
         set
         {
             handbrake = value;
-            anyCarAI.Handbrake = handbrake;
-            wheelVehicle.Handbrake = handbrake;
+            arcadeVehicleController.Handbrake = handbrake;
         }
     }
 
     private GameObject currentPlayer;
 
-    private AnyCarAI anyCarAI;
+    //private AnyCarAI anyCarAI;
+    private WaypointProgressTracker waypointProgressTracker;
 
     public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
-        wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
+        arcadeVehicleController = aiPlayerGO.GetComponent<ArcadeVehicleController>();
         rb = aiPlayerGO.GetComponent<Rigidbody>();
 
-        wheelVehicle.SetIsAnyCarAI();
+        arcadeVehicleController.SetIsRaceAI();
 
         isGround = true;
 
-        anyCarAI = GetComponent<AnyCarAI>();
-        RaceProgressController raceProgressController = FindObjectOfType<RaceProgressController>();
-        anyCarAI.Initialize(raceProgressController.GetWaypointsPath(), true);
+        waypointProgressTracker = GetComponent<WaypointProgressTracker>();
+        waypointProgressTracker.Initialize();
 
         if (currentPlayerGO != null)
         {
@@ -74,27 +74,29 @@ public class RaceDriverAI : DriverAI
     public override void SetLowDifficultyAILevel()
     {
         CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
-        anyCarAI.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker);
+        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker);
     }
 
     public override void SetNormalDifficultyAILevel()
     {
-        
+        CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
+        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker);
     }
 
     public override void SetHighDifficultyAILevel()
     {
-        
+        CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
+        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker);
     }
     #endregion
 
     public void WasRespawn()
     {
-        anyCarAI.WasRespawn();
+        waypointProgressTracker.WasRespawn();
     }
 
     public void SaveCheckpoint()
     {
-        anyCarAI.SaveCheckpoint();
+        waypointProgressTracker.SaveCheckpoint();
     }
 }

@@ -1,14 +1,15 @@
 using UnityEngine;
 using System;
 using VehicleBehaviour;
+using ArcadeVP;
 
 public class EnterSectorTrigger : MonoBehaviour
 {
-    public event Action<WheelVehicle> CarEnteredTheSectorEvent;
+    public event Action<ArcadeVehicleController> CarEnteredTheSectorEvent;
 
     private void OnTriggerEnter(Collider other)
     {
-        WheelVehicle car = other.GetComponent<WheelVehicle>();
+        ArcadeVehicleController car = other.GetComponent<ArcadeVehicleController>();
         if (car != null)
         {
             RaceDriverAI raceDriverAI = car.GetComponentInChildren<RaceDriverAI>();
@@ -18,7 +19,7 @@ public class EnterSectorTrigger : MonoBehaviour
         }
     }
 
-    protected virtual void SendCarEnteredEvent(WheelVehicle car)
+    protected virtual void SendCarEnteredEvent(ArcadeVehicleController car)
     {
         CarEnteredTheSectorEvent?.Invoke(car);
     }

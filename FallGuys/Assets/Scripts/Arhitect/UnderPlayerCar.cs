@@ -1,14 +1,15 @@
+using ArcadeVP;
 using UnityEngine;
 using VehicleBehaviour;
 
 public class UnderPlayerCar : MonoBehaviour
 {
-    private WheelVehicle wheelVehicle;
+    private ArcadeVehicleController arcadeVehicleController;
     [SerializeField] private int immobilityValue;
 
     private void Awake()
     {
-        wheelVehicle = transform.GetComponentInParent<WheelVehicle>();
+        arcadeVehicleController = transform.GetComponentInParent<ArcadeVehicleController>();
     }
 
     private void OnTriggerStay(Collider other)
@@ -18,7 +19,7 @@ public class UnderPlayerCar : MonoBehaviour
         if (immobilityValue == 150)
         {
             immobilityValue = 0;
-            wheelVehicle.PlayerStuckUnder();
+            arcadeVehicleController.PlayerStuckUnder();
         }
     }
 

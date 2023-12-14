@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,8 @@ public class RingsProgressController : LevelProgressController
 
         playerPointsDictionary.Add(playerGO, 0);
 
-        WheelVehicle wheelVehicle = playerGO.GetComponent<WheelVehicle>();
-        wheelVehicle.Handbrake = true;
+        ArcadeVehicleController arcadeVehicleController = playerGO.GetComponent<ArcadeVehicleController>();
+        arcadeVehicleController.Handbrake = true;
     }
 
     public override void SetNumberOfPlayersAndWinners(int _numberOfPlayers, int _numberOfWinners)
@@ -62,8 +63,8 @@ public class RingsProgressController : LevelProgressController
     {
         foreach (var player in _playersList)
         {
-            WheelVehicle wheelVehicle = player.GetComponent<WheelVehicle>();
-            wheelVehicle.Handbrake = false;
+            ArcadeVehicleController arcadeVehicleController = player.GetComponent<ArcadeVehicleController>();
+            arcadeVehicleController.Handbrake = false;
         }
 
         if(_currentPlayer != null)
@@ -168,7 +169,7 @@ public class RingsProgressController : LevelProgressController
 
         foreach (var player in _playersList)
         {
-            player.GetComponent<WheelVehicle>().Handbrake = true;
+            player.GetComponent<ArcadeVehicleController>().Handbrake = true;
         }
     }
 

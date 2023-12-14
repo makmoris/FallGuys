@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using UnityEngine;
 using VehicleBehaviour;
@@ -248,7 +249,7 @@ public class PlayerEffector
                         CoroutineRunner.Stop(controlInversionCoroutine);
                     }
                     
-                    thisPlayerGO.GetComponent<WheelVehicle>().ChangeTheTurnControllerToInverse();
+                    thisPlayerGO.GetComponent<ArcadeVehicleController>().ChangeTheTurnControllerToInverse();
 
                     controlInversionCoroutine = CoroutineRunner.Run(WaitAndDeactivateControlInversion(bonus.BonusValue));
 
@@ -399,7 +400,7 @@ public class PlayerEffector
     IEnumerator WaitAndDeactivateControlInversion(float time)
     {
         yield return new WaitForSeconds(time);
-        thisPlayerGO.GetComponent<WheelVehicle>().ChangeTheTurnControllerToNormal();
+        thisPlayerGO.GetComponent<ArcadeVehicleController>().ChangeTheTurnControllerToNormal();
 
         if (isCurrentPlayer)
         {

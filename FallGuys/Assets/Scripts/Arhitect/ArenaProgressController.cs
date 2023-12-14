@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,8 +67,8 @@ public class ArenaProgressController : LevelProgressController
 
         if (isCurrentPlayer) _currentPlayer = playerGO;
 
-        WheelVehicle wheelVehicle = playerGO.GetComponent<WheelVehicle>();
-        wheelVehicle.Handbrake = true;
+        ArcadeVehicleController arcadeVehicleController = playerGO.GetComponent<ArcadeVehicleController>();
+        arcadeVehicleController.Handbrake = true;
     }
 
     public void AddFrag()// вызывается из VisualIntermediary
@@ -91,8 +92,8 @@ public class ArenaProgressController : LevelProgressController
     {
         foreach (var player in _playersList)
         {
-            WheelVehicle wheelVehicle = player.GetComponent<WheelVehicle>();
-            wheelVehicle.Handbrake = false;
+            ArcadeVehicleController arcadeVehicleController = player.GetComponent<ArcadeVehicleController>();
+            arcadeVehicleController.Handbrake = false;
         }
     }
 
@@ -108,7 +109,7 @@ public class ArenaProgressController : LevelProgressController
             _losersList.Add(deadPlayer);
             _playersList.Remove(deadPlayer);
 
-            deadPlayer.GetComponent<WheelVehicle>().Handbrake = true;
+            deadPlayer.GetComponent<ArcadeVehicleController>().Handbrake = true;
 
             if (deadPlayer == _currentPlayer)
             {
@@ -138,7 +139,7 @@ public class ArenaProgressController : LevelProgressController
 
                     _winnersList.Add(player);
 
-                    player.GetComponent<WheelVehicle>().Handbrake = true;
+                    player.GetComponent<ArcadeVehicleController>().Handbrake = true;
                 }
 
                 if (!_isCurrentPlayerWinner)

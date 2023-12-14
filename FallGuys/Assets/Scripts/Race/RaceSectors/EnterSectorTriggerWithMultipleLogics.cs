@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class EnterSectorTriggerWithMultipleLogics : EnterSectorTrigger
 {
     private List<RaceSectorLogic> raceSectorLogics = new List<RaceSectorLogic>();
 
-    private Dictionary<WheelVehicle, RaceSectorLogic> carAndLogicDictionary = new Dictionary<WheelVehicle, RaceSectorLogic>();
+    private Dictionary<ArcadeVehicleController, RaceSectorLogic> carAndLogicDictionary = new Dictionary<ArcadeVehicleController, RaceSectorLogic>();
 
     private void Awake()
     {
@@ -18,7 +19,7 @@ public class EnterSectorTriggerWithMultipleLogics : EnterSectorTrigger
         }
     }
 
-    protected override void SendCarEnteredEvent(WheelVehicle car)
+    protected override void SendCarEnteredEvent(ArcadeVehicleController car)
     {
         if (!carAndLogicDictionary.ContainsKey(car))
         {

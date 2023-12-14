@@ -1,3 +1,4 @@
+using ArcadeVP;
 using PunchCars.DifficultyAILevels;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,13 +17,13 @@ public class HoneycombDriverAI : DriverAI
     private bool targetReached;
     private bool isTargetReachedFirst;
 
-    private WheelVehicle wheelVehicle;
+    private ArcadeVehicleController arcadeVehicleController;
 
     [SerializeField]private TargetsControllerHoneycomb targetsControllerHoneycomb;
 
     public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
-        wheelVehicle = aiPlayerGO.GetComponent<WheelVehicle>();
+        arcadeVehicleController = aiPlayerGO.GetComponent<ArcadeVehicleController>();
     }
 
     private void Update()
@@ -31,15 +32,15 @@ public class HoneycombDriverAI : DriverAI
         else
         {
             //targetReached = true;
-            if(wheelVehicle.Speed > 30f)
+            if(arcadeVehicleController.Speed > 30f)
             {
-                wheelVehicle.Steering = obstacleSteer;
-                wheelVehicle.Throttle = -1f;
+                arcadeVehicleController.Steering = obstacleSteer;
+                arcadeVehicleController.Throttle = -1f;
             }
             else
             {
-                wheelVehicle.Steering = obstacleSteer;
-                wheelVehicle.Throttle = 1f;
+                arcadeVehicleController.Steering = obstacleSteer;
+                arcadeVehicleController.Throttle = 1f;
             }
         }
         // если есть препятствие, то надо взять другую цель
@@ -131,7 +132,7 @@ public class HoneycombDriverAI : DriverAI
         {
             // reached target
 
-            if (wheelVehicle.Speed > 1f)// если скорость больше 1, то тормозим 
+            if (arcadeVehicleController.Speed > 1f)// если скорость больше 1, то тормозим 
             {
                 forwardAmount = -1f;
             }
@@ -151,10 +152,10 @@ public class HoneycombDriverAI : DriverAI
         }
 
         // для движения
-        wheelVehicle.Throttle = forwardAmount;
+        arcadeVehicleController.Throttle = forwardAmount;
 
         // для поворотов
-        wheelVehicle.Steering = turnAmount;
+        arcadeVehicleController.Steering = turnAmount;
 
         // для нитро
         //wheelVehicle.boosting = true;

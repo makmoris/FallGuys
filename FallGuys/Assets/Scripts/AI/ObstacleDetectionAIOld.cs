@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ArcadeVP;
+using System.Collections;
 using UnityEngine;
 using VehicleBehaviour;
 
@@ -26,13 +27,13 @@ public class ObstacleDetectionAIOld : MonoBehaviour
 
 	private ArenaCarDriverAI arenaCarDriverAI;
 	private HoneycombDriverAI honeycombPlatformsDriverAI;
-	private WheelVehicle wheelVehicle;
+	private ArcadeVehicleController arcadeVehicleController;
 
 	private Coroutine _coroutine;
 
 	private void Awake()
 	{
-		wheelVehicle = GetComponent<WheelVehicle>();
+		arcadeVehicleController = GetComponent<ArcadeVehicleController>();
 		arenaCarDriverAI = GetComponent<ArenaCarDriverAI>();
 		honeycombPlatformsDriverAI = GetComponent<HoneycombDriverAI>();
 	}
@@ -87,13 +88,13 @@ public class ObstacleDetectionAIOld : MonoBehaviour
 			{
 				Obstacles = "Left_1";
 
-				wheelVehicle.Steering = -1f;
+				arcadeVehicleController.Steering = -1f;
 			}
 			else
 			{
 				Obstacles = "Right_1";
 
-				wheelVehicle.Steering = 1f;
+				arcadeVehicleController.Steering = 1f;
 			}
 			ObstacleDistance = hit.distance;
 		}
@@ -102,14 +103,14 @@ public class ObstacleDetectionAIOld : MonoBehaviour
 			Obstacles = "Left_2";
 			ObstacleDistance = hit.distance;
 
-			wheelVehicle.Steering = -1f;
+			arcadeVehicleController.Steering = -1f;
 		}
 		else if (Physics.Raycast(PosRight, DirCenter, out hit, raycastLength * .5f, obstacleLayerMask))
 		{               // Right
 			Obstacles = "Right_2";
 			ObstacleDistance = hit.distance;
 
-			wheelVehicle.Steering = 1f;
+			arcadeVehicleController.Steering = 1f;
 		}
 
 
@@ -118,7 +119,7 @@ public class ObstacleDetectionAIOld : MonoBehaviour
 			Obstacles = "Right_3";
 			ObstacleDistance = hit.distance;
 
-			wheelVehicle.Steering = 1f;
+			arcadeVehicleController.Steering = 1f;
 		}
 
 		if (Physics.Raycast(PosLeft, -DirAngleLeft, out hit, raycastLength * .7f, obstacleLayerMask))
@@ -126,7 +127,7 @@ public class ObstacleDetectionAIOld : MonoBehaviour
 			Obstacles = "Left_3";
 			ObstacleDistance = hit.distance;
 
-			wheelVehicle.Steering = -1f;
+			arcadeVehicleController.Steering = -1f;
 		}
 
 		if (Obstacles != "Null")// åñëè ïåðåä áîòîì åñòü ïðåïÿòñâèå è îí íå ñäàåò íàçàä
@@ -136,12 +137,12 @@ public class ObstacleDetectionAIOld : MonoBehaviour
 
 			if (isTurnBack)
 			{
-				wheelVehicle.Throttle = -1f;
-				wheelVehicle.Steering = 0f;
+				arcadeVehicleController.Throttle = -1f;
+				arcadeVehicleController.Steering = 0f;
 			}
 			else
 			{
-				wheelVehicle.Throttle = 1f;
+				arcadeVehicleController.Throttle = 1f;
 			}
 		}
 		else

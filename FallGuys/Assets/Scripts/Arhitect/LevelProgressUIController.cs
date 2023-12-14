@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,7 +40,7 @@ public abstract class LevelProgressUIController : MonoBehaviour
 
     [Header("Respawn Button")]
     [SerializeField] private Button respawnButton;
-    private WheelVehicle playerWheelVehicle;
+    private ArcadeVehicleController playerArcadeVehicleController;
 
     public event System.Action GameCanStartEvent;
 
@@ -124,9 +125,9 @@ public abstract class LevelProgressUIController : MonoBehaviour
         StartCoroutine(WaitAndHideLosingPanel(showingTime));
     }
 
-    public void ShowRespawnButton(WheelVehicle playerWV)
+    public void ShowRespawnButton(ArcadeVehicleController playerArcadeVehicleController)
     {
-        playerWheelVehicle = playerWV;
+        this.playerArcadeVehicleController = playerArcadeVehicleController;
 
         respawnButton.enabled = true;
         respawnButton.gameObject.SetActive(true);
@@ -162,7 +163,7 @@ public abstract class LevelProgressUIController : MonoBehaviour
 
     private void RespawnPlayer()
     {
-        playerWheelVehicle.RespawnPlayerAfterStuckFromButton();
+        playerArcadeVehicleController.RespawnPlayerAfterStuckFromButton();
 
         HideRespawnButton();
     }

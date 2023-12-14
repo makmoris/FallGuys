@@ -1,3 +1,4 @@
+using ArcadeVP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,10 +25,10 @@ public class HoneycombInstaller : Installer
                 GameObject playerGO = Instantiate(player.VehiclePrefab);
 
 
-                playerGO.transform.Find("Player Components").gameObject.SetActive(true);
-                playerGO.transform.Find("AI Components").gameObject.SetActive(false);
+                playerGO.GetComponentInChildren<PlayerComponents>().gameObject.SetActive(true);
+                playerGO.GetComponentInChildren<AIComponents>().gameObject.SetActive(false);
 
-                playerGO.GetComponent<WheelVehicle>().IsPlayer = true;
+                playerGO.GetComponent<ArcadeVehicleController>().IsPlayer = true;
 
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
@@ -35,7 +36,7 @@ public class HoneycombInstaller : Installer
                 playerName.HideNameDisplay();
 
                 // Weapon
-                Transform weaponPlace = playerGO.transform.Find("WeaponPlace");
+                Transform weaponPlace = playerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
                 weapon.Initialize(false, playerGO.GetComponent<Collider>());
                 weapon.DisableWeapon(playerGO);
@@ -69,12 +70,12 @@ public class HoneycombInstaller : Installer
 
                 GameObject aiPlayerGO = Instantiate(playerAI.VehiclePrefab);
 
-                aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
-                aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
+                aiPlayerGO.GetComponentInChildren<PlayerComponents>().gameObject.SetActive(false);
+                aiPlayerGO.GetComponentInChildren<AIComponents>().gameObject.SetActive(true);
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
                 aILogics.EnableHoneycombAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
 
-                aiPlayerGO.GetComponent<WheelVehicle>().IsPlayer = false;
+                aiPlayerGO.GetComponent<ArcadeVehicleController>().IsPlayer = false;
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();
@@ -85,7 +86,7 @@ public class HoneycombInstaller : Installer
                 if (aiVehicleCustomizer != null) aiVehicleCustomizer.SetColorMaterial(playerAI.VehicleColorMaterial);
 
                 // Weapon
-                Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
+                Transform weaponPlaceAI = aiPlayerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
                 weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
                 weaponAI.DisableWeapon(aiPlayerGO);

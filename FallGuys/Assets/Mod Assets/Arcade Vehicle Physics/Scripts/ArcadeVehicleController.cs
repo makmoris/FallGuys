@@ -100,13 +100,14 @@ namespace ArcadeVP
         [SerializeField] private bool isArcadeRaceAI;
         [Space]
         public Transform target;
+        public Transform Target => target;
 
         //Ai stuff
-        //[HideInInspector]
+        [HideInInspector]
         public float TurnAI = 1f;
-        //[HideInInspector]
+        [HideInInspector]
         public float SpeedAI = 1f;
-        //[HideInInspector]
+        [HideInInspector]
         public float brakeAI = 0f;
         public float brakeAngle = 30f;
 

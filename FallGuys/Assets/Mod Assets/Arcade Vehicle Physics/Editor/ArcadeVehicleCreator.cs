@@ -97,7 +97,7 @@ namespace ArcadeVP
             Make_Vehicle_Ready_For_Setup();
 
             NewVehicle = Instantiate(preset, bodyMesh.bounds.center, VehicleParent.rotation);
-            NewVehicle.name = "Arcade_" + VehicleParent.name;
+            NewVehicle.name = VehicleParent.name + "_Arcade";
             GameObject.DestroyImmediate(NewVehicle.transform.Find("Mesh").Find("Body").GetChild(0).gameObject);
             if (NewVehicle.transform.Find("Mesh").transform.Find("Wheels").Find("WheelFL"))
             {

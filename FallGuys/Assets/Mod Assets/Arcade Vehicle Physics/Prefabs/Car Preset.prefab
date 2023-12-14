@@ -234,6 +234,7 @@ Transform:
   - {fileID: 3360009844608974640}
   - {fileID: 3360009844514519365}
   - {fileID: 3360009844628187810}
+  - {fileID: 3895393709839705103}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -267,10 +268,10 @@ MonoBehaviour:
   drivableSurface:
     serializedVersion: 2
     m_Bits: 8
-  MaxSpeed: 100
-  accelaration: 20
-  turn: 10
-  gravity: 7
+  MaxSpeed: 55
+  accelaration: 6
+  turn: 3
+  gravity: 5
   downforce: 5
   AirControl: 0
   rb: {fileID: 3360009844608974645}
@@ -356,6 +357,20 @@ MonoBehaviour:
   MaxPitch: 3
   SkidSound: {fileID: 3360009843606734512}
   skidWidth: 0.17504606
+  isPlayer: 1
+  stuckTimeThreshold: 2
+  stuckTime_RolledOntoRoofOfSide: 0
+  stuckTime_PlayerPressesOnGasButDoesntMove: 0
+  stuckTime_StuckInSomething: 0
+  stuckTime_BotAIPressesOnGasButDoesntMove: 0
+  idleTime: 2
+  handbrake: 0
+  isArcadeRaceAI: 0
+  target: {fileID: 3895393709839705103}
+  TurnAI: 1
+  SpeedAI: 1
+  brakeAI: 0
+  brakeAngle: 30
 --- !u!54 &3360009843606734514
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20783,3 +20798,34 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &6477985557825292865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3895393709839705103}
+  m_Layer: 0
+  m_Name: Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3895393709839705103
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6477985557825292865}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3360009843606734477}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

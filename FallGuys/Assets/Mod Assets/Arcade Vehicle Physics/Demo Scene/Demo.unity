@@ -20296,7 +20296,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.12761535, y: 0, z: 0, w: 0.99182373}
-  m_LocalPosition: {x: 0, y: 1.57, z: -6}
+  m_LocalPosition: {x: 0, y: 2.202566, z: -6.0906477}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36106,16 +36106,20 @@ MonoBehaviour:
   MaxPitch: 3
   SkidSound: {fileID: 1674158948}
   skidWidth: 0.09627534
+  isPlayer: 1
   stuckTimeThreshold: 2
   stuckTime_RolledOntoRoofOfSide: 0
   stuckTime_PlayerPressesOnGasButDoesntMove: 0
   stuckTime_StuckInSomething: 0
   stuckTime_BotAIPressesOnGasButDoesntMove: 0
   idleTime: 2
-  steering: 0
-  throttle: 0
   handbrake: 0
-  speed: 0
+  isArcadeRaceAI: 0
+  target: {fileID: 0}
+  TurnAI: 1
+  SpeedAI: 1
+  brakeAI: 0
+  brakeAngle: 30
 --- !u!65 &1674158952
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36546,16 +36550,20 @@ MonoBehaviour:
   MaxPitch: 3
   SkidSound: {fileID: 1755628255}
   skidWidth: 0.12045351
+  isPlayer: 1
   stuckTimeThreshold: 2
   stuckTime_RolledOntoRoofOfSide: 0
   stuckTime_PlayerPressesOnGasButDoesntMove: 0
   stuckTime_StuckInSomething: 0
   stuckTime_BotAIPressesOnGasButDoesntMove: 0
   idleTime: 2
-  steering: 0
-  throttle: 0
   handbrake: 0
-  speed: 0
+  isArcadeRaceAI: 0
+  target: {fileID: 0}
+  TurnAI: 1
+  SpeedAI: 1
+  brakeAI: 0
+  brakeAngle: 30
 --- !u!65 &1755628259
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57683,16 +57691,20 @@ MonoBehaviour:
   MaxPitch: 3
   SkidSound: {fileID: 1668652264500705521}
   skidWidth: 0.13985014
+  isPlayer: 1
   stuckTimeThreshold: 2
   stuckTime_RolledOntoRoofOfSide: 0
   stuckTime_PlayerPressesOnGasButDoesntMove: 0
   stuckTime_StuckInSomething: 0
   stuckTime_BotAIPressesOnGasButDoesntMove: 0
   idleTime: 2
-  steering: 0
-  throttle: 0
   handbrake: 0
-  speed: 0
+  isArcadeRaceAI: 0
+  target: {fileID: 0}
+  TurnAI: 1
+  SpeedAI: 1
+  brakeAI: 0
+  brakeAngle: 30
 --- !u!65 &1668652264500705533
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -63878,11 +63890,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8693876150533690234, guid: d381deb92e51a634499a62e1e1e53fd9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8693876150533690234, guid: d381deb92e51a634499a62e1e1e53fd9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 8693876150533690234, guid: d381deb92e51a634499a62e1e1e53fd9, type: 3}
       propertyPath: m_LocalPosition.z

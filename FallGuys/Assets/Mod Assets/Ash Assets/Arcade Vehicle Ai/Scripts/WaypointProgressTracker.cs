@@ -43,6 +43,7 @@ namespace ArcadeVP
         public WaypointCircuit.RoutePoint speedPoint { get; private set; }
         public WaypointCircuit.RoutePoint progressPoint { get; private set; }
 
+        [HideInInspector]
         public Transform target;
 
       
@@ -68,10 +69,10 @@ namespace ArcadeVP
 
             // You can manually create a transform and assign it to this component *and* the AI,
             // then this component will update it, and the AI can read it.
-            if (target == null)
-            {
-                target = new GameObject(name + " Waypoint Target").transform;
-            }
+            //if (target == null)
+            //{
+            //    target = new GameObject(name + " Waypoint Target").transform;
+            //}
 
             Reset();
             if(circuit == null)
@@ -80,7 +81,8 @@ namespace ArcadeVP
             }
 
             arcadeVehicleController = transform.GetComponentInParent<ArcadeVehicleController>();
-            
+
+            target = arcadeVehicleController.Target;
         }
 
 

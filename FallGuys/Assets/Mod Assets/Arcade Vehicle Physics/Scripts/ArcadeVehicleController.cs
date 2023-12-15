@@ -118,6 +118,21 @@ namespace ArcadeVP
 
         private WaypointProgressTracker waypointProgressTracker;
 
+        //
+        private bool isObstacle;
+        public bool IsObstacle
+        {
+            get => isObstacle;
+            set => isObstacle = value;
+        }
+
+        private float obstacleSteer;
+        public float ObstacleSteer
+        {
+            get => obstacleSteer;
+            set => obstacleSteer = value;
+        }
+
         // events
         public static event System.Action<ArcadeVehicleController, bool> GetRespanwPositionForArcadeVehicleControllerEvent;// проверить
         public static event System.Action HideRespawnButtonEvent;// проверить
@@ -715,6 +730,8 @@ namespace ArcadeVP
                 }
                 TurnAI = 0f;
             }
+
+            if (isObstacle) TurnAI = obstacleSteer;
         }
 
         public void ActivateSpeedControlWithPlayer(CarPlayerWaipointTracker carPlayerWaipointTracker, WaypointProgressTracker waypointProgressTracker)

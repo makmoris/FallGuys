@@ -59,7 +59,6 @@ namespace ArcadeVP
         private float desiredTurning;
 
 
-
         private void Start()
         {
             radius = rb.GetComponent<SphereCollider>().radius;
@@ -156,7 +155,6 @@ namespace ArcadeVP
                 }
                 TurnAI = 0f;
             }
-
 
         }
         public void AudioManager()
@@ -312,6 +310,15 @@ namespace ArcadeVP
 
             }
 
+        }
+
+        private void OnCollisionStay(Collision col)
+        {
+            if (col.gameObject.CompareTag("Car"))
+            {
+                Debug.Log($"{gameObject.name} {col.GetContact(0).point} - point col; {gameObject.transform.position} - pos");
+
+            }
         }
     }
 }

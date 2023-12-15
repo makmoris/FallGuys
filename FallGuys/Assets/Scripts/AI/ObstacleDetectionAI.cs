@@ -88,97 +88,130 @@ public class ObstacleDetectionAI : MonoBehaviour
 
         if (Physics.Raycast(frontSideLeft_Angle.transform.position, frontSideLeft_Angle.transform.forward, out hit, frontSideRayLength * 0.7f, obstacleLayerMask))
         {
-            Obstacles = "Front Side Left";
-            ObstacleDistance = hit.distance;
+            if(driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "Front Side Left";
+                ObstacleDistance = hit.distance;
 
-            driverAI.ObstacleSteer = 0.75f;
+                driverAI.ObstacleSteer = 0.75f;
+            }
         }
         if (Physics.Raycast(frontSideLeftMiddle.transform.position, transform.forward, out hit, frontSideRayLength, obstacleLayerMask))
         {
-            Obstacles = "front Side Left Middle";
-            ObstacleDistance = hit.distance;
-
-            driverAI.ObstacleSteer = 1f;
-        }
-        if (Physics.Raycast(frontSideRight_Angle.transform.position, frontSideRight_Angle.transform.forward, out hit, frontSideRayLength * 0.7f, obstacleLayerMask))
-        {
-            Obstacles = "front Side Right";
-            ObstacleDistance = hit.distance;
-
-            driverAI.ObstacleSteer = -0.75f;
-        }
-        if (Physics.Raycast(frontSideRightMiddle.transform.position, transform.forward, out hit, frontSideRayLength, obstacleLayerMask))
-        {
-            Obstacles = "front Side Right Middle";
-            ObstacleDistance = hit.distance;
-
-            driverAI.ObstacleSteer = -1f;
-        }
-        if (Physics.Raycast(frontSideMiddle.transform.position, transform.forward, out hit, frontSideRayLength * 1.25f, obstacleLayerMask)
-            )
-        {                   // Center
-            Debug.DrawRay(hit.point, hit.normal, Color.cyan);
-
-            angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //угол между автомобилем и целевой траекторией
-                new Vector2(transform.forward.x, transform.forward.z));
-
-            if (angleObstacle < 0)
+            if (driverAI.gameObject != hit.transform.gameObject)
             {
-                Obstacles = "front Side Middle To Left";
-
-                driverAI.ObstacleSteer = -1f;
-            }
-            else
-            {
-                Obstacles = "front Side Middle To Right";
+                Obstacles = "front Side Left Middle";
+                ObstacleDistance = hit.distance;
 
                 driverAI.ObstacleSteer = 1f;
             }
-            ObstacleDistance = hit.distance;
+        }
+        if (Physics.Raycast(frontSideRight_Angle.transform.position, frontSideRight_Angle.transform.forward, out hit, frontSideRayLength * 0.7f, obstacleLayerMask))
+        {
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "front Side Right";
+                ObstacleDistance = hit.distance;
+
+                driverAI.ObstacleSteer = -0.75f;
+            }
+        }
+        if (Physics.Raycast(frontSideRightMiddle.transform.position, transform.forward, out hit, frontSideRayLength, obstacleLayerMask))
+        {
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "front Side Right Middle";
+                ObstacleDistance = hit.distance;
+
+                driverAI.ObstacleSteer = -1f;
+            }
+        }
+        if (Physics.Raycast(frontSideMiddle.transform.position, transform.forward, out hit, frontSideRayLength * 1.25f, obstacleLayerMask))
+        {
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                // Center
+                Debug.DrawRay(hit.point, hit.normal, Color.cyan);
+
+                angleObstacle = Vector2.SignedAngle(new Vector2(hit.normal.x, hit.normal.z), //угол между автомобилем и целевой траекторией
+                    new Vector2(transform.forward.x, transform.forward.z));
+
+                if (angleObstacle < 0)
+                {
+                    Obstacles = "front Side Middle To Left";
+
+                    driverAI.ObstacleSteer = -1f;
+                }
+                else
+                {
+                    Obstacles = "front Side Middle To Right";
+
+                    driverAI.ObstacleSteer = 1f;
+                }
+                ObstacleDistance = hit.distance;
+            }
         }
 
         if (Physics.Raycast(leftSideBack.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
         {
-            Obstacles = "left Side Back";
-            ObstacleDistance = hit.distance;
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "left Side Back";
+                ObstacleDistance = hit.distance;
 
-            driverAI.ObstacleSteer = 0.75f;
+                driverAI.ObstacleSteer = 0.75f;
+            }
         }
         if (Physics.Raycast(leftSideMiddle.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
         {
-            Obstacles = "left Side Middle";
-            ObstacleDistance = hit.distance;
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "left Side Middle";
+                ObstacleDistance = hit.distance;
 
-            driverAI.ObstacleSteer = 0.75f;
+                driverAI.ObstacleSteer = 0.75f;
+            }
         }
         if (Physics.Raycast(leftSideFront.transform.position, -transform.right, out hit, sidesRayLength, obstacleLayerMask))
         {
-            Obstacles = "left Side Front";
-            ObstacleDistance = hit.distance;
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "left Side Front";
+                ObstacleDistance = hit.distance;
 
-            driverAI.ObstacleSteer = 0.75f;
+                driverAI.ObstacleSteer = 0.75f;
+            }
         }
 
         if (Physics.Raycast(rightSideBack.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
         {
-            Obstacles = "right Side Back";
-            ObstacleDistance = hit.distance;
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "right Side Back";
+                ObstacleDistance = hit.distance;
 
-            driverAI.ObstacleSteer = -0.75f;
+                driverAI.ObstacleSteer = -0.75f;
+            }
         }
         if (Physics.Raycast(rightSideMiddle.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
         {
-            Obstacles = "right Side Middle";
-            ObstacleDistance = hit.distance;
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "right Side Middle";
+                ObstacleDistance = hit.distance;
 
-            driverAI.ObstacleSteer = -0.75f;
+                driverAI.ObstacleSteer = -0.75f;
+            }
         }
         if (Physics.Raycast(rightSideFront.transform.position, transform.right, out hit, sidesRayLength, obstacleLayerMask))
         {
-            Obstacles = "right Side Front";
-            ObstacleDistance = hit.distance;
+            if (driverAI.gameObject != hit.transform.gameObject)
+            {
+                Obstacles = "right Side Front";
+                ObstacleDistance = hit.distance;
 
-            driverAI.ObstacleSteer = -0.75f;
+                driverAI.ObstacleSteer = -0.75f;
+            }
         }
 
 

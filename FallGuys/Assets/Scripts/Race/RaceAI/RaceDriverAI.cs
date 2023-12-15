@@ -70,6 +70,19 @@ public class RaceDriverAI : DriverAI
         }
     }
 
+    private void Update()
+    {
+        if (obstacle)
+        {
+            arcadeVehicleController.IsObstacle = true;
+            arcadeVehicleController.ObstacleSteer = obstacleSteer;
+        }
+        else
+        {
+            arcadeVehicleController.IsObstacle = false;
+        }
+    }
+
     #region Difficulty AI Levels
     public override void SetLowDifficultyAILevel()
     {

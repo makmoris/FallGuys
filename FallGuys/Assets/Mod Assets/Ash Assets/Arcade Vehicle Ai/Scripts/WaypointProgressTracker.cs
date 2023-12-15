@@ -20,10 +20,10 @@ namespace ArcadeVP
         [SerializeField] private float lookAheadForTargetFactor = .1f;
         // A multiplier adding distance ahead along the route to aim for, based on current speed
 
-        private float lookAheadForSpeedOffset = 50;
+        [SerializeField] private float lookAheadForSpeedOffset = 50;
         // The offset ahead only the route for speed adjustments (applied as the rotation of the waypoint target transform)
 
-        private float lookAheadForSpeedFactor = .2f;
+        [SerializeField] private float lookAheadForSpeedFactor = .2f;
         // A multiplier adding distance ahead along the route for speed adjustments
 
         [SerializeField] private ProgressStyle progressStyle = ProgressStyle.SmoothAlongRoute;

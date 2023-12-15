@@ -79,7 +79,7 @@ public class RaceInstaller : Installer
                 aiPlayerGO.GetComponentInChildren<PlayerComponents>().gameObject.SetActive(false);
                 aiPlayerGO.GetComponentInChildren<AIComponents>().gameObject.SetActive(true);
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
-                aILogics.EnableRaceAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
+                aILogics.EnableRaceAI(aiPlayerGO, currentPlayer, frontRayLegth * 0.25f, sideRayLength * 0.25f, angleForSidesRays * 0.25f);
 
                 aiPlayerGO.GetComponent<ArcadeVehicleController>().IsPlayer = false;
 

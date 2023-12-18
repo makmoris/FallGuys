@@ -131,7 +131,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664802452718179609}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.6, z: 0.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9934,7 +9934,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664802453458718259}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08782849, z: 0}
+  m_LocalPosition: {x: 0, y: 0.3760181, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10145,7 +10145,6 @@ GameObject:
   - component: {fileID: 1664802453870863519}
   - component: {fileID: 1664802453870863516}
   - component: {fileID: 1664802453870863517}
-  - component: {fileID: 1664802453870863490}
   - component: {fileID: 1664802453870863491}
   - component: {fileID: 1664802453870863488}
   - component: {fileID: 1664802453870863489}
@@ -10156,6 +10155,7 @@ GameObject:
   - component: {fileID: 1664802453870863498}
   - component: {fileID: 1664802453870863499}
   - component: {fileID: 1664802453870863496}
+  - component: {fileID: 1197139706232277822}
   m_Layer: 16
   m_Name: ROCKET_Game_Arcade
   m_TagString: Car
@@ -10210,19 +10210,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &1664802453870863490
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664802453870863497}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5546303, y: 0.7520363, z: 2.8821402}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1664802453870863491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10625,6 +10612,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &1197139706232277822
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664802453870863497}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300002, guid: 2671772f97072427baf3a31e0828fa04, type: 3}
 --- !u!1 &1664802453916757307
 GameObject:
   m_ObjectHideFlags: 0

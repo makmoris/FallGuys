@@ -5370,7 +5370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6824589603732102301}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5534,7 +5534,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6824589604402287707}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.09423888, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5383272, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10497,7 +10497,6 @@ GameObject:
   - component: {fileID: 6824589604846422751}
   - component: {fileID: 6824589604846422748}
   - component: {fileID: 6824589604846422749}
-  - component: {fileID: 6824589604846422738}
   - component: {fileID: 6824589604846422739}
   - component: {fileID: 6824589604846422736}
   - component: {fileID: 6824589604846422737}
@@ -10508,6 +10507,7 @@ GameObject:
   - component: {fileID: 6824589604846422730}
   - component: {fileID: 6824589604846422731}
   - component: {fileID: 6824589604846422728}
+  - component: {fileID: 3593978250469267157}
   m_Layer: 16
   m_Name: UBER_Game_Arcade
   m_TagString: Car
@@ -10562,19 +10562,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &6824589604846422738
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6824589604846422729}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.3345312, y: 1.0766544, z: 3.1086967}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6824589604846422739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10977,6 +10964,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &3593978250469267157
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824589604846422729}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 63cbb95a5926a4f3bbf4448acf82e35a, type: 3}
 --- !u!1 &6824589605223518341
 GameObject:
   m_ObjectHideFlags: 0

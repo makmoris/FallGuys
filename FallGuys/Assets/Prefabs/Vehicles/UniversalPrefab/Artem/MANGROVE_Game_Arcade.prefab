@@ -6670,7 +6670,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5365842944607359107}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0891425, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4118256, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6785,7 +6785,6 @@ GameObject:
   - component: {fileID: 5365842944884111692}
   - component: {fileID: 5365842944884111693}
   - component: {fileID: 5365842944884111694}
-  - component: {fileID: 5365842944884111695}
   - component: {fileID: 5365842944884111688}
   - component: {fileID: 5365842944884111689}
   - component: {fileID: 5365842944884111690}
@@ -6796,6 +6795,7 @@ GameObject:
   - component: {fileID: 5365842944884111687}
   - component: {fileID: 5365842944884111680}
   - component: {fileID: 5365842944884111681}
+  - component: {fileID: 894436297736790060}
   m_Layer: 16
   m_Name: MANGROVE_Game_Arcade
   m_TagString: Car
@@ -6850,19 +6850,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &5365842944884111695
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5365842944884111682}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5956379, y: 0.82365113, z: 3.0854564}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5365842944884111688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7265,6 +7252,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &894436297736790060
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5365842944884111682}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -185753558727196566, guid: db078534a86cf0045b52e23b41dd1905, type: 3}
 --- !u!1 &5365842944903612564
 GameObject:
   m_ObjectHideFlags: 0
@@ -17081,7 +17082,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5365842945786333032}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.57, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

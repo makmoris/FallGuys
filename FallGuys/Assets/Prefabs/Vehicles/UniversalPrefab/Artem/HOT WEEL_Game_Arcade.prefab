@@ -1077,7 +1077,6 @@ GameObject:
   - component: {fileID: 5295941097900719076}
   - component: {fileID: 5295941097900719003}
   - component: {fileID: 5295941097900719002}
-  - component: {fileID: 5295941097900719001}
   - component: {fileID: 5295941097900719000}
   - component: {fileID: 5295941097900719007}
   - component: {fileID: 5295941097900719006}
@@ -1088,6 +1087,7 @@ GameObject:
   - component: {fileID: 5295941097900718993}
   - component: {fileID: 5295941097900718992}
   - component: {fileID: 5295941097900718999}
+  - component: {fileID: 4295749990579722006}
   m_Layer: 16
   m_Name: HOT WEEL_Game_Arcade
   m_TagString: Car
@@ -1142,19 +1142,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &5295941097900719001
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5295941097900718998}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.3104231, y: 1.012611, z: 2.6617856}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5295941097900719000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1557,6 +1544,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &4295749990579722006
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5295941097900718998}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 48a368d482a46461aab7b6f530b202e9, type: 3}
 --- !u!1 &5295941098011217603
 GameObject:
   m_ObjectHideFlags: 0
@@ -6495,7 +6496,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5295941098234548825}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.12749827, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5063055, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6687,7 +6688,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5295941098776123568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

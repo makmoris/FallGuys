@@ -6846,7 +6846,6 @@ GameObject:
   - component: {fileID: 5963854812054731258}
   - component: {fileID: 5963854812054731205}
   - component: {fileID: 5963854812054731204}
-  - component: {fileID: 5963854812054731207}
   - component: {fileID: 5963854812054731206}
   - component: {fileID: 5963854812054731201}
   - component: {fileID: 5963854812054731200}
@@ -6857,6 +6856,7 @@ GameObject:
   - component: {fileID: 5963854812054731215}
   - component: {fileID: 5963854812054731214}
   - component: {fileID: 5963854812054731209}
+  - component: {fileID: 4406384172067049964}
   m_Layer: 16
   m_Name: PROBLEM_Game_Arcade
   m_TagString: Car
@@ -6911,19 +6911,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &5963854812054731207
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5963854812054731208}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.509598, y: 1.3132098, z: 3.0567427}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5963854812054731206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7326,6 +7313,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &4406384172067049964
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5963854812054731208}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 164733466497e4a8c903d1d0a8354af2, type: 3}
 --- !u!1 &5963854812122897011
 GameObject:
   m_ObjectHideFlags: 0
@@ -17212,7 +17213,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5963854812690760506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17248,7 +17249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5963854812776959968}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.14534116, z: 0}
+  m_LocalPosition: {x: 0, y: 0.6566049, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

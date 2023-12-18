@@ -589,6 +589,7 @@ namespace ArcadeVP
                 {
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireCube(transform.position, GetComponent<BoxCollider>().size);
+                    
                 }
 
             }

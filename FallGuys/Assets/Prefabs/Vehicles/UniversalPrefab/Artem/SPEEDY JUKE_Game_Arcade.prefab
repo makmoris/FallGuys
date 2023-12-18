@@ -19746,7 +19746,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815921623233165788}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.07651973, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5629302, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19842,7 +19842,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815921623345530815}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19862,7 +19862,6 @@ GameObject:
   - component: {fileID: 1815921623478561297}
   - component: {fileID: 1815921623478561296}
   - component: {fileID: 1815921623478561299}
-  - component: {fileID: 1815921623478561298}
   - component: {fileID: 1815921623478561301}
   - component: {fileID: 1815921623478561300}
   - component: {fileID: 1815921623478561303}
@@ -19873,6 +19872,7 @@ GameObject:
   - component: {fileID: 1815921623478561306}
   - component: {fileID: 1815921623478561309}
   - component: {fileID: 1815921623478561308}
+  - component: {fileID: 3200222657606169338}
   m_Layer: 16
   m_Name: SPEEDY JUKE_Game_Arcade
   m_TagString: Car
@@ -19927,19 +19927,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &1815921623478561298
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1815921623478561311}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5722768, y: 1.1258603, z: 2.3650618}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1815921623478561301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20342,6 +20329,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &3200222657606169338
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815921623478561311}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 625bfe95406a044c7916eb59310ff559, type: 3}
 --- !u!1 &1815921623498111292
 GameObject:
   m_ObjectHideFlags: 0

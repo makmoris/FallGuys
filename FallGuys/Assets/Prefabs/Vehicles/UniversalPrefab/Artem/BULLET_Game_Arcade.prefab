@@ -11959,7 +11959,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8613240476168774556}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.109999895, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4747242, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16890,7 +16890,6 @@ GameObject:
   - component: {fileID: 8613240476347881165}
   - component: {fileID: 8613240476347881162}
   - component: {fileID: 8613240476347881163}
-  - component: {fileID: 8613240476347881160}
   - component: {fileID: 8613240476347881161}
   - component: {fileID: 8613240476347879734}
   - component: {fileID: 8613240476347879735}
@@ -16901,6 +16900,7 @@ GameObject:
   - component: {fileID: 8613240476347879728}
   - component: {fileID: 8613240476347879729}
   - component: {fileID: 8613240476347879742}
+  - component: {fileID: 5977170726826029265}
   m_Layer: 16
   m_Name: BULLET_Game_Arcade
   m_TagString: Car
@@ -16955,19 +16955,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &8613240476347881160
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8613240476347879743}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.3531215, y: 0.9494484, z: 2.8711872}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8613240476347881161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17370,6 +17357,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &5977170726826029265
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8613240476347879743}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 1a90e105057ed4c6ba8d9c30a1bf9891, type: 3}
 --- !u!1 &8613240476456899823
 GameObject:
   m_ObjectHideFlags: 0
@@ -17457,7 +17458,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8613240477136988497}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

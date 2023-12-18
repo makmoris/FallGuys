@@ -63,7 +63,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3488959532349091839}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14850,7 +14850,6 @@ GameObject:
   - component: {fileID: 3488959533667081799}
   - component: {fileID: 3488959533667081800}
   - component: {fileID: 3488959533667081801}
-  - component: {fileID: 3488959533667081802}
   - component: {fileID: 3488959533667081803}
   - component: {fileID: 3488959533667081804}
   - component: {fileID: 3488959533667081805}
@@ -14861,6 +14860,7 @@ GameObject:
   - component: {fileID: 3488959533667081778}
   - component: {fileID: 3488959533667081779}
   - component: {fileID: 3488959533667081780}
+  - component: {fileID: 1046893970292199437}
   m_Layer: 16
   m_Name: NIGHT SPIRIT_Game_Arcade
   m_TagString: Car
@@ -14915,19 +14915,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &3488959533667081802
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3488959533667081781}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.4489127, y: 0.93276215, z: 2.6428704}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3488959533667081803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15330,6 +15317,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &1046893970292199437
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3488959533667081781}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300006, guid: 9f6667026d4294135b5bc9ed1063e401, type: 3}
 --- !u!1 &3488959533775208540
 GameObject:
   m_ObjectHideFlags: 0
@@ -15357,7 +15358,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3488959533775208540}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.10767105, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4663811, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

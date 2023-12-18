@@ -7114,7 +7114,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6714955385682514563}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.08, z: 0}
+  m_LocalPosition: {x: 0, y: -0.63, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7134,7 +7134,6 @@ GameObject:
   - component: {fileID: 6714955385984327869}
   - component: {fileID: 6714955385984327868}
   - component: {fileID: 6714955385984327871}
-  - component: {fileID: 6714955385984327870}
   - component: {fileID: 6714955385984327865}
   - component: {fileID: 6714955385984327864}
   - component: {fileID: 6714955385984327867}
@@ -7145,6 +7144,7 @@ GameObject:
   - component: {fileID: 6714955385984327862}
   - component: {fileID: 6714955385984327857}
   - component: {fileID: 6714955385984327856}
+  - component: {fileID: 1305495986061954873}
   m_Layer: 16
   m_Name: MAMBA_Game_Arcade
   m_TagString: Car
@@ -7199,19 +7199,6 @@ MonoBehaviour:
   meshRenderers: []
   _activeMaterialIndex: 0
   _materials: []
---- !u!65 &6714955385984327870
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6714955385984327859}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5956379, y: 0.75181234, z: 3.0854564}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6714955385984327865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7614,6 +7601,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f1b2b5a565c8b4a88a55308e55199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &1305495986061954873
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6714955385984327859}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300002, guid: d349e1337212f8645b3f8c97077de3e5, type: 3}
 --- !u!1 &6714955386046214305
 GameObject:
   m_ObjectHideFlags: 0
@@ -17599,7 +17600,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6714955387082968426}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08914259, z: 0}
+  m_LocalPosition: {x: 0, y: 0.35, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -6,6 +6,9 @@ public class SlowdownObstacle : MonoBehaviour
 
     private GameObject ignoreParent;
 
+    private bool useSlowAfterExit;
+    private float slowTimeAfterExit;
+
     public void SetDecelerationAmount(float decelerationAmount)
     {
         this.decelerationAmount = decelerationAmount;
@@ -14,6 +17,12 @@ public class SlowdownObstacle : MonoBehaviour
     public void SetIgnoreParent(GameObject parentGO)
     {
         ignoreParent = parentGO;
+    }
+
+    public void SetSlowTimeAfterExit(float slowTime)
+    {
+        useSlowAfterExit = true;
+        slowTimeAfterExit = slowTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -41,7 +50,17 @@ public class SlowdownObstacle : MonoBehaviour
         if (other.CompareTag("Car"))
         {
             Bumper bumper = other.GetComponent<Bumper>();
-            if (bumper != null) bumper.StopSlowDown();
+            if (bumper != null)
+            {
+                if (useSlowAfterExit)
+                {
+                    bumper.WaitAndStopSlowDown(slowTimeAfterExit);
+                }
+                else
+                {
+                    bumper.StopSlowDown();
+                }
+            }
         }
     }
 

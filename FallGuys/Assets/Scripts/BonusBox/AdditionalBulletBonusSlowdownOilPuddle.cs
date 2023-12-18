@@ -7,6 +7,9 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
     [Header("Ignore Parent")]
     public bool isIgnoreParent;
 
+    [Header("Slowdown Time After Exit")]
+    [Min(0)]public float slowdownTimeAfterExit;
+
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusSlowdownOilPuddle;
 
     private SlowdownBonus slowdownBonus;
@@ -44,6 +47,11 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
         if (isIgnoreParent)
         {
             slowdownObstacle.SetIgnoreParent(parentGO);
+        }
+
+        if(slowdownTimeAfterExit > 0)
+        {
+            slowdownObstacle.SetSlowTimeAfterExit(slowdownTimeAfterExit);
         }
 
         slowdownGO.transform.localScale = new Vector3(0.125f, 0.125f, 0.125f);

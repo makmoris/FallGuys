@@ -9,8 +9,10 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
     public event Action<Bonus> OnBonusGot;
     public event Action<Bonus, GameObject> OnBonusGotWithGameObject;
 
+    private Coroutine waitAndStopSlowDownCoroutine = null;
     private Coroutine oilPuddleCoroutine = null;
     private int oilPuddleCoroutineCounter;
+
 
     private Rigidbody _rb;
     private float _defaultDragValue;
@@ -147,6 +149,30 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
             }
         }
         else if (slowdownsCounter < 0) slowdownsCounter = 0;
+    }
+
+    public void WaitAndStopSlowDown(float waitTime)
+    {
+        if(waitAndStopSlowDownCoroutine == null)
+        {
+            waitAndStopSlowDownCoroutine = StartCoroutine(WaitAndStopSlowDownCoroutine(waitTime));
+        }
+        else
+        {
+            StopCoroutine(waitAndStopSlowDownCoroutine);
+            StopSlowDown();
+
+            waitAndStopSlowDownCoroutine = StartCoroutine(WaitAndStopSlowDownCoroutine(waitTime));
+        }
+    }
+
+    IEnumerator WaitAndStopSlowDownCoroutine(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        StopSlowDown();
+
+        waitAndStopSlowDownCoroutine = null;
     }
     #endregion
 

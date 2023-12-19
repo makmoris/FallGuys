@@ -95,6 +95,14 @@ public class PostLevelPlaceController : MonoBehaviour
             {
                 winner.SetActive(true);
 
+                Rigidbody[] rigidbodys = winner.GetComponentsInChildren<Rigidbody>();
+
+                foreach (var rb in rigidbodys)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+
                 PostPlace postPlace = postPlacesList[0];
                 Transform postPlaceTransform = postPlace.GetPlaceTransform();
 
@@ -113,6 +121,14 @@ public class PostLevelPlaceController : MonoBehaviour
             if (postPlacesList.Count > 0)
             {
                 loser.SetActive(true);
+
+                Rigidbody[] rigidbodys = loser.GetComponentsInChildren<Rigidbody>();
+
+                foreach (var rb in rigidbodys)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
 
                 PostPlace postPlace = postPlacesList[0];
                 Transform postPlaceTransform = postPlace.GetPlaceTransform();

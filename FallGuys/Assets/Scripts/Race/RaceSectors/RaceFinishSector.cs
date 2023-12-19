@@ -16,9 +16,14 @@ public class RaceFinishSector : MonoBehaviour
         {
             finishedDriversList.Add(arcadeVehicleController);
 
-            ThisDriverFinishedEvent?.Invoke(arcadeVehicleController);
+            //Rigidbody rigidbody = arcadeVehicleController.GetComponent<Rigidbody>();
+
+            //rigidbody.velocity = Vector3.zero;
+            //rigidbody.angularVelocity = Vector3.zero;
 
             arcadeVehicleController.gameObject.SetActive(false);
+
+            ThisDriverFinishedEvent?.Invoke(arcadeVehicleController);
         }
     }
 }

@@ -169,7 +169,7 @@ namespace ArcadeVP
 
                 if (useSpeedControl)
                 {
-                    if (waypointProgressTracker.ProgressDistance > carPlayerWaipointTracker.ProgressDistance && carPlayerWaipointTracker != null)
+                    if (waypointProgressTracker.ProgressDistance > carPlayerWaipointTracker.ProgressDistance)
                     {
                         MaxSpeed = defaultMaxSpeed * speedPercent;
                     }

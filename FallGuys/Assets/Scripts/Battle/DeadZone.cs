@@ -58,6 +58,14 @@ public class DeadZone : MonoBehaviour
             //car.SetActive(false);
             car.SetActive(true);
 
+            Rigidbody[] rigidbodys = bumper.GetComponentsInChildren<Rigidbody>();
+
+            foreach (var rb in rigidbodys)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+
             Vector3 pos = arenaSpawnController.GetRespawnPosition().position;
             car.transform.position = new Vector3(pos.x, 5f, pos.z);
             car.transform.rotation = arenaSpawnController.GetRespawnPosition().rotation;

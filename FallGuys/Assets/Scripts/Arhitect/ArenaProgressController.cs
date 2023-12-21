@@ -126,6 +126,8 @@ public class ArenaProgressController : LevelProgressController
             {
                 _isGameEnded = true;
 
+                _winnersList.Clear();
+
                 foreach (var player in _playersList)
                 {
                     if (player == _currentPlayer)

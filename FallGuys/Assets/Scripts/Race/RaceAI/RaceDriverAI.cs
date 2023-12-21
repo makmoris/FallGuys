@@ -12,6 +12,7 @@ public class RaceDriverAI : DriverAI
     internal float maxSpeed;
     internal float maximumSteerAngle;
 
+    [Header("DEBUG")]
     [SerializeField]private bool moveForward;
 
     [SerializeField] private float currentSpeed;
@@ -68,6 +69,8 @@ public class RaceDriverAI : DriverAI
 
             ChoseDifficultyLevel(difficultyAILevel);
         }
+
+        CheckOnUseAISettings(arcadeVehicleController);
     }
 
     private void Update()
@@ -111,5 +114,15 @@ public class RaceDriverAI : DriverAI
     public void SaveCheckpoint()
     {
         waypointProgressTracker.SaveCheckpoint();
+    }
+
+    public override void CheckOnUseAISettings(ArcadeVehicleController arcadeVehicleController)
+    {
+        if (useAISettings)
+        {
+            if(aiMaxSpeed > 0) arcadeVehicleController.MaxSpeed = aiMaxSpeed;
+            if (aiAccelaration > 0) arcadeVehicleController.accelaration = aiAccelaration;
+            if (aiTurn > 0) arcadeVehicleController.turn = aiTurn;
+        }
     }
 }

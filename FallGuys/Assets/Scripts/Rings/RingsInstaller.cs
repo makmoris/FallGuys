@@ -30,8 +30,8 @@ public class RingsInstaller : Installer
                 // Install player
                 GameObject playerGO = Instantiate(player.VehiclePrefab);
 
-                playerGO.transform.Find("Player Components").gameObject.SetActive(true);
-                playerGO.transform.Find("AI Components").gameObject.SetActive(false);
+                playerGO.GetComponentInChildren<PlayerComponents>().gameObject.SetActive(true);
+                playerGO.GetComponentInChildren<AIComponents>().gameObject.SetActive(false);
 
                 playerGO.GetComponent<ArcadeVehicleController>().IsPlayer = true;
 
@@ -47,7 +47,7 @@ public class RingsInstaller : Installer
                 ringsTargetsController.AddPlayerToTargets(playerGO);
 
                 // Weapon
-                Transform weaponPlace = playerGO.transform.Find("WeaponPlace");
+                Transform weaponPlace = playerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
                 weapon.Initialize(false, playerGO.GetComponent<Collider>());
                 weapon.ChangeAttackRange(customAttackRange);
@@ -80,8 +80,8 @@ public class RingsInstaller : Installer
 
                 GameObject aiPlayerGO = Instantiate(playerAI.VehiclePrefab);
 
-                aiPlayerGO.transform.Find("Player Components").gameObject.SetActive(false);
-                aiPlayerGO.transform.Find("AI Components").gameObject.SetActive(true);
+                aiPlayerGO.GetComponentInChildren<PlayerComponents>().gameObject.SetActive(false);
+                aiPlayerGO.GetComponentInChildren<AIComponents>().gameObject.SetActive(true);
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
                 aILogics.EnableRingsAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
 
@@ -99,7 +99,7 @@ public class RingsInstaller : Installer
                 ringsTargetsController.AddPlayerToTargets(aiPlayerGO);
 
                 // Weapon
-                Transform weaponPlaceAI = aiPlayerGO.transform.Find("WeaponPlace");
+                Transform weaponPlaceAI = aiPlayerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
                 weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
                 weaponAI.ChangeAttackRange(customAttackRange);

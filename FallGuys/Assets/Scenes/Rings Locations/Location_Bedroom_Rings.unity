@@ -1455,6 +1455,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Domino_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1353317121853348, guid: 13a5443ab73be6e4184690fcdf20031c, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4624433510113954, guid: 13a5443ab73be6e4184690fcdf20031c, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -2050,7 +2054,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 237176972}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -2068,6 +2072,10 @@ PrefabInstance:
     - target: {fileID: 1583944641937814, guid: 3e3c5de74ee32294fbce316d3ca0bb6e, type: 3}
       propertyPath: m_Name
       value: Book_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583944641937814, guid: 3e3c5de74ee32294fbce316d3ca0bb6e, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4273005594707480, guid: 3e3c5de74ee32294fbce316d3ca0bb6e, type: 3}
       propertyPath: m_RootOrder
@@ -2139,6 +2147,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1889663405}
     m_Modifications:
+    - target: {fileID: 1518067820015236, guid: 158270f284bcebc46a694057d6da2f6c, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518067820015236, guid: 158270f284bcebc46a694057d6da2f6c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1749393763920242, guid: 158270f284bcebc46a694057d6da2f6c, type: 3}
       propertyPath: m_Name
       value: Nightstand_Grp
@@ -3128,7 +3144,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 307078152}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -7296,6 +7312,103 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bbb7284cb3044944be7c1f8888ebca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &584479285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 584479286}
+  - component: {fileID: 584479289}
+  - component: {fileID: 584479288}
+  - component: {fileID: 584479287}
+  m_Layer: 6
+  m_Name: Obstacle (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &584479286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584479285}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -64.9}
+  m_LocalScale: {x: 80, y: 20, z: 6}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 643033563}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &584479287
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584479285}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &584479288
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584479285}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &584479289
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584479285}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &589310484
 GameObject:
   m_ObjectHideFlags: 0
@@ -7421,6 +7534,10 @@ PrefabInstance:
     - target: {fileID: 1754761232799314, guid: 25006d44423a1de4e9aa86bc3f8d21eb, type: 3}
       propertyPath: m_Name
       value: Game_Box_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1754761232799314, guid: 25006d44423a1de4e9aa86bc3f8d21eb, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4540377407000920, guid: 25006d44423a1de4e9aa86bc3f8d21eb, type: 3}
       propertyPath: m_RootOrder
@@ -8086,6 +8203,7 @@ Transform:
   - {fileID: 651474101}
   - {fileID: 1862138784}
   - {fileID: 513575538}
+  - {fileID: 584479286}
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8971,7 +9089,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727489954}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -8987,7 +9105,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727489955}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -9003,7 +9121,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727489956}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -9019,7 +9137,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727489957}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -9972,6 +10090,10 @@ PrefabInstance:
     - target: {fileID: 1391806355793646, guid: c8e2a95b0ddb4934e9ddc5b77ff6f96e, type: 3}
       propertyPath: m_Name
       value: Domino_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1391806355793646, guid: c8e2a95b0ddb4934e9ddc5b77ff6f96e, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4641898851909222, guid: c8e2a95b0ddb4934e9ddc5b77ff6f96e, type: 3}
       propertyPath: m_RootOrder
@@ -12252,6 +12374,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Domino_03 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1391806355793646, guid: c8e2a95b0ddb4934e9ddc5b77ff6f96e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4641898851909222, guid: c8e2a95b0ddb4934e9ddc5b77ff6f96e, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -14271,7 +14397,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1367238349}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -14292,7 +14418,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1372537981}
   serializedVersion: 2
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -14672,6 +14798,10 @@ PrefabInstance:
     - target: {fileID: 1740022567534842, guid: d1124c6c4a53b8f4a9f6a0f40592df17, type: 3}
       propertyPath: m_Name
       value: Mesure (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1740022567534842, guid: d1124c6c4a53b8f4a9f6a0f40592df17, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4318879848317898, guid: d1124c6c4a53b8f4a9f6a0f40592df17, type: 3}
       propertyPath: m_RootOrder
@@ -15703,6 +15833,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Domino_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1353317121853348, guid: 13a5443ab73be6e4184690fcdf20031c, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4624433510113954, guid: 13a5443ab73be6e4184690fcdf20031c, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -16393,6 +16527,10 @@ PrefabInstance:
     - target: {fileID: 1740022567534842, guid: d1124c6c4a53b8f4a9f6a0f40592df17, type: 3}
       propertyPath: m_Name
       value: Mesure
+      objectReference: {fileID: 0}
+    - target: {fileID: 1740022567534842, guid: d1124c6c4a53b8f4a9f6a0f40592df17, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4318879848317898, guid: d1124c6c4a53b8f4a9f6a0f40592df17, type: 3}
       propertyPath: m_RootOrder

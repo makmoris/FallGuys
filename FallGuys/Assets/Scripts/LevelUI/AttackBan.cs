@@ -11,6 +11,9 @@ public class AttackBan : MonoBehaviour
     [SerializeField] private Image banScaleImage;
     [SerializeField] private TextMeshProUGUI banText;
 
+    [Header("Ban Additional Bullet")]
+    [SerializeField] private BuffsDebuffsNotifications buffsDebuffsNotifications;
+
     private Coroutine fillingBanTimeCoroutine = null;
 
     private void Awake()
@@ -24,6 +27,8 @@ public class AttackBan : MonoBehaviour
         attackButton.gameObject.SetActive(false);
         banImage.gameObject.SetActive(true);
 
+        buffsDebuffsNotifications.ShowAdditionalBulletBonusBan();
+
         if (fillingBanTimeCoroutine != null)
         {
             CoroutineRunner.Stop(fillingBanTimeCoroutine);
@@ -35,6 +40,8 @@ public class AttackBan : MonoBehaviour
     {
         banImage.gameObject.SetActive(false);
         attackButton.gameObject.SetActive(true);
+
+        buffsDebuffsNotifications.HideAdditionalBulletBonusBan();
     }
 
     IEnumerator FillingBanScale(float fillingTime)

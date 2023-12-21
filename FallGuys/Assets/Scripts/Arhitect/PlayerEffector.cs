@@ -1,9 +1,10 @@
 using ArcadeVP;
+using System;
 using System.Collections;
 using UnityEngine;
 using VehicleBehaviour;
 
-public class PlayerEffector
+public class PlayerEffector : IDisposable
 {
     private readonly IPlayerData player;
     //private readonly PlayerLimitsData limitsData;
@@ -434,5 +435,11 @@ public class PlayerEffector
     private IEnumerator Timer(float time)
     {
         yield return new WaitForSeconds(time);
+    }
+
+    public void Dispose()
+    {
+        thisBumper.OnBonusGot -= ApplyBonus;
+        thisBumper.OnBonusGotWithGameObject -= ApplyBonus;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,9 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     [SerializeField] private GameObject additionalBulletBonusLightning;
     [SerializeField] private GameObject additionalBulletBonusSlowdownOilPuddle;
     [SerializeField] private GameObject additionalBulletBonusExplosion;
+    [Space]
+    [SerializeField] private Color banColorForAdditionalBulletBonus;
+    private List<Image> additionalBulletBonusImages = new List<Image>();
 
     private void Awake()
     {
@@ -33,6 +37,10 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         additionalBulletBonusLightning.SetActive(false);
         additionalBulletBonusSlowdownOilPuddle.SetActive(false);
         additionalBulletBonusExplosion.SetActive(false);
+
+        additionalBulletBonusImages.Add(additionalBulletBonusLightning.GetComponent<Image>());
+        additionalBulletBonusImages.Add(additionalBulletBonusSlowdownOilPuddle.GetComponent<Image>());
+        additionalBulletBonusImages.Add(additionalBulletBonusExplosion.GetComponent<Image>());
     }
 
     public void ShowShieldBuff()
@@ -139,6 +147,22 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         if (additionalBulletBonusExplosion.activeSelf) additionalBulletBonusExplosion.SetActive(false);
 
         banImage.enabled = true;
+    }
+
+    public void ShowAdditionalBulletBonusBan()
+    {
+        foreach (var image in additionalBulletBonusImages)
+        {
+            image.color = banColorForAdditionalBulletBonus;
+        }
+    }
+
+    public void HideAdditionalBulletBonusBan()
+    {
+        foreach (var image in additionalBulletBonusImages)
+        {
+            image.color = new Color(1f, 1f, 1f, 1f);
+        }
     }
 
     private void ShowAdditionalBulletBonusLightning()

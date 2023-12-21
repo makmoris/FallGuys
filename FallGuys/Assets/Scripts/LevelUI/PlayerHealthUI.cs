@@ -55,7 +55,14 @@ public class PlayerHealthUI : MonoBehaviour
 
             if (healthPercent > 0)
             {
-                _text.text = $"+ {(int)val}";
+                if(healthPercent < 1)
+                {
+                    _text.text = $"+ 1";
+                }
+                else
+                {
+                    _text.text = $"+ {(int)val}";
+                }
 
                 currentHealthValue = (int)val;
             }

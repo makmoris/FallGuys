@@ -15,6 +15,9 @@ public abstract class PointerIcon : MonoBehaviour
     private Vector2 nativePosition;
     private Vector2 nativeImagePosition;
 
+    private Coroutine showProcessCoroutine;
+    private Coroutine hideProcessCoroutine;
+
     private void Awake()
     {
         GetComponent<RectTransform>().SetAsFirstSibling();
@@ -76,8 +79,13 @@ public abstract class PointerIcon : MonoBehaviour
     {
         if (_isShown) return;
         _isShown = true;
-        StopAllCoroutines();
-        if(gameObject.activeSelf) StartCoroutine(ShowProcess());
+
+        //StopAllCoroutines();
+
+        if (showProcessCoroutine != null) StopCoroutine(showProcessCoroutine);
+        if (hideProcessCoroutine != null) StopCoroutine(hideProcessCoroutine);
+
+        if(gameObject.activeSelf) showProcessCoroutine = StartCoroutine(ShowProcess());
     }
 
     public void Hide()
@@ -85,8 +93,12 @@ public abstract class PointerIcon : MonoBehaviour
         if (!_isShown) return;
         _isShown = false;
 
-        StopAllCoroutines();
-        if (gameObject.activeSelf) StartCoroutine(HideProcess());
+        //StopAllCoroutines();
+
+        if (showProcessCoroutine != null) StopCoroutine(showProcessCoroutine);
+        if (hideProcessCoroutine != null) StopCoroutine(hideProcessCoroutine);
+
+        if (gameObject.activeSelf) hideProcessCoroutine = StartCoroutine(HideProcess());
     }
 
     public virtual void PointerPositionRelativeToTheScreenHasChanged() { }
@@ -112,5 +124,11 @@ public abstract class PointerIcon : MonoBehaviour
             yield return null;
         }
         _image.enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        if (showProcessCoroutine != null) StopCoroutine(showProcessCoroutine);
+        if (hideProcessCoroutine != null) StopCoroutine(hideProcessCoroutine);
     }
 }

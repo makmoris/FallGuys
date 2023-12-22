@@ -109,6 +109,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #region DEBUG
+    public void SetDebugIndex(int index)
+    {
+        debugIndex = index;
+    }
+    #endregion
+
+
     public void StartGameStage()// начальная точка. Вызывается по кнопке "Play"
     {
         #region Debug GameStagesList

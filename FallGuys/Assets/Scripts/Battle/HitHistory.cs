@@ -28,4 +28,9 @@ public class HitHistory : MonoBehaviour
 
         lastShooter = null;
     }
+
+    private void OnDisable()
+    {
+        if (resetLastShooter != null) StopCoroutine(resetLastShooter);
+    }
 }

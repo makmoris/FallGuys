@@ -736,7 +736,8 @@ namespace ArcadeVP
             if (isObstacle) TurnAI = obstacleSteer;
         }
 
-        public void ActivateSpeedControlWithPlayer(CarPlayerWaipointTracker carPlayerWaipointTracker, WaypointProgressTracker waypointProgressTracker, float speedPercent)
+        public void ActivateSpeedControlWithPlayer(CarPlayerWaipointTracker carPlayerWaipointTracker, WaypointProgressTracker waypointProgressTracker,
+            float speedPercent)
         {
             useSpeedControl = true;
             this.carPlayerWaipointTracker = carPlayerWaipointTracker;

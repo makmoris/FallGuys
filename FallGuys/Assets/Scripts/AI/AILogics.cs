@@ -35,7 +35,8 @@ public class AILogics : MonoBehaviour
         }
     }
 
-    public void EnableRaceAI(GameObject aiPlayerGO, GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides)
+    public void EnableRaceAI(GameObject aiPlayerGO, GameObject currentPlayerGO, float frontSideRayLength, float sidesRayLength, float angleForSides,
+        float speedPercent)
     {
         RaceDriverAI raceAI;
 
@@ -46,6 +47,7 @@ public class AILogics : MonoBehaviour
             if (raceAI != null)
             {
                 raceAI.gameObject.SetActive(true);
+                raceAI.SetSpeedPercent(speedPercent);
                 raceAI.Initialize(aiPlayerGO, currentPlayerGO, GetDifficultyAILevel());
                 obstacleDetection.SetAILogic(raceAI, frontSideRayLength, sidesRayLength, angleForSides);
 

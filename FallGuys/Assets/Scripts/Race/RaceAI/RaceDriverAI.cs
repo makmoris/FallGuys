@@ -1,5 +1,6 @@
 using ArcadeVP;
 using PunchCars.DifficultyAILevels;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,8 @@ public class RaceDriverAI : DriverAI
     //private AnyCarAI anyCarAI;
     private WaypointProgressTracker waypointProgressTracker;
 
+    private float speedPercent = 1f;
+
     public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
         arcadeVehicleController = aiPlayerGO.GetComponent<ArcadeVehicleController>();
@@ -86,23 +89,28 @@ public class RaceDriverAI : DriverAI
         }
     }
 
+    public void SetSpeedPercent(float speedPercent)
+    {
+        this.speedPercent = speedPercent;
+    }
+
     #region Difficulty AI Levels
     public override void SetLowDifficultyAILevel()
     {
         CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
-        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, 0.5f);
+        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, speedPercent);
     }
 
     public override void SetNormalDifficultyAILevel()
     {
         CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
-        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, 0.5f);
+        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, speedPercent);
     }
 
     public override void SetHighDifficultyAILevel()
     {
         CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
-        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, 0.75f);
+        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, speedPercent);
     }
     #endregion
 

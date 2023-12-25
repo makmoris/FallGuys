@@ -73,7 +73,7 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     {
         slowDebuffNeedToShow = false;
 
-        slowDebuff.gameObject.SetActive(false);
+        if(slowDebuff != null) slowDebuff.gameObject.SetActive(false);
     }
 
     public void ShowHealthDamageDebuff()

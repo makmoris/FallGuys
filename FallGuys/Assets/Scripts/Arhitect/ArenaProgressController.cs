@@ -130,18 +130,36 @@ public class ArenaProgressController : LevelProgressController
 
                 foreach (var player in _playersList)
                 {
-                    if (player == _currentPlayer)
+                    if (!_losersList.Contains(player))
                     {
-                        _isCurrentPlayerWinner = true;
+                        if (player == _currentPlayer)
+                        {
+                            _isCurrentPlayerWinner = true;
 
-                        // показываем окно победы игроку
-                        arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
-                        arenaProgressUIController.ShowCongratilationsPanel();
+                            // показываем окно победы игроку
+                            arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
+                            arenaProgressUIController.ShowCongratilationsPanel();
+                        }
+
+                        _winnersList.Add(player);
+
+                        player.GetComponent<ArcadeVehicleController>().Handbrake = true;
                     }
 
-                    _winnersList.Add(player);
+                    //if (player == _currentPlayer)
+                    //{
+                    //    _isCurrentPlayerWinner = true;
 
-                    player.GetComponent<ArcadeVehicleController>().Handbrake = true;
+                    //    // показываем окно победы игроку
+                    //    arenaProgressUIController.CongratulationsOverEvent += CongratulationsOver;
+                    //    arenaProgressUIController.ShowCongratilationsPanel();
+                    //}
+
+                    //_winnersList.Add(player);
+
+                    //Debug.LogError($"Winner = {player.GetComponent<PlayerName>().Name}");
+
+                    //player.GetComponent<ArcadeVehicleController>().Handbrake = true;
                 }
 
                 if (!_isCurrentPlayerWinner)

@@ -64,7 +64,7 @@ public class UIEnemyPointers : MonoBehaviour
         if (!remove)
         {
             PointerIcon newPointer = _positionDictionary[enemyPointer];
-            if (newPointer != null) newPointer.Hide();
+            newPointer.Hide();
         }
         else
         {

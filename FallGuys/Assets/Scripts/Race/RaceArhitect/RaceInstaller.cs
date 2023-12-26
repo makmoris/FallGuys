@@ -7,8 +7,9 @@ using ArcadeVP;
 public class RaceInstaller : Installer
 {
     [Header("-----")]
-    [Header("Race AI")]
+    [Header("Custom Weapon Values")]
     [SerializeField] private float customRechargeTime = 10f;
+    [Header("Race AI")]
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
     [Header("Additional Bullet Bonuses")]

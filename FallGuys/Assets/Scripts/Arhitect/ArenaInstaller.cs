@@ -11,6 +11,9 @@ public class ArenaInstaller : Installer
     [SerializeField] private ArenaTargetsController arenaTargetsController;
     [SerializeField] private ArenaSpawnController arenaSpawnController;
 
+    [Header("Custom Weapon Values")]
+    [SerializeField] private float customAttackRange = 15f;
+
     [Header("Arena AI")]
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
@@ -55,6 +58,7 @@ public class ArenaInstaller : Installer
                 Transform weaponPlace = playerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
                 weapon.Initialize(false, playerGO.GetComponent<Collider>());
+                weapon.ChangeAttackRange(customAttackRange);
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
 
@@ -105,6 +109,7 @@ public class ArenaInstaller : Installer
                 Transform weaponPlaceAI = aiPlayerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
                 weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
+                weaponAI.ChangeAttackRange(customAttackRange);
 
                 if (useDamagePercentage)
                 {

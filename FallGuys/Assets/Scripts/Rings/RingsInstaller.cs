@@ -12,9 +12,10 @@ public class RingsInstaller : Installer
     [SerializeField] private RingsController ringsController;
     [SerializeField] private ArenaSpawnController arenaSpawnController;
 
-    [Header("Rings AI")]
+    [Header("Custom Weapon Values")]
     [SerializeField] private float customAttackRange = 20f;
     [SerializeField] private float customRechargeTime = 3f;
+    [Header("Rings AI")]
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
     private int spawnCounter;

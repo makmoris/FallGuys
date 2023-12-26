@@ -4,12 +4,37 @@ using UnityEngine;
 
 public class RaceStartSector : MonoBehaviour
 {
+    [SerializeField] private bool isRandomPlaces;
     [SerializeField] private GameObject startPlacesGO;
     private List<Transform> startPlacesTransformList = new List<Transform>();
 
     private void Awake()
     {
         FillStartPlacesTransformList();
+    }
+
+    public void SetPlayersCount(int playersCount)
+    {
+        if (playersCount <= startPlacesTransformList.Count)
+        {
+            if(playersCount < startPlacesTransformList.Count)
+            {
+                int elementsToRemoveValue = startPlacesTransformList.Count - playersCount;
+
+                Debug.LogError($"StartPlaces = {startPlacesTransformList.Count}");
+
+                startPlacesTransformList.RemoveRange(playersCount, elementsToRemoveValue);
+
+                ShaffleStartPlacesTransformList();
+
+                Debug.LogError($"StartPlaces = {startPlacesTransformList.Count}");
+            }
+        }
+        else
+        {
+            Debug.LogError("Players Count more than Spawn Places");
+            return;
+        }
     }
 
     public Transform GetStartSpawnPlace()
@@ -35,6 +60,14 @@ public class RaceStartSector : MonoBehaviour
             startPlacesTransformList.Add(startPlacesGO.transform.GetChild(i));
         }
 
+        if (isRandomPlaces)
+        {
+            ShaffleStartPlacesTransformList();
+        }
+    }
+
+    private void ShaffleStartPlacesTransformList()
+    {
         System.Random rand = new();
 
         for (int i = startPlacesTransformList.Count - 1; i >= 1; i--)

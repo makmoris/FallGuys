@@ -28,6 +28,8 @@ public class RaceInstaller : Installer
     {
         RaceProgressController raceProgressController = levelProgressController as RaceProgressController;
 
+        raceProgressController.GetRaceStartSector().SetPlayersCount(playersData.Count);
+
         float speedPercent = 1f;
 
         if (useSpeedPercentage)

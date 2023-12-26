@@ -8,7 +8,8 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
     public bool isIgnoreParent;
 
     [Header("Slowdown Time After Exit")]
-    [Min(0)]public float slowdownTimeAfterExit;
+    [Min(0)]public float slowdownTimeAfterExitForAI = 2f;
+    [Min(0)] public float slowdownTimeAfterExitForPlayer = 1f;
 
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusSlowdownOilPuddle;
 
@@ -49,9 +50,9 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
             slowdownObstacle.SetIgnoreParent(parentGO);
         }
 
-        if(slowdownTimeAfterExit > 0)
+        if(slowdownTimeAfterExitForAI > 0 && slowdownTimeAfterExitForPlayer > 0)
         {
-            slowdownObstacle.SetSlowTimeAfterExit(slowdownTimeAfterExit);
+            slowdownObstacle.SetSlowTimeAfterExit(slowdownTimeAfterExitForAI, slowdownTimeAfterExitForPlayer);
         }
 
         slowdownGO.transform.localScale = new Vector3(0.125f, 0.125f, 0.125f);

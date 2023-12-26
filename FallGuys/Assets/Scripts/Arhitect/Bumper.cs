@@ -5,6 +5,7 @@ using System.Collections;
 public class Bumper : MonoBehaviour /* „увак оторогоЌельз€Ќазывать */ // на обьекте нашего игрока будет висеть этот скрипт
 {
     private bool isPlayer;
+    public bool IsPlayer => isPlayer;
 
     public event Action<Bonus> OnBonusGot;
     public event Action<Bonus, GameObject> OnBonusGotWithGameObject;

@@ -7,7 +7,8 @@ public class SlowdownObstacle : MonoBehaviour
     private GameObject ignoreParent;
 
     private bool useSlowAfterExit;
-    private float slowTimeAfterExit;
+    private float slowTimeAfterExitForAI;
+    private float slowTimeAfterExitForPlayer;
 
     public void SetDecelerationAmount(float decelerationAmount)
     {
@@ -19,10 +20,11 @@ public class SlowdownObstacle : MonoBehaviour
         ignoreParent = parentGO;
     }
 
-    public void SetSlowTimeAfterExit(float slowTime)
+    public void SetSlowTimeAfterExit(float slowTimeForAI, float slowTimeForPlayer)
     {
         useSlowAfterExit = true;
-        slowTimeAfterExit = slowTime;
+        slowTimeAfterExitForAI = slowTimeForAI;
+        slowTimeAfterExitForPlayer = slowTimeForPlayer;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -54,7 +56,14 @@ public class SlowdownObstacle : MonoBehaviour
             {
                 if (useSlowAfterExit)
                 {
-                    bumper.WaitAndStopSlowDown(slowTimeAfterExit);
+                    if (bumper.IsPlayer)
+                    {
+                        bumper.WaitAndStopSlowDown(slowTimeAfterExitForPlayer);
+                    }
+                    else
+                    {
+                        bumper.WaitAndStopSlowDown(slowTimeAfterExitForAI);
+                    }
                 }
                 else
                 {

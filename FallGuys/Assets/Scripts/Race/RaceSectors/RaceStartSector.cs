@@ -21,13 +21,9 @@ public class RaceStartSector : MonoBehaviour
             {
                 int elementsToRemoveValue = startPlacesTransformList.Count - playersCount;
 
-                Debug.LogError($"StartPlaces = {startPlacesTransformList.Count}");
-
                 startPlacesTransformList.RemoveRange(playersCount, elementsToRemoveValue);
 
                 ShaffleStartPlacesTransformList();
-
-                Debug.LogError($"StartPlaces = {startPlacesTransformList.Count}");
             }
         }
         else

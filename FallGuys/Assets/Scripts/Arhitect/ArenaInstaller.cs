@@ -17,18 +17,43 @@ public class ArenaInstaller : Installer
     [Header("Arena AI")]
     [SerializeField] PlayerDefaultData playerAIDefaultData;
 
+    //
     [Header("Damage Percentage")]
     [SerializeField] private bool useDamagePercentage;
     [ShowIf("useDamagePercentage", true)]
     [SerializeField] private List<float> damagePercetageList;
 
+    [Header("Health Percentage")]
+    [SerializeField] private bool useHealthPercentage;
+    [ShowIf("useHealthPercentage", true)]
+    [SerializeField] private List<float> healthPercetageList;
+
     private const string arenaFightNumberKey = "ArenaFightNumber";
     private int arenaFightNumber;
+    //
 
     private int spawnCounter;
 
     protected override void InitializePlayers()
     {
+        arenaFightNumber = PlayerPrefs.GetInt(arenaFightNumberKey, 0);
+
+        float damagePercent = 100f;
+        float healthPercent = 100f;
+
+        if (useDamagePercentage)
+        {
+            if (arenaFightNumber < damagePercetageList.Count) damagePercent = damagePercetageList[arenaFightNumber];
+        }
+
+        if (useHealthPercentage)
+        {
+            if (arenaFightNumber < healthPercetageList.Count) healthPercent = healthPercetageList[arenaFightNumber];
+        }
+
+        arenaFightNumber++;
+        PlayerPrefs.SetInt(arenaFightNumberKey, arenaFightNumber);
+
         foreach (var _player in playersData)
         {
             if (!_player.IsAI)
@@ -113,17 +138,7 @@ public class ArenaInstaller : Installer
 
                 if (useDamagePercentage)
                 {
-                    arenaFightNumber = PlayerPrefs.GetInt(arenaFightNumberKey, 0);
-
-                    if(arenaFightNumber < damagePercetageList.Count)
-                    {
-                        float damagePercent = damagePercetageList[arenaFightNumber];
-                        
-                        weaponAI.ChangeDamageByPercentage(damagePercent);
-                    }
-
-                    arenaFightNumber++;
-                    PlayerPrefs.SetInt(arenaFightNumberKey, arenaFightNumber);
+                    weaponAI.ChangeDamageByPercentage(damagePercent);
                 }
 
                 // Camera
@@ -144,6 +159,13 @@ public class ArenaInstaller : Installer
 
                 // Set default data
                 playerAI.SetDefaultData(playerAIDefaultData);
+
+                if (useHealthPercentage)
+                {
+                    float defaultHealth = playerAI.Health;
+                    float newHealth = defaultHealth * (healthPercent / 100f);
+                    playerAI.SetHealth(newHealth);
+                }
 
                 // Player Effector
                 var enemyPlayerEffector = new PlayerEffector(enemyPointer, playerAI, aiPlayerGO, levelUI, currentPlayer, weaponAI);

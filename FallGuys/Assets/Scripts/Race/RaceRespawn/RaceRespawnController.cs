@@ -87,6 +87,14 @@ public class RaceRespawnController : MonoBehaviour
             
         }
 
+        Rigidbody[] rigidbodys = car.GetComponentsInChildren<Rigidbody>();
+
+        foreach (var rb in rigidbodys)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
         car.transform.position = raceRespawnZone.GetRespawnPosition();
         car.transform.rotation = raceRespawnZone.transform.rotation;
         car.transform.SetParent(null);

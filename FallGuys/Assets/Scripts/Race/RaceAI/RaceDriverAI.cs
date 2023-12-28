@@ -87,28 +87,20 @@ public class RaceDriverAI : DriverAI
         }
     }
 
-    public void SetSpeedPercent(float speedPercent)
-    {
-        this.speedPercent = speedPercent;
-    }
-
     #region Difficulty AI Levels
     public override void SetLowDifficultyAILevel()
     {
-        CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
-        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, speedPercent);
+       
     }
 
     public override void SetNormalDifficultyAILevel()
     {
-        CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
-        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, speedPercent);
+       
     }
 
     public override void SetHighDifficultyAILevel()
     {
-        CarPlayerWaipointTracker carPlayerWaipointTracker = currentPlayer.GetComponent<CarPlayerWaipointTracker>();
-        arcadeVehicleController.ActivateSpeedControlWithPlayer(carPlayerWaipointTracker, waypointProgressTracker, speedPercent);
+        
     }
     #endregion
 

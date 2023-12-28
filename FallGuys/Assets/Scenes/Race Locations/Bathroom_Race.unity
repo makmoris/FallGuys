@@ -4702,7 +4702,7 @@ Transform:
   - {fileID: 1528217622}
   - {fileID: 262231940}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &271299915
 PrefabInstance:
@@ -4814,16 +4814,6 @@ MonoBehaviour:
   - {fileID: 3433477903891059765, guid: 27ac0b59f69f95a47bc4cd500c341616, type: 3}
   - {fileID: 3005907176518556209, guid: 29f059dee630ab349b9e86c5700be793, type: 3}
   - {fileID: 4626066060848180063, guid: 45b12abaf4b647141bbf723aa76d4724, type: 3}
-  useSpeedPercentage: 1
-  speedPercetageList:
-  - 60
-  - 65
-  - 70
-  - 75
-  - 80
-  - 85
-  - 90
-  - 95
 --- !u!4 &272510131
 Transform:
   m_ObjectHideFlags: 0
@@ -10053,7 +10043,7 @@ Transform:
   - {fileID: 1716986771}
   - {fileID: 691225025}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &474576144
 PrefabInstance:
@@ -12636,7 +12626,7 @@ Transform:
   - {fileID: 1496769280}
   - {fileID: 584881559}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &584881558
 GameObject:
@@ -19170,7 +19160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5347324833178697963, guid: d3d8b5f4fb413ba45b95b6c121803321, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5347324833178697963, guid: d3d8b5f4fb413ba45b95b6c121803321, type: 3}
       propertyPath: m_LocalPosition.x
@@ -31787,7 +31777,7 @@ Transform:
   - {fileID: 4257855098759562725}
   - {fileID: 1636510738}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1217450009
 GameObject:
@@ -40077,6 +40067,64 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1613088242}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1614737224
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1614737226}
+  - component: {fileID: 1614737225}
+  m_Layer: 0
+  m_Name: RacePlacesController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1614737225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614737224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b020d6b77899b498439d0e74f384e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackingFrequency: 1
+  percentageWithDistancesList:
+  - distance: 0
+    slowPercent: 95
+  - distance: 10
+    slowPercent: 90
+  - distance: 20
+    slowPercent: 85
+  - distance: 30
+    slowPercent: 80
+  - distance: 40
+    slowPercent: 70
+  - distance: 50
+    slowPercent: 60
+--- !u!4 &1614737226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614737224}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1616542463
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47693,7 +47741,7 @@ Transform:
   - {fileID: 501112749}
   - {fileID: 1731112169}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1618225768
 MonoBehaviour:
@@ -47806,7 +47854,7 @@ Transform:
   - {fileID: 578511063}
   - {fileID: 361670819}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1629553889
 GameObject:
@@ -53812,7 +53860,8 @@ MonoBehaviour:
   raceFinishSector: {fileID: 1636510739}
   numberOfPlayersToStartFinishTimer: 2
   finishTimerSeconds: 30
-  waypointsPath: {fileID: 0}
+  racePlacesController: {fileID: 1614737225}
+  waypointsPathsList: []
   winnersList: []
 --- !u!4 &1859651032
 Transform:
@@ -53827,7 +53876,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1862956414 stripped
 Transform:
@@ -58346,7 +58395,7 @@ Transform:
   - {fileID: 43812521}
   - {fileID: 634818902}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2072581807
 GameObject:
@@ -59643,7 +59692,7 @@ PrefabInstance:
       objectReference: {fileID: 477205800}
     - target: {fileID: 6429048345775848442, guid: 0bcdc0ecb2817bf4bb09b989e4a95ca1, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6429048345775848442, guid: 0bcdc0ecb2817bf4bb09b989e4a95ca1, type: 3}
       propertyPath: m_LocalPosition.x

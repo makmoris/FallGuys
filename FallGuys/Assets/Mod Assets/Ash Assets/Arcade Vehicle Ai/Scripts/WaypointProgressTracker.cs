@@ -59,6 +59,8 @@ namespace ArcadeVP
         private float checkpointProgressDistance;
         private int checkpointProgressNum;
 
+        private bool isInitialize;
+
         // setup script properties
         public void Initialize()
         {
@@ -74,15 +76,20 @@ namespace ArcadeVP
             //    target = new GameObject(name + " Waypoint Target").transform;
             //}
 
-            Reset();
-            if(circuit == null)
+            if (!isInitialize)
             {
-                circuit = FindObjectOfType<WaypointCircuit>();
+                Reset();
+                if (circuit == null)
+                {
+                    circuit = FindObjectOfType<WaypointCircuit>();
+                }
+
+                arcadeVehicleController = transform.GetComponentInParent<ArcadeVehicleController>();
+
+                target = arcadeVehicleController.Target;
+
+                isInitialize = true;
             }
-
-            arcadeVehicleController = transform.GetComponentInParent<ArcadeVehicleController>();
-
-            target = arcadeVehicleController.Target;
         }
 
 

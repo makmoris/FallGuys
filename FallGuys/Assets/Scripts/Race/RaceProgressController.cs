@@ -21,8 +21,11 @@ public class RaceProgressController : LevelProgressController
     [SerializeField] private float finishTimerSeconds = 30f;
     private event System.Action FinishTimerFinished;
 
+    [Header("Race Places Controller")]
+    [SerializeField] private RacePlacesController racePlacesController;
+
     [Header("Waypoints Paths")]
-    [SerializeField] private WaypointsPath waypointsPath;
+    [SerializeField] private List<WaypointsPath> waypointsPathsList;
 
     private int numberOfWinners;
     private int currentNumberOfWinners;
@@ -37,6 +40,7 @@ public class RaceProgressController : LevelProgressController
     private List<GameObject> raceDriversList = new List<GameObject>();
     private Dictionary<GameObject, ArcadeVehicleController> raceDriversPlayersDictionary = new Dictionary<GameObject, ArcadeVehicleController>();
     private Dictionary<GameObject, RaceDriverAI> raceDriversAIDictionary = new Dictionary<GameObject, RaceDriverAI>();
+    [Header("DEBUG")]
     [SerializeField]private List<GameObject> winnersList = new List<GameObject>();
 
     protected override void OnEnable()
@@ -66,6 +70,8 @@ public class RaceProgressController : LevelProgressController
         raceDriversList.Add(playerGO);
         _playersList.Add(playerGO);
 
+        racePlacesController.AddPlayer(playerGO, isCurrentPlayer);
+
         RaceDriverAI raceDriverAI = playerGO.GetComponentInChildren<RaceDriverAI>();
         if (raceDriverAI != null)
         {
@@ -90,7 +96,7 @@ public class RaceProgressController : LevelProgressController
 
     public WaypointsPath GetWaypointsPath()
     {
-        return waypointsPath;
+        return waypointsPathsList[0];
     }
 
     protected override void StartGame()
@@ -116,6 +122,8 @@ public class RaceProgressController : LevelProgressController
         }
 
         raceNotOver = true;
+
+        racePlacesController.StartTrackingPlaces();
     }
 
     private void ApplyDisableBonus(GameObject driverGO, float disableTime)
@@ -318,7 +326,7 @@ public class RaceProgressController : LevelProgressController
 
         StopEveryone();
 
-        // отправляем список лузеров
+        racePlacesController.StopTrackingPlaces();
     }
 
     private void StopEveryone()

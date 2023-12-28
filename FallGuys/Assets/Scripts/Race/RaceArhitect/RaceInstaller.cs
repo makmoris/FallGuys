@@ -17,34 +17,11 @@ public class RaceInstaller : Installer
     [ShowIf("useAdditionalBulletBonuses", true)]
     [SerializeField] private List<AdditionalBulletBonus> additionalBulletBonusList;
 
-    [Header("Speed Percentage")]
-    [SerializeField] private bool useSpeedPercentage;
-    [ShowIf("useSpeedPercentage", true)]
-    [SerializeField] private List<float> speedPercetageList;
-
-    private const string raceNumberKey = "raceNumber";
-    private int raceNumber;
-
     protected override void InitializePlayers()
     {
         RaceProgressController raceProgressController = levelProgressController as RaceProgressController;
 
         raceProgressController.GetRaceStartSector().SetPlayersCount(playersData.Count);
-
-        float speedPercent = 1f;
-
-        if (useSpeedPercentage)
-        {
-            raceNumber = PlayerPrefs.GetInt(raceNumberKey, 0);
-
-            if (raceNumber < speedPercetageList.Count)
-            {
-                speedPercent = speedPercetageList[raceNumber] / 100f;
-            }
-
-            raceNumber++;
-            PlayerPrefs.SetInt(raceNumberKey, raceNumber);
-        }
 
         foreach (var _player in playersData)
         {
@@ -107,7 +84,7 @@ public class RaceInstaller : Installer
                 aiPlayerGO.GetComponentInChildren<PlayerComponents>().gameObject.SetActive(false);
                 aiPlayerGO.GetComponentInChildren<AIComponents>().gameObject.SetActive(true);
                 AILogics aILogics = aiPlayerGO.GetComponentInChildren<AILogics>();
-                aILogics.EnableRaceAI(aiPlayerGO, currentPlayer, frontRayLegth * 0.25f, sideRayLength * 0.25f, angleForSidesRays * 0.25f, speedPercent);
+                aILogics.EnableRaceAI(aiPlayerGO, currentPlayer, frontRayLegth * 0.25f, sideRayLength * 0.25f, angleForSidesRays * 0.25f);
 
                 aiPlayerGO.GetComponent<ArcadeVehicleController>().IsPlayer = false;
 

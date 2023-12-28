@@ -176,14 +176,7 @@ namespace ArcadeVP
 
                 if (useSpeedControl)
                 {
-                    if (waypointProgressTracker.ProgressDistance > carPlayerWaipointTracker.ProgressDistance)
-                    {
-                        MaxSpeed = defaultMaxSpeed * speedPercent;
-                    }
-                    else
-                    {
-                        MaxSpeed = defaultMaxSpeed;
-                    }
+                    MaxSpeed = defaultMaxSpeed * speedPercent;
                 }
             }
             
@@ -743,13 +736,10 @@ namespace ArcadeVP
             if (isObstacle) TurnAI = obstacleSteer;
         }
 
-        public void ActivateSpeedControlWithPlayer(CarPlayerWaipointTracker carPlayerWaipointTracker, WaypointProgressTracker waypointProgressTracker,
-            float speedPercent)
+        public void UpdateSpeedPercent(float slowPercent)
         {
             useSpeedControl = true;
-            this.carPlayerWaipointTracker = carPlayerWaipointTracker;
-            this.waypointProgressTracker = waypointProgressTracker;
-            this.speedPercent = speedPercent;
+            speedPercent = slowPercent;
         }
 
         #endregion

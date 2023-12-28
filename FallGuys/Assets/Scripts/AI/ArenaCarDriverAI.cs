@@ -43,8 +43,6 @@ public class ArenaCarDriverAI : DriverAI
         arcadeVehicleController = aiPlayerGO.GetComponent<ArcadeVehicleController>();
 
         if(currentPlayerGO != null) playerTransform = currentPlayerGO.transform;
-
-        CheckOnUseAISettings(arcadeVehicleController);
     }
 
     private void Update()
@@ -425,14 +423,4 @@ public class ArenaCarDriverAI : DriverAI
         
     }
     #endregion
-
-    public override void CheckOnUseAISettings(ArcadeVehicleController arcadeVehicleController)
-    {
-        if (useAISettings)
-        {
-            if (aiMaxSpeed > 0) arcadeVehicleController.MaxSpeed = aiMaxSpeed;
-            if (aiAccelaration > 0) arcadeVehicleController.accelaration = aiAccelaration;
-            if (aiTurn > 0) arcadeVehicleController.turn = aiTurn;
-        }
-    }
 }

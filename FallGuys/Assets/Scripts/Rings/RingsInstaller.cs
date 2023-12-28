@@ -36,6 +36,8 @@ public class RingsInstaller : Installer
 
                 playerGO.GetComponent<ArcadeVehicleController>().IsPlayer = true;
 
+                playerGO.GetComponentInChildren<PlayerVehicleControlValues>().UseRingsControlValues();
+
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
                 playerName.Initialize(player.Name, cameraFollowingOnOtherPlayers.transform);
@@ -87,6 +89,8 @@ public class RingsInstaller : Installer
                 aILogics.EnableRingsAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
 
                 aiPlayerGO.GetComponent<ArcadeVehicleController>().IsPlayer = false;
+
+                aiPlayerGO.GetComponentInChildren<AIVehicleControlValues>().UseRingsControlValues();
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();

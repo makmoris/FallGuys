@@ -12,7 +12,9 @@ namespace ArcadeVP
         public groundCheck GroundCheck;
         public LayerMask drivableSurface;
 
-        public float MaxSpeed, accelaration, turn, gravity = 7f, downforce = 5f;
+        public float Gravity = 7f;
+        public float Downforce = 5f;
+
         public bool AirControl = false;
         public Rigidbody rb, carBody;
 
@@ -137,6 +139,11 @@ namespace ArcadeVP
         // events
         public static event System.Action<ArcadeVehicleController, bool> GetRespanwPositionForArcadeVehicleControllerEvent;// проверить
         public static event System.Action HideRespawnButtonEvent;// проверить
+
+        [Header("DEBUG")]
+        public float MaxSpeed;
+        public float Accelaration;
+        public float Turn;
 
         private void Start()
         {
@@ -333,11 +340,11 @@ namespace ArcadeVP
                 float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude / MaxSpeed);
                 if (verticalInput > 0.1f || carVelocity.z > 1)
                 {
-                    carBody.AddTorque(Vector3.up * horizontalInput * sign * turn * 100 * TurnMultiplyer);
+                    carBody.AddTorque(Vector3.up * horizontalInput * sign * Turn * 100 * TurnMultiplyer);
                 }
                 else if (verticalInput < -0.1f || carVelocity.z < -1)
                 {
-                    carBody.AddTorque(Vector3.up * horizontalInput * sign * turn * 100 * TurnMultiplyer);
+                    carBody.AddTorque(Vector3.up * horizontalInput * sign * Turn * 100 * TurnMultiplyer);
                 }
 
                 //brakelogic
@@ -356,19 +363,19 @@ namespace ArcadeVP
                 {
                     if (Mathf.Abs(verticalInput) > 0.1f)
                     {
-                        rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, carBody.transform.right * verticalInput * MaxSpeed / radius, accelaration * Time.deltaTime);
+                        rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, carBody.transform.right * verticalInput * MaxSpeed / radius, Accelaration * Time.deltaTime);
                     }
                 }
                 else if (movementMode == MovementMode.Velocity)
                 {
                     if (Mathf.Abs(verticalInput) > 0.1f && Input.GetAxis("Jump") < 0.1f)
                     {
-                        rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * verticalInput * MaxSpeed, accelaration / 10 * Time.deltaTime);
+                        rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * verticalInput * MaxSpeed, Accelaration / 10 * Time.deltaTime);
                     }
                 }
 
                 // down froce
-                rb.AddForce(-transform.up * downforce * rb.mass);
+                rb.AddForce(-transform.up * Downforce * rb.mass);
 
                 //body tilt
                 carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, hit.normal) * carBody.transform.rotation, 0.12f));
@@ -386,11 +393,11 @@ namespace ArcadeVP
                     //turnlogic
                     float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude / MaxSpeed);
 
-                    carBody.AddTorque(Vector3.up * horizontalInput * turn * 100 * TurnMultiplyer);
+                    carBody.AddTorque(Vector3.up * horizontalInput * Turn * 100 * TurnMultiplyer);
                 }
 
                 carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, Vector3.up) * carBody.transform.rotation, 0.02f));
-                rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity + Vector3.down * gravity, Time.deltaTime * gravity);
+                rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity + Vector3.down * Gravity, Time.deltaTime * Gravity);
             }
         }
 
@@ -468,11 +475,11 @@ namespace ArcadeVP
                 float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude / MaxSpeed);
                 if (SpeedAI > 0.1f || carVelocity.z > 1)
                 {
-                    carBody.AddTorque(Vector3.up * TurnAI * sign * turn * 100 * TurnMultiplyer);
+                    carBody.AddTorque(Vector3.up * TurnAI * sign * Turn * 100 * TurnMultiplyer);
                 }
                 else if (SpeedAI < -0.1f || carVelocity.z < -1)
                 {
-                    carBody.AddTorque(Vector3.up * TurnAI * sign * turn * 100 * TurnMultiplyer);
+                    carBody.AddTorque(Vector3.up * TurnAI * sign * Turn * 100 * TurnMultiplyer);
                 }
 
                 //brakelogic
@@ -491,14 +498,14 @@ namespace ArcadeVP
                 {
                     if (Mathf.Abs(SpeedAI) > 0.1f)
                     {
-                        rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, carBody.transform.right * SpeedAI * MaxSpeed / radius, accelaration * Time.deltaTime);
+                        rb.angularVelocity = Vector3.Lerp(rb.angularVelocity, carBody.transform.right * SpeedAI * MaxSpeed / radius, Accelaration * Time.deltaTime);
                     }
                 }
                 else if (movementMode == MovementMode.Velocity)
                 {
                     if (Mathf.Abs(SpeedAI) > 0.1f && brakeAI < 0.1f)
                     {
-                        rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * SpeedAI * MaxSpeed, accelaration / 10 * Time.deltaTime);
+                        rb.velocity = Vector3.Lerp(rb.velocity, carBody.transform.forward * SpeedAI * MaxSpeed, Accelaration / 10 * Time.deltaTime);
                     }
                 }
 

@@ -6,12 +6,6 @@ using ArcadeVP;
 
 public abstract class DriverAI : MonoBehaviour, IDifficultyAILevels
 {
-    [Header("AI Car Settings")]
-    [SerializeField] protected bool useAISettings;
-    [SerializeField] protected float aiMaxSpeed;
-    [SerializeField] protected float aiAccelaration;
-    [SerializeField] protected float aiTurn;
-
     protected bool obstacle;
     public bool Obstacle
     {
@@ -33,8 +27,6 @@ public abstract class DriverAI : MonoBehaviour, IDifficultyAILevels
     public abstract void SetNormalDifficultyAILevel();
 
     public abstract void SetHighDifficultyAILevel();
-
-    public abstract void CheckOnUseAISettings(ArcadeVehicleController arcadeVehicleController);
 
     protected void ChoseDifficultyLevel(EnumDifficultyAILevels difficultyAILevel)
     {

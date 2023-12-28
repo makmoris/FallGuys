@@ -68,6 +68,8 @@ public class ArenaInstaller : Installer
 
                 playerGO.GetComponent<ArcadeVehicleController>().IsPlayer = true;
 
+                playerGO.GetComponentInChildren<PlayerVehicleControlValues>().UseArenaControlValues();
+
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
                 playerName.Initialize(player.Name, cameraFollowingOnOtherPlayers.transform);
@@ -118,6 +120,8 @@ public class ArenaInstaller : Installer
                 aILogics.EnableArenaAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
 
                 aiPlayerGO.GetComponent<ArcadeVehicleController>().IsPlayer = false;
+
+                aiPlayerGO.GetComponentInChildren<AIVehicleControlValues>().UseArenaControlValues();
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();

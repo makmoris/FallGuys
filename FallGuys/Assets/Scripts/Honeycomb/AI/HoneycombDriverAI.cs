@@ -24,8 +24,6 @@ public class HoneycombDriverAI : DriverAI
     public override void Initialize(GameObject aiPlayerGO, GameObject currentPlayerGO, EnumDifficultyAILevels difficultyAILevel)
     {
         arcadeVehicleController = aiPlayerGO.GetComponent<ArcadeVehicleController>();
-
-        CheckOnUseAISettings(arcadeVehicleController);
     }
 
     private void Update()
@@ -251,14 +249,4 @@ public class HoneycombDriverAI : DriverAI
         
     }
     #endregion
-
-    public override void CheckOnUseAISettings(ArcadeVehicleController arcadeVehicleController)
-    {
-        if (useAISettings)
-        {
-            if (aiMaxSpeed > 0) arcadeVehicleController.MaxSpeed = aiMaxSpeed;
-            if (aiAccelaration > 0) arcadeVehicleController.accelaration = aiAccelaration;
-            if (aiTurn > 0) arcadeVehicleController.turn = aiTurn;
-        }
-    }
 }

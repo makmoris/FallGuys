@@ -60,6 +60,8 @@ public class RaceInstaller : Installer
 
                 playerGO.GetComponent<ArcadeVehicleController>().IsPlayer = true;
 
+                playerGO.GetComponentInChildren<PlayerVehicleControlValues>().UseRaceControlValues();
+
                 CarPlayerWaipointTracker carPlayerWaipointTracker = playerGO.AddComponent<CarPlayerWaipointTracker>();
                 carPlayerWaipointTracker.Initialize();
 
@@ -108,6 +110,8 @@ public class RaceInstaller : Installer
                 aILogics.EnableRaceAI(aiPlayerGO, currentPlayer, frontRayLegth * 0.25f, sideRayLength * 0.25f, angleForSidesRays * 0.25f, speedPercent);
 
                 aiPlayerGO.GetComponent<ArcadeVehicleController>().IsPlayer = false;
+
+                aiPlayerGO.GetComponentInChildren<AIVehicleControlValues>().UseRaceControlValues();
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();

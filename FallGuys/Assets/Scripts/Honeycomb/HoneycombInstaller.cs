@@ -30,6 +30,8 @@ public class HoneycombInstaller : Installer
 
                 playerGO.GetComponent<ArcadeVehicleController>().IsPlayer = true;
 
+                playerGO.GetComponentInChildren<PlayerVehicleControlValues>().UseHoneycombControlValues();
+
                 // Set Name
                 PlayerName playerName = playerGO.GetComponent<PlayerName>();
                 playerName.Initialize(player.Name, cameraFollowingOnOtherPlayers.transform);
@@ -76,6 +78,8 @@ public class HoneycombInstaller : Installer
                 aILogics.EnableHoneycombAI(aiPlayerGO, currentPlayer, frontRayLegth, sideRayLength, angleForSidesRays);
 
                 aiPlayerGO.GetComponent<ArcadeVehicleController>().IsPlayer = false;
+
+                aiPlayerGO.GetComponentInChildren<AIVehicleControlValues>().UseHoneycombControlValues();
 
                 // Set Name
                 PlayerName playerName = aiPlayerGO.GetComponent<PlayerName>();

@@ -25,7 +25,7 @@ public class RaceProgressController : LevelProgressController
     [SerializeField] private RacePlacesController racePlacesController;
 
     [Header("Waypoints Paths")]
-    [SerializeField] private List<WaypointsPath> waypointsPathsList;
+    [SerializeField] private List<WaypointCircuit> waypointsCircuitsList;
 
     private int numberOfWinners;
     private int currentNumberOfWinners;
@@ -94,9 +94,11 @@ public class RaceProgressController : LevelProgressController
         return raceStartSector;
     }
 
-    public WaypointsPath GetWaypointsPath()
+    public WaypointCircuit GetWaypointsCircuit()
     {
-        return waypointsPathsList[0];
+        int r = Random.Range(0, waypointsCircuitsList.Count);
+
+        return waypointsCircuitsList[r];
     }
 
     protected override void StartGame()

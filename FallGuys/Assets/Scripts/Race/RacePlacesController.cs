@@ -77,9 +77,6 @@ public class RacePlacesController : MonoBehaviour
                 float slowPercent = percentageWithDistancesList[currentIndex].slowPercent / 100f;
 
                 arcadeVehicleController.UpdateSpeedPercent(slowPercent);
-
-                Debug.LogError($"{arcadeVehicleController.GetComponent<PlayerName>().Name} оторвался от игрока на {distance}." +
-                    $" Замедляем его скорость на {slowPercent} процентов.");
             }
             else
             {

@@ -81,7 +81,8 @@ namespace ArcadeVP
                 Reset();
                 if (circuit == null)
                 {
-                    circuit = FindObjectOfType<WaypointCircuit>();
+                    RaceProgressController raceProgressController = FindObjectOfType<RaceProgressController>();
+                    circuit = raceProgressController.GetWaypointsCircuit();
                 }
 
                 arcadeVehicleController = transform.GetComponentInParent<ArcadeVehicleController>();

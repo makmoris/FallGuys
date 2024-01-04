@@ -38,7 +38,7 @@ public class HitSidesController : MonoBehaviour
         {
             if (isPlayer)
             {
-                CinemachineShake.Instance.ShakeCamera();
+                //CinemachineShake.Instance.ShakeCamera();
                 audioSource.Play();
             }
 

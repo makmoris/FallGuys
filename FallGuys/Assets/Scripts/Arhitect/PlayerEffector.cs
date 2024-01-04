@@ -128,6 +128,11 @@ public class PlayerEffector : IDisposable
         {
             case BonusType.AddHealth:
 
+                if (bonus.BonusValue < 0 && !isShieldActive && isCurrentPlayer)
+                {
+                    CinemachineShake.Instance.ShakeCamera();
+                }
+
                 if (bonus.BonusValue < 0 && isShieldActive)// последнее - чтобы получать урон в щите, если выпал со сцены
                 {
 
@@ -269,6 +274,11 @@ public class PlayerEffector : IDisposable
         switch (bonus.BonusType)
         {
             case BonusType.AddHealth:
+
+                if (bonus.BonusValue < 0 && !isShieldActive && isCurrentPlayer)
+                {
+                    CinemachineShake.Instance.ShakeCamera();
+                }
 
                 DeadZone deadZone = _gameObject.GetComponent<DeadZone>();
 

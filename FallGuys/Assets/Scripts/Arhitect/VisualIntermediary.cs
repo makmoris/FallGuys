@@ -18,6 +18,8 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     private HitHistory hitHistory;
 
+    private bool isPlayerDead;
+
     public static event Action<GameObject> PlayerWasDeadEvent; // кидаем событие всем заинтересованным
 
 
@@ -42,37 +44,46 @@ public class VisualIntermediary : MonoBehaviour // висит на игроке и отвечает за
 
     public void DestroyCar()
     {
-        Instantiate(destroyEffect, transform.position, Quaternion.identity);
-
-
-        if(playerGO != null)
+        if (!isPlayerDead)
         {
-            if (hitHistory.GetLastShooter() == playerGO)
-            {
-                Debug.Log($"игрока {gameObject.name} вытолкнул и убил {playerGO.name}");
-                ArenaProgressController.Instance.AddFrag();
-            }
-        }
+            Instantiate(destroyEffect, transform.position, Quaternion.identity);
 
-        PlayerWasDeadEvent?.Invoke(this.gameObject);
-        gameObject.SetActive(false);
+            if (playerGO != null)
+            {
+                if (hitHistory.GetLastShooter() == playerGO)
+                {
+                    Debug.Log($"игрока {gameObject.name} вытолкнул и убил {playerGO.name}");
+                    ArenaProgressController.Instance.AddFrag();
+                }
+            }
+
+            PlayerWasDeadEvent?.Invoke(this.gameObject);
+            gameObject.SetActive(false);
+
+            isPlayerDead = true;
+        }
     }
     public void DestroyCar(GameObject killer)// смотрим, если киллер игрок (есть нужный скрипт)
     {
-        if (playerGO != null)
+        if (!isPlayerDead)
         {
-            Debug.Log($"игрока {gameObject.name} убил {killer.name}");
-            if (killer == playerGO)
+            if (playerGO != null)
             {
-                ArenaProgressController.Instance.AddFrag();
+                Debug.Log($"игрока {gameObject.name} убил {killer.name}");
+                if (killer == playerGO)
+                {
+                    ArenaProgressController.Instance.AddFrag();
+                }
             }
+
+            Instantiate(destroyEffect, transform.position, Quaternion.identity);
+
+
+            PlayerWasDeadEvent?.Invoke(this.gameObject);
+            gameObject.SetActive(false);
+
+            isPlayerDead = true;
         }
-
-        Instantiate(destroyEffect, transform.position, Quaternion.identity);
-
-
-        PlayerWasDeadEvent?.Invoke(this.gameObject);
-        gameObject.SetActive(false);
     }
 
 

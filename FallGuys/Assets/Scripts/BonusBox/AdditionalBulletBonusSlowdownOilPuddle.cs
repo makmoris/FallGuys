@@ -31,7 +31,8 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
 
     public override void PlayEffect(Vector3 effectPosition, GameObject parentGO)
     {
-        transform.localPosition = effectPosition;
+        SetPositionOnGround(effectPosition);
+
         StartCoroutine(PuddleMakingAnimation(parentGO));
     }
 
@@ -39,6 +40,31 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
     {
         slowdownBonus = new SlowdownBonus(decelerationAmount, puddleLiveTime);
         return slowdownBonus;
+    }
+
+    private void SetPositionOnGround(Vector3 effectPosition)
+    {
+        int layerMask = 1 << 3;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 100f, layerMask))
+        {
+            transform.localPosition = new Vector3(effectPosition.x, effectPosition.y - hit.distance, effectPosition.z);
+
+            if(hit.transform.parent != null)
+            {
+                Quaternion worldRotation = hit.transform.parent.rotation * hit.transform.localRotation;
+                transform.localRotation = worldRotation;
+            }
+            else
+            {
+                transform.localRotation = hit.transform.localRotation;
+            }
+        }
+        else
+        {
+            transform.localPosition = effectPosition;
+        }
     }
 
     IEnumerator PuddleMakingAnimation(GameObject parentGO)

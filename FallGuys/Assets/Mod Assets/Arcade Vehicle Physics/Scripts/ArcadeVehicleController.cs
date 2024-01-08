@@ -180,10 +180,12 @@ namespace ArcadeVP
                 }
             }
             
-            Visuals();
-            AudioManager();
+            //Visuals();
+            //AudioManager();
 
         }
+
+
         public void AudioManager()
         {
             engineSound.pitch = Mathf.Lerp(minPitch, MaxPitch, Mathf.Abs(carVelocity.z) / MaxSpeed);
@@ -216,6 +218,9 @@ namespace ArcadeVP
             {
                 NotRaceAIMovement();
             }
+
+            Visuals();
+            AudioManager();
         }
 
         private void NotRaceAIMovement()

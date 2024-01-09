@@ -14,10 +14,12 @@ public class FallingPlatform : MonoBehaviour
     [SerializeField] private float delayBeforeTriggering = 0.25f;
     [SerializeField] private float changeStateTime = 1f;
     [SerializeField] private List<State> StatesList;
+    [Space]
+    [SerializeField] private bool changeStateWhenEntry;
     private int stateNumber;
 
     private bool isPlatformNotFell = true;
-    [SerializeField]private bool isPlatformCompletedStateChange = true;
+    private bool isPlatformCompletedStateChange = true;
 
     [Header("-----")]
     [SerializeField] private FallingPlatformTrigger platformTrigger;
@@ -104,8 +106,11 @@ public class FallingPlatform : MonoBehaviour
 
     private void WaitForStateChangeToComplete()
     {
-        isPlatformCompletedStateChange = false;
-        StartCoroutine(WaitAndCompleteTheStateChanging());
+        if (!changeStateWhenEntry)
+        {
+            isPlatformCompletedStateChange = false;
+            StartCoroutine(WaitAndCompleteTheStateChanging());
+        }
     }
 
     private IEnumerator Delay()

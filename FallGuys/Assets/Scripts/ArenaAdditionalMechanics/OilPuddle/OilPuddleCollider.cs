@@ -8,6 +8,8 @@ public class OilPuddleCollider : MonoBehaviour
 
     private float decelerationAmount;
 
+    private List<GameObject> carsInPuddleList = new List<GameObject>();
+
     private void Awake()
     {
         oilPuddle = transform.GetComponentInParent<OilPuddle>();
@@ -18,10 +20,25 @@ public class OilPuddleCollider : MonoBehaviour
         decelerationAmount = _decelerationAmount;
     }
 
+    public void CheckCarsInOilPuddleAndDeactivate()
+    {
+        if (carsInPuddleList.Count != 0)
+        {
+            foreach (var car in carsInPuddleList)
+            {
+                oilPuddle.StopDamage(car);
+            }
+        }
+
+        oilPuddle.DeactivateOilPuddle();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Car"))
         {
+            if (!carsInPuddleList.Contains(other.gameObject)) carsInPuddleList.Add(other.gameObject);
+
             Rigidbody rb = other.GetComponent<Rigidbody>();
 
             Shield shield = other.GetComponentInChildren<Shield>(true);
@@ -37,10 +54,11 @@ public class OilPuddleCollider : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
+            if (carsInPuddleList.Contains(other.gameObject)) carsInPuddleList.Remove(other.gameObject);
+
             oilPuddle.StopDamage(other.gameObject);
 
             Debug.Log($"{other.name} œŒ »Õ”À ÎÛÊÛ");
         }
     }
-
 }

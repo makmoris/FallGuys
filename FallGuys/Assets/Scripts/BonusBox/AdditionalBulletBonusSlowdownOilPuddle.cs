@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,14 +15,14 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
     public override AdditionalBulletBonusTypeEnum AdditionalBulletBonusType => AdditionalBulletBonusTypeEnum.AdditionalBulletBonusSlowdownOilPuddle;
 
     private SlowdownBonus slowdownBonus;
-    [Space]
+    [Header("Slowdown Value")]
     [SerializeField] private float decelerationAmount = 1.5f;
 
     [Space]
     [SerializeField] private GameObject slowdownGO;
     [SerializeField] private float puddleLiveTime = 5f;
 
-    private SlowdownObstacle slowdownObstacle;
+    protected SlowdownObstacle slowdownObstacle;
 
     private void Awake()
     {
@@ -41,6 +42,8 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
         slowdownBonus = new SlowdownBonus(decelerationAmount, puddleLiveTime);
         return slowdownBonus;
     }
+
+    public virtual void UseDamage() { }
 
     private void SetPositionOnGround(Vector3 effectPosition)
     {
@@ -80,6 +83,10 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
         {
             slowdownObstacle.SetSlowTimeAfterExit(slowdownTimeAfterExitForAI, slowdownTimeAfterExitForPlayer);
         }
+
+        slowdownObstacle.SetDecelerationAmount(decelerationAmount);
+
+        UseDamage();
 
         slowdownGO.transform.localScale = new Vector3(0.125f, 0.125f, 0.125f);
         for (float t = 0; t < 1f; t += Time.deltaTime * 3f)

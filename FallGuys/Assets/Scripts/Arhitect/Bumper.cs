@@ -82,7 +82,7 @@ public class Bumper : MonoBehaviour /* ЧувакКоторогоНельзяНазывать */ // на обье
         {
             // нотификация
             levelUINotifications.BuffsDebuffsNotifications.ShowSlowdownDebuff();
-            levelUINotifications.BuffsDebuffsNotifications.ShowHealthDamageDebuff();
+            if(Mathf.Abs(bonus.BonusValue) != 0) levelUINotifications.BuffsDebuffsNotifications.ShowHealthDamageDebuff();
         }
     }
 

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class BonusBox : MonoBehaviour
@@ -15,11 +14,13 @@ public class BonusBox : MonoBehaviour
         SlowdownOilPuddle = 8,
         Explosion = 16,
         ControlInversion = 32,
-        BlankShot = 64
+        BlankShot = 64,
+        SlowdownOilPuddleWithDamage = 128
     }
 
+    [Header("Active Bonuses")]
     [SerializeField] private Bonuses bonusesFlags;
-    [SerializeField] private List<Bonuses> activeBonusesFlagsList = new List<Bonuses>();
+    private List<Bonuses> activeBonusesFlagsList = new List<Bonuses>();
 
     [Header("Bonus Prefabs")]
     [SerializeField] private HealthBonusForBonusBox healthBonusForBonusBox;
@@ -29,6 +30,7 @@ public class BonusBox : MonoBehaviour
     [SerializeField] private AdditionalBulletBonusExplosion additionalBulletBonusExplosion;
     [SerializeField] private AdditionalBulletBonusControlInversion additionalBulletBonusControlInversion;
     [SerializeField] private AdditionalBulletBonusBlankShot additionalBulletBonusBlankShot;
+    [SerializeField] private AdditionalBulletBonusSlowdownOilPuddleWithDamage additionalBulletBonusSlowdownOilPuddleWithDamage;
 
     [Header("Bonus Box")]
     [Min(0)][SerializeField] private float bonusBoxRespawnTime = 4f;
@@ -93,6 +95,12 @@ public class BonusBox : MonoBehaviour
                 weapon.SetAdditionalBulletBonus(additionalBulletBonusBlankShot, true);
 
                 break;
+
+            case Bonuses.SlowdownOilPuddleWithDamage:
+
+                weapon.SetAdditionalBulletBonus(additionalBulletBonusSlowdownOilPuddleWithDamage, true);
+
+                break;
         }
 
         CoroutineRunner.Run(WaitAndRespawn());
@@ -107,6 +115,7 @@ public class BonusBox : MonoBehaviour
         if (bonusesFlags.HasFlag(Bonuses.Explosion)) activeBonusesFlagsList.Add(Bonuses.Explosion);
         if (bonusesFlags.HasFlag(Bonuses.ControlInversion)) activeBonusesFlagsList.Add(Bonuses.ControlInversion);
         if (bonusesFlags.HasFlag(Bonuses.BlankShot)) activeBonusesFlagsList.Add(Bonuses.BlankShot);
+        if (bonusesFlags.HasFlag(Bonuses.SlowdownOilPuddleWithDamage)) activeBonusesFlagsList.Add(Bonuses.SlowdownOilPuddleWithDamage);
     }
 
     IEnumerator WaitAndRespawn()

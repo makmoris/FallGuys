@@ -67,6 +67,12 @@ public class OilPuddle : MonoBehaviour
         StartCoroutine(PuddleMakingAnimation());
     }
 
+    public void DeactivateOilPuddle()
+    {
+        currentPuddle.SetActive(false);
+        gameObject.SetActive(false);
+    }
+
     private GameObject GetCurrentPuddle()// выбираем каплю из списка
     {
         int rand = Random.Range(0, puddleVariants.Count);
@@ -121,8 +127,10 @@ public class OilPuddle : MonoBehaviour
             yield return null;
         }
 
-        currentPuddle.SetActive(false);
+        currentPuddle.GetComponentInChildren<OilPuddleCollider>().CheckCarsInOilPuddleAndDeactivate();
 
-        gameObject.SetActive(false);
+        //currentPuddle.SetActive(false);
+
+        //gameObject.SetActive(false);
     }
 }

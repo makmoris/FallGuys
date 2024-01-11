@@ -71,7 +71,8 @@ public class Weapon : MonoBehaviour
 
         CreateExampleBullet();
 
-        defaultWeaponRotation = weaponTransform.localRotation;
+        //defaultWeaponRotation = weaponTransform.localRotation;
+        defaultWeaponRotation = Quaternion.Euler(Vector3.zero);
     }
 
     private void Update()

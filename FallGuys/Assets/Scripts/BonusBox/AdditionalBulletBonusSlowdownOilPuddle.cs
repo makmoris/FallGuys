@@ -50,23 +50,17 @@ public class AdditionalBulletBonusSlowdownOilPuddle : AdditionalBulletBonus
         int layerMask = 1 << 3;
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 100f, layerMask))
+        if (Physics.Raycast(transform.position + (Vector3.up), transform.TransformDirection(Vector3.down), out hit, 100f, layerMask))
         {
-            transform.localPosition = new Vector3(effectPosition.x, effectPosition.y - hit.distance, effectPosition.z);
+            transform.position = hit.point;
 
-            if(hit.transform.parent != null)
-            {
-                Quaternion worldRotation = hit.transform.parent.rotation * hit.transform.localRotation;
-                transform.localRotation = worldRotation;
-            }
-            else
-            {
-                transform.localRotation = hit.transform.localRotation;
-            }
+            transform.rotation = Quaternion.LookRotation(hit.normal, transform.up);
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x + 90f, transform.rotation.eulerAngles.y,
+                transform.rotation.eulerAngles.z);
         }
         else
         {
-            transform.localPosition = effectPosition;
+            transform.position = effectPosition;
         }
     }
 

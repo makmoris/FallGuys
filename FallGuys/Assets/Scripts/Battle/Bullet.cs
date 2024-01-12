@@ -29,6 +29,8 @@ public class Bullet : MonoBehaviour
     private AdditionalBulletBonus additionalBulletBonus;
     private bool isAdditionalBulletBonusSetted;
 
+    private GameModeEnum gameMode;
+
     private bool init;
 
     [Header("DEBUG")]
@@ -98,10 +100,10 @@ public class Bullet : MonoBehaviour
                     }
                     else
                     {
-                        forceDirection = (other.transform.position - transform.position).normalized;
-                        other.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, Mathf.Abs(forceDirection.y) + 3f,
-                            forceDirection.z * force), forceMode);
+                        PushCar(other.gameObject);
                     }
+
+                    
 
                     // передаем инфу тому, в кого попали, кто в него попал
                     if (other != null && parentCollider != null) other.GetComponent<HitHistory>().SetLastShooter(parentCollider.gameObject);
@@ -147,6 +149,11 @@ public class Bullet : MonoBehaviour
 
             //gameObject.SetActive(false);
         }
+    }
+
+    public void SetGameMode(GameModeEnum gameMode)
+    {
+        this.gameMode = gameMode;
     }
 
     public void SetAdditionalBulletBonus(AdditionalBulletBonus additionalBulletBonus, Weapon weapon)
@@ -196,6 +203,26 @@ public class Bullet : MonoBehaviour
         isAdditionalBulletBonusSetted = false;
         additionalBulletBonus = null;
         weapon = null;
+    }
+
+    private void PushCar(GameObject carObj)
+    {
+        forceDirection = (carObj.transform.position - transform.position).normalized;
+
+        if(gameMode == GameModeEnum.Race)
+        {
+            Rigidbody rb = carObj.GetComponent<Rigidbody>();
+
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            rb.AddForce(Vector3.up * force, forceMode);
+        }
+        else
+        {
+            carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, force,
+            forceDirection.z * force), forceMode);
+        }
     }
 
     IEnumerator ShowShotEffect(float time)

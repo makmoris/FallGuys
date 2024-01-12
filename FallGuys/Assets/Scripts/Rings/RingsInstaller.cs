@@ -52,7 +52,7 @@ public class RingsInstaller : Installer
                 // Weapon
                 Transform weaponPlace = playerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
-                weapon.Initialize(false, playerGO.GetComponent<Collider>());
+                weapon.Initialize(false, playerGO.GetComponent<Collider>(), GameModeEnum.Rings);
                 weapon.ChangeAttackRange(customAttackRange);
                 weapon.ChangeRechargeTime(customRechargeTime);
 
@@ -106,7 +106,7 @@ public class RingsInstaller : Installer
                 // Weapon
                 Transform weaponPlaceAI = aiPlayerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
+                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>(), GameModeEnum.Rings);
                 weaponAI.ChangeAttackRange(customAttackRange);
                 weaponAI.ChangeRechargeTime(customRechargeTime);
 

@@ -592,8 +592,8 @@ namespace ArcadeVP
                 Gizmos.DrawWireCube(rb.transform.position + ((radius + width) * Vector3.down), new Vector3(2 * radius, 2 * width, 4 * radius));
                 if (GetComponent<BoxCollider>())
                 {
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawWireCube(transform.position, GetComponent<BoxCollider>().size);
+                    //Gizmos.color = Color.green;
+                    //Gizmos.DrawWireCube(transform.position, GetComponent<BoxCollider>().size);
                     
                 }
 

@@ -53,6 +53,8 @@ public class Weapon : MonoBehaviour
     [SerializeField]private AdditionalBulletBonus additionalBulletBonus;
     private bool isAdditionalBulletBonusSetted;
 
+    private GameModeEnum gameMode;
+
     private void Awake()
     {
         damage = characteristicsData.Damage;
@@ -94,7 +96,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void Initialize(bool _isAI, Collider _bodyCollider)
+    public void Initialize(bool _isAI, Collider _bodyCollider, GameModeEnum gameMode)
     {
         parentBodyCollider = _bodyCollider;
         parentShield = parentBodyCollider.transform.GetComponentInChildren<Shield>(true).gameObject;
@@ -110,6 +112,8 @@ public class Weapon : MonoBehaviour
             ArenaDifficultyLevelsAI arenaDifficultyLevelsAI = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>();
             if (arenaDifficultyLevelsAI != null) shotDecisionSpeed = parentBodyCollider.GetComponent<ArenaDifficultyLevelsAI>().GetShotDecisionSpeed();
         }
+
+        this.gameMode = gameMode;
     }
 
     public void ChangeAttackRange(float customAttackRange)
@@ -168,7 +172,7 @@ public class Weapon : MonoBehaviour
         if (!disableWeaponEvent) canAIAttack = false;
     }
 
-    public void SetAdditionalBulletBonus(AdditionalBulletBonus additionalBulletBonus, bool showNotification)// from RingsBonusBox
+    public void SetAdditionalBulletBonus(AdditionalBulletBonus additionalBulletBonus, bool showNotification)// from BonusBox
     {
         this.additionalBulletBonus = additionalBulletBonus;
         isAdditionalBulletBonusSetted = true;
@@ -238,6 +242,7 @@ public class Weapon : MonoBehaviour
 
         bullet.SetParent(parentBodyCollider, parentShield);
         bullet.SetDamageValue(damage);
+        bullet.SetGameMode(gameMode);
 
         bullet.transform.position = startBulletPosition.position;
         bullet.transform.rotation = startBulletPosition.rotation;

@@ -84,7 +84,7 @@ public class ArenaInstaller : Installer
                 // Weapon
                 Transform weaponPlace = playerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
-                weapon.Initialize(false, playerGO.GetComponent<Collider>());
+                weapon.Initialize(false, playerGO.GetComponent<Collider>(), GameModeEnum.Arena);
                 weapon.ChangeAttackRange(customAttackRange);
 
                 weapon.GetComponentInChildren<AttackTargetDetector>().LevelUI = levelUI;
@@ -137,7 +137,7 @@ public class ArenaInstaller : Installer
                 // Weapon
                 Transform weaponPlaceAI = aiPlayerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
+                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>(), GameModeEnum.Arena);
                 weaponAI.ChangeAttackRange(customAttackRange);
 
                 if (useDamagePercentage)

@@ -50,7 +50,7 @@ public class RaceInstaller : Installer
                 // Weapon
                 Transform weaponPlace = playerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weapon = Instantiate(player.Weapon, weaponPlace);
-                weapon.Initialize(false, playerGO.GetComponent<Collider>());
+                weapon.Initialize(false, playerGO.GetComponent<Collider>(), GameModeEnum.Race);
                 weapon.ChangeRechargeTime(customRechargeTime);
                 weapon.DisableWeapon(playerGO);
                 if(useAdditionalBulletBonuses) weapon.UseAutomaticAdditionalBulletBonusRecharge(additionalBulletBonusList);
@@ -101,7 +101,7 @@ public class RaceInstaller : Installer
                 // Weapon
                 Transform weaponPlaceAI = aiPlayerGO.GetComponentInChildren<WeaponPlace>().transform;
                 Weapon weaponAI = Instantiate(playerAI.Weapon, weaponPlaceAI);
-                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>());
+                weaponAI.Initialize(true, aiPlayerGO.GetComponent<Collider>(), GameModeEnum.Race);
                 weaponAI.ChangeRechargeTime(customRechargeTime);
                 weaponAI.DisableWeapon(aiPlayerGO);
                 if(useAdditionalBulletBonuses) weaponAI.UseAutomaticAdditionalBulletBonusRecharge(additionalBulletBonusList);

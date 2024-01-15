@@ -20,7 +20,7 @@ public class AttackTargetDetector : MonoBehaviour
     }
     private void Start()
     {
-        //driverAI = transform.GetComponentInParent<CarDriverAI>();
+        
     }
 
     private void OnTriggerEnter(Collider other)

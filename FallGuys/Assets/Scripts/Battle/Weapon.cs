@@ -181,10 +181,10 @@ public class Weapon : MonoBehaviour
     }
     public void RemoveAdditionalBulletBonus()
     {
-        additionalBulletBonus = null;
-        isAdditionalBulletBonusSetted = false;
+        //additionalBulletBonus = null;
+        //isAdditionalBulletBonusSetted = false;
 
-        parentBumper.HideAdditionalBulletBonusNotification();
+        //parentBumper.HideAdditionalBulletBonusNotification();
 
         if(isAutomaticAdditionalBulletBonusRecharge) SetAdditionalBulletBonus(GetRandomAdditionalBonus(), false);
     }
@@ -250,6 +250,9 @@ public class Weapon : MonoBehaviour
         if (isAdditionalBulletBonusSetted)
         {
             bullet.SetAdditionalBulletBonus(additionalBulletBonus, this);
+
+            additionalBulletBonus = null;
+            isAdditionalBulletBonusSetted = false;
 
             parentBumper.HideAdditionalBulletBonusNotification();
         }

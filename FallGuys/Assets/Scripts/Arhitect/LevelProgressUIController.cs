@@ -35,8 +35,8 @@ public abstract class LevelProgressUIController : MonoBehaviour
 
     [Header("Start Timer And Goal")]
     [SerializeField] private GameObject goalPanel;
-    [SerializeField] private TimerBeforeStart timerBeforeStart;
-    [SerializeField] private int time = 3;
+
+    [SerializeField] private StartGoalUIPanel startGoalUIPanel;
 
     [Header("Respawn Button")]
     [SerializeField] private Button respawnButton;
@@ -56,18 +56,12 @@ public abstract class LevelProgressUIController : MonoBehaviour
 
     protected void StartShowingTimerAndShowGoal()
     {
-        timerBeforeStart.TimerBeforeStartFinishedEvent += TimerBeforeStartFinished;
-        timerBeforeStart.StartTimer(time);
+        startGoalUIPanel.ShowGoal(TimerBeforeStartFinished);
     }
 
     protected virtual void TimerBeforeStartFinished()
     {
-        timerBeforeStart.TimerBeforeStartFinishedEvent -= TimerBeforeStartFinished;
-
         GameCanStartEvent?.Invoke();
-
-        goalPanel.SetActive(false);
-        timerBeforeStart.gameObject.SetActive(false);
     }
 
     public void SetGameManager(GameManager gameManager)

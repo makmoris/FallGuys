@@ -121,23 +121,33 @@ public class RingsProgressController : LevelProgressController
 
         if (numberOfWinners == 1)
         {
-            if (sortingPlayersPlaces[0].Value == sortingPlayersPlaces[1].Value)
-            {
-                // если равные очки, то продолжаем игру до первого победителя
-                gameUntilTheFirstWinner = true;
-                return;
-            }
-            else
-            {
-                if(!_winnersList.Contains(sortingPlayersPlaces[0].Key)) _winnersList.Add(sortingPlayersPlaces[0].Key);
+            if (!_winnersList.Contains(sortingPlayersPlaces[0].Key)) _winnersList.Add(sortingPlayersPlaces[0].Key);
 
-                if (sortingPlayersPlaces[0].Key == _currentPlayer) _isCurrentPlayerWinner = true;
+            if (sortingPlayersPlaces[0].Key == _currentPlayer) _isCurrentPlayerWinner = true;
 
-                for (int i = 1; i < sortingPlayersPlaces.Count; i++)
-                {
-                    if(!_losersList.Contains(sortingPlayersPlaces[i].Key)) _losersList.Add(sortingPlayersPlaces[i].Key);
-                }
+            for (int i = 1; i < sortingPlayersPlaces.Count; i++)
+            {
+                if (!_losersList.Contains(sortingPlayersPlaces[i].Key)) _losersList.Add(sortingPlayersPlaces[i].Key);
             }
+
+            // После завершения времени игра продолжается пока кто-то не станет первым по очкам
+            //if (sortingPlayersPlaces[0].Value == sortingPlayersPlaces[1].Value)
+            //{
+            //    // если равные очки, то продолжаем игру до первого победителя
+            //    gameUntilTheFirstWinner = true;
+            //    return;
+            //}
+            //else
+            //{
+            //    if(!_winnersList.Contains(sortingPlayersPlaces[0].Key)) _winnersList.Add(sortingPlayersPlaces[0].Key);
+
+            //    if (sortingPlayersPlaces[0].Key == _currentPlayer) _isCurrentPlayerWinner = true;
+
+            //    for (int i = 1; i < sortingPlayersPlaces.Count; i++)
+            //    {
+            //        if(!_losersList.Contains(sortingPlayersPlaces[i].Key)) _losersList.Add(sortingPlayersPlaces[i].Key);
+            //    }
+            //}
         }
         else
         {

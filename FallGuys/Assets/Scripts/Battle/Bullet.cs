@@ -218,10 +218,15 @@ public class Bullet : MonoBehaviour
 
             rb.AddForce(Vector3.up * force, forceMode);
         }
+        else if(gameMode == GameModeEnum.Arena)
+        {
+            carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, forceDirection.y,
+                force), forceMode);
+        }
         else
         {
             carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, force,
-            forceDirection.z * force), forceMode);
+                forceDirection.z * force), forceMode);
         }
     }
 

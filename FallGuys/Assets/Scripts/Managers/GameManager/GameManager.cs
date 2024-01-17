@@ -334,6 +334,8 @@ public class GameManager : MonoBehaviour
             {
                 playerStatisticsAfterBattleWindow.gameObject.SetActive(true);
                 playerStatisticsAfterBattleWindow.ShowStatistics(currentPlayerPlace, numberOfFragsForStatistics);
+
+                numberOfFragsForStatistics = -1;
             }
         }
     }

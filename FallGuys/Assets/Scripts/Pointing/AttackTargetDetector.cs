@@ -117,5 +117,11 @@ public class AttackTargetDetector : MonoBehaviour
         AttackPointer.attackPointerWasDeactivatedEvent -= CurrentTargetObjectWasDeactivated;
 
         if (!isAI) levelUI.HideAttackPointer();
+
+        if (!isAI) levelUI.ObjectWithAttackPointerWasDestroyed();
+        else if (arenaDriverAI != null) arenaDriverAI.DetectorLostTarget();
+
+        weapon.ReturnWeaponToPosition();
+        currentTargetObject = null;
     }
 }

@@ -10,6 +10,7 @@ public class LayoutWindow : MonoBehaviour
     [SerializeField] private GameObject allJoystick;
     [SerializeField] private GameObject gasButton;
     [SerializeField] private GameObject backButton;
+    [SerializeField] private GameObject additionalAttackButton;
     [Header("Window")]
     [SerializeField] private Image arrowsButton;
     [SerializeField] private Image leftRightJoystickButton;
@@ -48,6 +49,7 @@ public class LayoutWindow : MonoBehaviour
         allJoystick.SetActive(false);
         gasButton.SetActive(true);
         backButton.SetActive(true);
+        additionalAttackButton.SetActive(true);
 
         DeactiveLeftRightJoysticButton();
         DeactiveAllJoysticButton();
@@ -73,6 +75,7 @@ public class LayoutWindow : MonoBehaviour
         allJoystick.SetActive(false);
         gasButton.SetActive(true);
         backButton.SetActive(true);
+        additionalAttackButton.SetActive(false);
 
         DeactiveArrowsButton();
         DeactiveAllJoysticButton();
@@ -98,6 +101,7 @@ public class LayoutWindow : MonoBehaviour
         allJoystick.SetActive(true);
         gasButton.SetActive(false);
         backButton.SetActive(false);
+        additionalAttackButton.SetActive(false);
 
         DeactiveArrowsButton();
         DeactiveLeftRightJoysticButton();

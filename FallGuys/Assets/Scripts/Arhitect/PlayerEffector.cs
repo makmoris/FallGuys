@@ -220,6 +220,7 @@ public class PlayerEffector : IDisposable
                     {
                         levelUINotifications.BuffsDebuffsNotifications.ShowLightningDebuff();
                         levelUINotifications.AttackBan.ShowBanImage(bonus.BonusValue);
+                        levelUINotifications.AdditionalAttackBan.ShowBanImage(bonus.BonusValue);
                     }
                 }
 
@@ -356,6 +357,7 @@ public class PlayerEffector : IDisposable
                     if (isCurrentPlayer)
                     {
                         levelUINotifications.AttackBan.ShowBanImage(bonus.BonusValue);
+                        levelUINotifications.AdditionalAttackBan.ShowBanImage(bonus.BonusValue);
                     }
                 }
 
@@ -377,6 +379,7 @@ public class PlayerEffector : IDisposable
                     {
                         levelUINotifications.BuffsDebuffsNotifications.ShowLightningDebuff();
                         levelUINotifications.AttackBan.ShowBanImage(bonus.BonusValue);
+                        levelUINotifications.AdditionalAttackBan.ShowBanImage(bonus.BonusValue);
                     }
                 }
 
@@ -394,6 +397,7 @@ public class PlayerEffector : IDisposable
         {
             levelUINotifications.BuffsDebuffsNotifications.HideLightningDebuff();
             levelUINotifications.AttackBan.HideBanImage();
+            levelUINotifications.AdditionalAttackBan.HideBanImage();
         }
     }
 

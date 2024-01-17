@@ -12,4 +12,7 @@ public class LevelUINotifications : MonoBehaviour
 
     [SerializeField] private AttackBan attackBan;
     public AttackBan AttackBan { get => attackBan; }
+
+    [SerializeField] private AttackBan additionalAttackBan;
+    public AttackBan AdditionalAttackBan => additionalAttackBan;
 }

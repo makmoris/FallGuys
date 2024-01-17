@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class BuffsDebuffsNotifications : MonoBehaviour
 {
     [SerializeField] private Image banImage;
+    [SerializeField] private Image additionalBanImage;
 
     [Header("Buffs")]
     [SerializeField] private Image shieldBuff;
@@ -21,6 +22,10 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     [SerializeField] private GameObject additionalBulletBonusLightning;
     [SerializeField] private GameObject additionalBulletBonusSlowdownOilPuddle;
     [SerializeField] private GameObject additionalBulletBonusExplosion;
+    [Space]
+    [SerializeField] private GameObject adBtnAdditionalBulletBonusLightning;
+    [SerializeField] private GameObject adBtnAdditionalBulletBonusSlowdownOilPuddle;
+    [SerializeField] private GameObject adBtnAdditionalBulletBonusExplosion;
     [Space]
     [SerializeField] private Color banColorForAdditionalBulletBonus;
     private List<Image> additionalBulletBonusImages = new List<Image>();
@@ -41,6 +46,15 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         additionalBulletBonusImages.Add(additionalBulletBonusLightning.GetComponent<Image>());
         additionalBulletBonusImages.Add(additionalBulletBonusSlowdownOilPuddle.GetComponent<Image>());
         additionalBulletBonusImages.Add(additionalBulletBonusExplosion.GetComponent<Image>());
+
+        // additional button
+        adBtnAdditionalBulletBonusLightning.SetActive(false);
+        adBtnAdditionalBulletBonusSlowdownOilPuddle.SetActive(false);
+        adBtnAdditionalBulletBonusExplosion.SetActive(false);
+
+        additionalBulletBonusImages.Add(adBtnAdditionalBulletBonusLightning.GetComponent<Image>());
+        additionalBulletBonusImages.Add(adBtnAdditionalBulletBonusSlowdownOilPuddle.GetComponent<Image>());
+        additionalBulletBonusImages.Add(adBtnAdditionalBulletBonusExplosion.GetComponent<Image>());
     }
 
     public void ShowShieldBuff()
@@ -138,6 +152,7 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         }
 
         banImage.enabled = false;
+        additionalBanImage.enabled = false;
     }
 
     public void HideAdditionalBulletBonusNotification()
@@ -146,7 +161,12 @@ public class BuffsDebuffsNotifications : MonoBehaviour
         if (additionalBulletBonusSlowdownOilPuddle.activeSelf) additionalBulletBonusSlowdownOilPuddle.SetActive(false);
         if (additionalBulletBonusExplosion.activeSelf) additionalBulletBonusExplosion.SetActive(false);
 
+        adBtnAdditionalBulletBonusLightning.SetActive(false);
+        adBtnAdditionalBulletBonusSlowdownOilPuddle.SetActive(false);
+        adBtnAdditionalBulletBonusExplosion.SetActive(false);
+
         banImage.enabled = true;
+        additionalBanImage.enabled = true;
     }
 
     public void ShowAdditionalBulletBonusBan()
@@ -168,16 +188,19 @@ public class BuffsDebuffsNotifications : MonoBehaviour
     private void ShowAdditionalBulletBonusLightning()
     {
         additionalBulletBonusLightning.SetActive(true);
+        adBtnAdditionalBulletBonusLightning.SetActive(true);
     }
 
     private void ShowAdditionalBulletBonusSlowdownOilPuddle()
     {
         additionalBulletBonusSlowdownOilPuddle.SetActive(true);
+        adBtnAdditionalBulletBonusSlowdownOilPuddle.SetActive(true);
     }
 
     private void ShowAdditionalBulletBonusExplosion()
     {
         additionalBulletBonusExplosion.SetActive(true);
+        adBtnAdditionalBulletBonusExplosion.SetActive(true);
     }
 
     #endregion

@@ -220,8 +220,11 @@ public class Bullet : MonoBehaviour
         }
         else if(gameMode == GameModeEnum.Arena)
         {
-            carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, forceDirection.y,
-                force), forceMode);
+            //carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, forceDirection.y,
+            //    force), forceMode);
+
+            carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, force / 4f,
+                forceDirection.z * force), forceMode);
         }
         else
         {

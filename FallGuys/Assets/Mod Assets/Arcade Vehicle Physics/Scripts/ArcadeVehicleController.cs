@@ -30,7 +30,7 @@ namespace ArcadeVP
         public Transform BodyMesh;
         public Transform[] FrontWheels = new Transform[2];
         public Transform[] RearWheels = new Transform[2];
-        [HideInInspector]
+        //[HideInInspector]
         public Vector3 carVelocity;
 
         [Range(0, 10)]
@@ -152,8 +152,8 @@ namespace ArcadeVP
         {
             rbSphereCollider = rb.GetComponent<SphereCollider>();
 
-            rb.centerOfMass = Vector3.zero;
-            rb.inertiaTensorRotation = Quaternion.identity;
+            //rb.centerOfMass = Vector3.zero;
+            //rb.inertiaTensorRotation = Quaternion.identity;
 
             carBody.centerOfMass = Vector3.zero;
             carBody.inertiaTensorRotation = Quaternion.identity;

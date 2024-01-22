@@ -17,6 +17,7 @@ namespace ArcadeVP
 
         public bool AirControl = false;
         public Rigidbody rb, carBody;
+        private SphereCollider rbSphereCollider;
 
         private float defaultMaxSpeed;
 
@@ -145,9 +146,22 @@ namespace ArcadeVP
         public float Accelaration;
         public float Turn;
 
+        public float sign;
+
+        private void Awake()
+        {
+            rbSphereCollider = rb.GetComponent<SphereCollider>();
+
+            rb.centerOfMass = Vector3.zero;
+            rb.inertiaTensorRotation = Quaternion.identity;
+
+            carBody.centerOfMass = Vector3.zero;
+            carBody.inertiaTensorRotation = Quaternion.identity;
+        }
+
         private void Start()
         {
-            radius = rb.GetComponent<SphereCollider>().radius;
+            radius = rbSphereCollider.radius;
             if (movementMode == MovementMode.AngularVelocity)
             {
                 Physics.defaultMaxAngularSpeed = 100;
@@ -335,6 +349,7 @@ namespace ArcadeVP
 
                 //turnlogic
                 float sign = Mathf.Sign(carVelocity.z);
+                this.sign = sign;
                 float TurnMultiplyer = turnCurve.Evaluate(carVelocity.magnitude / MaxSpeed);
                 if (verticalInput > 0.1f || carVelocity.z > 1)
                 {
@@ -550,9 +565,9 @@ namespace ArcadeVP
 
         public bool grounded() //checks for if vehicle is grounded or not
         {
-            origin = rb.position + rb.GetComponent<SphereCollider>().radius * Vector3.up;
+            origin = rb.position + radius * Vector3.up;
             var direction = -transform.up;
-            var maxdistance = rb.GetComponent<SphereCollider>().radius + 0.2f;
+            var maxdistance = radius + 0.2f;
 
             if (GroundCheck == groundCheck.rayCast)
             {

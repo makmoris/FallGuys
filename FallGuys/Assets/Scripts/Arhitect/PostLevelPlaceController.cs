@@ -84,7 +84,7 @@ public class PostLevelPlaceController : MonoBehaviour
             LoadNextGameStage();
         }
 
-        MusicManager.Instance.StopSoundsPlaying();
+        MusicManager.Instance.TurnOffSoundsTemporarily();
     }
 
     private void ShowElimination(List<GameObject> _winnersList, List<GameObject> _losersList, GameObject _currentPlayerGO)

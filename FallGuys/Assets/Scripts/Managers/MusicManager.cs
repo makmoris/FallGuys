@@ -34,6 +34,8 @@ public class MusicManager : MonoBehaviour
     private string soundsKey = "SoundsEnabled";
     [SerializeField]private bool soundsEnabled;
 
+    private bool soundsTemporarilyMuted;
+
     private bool loadingComplete;
 
     private float previousSoundsValue;
@@ -117,15 +119,22 @@ public class MusicManager : MonoBehaviour
         soundsAudioSource.Play();
     }
 
-    public void StopSoundsPlaying()// при открытии вин луз окна
+    public void TurnOffSoundsTemporarily()
     {
-        soundMixer.audioMixer.GetFloat("SoundsVolume", out float value);
-        previousSoundsValue = value;
-        soundMixer.audioMixer.SetFloat("SoundsVolume", -80f);
+        if (!soundsTemporarilyMuted)
+        {
+            soundMixer.audioMixer.GetFloat("SoundsVolume", out float value);
+            previousSoundsValue = value;
+            soundMixer.audioMixer.SetFloat("SoundsVolume", -80f);
+
+            soundsTemporarilyMuted = true;
+        }
     }
-    public void ReturnPreviousSoundsValue()// вызывается кнопками перехода в лобби
+    public void TurnOnSoundsTemporarily()
     {
         soundMixer.audioMixer.SetFloat("SoundsVolume", previousSoundsValue);
+
+        soundsTemporarilyMuted = false;
     }
 
     private void PlayMusic(AudioClip audioClip, bool loop = true)

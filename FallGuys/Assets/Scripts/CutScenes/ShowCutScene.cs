@@ -26,12 +26,12 @@ public class ShowCutScene : MonoBehaviour
 
     private void Start()
     {
-        MusicManager.Instance.StopSoundsPlaying();
+        MusicManager.Instance.TurnOffSoundsTemporarily();
 
         if (!haveCutscene)
         {
             ShowTrackCutSceneEndedEvent?.Invoke();
-            MusicManager.Instance.ReturnPreviousSoundsValue();
+            MusicManager.Instance.TurnOnSoundsTemporarily();
         }
     }
 
@@ -42,7 +42,7 @@ public class ShowCutScene : MonoBehaviour
         showTrackCutSceneCameras.SetActive(false);
         gameCanvas.gameObject.SetActive(true);
 
-        MusicManager.Instance.ReturnPreviousSoundsValue();
+        MusicManager.Instance.TurnOnSoundsTemporarily();
 
         ShowTrackCutSceneEndedEvent?.Invoke();
     }

@@ -24,11 +24,18 @@ public class GameManager : MonoBehaviour
 
     #region Debug GameStagesList
     [System.Serializable]
-    public class GameStagesList
+    public class GameStages
     {
         public List<GameStage> gameStagesList;
     }
     #endregion
+
+    [System.Serializable]
+    public class SetOfGameStages
+    {
+        public int maxNumberOfGames;
+        public List<GameStages> setOfGameStagesList;
+    }
 
     [Header("SceneLoader")]
     [SerializeField] private SceneLoader sceneLoader;
@@ -41,9 +48,14 @@ public class GameManager : MonoBehaviour
     [Header("Debug Game Stages")]
     [SerializeField] private bool useRandomDebugIndex;
     [SerializeField] private int debugIndex;
-    [SerializeField] private List<GameStagesList> AllGameStagesList;
+    [SerializeField] private List<SetOfGameStages> setsOfGameStagesList;
+    [Space]
+    [SerializeField]private int currentIndexOfGameStagesSet;
+    //[SerializeField] private List<GameStages> AllGameStagesList;
     //[Header("Current Debug Game Stages")]
     private List<GameStage> gameStagesList = new List<GameStage>();
+
+    private string numberOfGamesKey = "NumberOfGames";
     #endregion
 
     //[Header("Game Stages")] // Correct without Debug GameStagesList
@@ -116,13 +128,15 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-
-    public void StartGameStage()// начальная точка. Вызывается по кнопке "Play"
+    public void StartGameStage()// начальная точка.
     {
-        #region Debug GameStagesList
-        if(useRandomDebugIndex && isFirstStart) debugIndex = Random.Range(0, AllGameStagesList.Count);
+        SetCurrentIndexOfGameStagesSet();
 
-        gameStagesList = AllGameStagesList[debugIndex].gameStagesList;
+        #region Debug GameStagesList
+        if(useRandomDebugIndex && isFirstStart) debugIndex = Random.Range(0, 
+            setsOfGameStagesList[currentIndexOfGameStagesSet].setOfGameStagesList.Count);
+
+        gameStagesList = setsOfGameStagesList[currentIndexOfGameStagesSet].setOfGameStagesList[debugIndex].gameStagesList;
         #endregion
 
         SceneField sceneToLoad;
@@ -185,6 +199,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGameStageFromTutorialWindow()
     {
+        SetCurrentIndexOfGameStagesSet();
+
         #region Analytics
         AnalyticsManager.Instance.UpdateUserPlay(!isObserverMode);
         #endregion
@@ -343,7 +359,7 @@ public class GameManager : MonoBehaviour
     private void CreatePlayersForOneGameSession()
     {
         #region Debug GameStagesList
-        gameStagesList = AllGameStagesList[debugIndex].gameStagesList;
+        gameStagesList = setsOfGameStagesList[currentIndexOfGameStagesSet].setOfGameStagesList[debugIndex].gameStagesList;
         #endregion
 
         ClearPlayersForOneGameSession();
@@ -505,6 +521,32 @@ public class GameManager : MonoBehaviour
     private void ShowReviewWindow()
     {
         if(currentPlayerPlace == 1) InAppReviewsManager.Instance.ShowReviewWindow();
+    }
+
+    private void SetCurrentIndexOfGameStagesSet()
+    {
+        if (isFirstStart)
+        {
+            int currentNumberOfGame = PlayerPrefs.GetInt(numberOfGamesKey, 1);
+
+            int index = 0;
+            foreach (var setOfGameStages in setsOfGameStagesList)
+            {
+                if (currentNumberOfGame <= setOfGameStages.maxNumberOfGames)
+                {
+                    break;
+                }
+                else
+                {
+                    if (index < setsOfGameStagesList.Count - 1) index++;
+                }
+            }
+
+            currentIndexOfGameStagesSet = index;
+
+            currentNumberOfGame++;
+            PlayerPrefs.SetInt(numberOfGamesKey, currentNumberOfGame);
+        }
     }
 
     private void OnDisable()

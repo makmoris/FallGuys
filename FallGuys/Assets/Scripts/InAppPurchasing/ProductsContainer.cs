@@ -11,17 +11,17 @@ namespace PunchCars.InAppPurchasing
     {
         [InfoBox("Duplicate identifiers were found! This could cause errors!", InfoMessageType.Error,
             "HasDuplicatesIdentifiers")]
-        [SerializeField] private ProductSO[] _goldPacks;
+        [SerializeField] private ProductSO[] _coinsPacks;
         [SerializeField] private ProductSO[] _dailyOfferDays;
 
         private CustomProduct[] _goldPackProducts;
         private CustomProduct[] _dailyOfferDaysProducts;
 
-        CustomProduct[] IProductsProvider.GoldPacks
+        CustomProduct[] IProductsProvider.CoinsPacks
         {
             get
             {
-                return _goldPackProducts ??= _goldPacks.Select(p => p.GetProduct()).ToArray();
+                return _goldPackProducts ??= _coinsPacks.Select(p => p.GetProduct()).ToArray();
             }
         }
 
@@ -37,7 +37,7 @@ namespace PunchCars.InAppPurchasing
         {
             IProductsProvider provider = this;
             var allProducts = new List<CustomProduct>();
-            allProducts.AddRange(provider.GoldPacks);
+            allProducts.AddRange(provider.CoinsPacks);
             allProducts.AddRange(provider.DailyOfferDays);
 
             return allProducts.ToArray();
@@ -45,8 +45,8 @@ namespace PunchCars.InAppPurchasing
 
         private bool HasDuplicatesIdentifiers()
         {
-            var products = new List<CustomProduct>(_goldPacks.Length);
-            products.AddRange(_goldPacks.Select(p => p.GetProduct()));
+            var products = new List<CustomProduct>(_coinsPacks.Length);
+            products.AddRange(_coinsPacks.Select(p => p.GetProduct()));
             var setOfUniqueIds = new HashSet<string>(products.Select(p => p.ID));
 
             return products.Count != setOfUniqueIds.Count;

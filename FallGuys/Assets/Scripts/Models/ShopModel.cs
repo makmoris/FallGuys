@@ -5,14 +5,14 @@ using System.Globalization;
 using System.Linq;
 using Zenject;
 
-namespace PunchCars.ShopMVP
+namespace PunchCars.Models
 {
     public class ShopModel
     {
-        private Action _onProductBought;
-
         private IIAPService _iapService;
         private IProductsProvider _productsProvider;
+
+        private Action _onProductBought;
 
         [Inject]
         public ShopModel(IIAPService iapService, IProductsProvider productsProvider)
@@ -59,7 +59,7 @@ namespace PunchCars.ShopMVP
         }
         private void OnPurchaseComplete(string productID)
         {
-            if (TryGetProductById(_productsProvider.GoldPacks, productID, out CustomProduct moneyPack))
+            if (TryGetProductById(_productsProvider.CoinsPacks, productID, out CustomProduct moneyPack))
                 HandleMoneyPackPurchase(moneyPack);
 
             _onProductBought?.Invoke();

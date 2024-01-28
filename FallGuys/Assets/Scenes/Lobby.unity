@@ -28317,6 +28317,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b17be5915a749894cbcb9f20dd3de154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1493959961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1493959963}
+  - component: {fileID: 1493959962}
+  m_Layer: 0
+  m_Name: UISystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1493959962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493959961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e179f6039e151b439ec7aeb2e7a699f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopView: {fileID: 2088917937}
+--- !u!4 &1493959963
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493959961}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 28
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1505455233
 GameObject:
   m_ObjectHideFlags: 0
@@ -36061,7 +36106,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1893702214}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2088917937}
+        m_TargetAssemblyTypeName: PunchCars.UserInterface.Views.ShopWindow, Assembly-CSharp
+        m_MethodName: OnCoinsSectionShow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1893702214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40364,7 +40421,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2088917933}
-  - component: {fileID: 2088917934}
+  - component: {fileID: 2088917937}
   - component: {fileID: 2088917936}
   - component: {fileID: 2088917935}
   m_Layer: 5
@@ -40397,20 +40454,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2088917934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088917932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b47b4bf55a5aee047933b4b36a7350e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _coinsItemPrefab: {fileID: 8992562274161622601, guid: cf120c053c41f9546b8b4f67a7c6a54a, type: 3}
-  _coinsSectionParent: {fileID: 1945363436}
 --- !u!114 &2088917935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40449,6 +40492,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2088917932}
   m_CullTransparentMesh: 1
+--- !u!114 &2088917937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088917932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac08dece219ffe444b1356229f181bc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _coinsItemPrefab: {fileID: 8992562274161622601, guid: cf120c053c41f9546b8b4f67a7c6a54a, type: 3}
+  _coinsSectionParent: {fileID: 1945363436}
 --- !u!1 &2089936406
 GameObject:
   m_ObjectHideFlags: 0
@@ -40661,7 +40718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02967f3766b3ba24cb394147501d22bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopView: {fileID: 2088917934}
+  _uiSystem: {fileID: 1493959962}
 --- !u!4 &2095854090
 Transform:
   m_ObjectHideFlags: 0

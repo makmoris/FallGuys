@@ -1,11 +1,12 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PunchCars.UserInterface.Presenters;
 
-namespace PunchCars.ShopMVP
+namespace PunchCars.UserInterface.Views
 {
-    public class ShopView : MonoBehaviour, IShopView
-    {
+    public class ShopWindow : BaseUiView<ShopPresenter>
+{
         [Header("Prefabs")]
         [SerializeField] private CoinsShopItem _coinsItemPrefab;
 
@@ -14,31 +15,15 @@ namespace PunchCars.ShopMVP
 
         private readonly List<CoinsShopItem> _coinsShopItems = new List<CoinsShopItem>();
 
-        private ShopPresenter _shopPresenter;
-
-        public event Action OnShow;
-        public event Action OnHide;
-
-        public void Construct(ShopPresenter presenter)
+        public void OnCoinsSectionShow()// по кнопочке из лобби
         {
-            _shopPresenter = presenter;
-        }
+            if (!gameObject.activeSelf)
+            {
+                Presenter.OnShopViewShowed();
+                gameObject.SetActive(true);
+            }
 
-        private void OnEnable()
-        {
-            Show();
-        }
-
-        public void Show()
-        {
-            OnShow?.Invoke();
-        }
-
-        public void Hide()
-        {
-            ClearCoinsItems();
-
-            OnHide?.Invoke();
+            Presenter.OnCoinsSectionShowBtnClick();
         }
 
         public List<CoinsShopItem> CreateCoinsItems(int count)
@@ -59,7 +44,8 @@ namespace PunchCars.ShopMVP
 
         private void OnDisable()
         {
-            Hide();
+            ClearCoinsItems();
         }
     }
 }
+

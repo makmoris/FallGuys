@@ -1,6 +1,6 @@
 public enum ShopProductNames
 {
-Gold_Pack_1,
-Gold_Pack_2,
-Gold_Pack_3,
+Coins_Pack_1,
+Coins_Pack_2,
+Coins_Pack_3,
 }

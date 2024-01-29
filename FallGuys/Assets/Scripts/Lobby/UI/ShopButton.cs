@@ -44,7 +44,7 @@ public class ShopButton : MonoBehaviour
                 _coinsPrice.gameObject.SetActive(false);
                 _rewardedAdPrice.gameObject.SetActive(false);
                 _separator.SetActive(false);
-                _priceText.text = price;
+                _priceText.text = $"${price}";
                 _priceText.alignment = TextAlignmentOptions.Center;
                 break;
             case BuyMethode.Coins:

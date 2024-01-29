@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using PunchCars.InAppPurchasing;
 using TMPro;
 using UnityEngine;
@@ -33,7 +34,12 @@ public class CoinsShopItem : MonoBehaviour
 
     public void SetIcon(Sprite icon) => _icon.sprite = icon;
 
-    public void SetAmount(int amount) => _amountText.text = amount.ToString();
+    public void SetAmount(int amount)
+    {
+        var culture = new CultureInfo("ru-RU");
+
+        _amountText.text = amount.ToString("#,#", culture);
+    }
 
     public void SetMostPopularLabel(bool shown) => _mostPopular.SetActive(shown);
 

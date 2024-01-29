@@ -42,20 +42,20 @@ namespace PunchCars.Models
                 case BuyMethode.RealMoney:
                     BuyProductByRealMoney(customProduct.ID, discount);
                     break;
-                //case BuyMethode.Coins:
-                //    BuyProductByGold(customProduct.ID, discount);
-                //    break;
-                //case BuyMethode.RewardedAd:
-                //    BuyProductByRewardedAd(customProduct.ID);
-                //    break;
-                //default:
+                    //case BuyMethode.Coins:
+                    //    BuyProductByGold(customProduct.ID, discount);
+                    //    break;
+                    //case BuyMethode.RewardedAd:
+                    //    BuyProductByRewardedAd(customProduct.ID);
+                    //    break;
+                    //default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
         private void BuyProductByRealMoney(string productID, float discount)
         {
-            _iapService.BuyProduct(productID, OnPurchaseComplete, null);
+            _iapService.BuyProduct(productID, OnPurchaseComplete, OnPurchaseFailed);
         }
         private void OnPurchaseComplete(string productID)
         {
@@ -67,6 +67,11 @@ namespace PunchCars.Models
         private void HandleMoneyPackPurchase(CustomProduct moneyPack)
         {
             CurrencyManager.Instance.AddGold((int)moneyPack.Amount);
+        }
+
+        private void OnPurchaseFailed(string productID)
+        {
+
         }
 
         private bool TryGetProductById(IEnumerable<CustomProduct> products, string productID, out CustomProduct product)

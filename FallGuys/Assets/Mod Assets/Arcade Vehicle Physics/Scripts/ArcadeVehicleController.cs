@@ -411,6 +411,103 @@ namespace ArcadeVP
 
                 carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, Vector3.up) * carBody.transform.rotation, 0.02f));
                 rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity + Vector3.down * Gravity, Time.deltaTime * Gravity);
+
+                #region Stuck Check
+                if (isPlayer)
+                {
+                    if (isShowingRestartButton && Mathf.Abs(Mathf.RoundToInt(speed)) >= 5f)
+                    {
+                        HideRespawnButtonEvent?.Invoke();
+                    }
+
+                    if (verticalInput != 0 && (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f) && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+                    {
+                        //Debug.Log("Жмем на газ. Застрял");
+
+                        stuckTime_PlayerPressesOnGasButDoesntMove += Time.deltaTime;
+
+                        if (stuckTime_PlayerPressesOnGasButDoesntMove >= stuckTimeThreshold)
+                        {
+                            stuckTime_RolledOntoRoofOfSide = 0f;
+                            stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                            stuckTime_StuckInSomething = 0f;
+                            RespanwAfterStuck();
+                        }
+                    }
+                    else if (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f && !handbrake)
+                    {
+                        playerIdleTime += Time.deltaTime;
+
+                        if (playerIdleTime >= idleTime)
+                        {
+                            playerIdleTime = 0;
+                            RespanwAfterStuck();
+                        }
+                    }
+                    else
+                    {
+                        //Debug.Log("Жмем кнопку");
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        playerIdleTime = 0f;
+                    }
+                }
+                else
+                {
+                    if ((verticalInput != 0 || isArcadeRaceAI) && Mathf.RoundToInt(speed) == 0 && !handbrake)
+                    {
+                        //Debug.Log("Газует бот, но застрял");
+
+                        stuckTime_BotAIPressesOnGasButDoesntMove += Time.deltaTime;
+
+                        if (stuckTime_BotAIPressesOnGasButDoesntMove >= stuckTimeThreshold)
+                        {
+                            stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                            RespanwAfterStuck();
+                        }
+                    }
+                    else stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                }
+
+                // Проверка, что игрок не упал на бок или крышу
+                if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
+                {
+                    //Debug.Log("Перевернулся на крышу или на бок");
+
+                    stuckTime_RolledOntoRoofOfSide += Time.deltaTime;
+
+                    if (stuckTime_RolledOntoRoofOfSide >= stuckTimeThreshold)
+                    {
+                        stuckTime_RolledOntoRoofOfSide = 0f;
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        stuckTime_StuckInSomething = 0f;
+                        RespanwAfterStuck();
+                    }
+
+                }
+                else
+                {
+                    stuckTime_RolledOntoRoofOfSide = 0f;
+                }
+
+                if (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+                {
+                    //Debug.Log("Просто застрял");
+
+                    stuckTime_StuckInSomething += Time.deltaTime;
+
+                    if (stuckTime_StuckInSomething >= stuckTimeThreshold)
+                    {
+                        stuckTime_RolledOntoRoofOfSide = 0f;
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        stuckTime_StuckInSomething = 0f;
+                        RespanwAfterStuck();
+                    }
+                }
+                else
+                {
+                    stuckTime_StuckInSomething = 0f;
+                }
+                #endregion
             }
         }
 
@@ -534,6 +631,62 @@ namespace ArcadeVP
             else
             {
                 carBody.MoveRotation(Quaternion.Slerp(carBody.rotation, Quaternion.FromToRotation(carBody.transform.up, Vector3.up) * carBody.transform.rotation, 0.02f));
+
+                #region Stuck Check
+                if ((verticalInput != 0 || isArcadeRaceAI) && Mathf.RoundToInt(speed) == 0 && !handbrake)
+                {
+                    //Debug.Log("Газует бот, но застрял");
+
+                    stuckTime_BotAIPressesOnGasButDoesntMove += Time.deltaTime;
+
+                    if (stuckTime_BotAIPressesOnGasButDoesntMove >= stuckTimeThreshold)
+                    {
+                        stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+                        RespanwAfterStuck();
+                    }
+                }
+                else stuckTime_BotAIPressesOnGasButDoesntMove = 0f;
+
+                // Проверка, что игрок не упал на бок или крышу
+                if (Vector3.Dot(Vector3.up, transform.up) < 0.15f)
+                {
+                    //Debug.Log("Перевернулся на крышу или на бок");
+
+                    stuckTime_RolledOntoRoofOfSide += Time.deltaTime;
+
+                    if (stuckTime_RolledOntoRoofOfSide >= stuckTimeThreshold)
+                    {
+                        stuckTime_RolledOntoRoofOfSide = 0f;
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        stuckTime_StuckInSomething = 0f;
+                        RespanwAfterStuck();
+                    }
+
+                }
+                else
+                {
+                    stuckTime_RolledOntoRoofOfSide = 0f;
+                }
+
+                if (Mathf.Abs(Mathf.RoundToInt(speed)) <= 2f && Vector3.Dot(Vector3.up, transform.up) <= 0.98f)
+                {
+                    //Debug.Log("Просто застрял");
+
+                    stuckTime_StuckInSomething += Time.deltaTime;
+
+                    if (stuckTime_StuckInSomething >= stuckTimeThreshold)
+                    {
+                        stuckTime_RolledOntoRoofOfSide = 0f;
+                        stuckTime_PlayerPressesOnGasButDoesntMove = 0f;
+                        stuckTime_StuckInSomething = 0f;
+                        RespanwAfterStuck();
+                    }
+                }
+                else
+                {
+                    stuckTime_StuckInSomething = 0f;
+                }
+                #endregion
             }
         }
 

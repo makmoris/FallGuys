@@ -211,7 +211,8 @@ public class LoadingScene : MonoBehaviour
     {
         //StartCoroutine(WaitAndSendEvent());
 
-        AnalyticsManager.Instance.User(cups_amount, gold, control_type);
+        //AnalyticsManager.Instance.User(cups_amount, gold, control_type);
+
 
         if (!tutorialWindowWasShown) gameTutorialWindow.SetActive(true);// для показа окна тутора
     }

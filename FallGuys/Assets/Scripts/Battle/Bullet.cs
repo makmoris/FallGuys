@@ -223,8 +223,8 @@ public class Bullet : MonoBehaviour
             //carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, forceDirection.y,
             //    force), forceMode);
 
-            carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * force, force / 4f,
-                forceDirection.z * force), forceMode);
+            carObj.GetComponent<Rigidbody>().AddForce(new Vector3(forceDirection.x * (force / 2f), force / 4f,
+                forceDirection.z * (force / 2f)), forceMode);
         }
         else
         {

@@ -199,6 +199,10 @@ public class GameManager : MonoBehaviour
 
     public void StartGameStageFromTutorialWindow()
     {
+        #region Analytics
+        AnalyticsManager.Instance.User(CurrencyManager.Instance.Cups, CurrencyManager.Instance.Gold, "Arrows");
+        #endregion
+
         SetCurrentIndexOfGameStagesSet();
 
         #region Analytics

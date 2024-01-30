@@ -517,6 +517,8 @@ public class AnalyticsManager : MonoBehaviour
         string _gun_id = GetGunID();
         int _league = GetLeagueLevel();
 
+        if (float.IsNaN(_win_rate)) _win_rate = 0f;
+
         foreach (var item in analytics)
         {
             try

@@ -1,5 +1,4 @@
 using Sirenix.OdinInspector;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,14 +13,14 @@ namespace PunchCars.InAppPurchasing
         [SerializeField] private ProductSO[] _coinsPacks;
         [SerializeField] private ProductSO[] _dailyOfferDays;
 
-        private CustomProduct[] _goldPackProducts;
+        private CustomProduct[] _coinPackProducts;
         private CustomProduct[] _dailyOfferDaysProducts;
 
         CustomProduct[] IProductsProvider.CoinsPacks
         {
             get
             {
-                return _goldPackProducts ??= _coinsPacks.Select(p => p.GetProduct()).ToArray();
+                return _coinPackProducts ??= _coinsPacks.Select(p => p.GetProduct()).ToArray();
             }
         }
 

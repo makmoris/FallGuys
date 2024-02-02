@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class LobbyVehicleData : ScriptableObject
     [SerializeField] private int vehicleCupsToUnlock;
     private bool isVehicleAvailable;// если false - то оно заблочено, нужно его купить/открыть 
     [SerializeField] private PlayerDefaultData vehicleDefaultData;// данные, откуда можно будет подтягивать характеристики тачки
-    [SerializeField] private Sprite vehicleImage;
+    [SerializeField, PreviewField(75)] private Sprite vehicleImage;
     [Space]
     [SerializeField] private bool alwaysAvailable;// если true, значит игнорируем то, что в памяти. Объект всегда доступен
 

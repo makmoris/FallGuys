@@ -1,0 +1,76 @@
+using Sirenix.OdinInspector;
+using UnityEngine;
+using PunchCars.Leagues;
+using PunchCars.PlayerItems;
+
+namespace PunchCars.CupRewards
+{
+    [CreateAssetMenu(fileName = "New Cup Reward", menuName = "PunchCars/CupRewards/CupReward", order = 0)]
+    public class CupRewardSO : ScriptableObject, ICupRewardProvider
+    {
+        [Header("REWARD:")]
+        [SerializeField] private CupRewardType _rewardType;
+
+        [ShowIf("_rewardType", CupRewardType.Coins)]
+        [Min(0)][SerializeField] private float _coins;
+        [ShowIf("_rewardType", CupRewardType.Coins)]
+        [SerializeField, PreviewField(75)] private Sprite _coinsIcon;
+
+        [ShowIf("_rewardType", CupRewardType.PlayerItem)][OnValueChanged("ShowCurrentPlayerItemSettings")]
+        [SerializeField] private PlayerItemSO _playerItemData;
+        [ReadOnly, ShowIf("_rewardType", CupRewardType.PlayerItem)]
+        [PreviewField(75)] public Sprite _playerItemIcon;
+
+        [Header("CUPS VALUE FOR REWARD:")]
+        [SerializeField] private bool _useLeagueSettings;
+        [HideIf("_useLeagueSettings", true)]
+        [Min(0)] [SerializeField] private int _cupsForReward;
+        [ShowIf("_useLeagueSettings", true)][OnValueChanged("ShowCurrentLeagueSettings")]
+        [SerializeField] private LeagueSO _leagueData;
+
+        [ReadOnly, ShowIf("_useLeagueSettings", true)]
+        [PreviewField(75)] public Sprite _leagueIcon;
+        [ReadOnly, ShowIf("_useLeagueSettings", true)]
+        public string _leagueName;
+        [ReadOnly, ShowIf("_useLeagueSettings", true)]
+        public int _leagueCupsForReward;
+
+        private Sprite _rewardIcon;
+
+        public CustomCupReward GetCupReward()
+        {
+            switch (_rewardType)
+            {
+                case CupRewardType.Coins:
+                    _rewardIcon = _coinsIcon;
+                    break;
+            }
+
+            if (_useLeagueSettings)
+            {
+                CustomLeague leagueData = _leagueData.GetLeague();
+                _leagueIcon = leagueData.Icon;
+                _leagueName = leagueData.Name;
+                _cupsForReward = leagueData.CupsForAvailable;
+            }
+
+            return new CustomCupReward(_rewardIcon, _rewardType, _leagueIcon, _leagueName, _cupsForReward);
+        }
+
+        private void ShowCurrentLeagueSettings()
+        {
+            CustomLeague leagueData = _leagueData.GetLeague();
+            _leagueIcon = leagueData.Icon;
+            _leagueName = leagueData.Name;
+            _leagueCupsForReward = leagueData.CupsForAvailable;
+
+            _cupsForReward = leagueData.CupsForAvailable;
+        }
+
+        private void ShowCurrentPlayerItemSettings()
+        {
+            CustomPlayerItem customPlayerItem = _playerItemData.GetPlayerItem();
+            _playerItemIcon = customPlayerItem.Icon;
+        }
+    }
+}

@@ -67,8 +67,14 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
 #endif
 
-        if (IsInitialized())
-            return;
+        //if (IsInitialized())
+        //    return;
+        // Временно
+        #region Временно
+        m_StoreController = null;
+        m_StoreExtensionProvider = null;
+        UnityEngine.Debug.LogError("Временная инициализация каждый вход в лобби");
+        #endregion
 
         IAPSettings settings = Resources.Load<IAPSettings>("IAPData");
         if (settings == null)

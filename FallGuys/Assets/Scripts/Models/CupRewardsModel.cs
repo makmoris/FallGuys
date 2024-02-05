@@ -15,5 +15,10 @@ namespace PunchCars.Models
         {
             _cupRewardsProvider = cupRewardsProvider;
         }
+
+        public int GetCurrentCupsValue()
+        {
+            return CurrencyManager.Instance.Cups;
+        }
     }
 }

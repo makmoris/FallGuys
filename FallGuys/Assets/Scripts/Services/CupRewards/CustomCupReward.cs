@@ -1,3 +1,5 @@
+using PunchCars.Leagues;
+using PunchCars.PlayerItems;
 using UnityEngine;
 
 namespace PunchCars.CupRewards
@@ -6,17 +8,22 @@ namespace PunchCars.CupRewards
     {
         public Sprite RewardIcon { get; private set; }
         public CupRewardType RewardType { get; private set; }
-        public Sprite LeagueIcon { get; private set; }
-        public string LeagueName { get; private set; }
+        public bool UseLeagueSettings { get; private set; }
+        public LeagueSO LeagueData { get; private set; }
         public int CupsForReward { get; private set; }
+        public int CoinsRewardNumber { get; private set; }
+        public PlayerItemSO PlayerItemData { get; private set; }
 
-        public CustomCupReward(Sprite rewardIcon, CupRewardType rewardType, Sprite leagueIcon, string leagueName, int cupsForReward)
+        public CustomCupReward(Sprite rewardIcon, CupRewardType rewardType, bool useLeagueSettings, LeagueSO leagueData,
+            int cupsForReward, int coinsRewardNumber, PlayerItemSO playerItemData)
         {
             RewardIcon = rewardIcon;
             RewardType = rewardType;
-            LeagueIcon = leagueIcon;
-            LeagueName = leagueName;
+            UseLeagueSettings = useLeagueSettings;
+            LeagueData = leagueData;
             CupsForReward = cupsForReward;
+            CoinsRewardNumber = coinsRewardNumber;
+            PlayerItemData = playerItemData;
         }
     }
 }

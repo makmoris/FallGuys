@@ -12,7 +12,7 @@ namespace PunchCars.CupRewards
         [SerializeField] private CupRewardType _rewardType;
 
         [ShowIf("_rewardType", CupRewardType.Coins)]
-        [Min(0)][SerializeField] private float _coins;
+        [Min(0)][SerializeField] private int _coins;
         [ShowIf("_rewardType", CupRewardType.Coins)]
         [SerializeField, PreviewField(75)] private Sprite _coinsIcon;
 
@@ -29,9 +29,11 @@ namespace PunchCars.CupRewards
         [SerializeField] private LeagueSO _leagueData;
 
         [ReadOnly, ShowIf("_useLeagueSettings", true)]
-        [PreviewField(75)] public Sprite _leagueIcon;
-        [ReadOnly, ShowIf("_useLeagueSettings", true)]
         public string _leagueName;
+        [ReadOnly, ShowIf("_useLeagueSettings", true)]
+        [PreviewField(75)] public Sprite _leagueShieldIcon;
+        [ReadOnly, ShowIf("_useLeagueSettings", true)]
+        [PreviewField(75)] public Sprite _leagueLevelIcon;
         [ReadOnly, ShowIf("_useLeagueSettings", true)]
         public int _leagueCupsForReward;
 
@@ -44,24 +46,31 @@ namespace PunchCars.CupRewards
                 case CupRewardType.Coins:
                     _rewardIcon = _coinsIcon;
                     break;
+
+                case CupRewardType.PlayerItem:
+                    _rewardIcon = _playerItemData.GetPlayerItem().Icon;
+                    break;
             }
 
             if (_useLeagueSettings)
             {
                 CustomLeague leagueData = _leagueData.GetLeague();
-                _leagueIcon = leagueData.Icon;
-                _leagueName = leagueData.Name;
+                _leagueName = leagueData.LeagueName;
+                _leagueShieldIcon = leagueData.ShieldIcon;
+                _leagueLevelIcon = leagueData.LevelIcon;
                 _cupsForReward = leagueData.CupsForAvailable;
             }
 
-            return new CustomCupReward(_rewardIcon, _rewardType, _leagueIcon, _leagueName, _cupsForReward);
+            return new CustomCupReward(_rewardIcon, _rewardType, _useLeagueSettings, _leagueData,
+                _cupsForReward, _coins, _playerItemData);
         }
 
         private void ShowCurrentLeagueSettings()
         {
             CustomLeague leagueData = _leagueData.GetLeague();
-            _leagueIcon = leagueData.Icon;
-            _leagueName = leagueData.Name;
+            _leagueName = leagueData.LeagueName;
+            _leagueShieldIcon = leagueData.ShieldIcon;
+            _leagueLevelIcon = leagueData.LevelIcon;
             _leagueCupsForReward = leagueData.CupsForAvailable;
 
             _cupsForReward = leagueData.CupsForAvailable;

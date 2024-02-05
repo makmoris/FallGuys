@@ -50,7 +50,7 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
 
     private void Awake()
     {
-        Init();
+        //Init();
     }
 
     private void Init()
@@ -85,15 +85,6 @@ public class LeagueWindowProgressVisualizer : MonoBehaviour
         if (notFirstActive)
         {
             UpdateCupsValue(CurrencyManager.Instance.Cups);
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            float x = leagueContent.sizeDelta.x;
-            Debug.Log($"Это Dwidth = {x}");
         }
     }
 

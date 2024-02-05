@@ -32,11 +32,13 @@ namespace PunchCars.Installers
         private void BindModels()
         {
             Container.Bind<ShopModel>().AsSingle().NonLazy();
+            Container.Bind<CupRewardsModel>().AsSingle().NonLazy();
         }
 
         private void BindPresenters()
         {
             Container.Bind<ShopPresenter>().AsSingle();
+            Container.Bind<CupRewardsPresenter>().AsSingle();
         }
     }
 }

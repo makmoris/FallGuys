@@ -8,13 +8,15 @@ namespace PunchCars.Leagues
     {
         [SerializeField] private LeagueID _leagueID;
         [Space]
-        [SerializeField] private string _name;
         [Min(0)] [SerializeField] private int _cupsForAvailable;
-        [SerializeField, PreviewField(75)] private Sprite _icon;
+        [Space]
+        [SerializeField] private string _leagueName;
+        [SerializeField, PreviewField(75)] private Sprite _shieldIcon;
+        [SerializeField, PreviewField(75)] private Sprite _levelIcon;
 
         public CustomLeague GetLeague()
         {
-            return new CustomLeague(_leagueID, _name, _icon, _cupsForAvailable);
+            return new CustomLeague(_leagueID, _leagueName, _shieldIcon, _levelIcon, _cupsForAvailable);
         }
     }
 }

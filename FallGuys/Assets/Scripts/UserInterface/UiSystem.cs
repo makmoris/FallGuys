@@ -10,6 +10,7 @@ namespace PunchCars.UserInterface
     {
         [Header("Views")]
         public Views.ShopWindow shopView;
+        public Views.CupRewardsWindow cupRewardsView;
 
         public event Action<IUiView> OnViewShown;
         public event Action<IUiView> OnViewClosed;
@@ -24,6 +25,7 @@ namespace PunchCars.UserInterface
             // Здесь на старте заполняем список всех View окон на сцене. Чтобы потом брать отсюда нужный view
 
             _views.Add(shopView);
+            _views.Add(cupRewardsView);
         }
 
         public TView GetView<TView>() where TView : IUiView

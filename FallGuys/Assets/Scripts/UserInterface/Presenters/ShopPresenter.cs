@@ -34,11 +34,6 @@ namespace PunchCars.UserInterface.Presenters
 
         }
 
-        private void OnViewHide()
-        {
-            Debug.Log("HIDE");
-        }
-
         private void FillCoinsProductsSection()
         {
             if (_productsProvider.CoinsPacks.Length <= 0)

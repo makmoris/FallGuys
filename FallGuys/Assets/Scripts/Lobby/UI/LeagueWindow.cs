@@ -12,6 +12,11 @@ public class LeagueWindow : MonoBehaviour
     [SerializeField] private Button homeButton;
     [SerializeField] private Button continueButton;
 
+    private void Start()
+    {
+        
+    }
+
     public void ShowCupsProgressAnimation(int _previousCupValue)
     {
 

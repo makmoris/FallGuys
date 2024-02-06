@@ -102,6 +102,7 @@ public class CupRewardItem : MonoBehaviour
             case LeagueID.Wood_3:
             case LeagueID.Wood_4:
 
+                _woodLeagueNameText.text = leagueNameText;
                 _woodLeagueNameText.gameObject.SetActive(true);
                 break;
 
@@ -110,6 +111,7 @@ public class CupRewardItem : MonoBehaviour
             case LeagueID.Steel_3:
             case LeagueID.Steel_4:
 
+                _steelLeagueNameText.text = leagueNameText;
                 _steelLeagueNameText.gameObject.SetActive(true);
                 break;
 
@@ -118,6 +120,7 @@ public class CupRewardItem : MonoBehaviour
             case LeagueID.Bronze_3:
             case LeagueID.Bronze_4:
 
+                _bronzeLeagueNameText.text = leagueNameText;
                 _bronzeLeagueNameText.gameObject.SetActive(true);
                 break;
 
@@ -126,6 +129,7 @@ public class CupRewardItem : MonoBehaviour
             case LeagueID.Silver_3:
             case LeagueID.Silver_4:
 
+                _silverLeagueNameText.text = leagueNameText;
                 _silverLeagueNameText.gameObject.SetActive(true);
                 break;
 
@@ -134,6 +138,7 @@ public class CupRewardItem : MonoBehaviour
             case LeagueID.Gold_3:
             case LeagueID.Gold_4:
 
+                _goldLeagueNameText.text = leagueNameText;
                 _goldLeagueNameText.gameObject.SetActive(true);
                 break;
 
@@ -142,6 +147,7 @@ public class CupRewardItem : MonoBehaviour
             case LeagueID.Diamond_3:
             case LeagueID.Diamond_4:
 
+                _diamondLeagueNameText.text = leagueNameText;
                 _diamondLeagueNameText.gameObject.SetActive(true);
                 break;
         }

@@ -25,34 +25,20 @@ namespace PunchCars.UserInterface.Presenters
 
         public void OnCupRewardsWindowShowed()
         {
-            FillCupRewardsSection();
-            CreateCupRewardsProgressScale();
+            FillCupRewardsSection(_cupRewardsModel.GetCurrentCupsValue());
+
+            _cupRewardsView.GetCupRewardProgressScale().SetProgressScalePosition(_cupRewardsModel.GetCurrentCupsValue());
         }
 
-        public void UpdateCupRewardsProgressScale(CupRewardProgressScale cupRewardProgressScale, List<CupRewardItem> cupRewardItems)
+        public void OnCupRewardsWindowShowedAfterBattle()
         {
-            int currentCupsValue = _cupRewardsModel.GetCurrentCupsValue();
+            FillCupRewardsSection(_cupRewardsModel.GetPreviousCupsValue());
 
-            CupRewardItem lowCupRewardItem = new();
-            CupRewardItem highCupRewardItem = new();
-
-            foreach (var item in cupRewardItems)
-            {
-                if (currentCupsValue >= item.CupValueForReward)
-                {
-                    lowCupRewardItem = item;
-                }
-                else
-                {
-                    highCupRewardItem = item;
-                    break;
-                }
-            }
-
-            cupRewardProgressScale.UpdateProgressScale(lowCupRewardItem, highCupRewardItem, currentCupsValue);
+            _cupRewardsView.GetCupRewardProgressScale()
+                .SetNewProgressScalePosition(_cupRewardsModel.GetPreviousCupsValue(), _cupRewardsModel.GetCurrentCupsValue());
         }
 
-        private void FillCupRewardsSection()
+        private void FillCupRewardsSection(int currentCupsValue)
         {
             if (_cupRewardsProvider.GetRewards.Length <= 0)
                 return;
@@ -61,6 +47,7 @@ namespace PunchCars.UserInterface.Presenters
             // не дожидаясь получения в качестве награды. Нужно помечать как полученную
 
             List<CupRewardItem> cupRewardItems = _cupRewardsView.CreateCupRewardItems(_cupRewardsProvider.GetRewards.Length);
+            CupRewardProgressScale cupRewardProgressScale = _cupRewardsView.CreateCupRewardProgressScale();
 
             for (int i = 0; i < cupRewardItems.Count; i++)
             {
@@ -100,14 +87,18 @@ namespace PunchCars.UserInterface.Presenters
 
                 rewardItem.SetCupValueForReward(reward.CupsForReward);
 
-                if(_cupRewardsModel.GetCurrentCupsValue() > reward.CupsForReward) rewardItem.ShowThisRewardWasReceived();
+                if(currentCupsValue > reward.CupsForReward) rewardItem.ShowThisRewardWasReceived();
                 else rewardItem.ShowThisRewardWasNotReceived();
-            }
-        }
 
-        private void CreateCupRewardsProgressScale()
-        {
-            _cupRewardsView.CreateCupRewardProgressScale();
+
+                bool isFirstRewardItem = false;
+                bool isLastRewardItem = false;
+
+                if (i == 0) isFirstRewardItem = true;
+                else if (i == cupRewardItems.Count - 1) isLastRewardItem = true;
+
+                cupRewardProgressScale.AddCupReward(rewardItem, reward.CupsForReward, isFirstRewardItem, isLastRewardItem);
+            }
         }
     }
 }

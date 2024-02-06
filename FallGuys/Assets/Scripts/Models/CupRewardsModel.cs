@@ -20,5 +20,10 @@ namespace PunchCars.Models
         {
             return CurrencyManager.Instance.Cups;
         }
+
+        public int GetPreviousCupsValue()
+        {
+            return CurrencyManager.Instance.PreviousCups;
+        }
     }
 }

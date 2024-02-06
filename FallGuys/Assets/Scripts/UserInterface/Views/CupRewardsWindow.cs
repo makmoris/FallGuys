@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PunchCars.UserInterface.Presenters;
-using TMPro;
 
 namespace PunchCars.UserInterface.Views
 {
@@ -16,18 +15,24 @@ namespace PunchCars.UserInterface.Views
         private readonly List<CupRewardItem> _cupRewardItems = new List<CupRewardItem>();
         private CupRewardProgressScale _cupRewardProgressScale;
 
-        public void OnCupRewardWindowShow()
+        public void OnCupRewardWindowShow()// кнопка в лобби
         {
             if (!gameObject.activeSelf)
             {
                 Presenter.OnCupRewardsWindowShowed();
+
                 gameObject.SetActive(true);
             }
         }
 
-        private void OnEnable()
+        public void OnCupRewardWindowShowAfterBattle()// кнопка "продолжить" на постбоевом экране
         {
-            Presenter.UpdateCupRewardsProgressScale(_cupRewardProgressScale, _cupRewardItems);
+            if (!gameObject.activeSelf)
+            {
+                Presenter.OnCupRewardsWindowShowedAfterBattle();
+
+                gameObject.SetActive(true);
+            }
         }
 
         public List<CupRewardItem> CreateCupRewardItems(int count)
@@ -45,18 +50,21 @@ namespace PunchCars.UserInterface.Views
             return _cupRewardProgressScale;
         }
 
+        public CupRewardProgressScale GetCupRewardProgressScale() => _cupRewardProgressScale;
+
         private void ClearCupRewardItems()
         {
             foreach (CupRewardItem cupRewardItem in _cupRewardItems)
                 Destroy(cupRewardItem.gameObject);
 
             _cupRewardItems.Clear();
+
+            Destroy(_cupRewardProgressScale.gameObject);
         }
 
         private void OnDisable()
         {
             ClearCupRewardItems();
-            Destroy(_cupRewardProgressScale);
         }
     }
 }

@@ -79,6 +79,8 @@ public class CurrencyManager : MonoBehaviour
         }
         private set
         {
+            _previousCups = _cups;
+
             _cups = value;
 
             if (_cups <= 0) _cups = 0;
@@ -86,11 +88,14 @@ public class CurrencyManager : MonoBehaviour
             if (_cups > _maxCups && _isMaxCupsValueSetted) _cups = _maxCups;
 
             CupsUpdateEvent?.Invoke(_cups);
-            
+
             Save();
         }
     }
-    
+
+    [SerializeField] private int _previousCups;
+    public int PreviousCups => _previousCups;
+
     public void SetMaxCups(int maxValue)// leagueManager
     {
         _maxCups = maxValue;
@@ -101,22 +106,6 @@ public class CurrencyManager : MonoBehaviour
     {
         Cups = _cups + value;
     }
-
-    //public bool SpendCup(int value)// true - если можем потратить столько денег
-    //{
-    //    int result = _cups - value;
-
-    //    if (result >= 0)
-    //    {
-    //        Cups = result;
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Недостаточно кубков");
-    //        return false;
-    //    }
-    //}
     #endregion
 
     //
@@ -126,8 +115,9 @@ public class CurrencyManager : MonoBehaviour
     {
         var data = PunchCars.SaveData.SaveManager.Load<PunchCars.SaveData.PlayerCurrency>(saveKey);
 
-        Gold = data.gold;
-        Cups = data.cups;
+        _gold = data.gold;
+        _cups = data.cups;
+        _previousCups = data.previousCups;
     }
 
     private void Save()
@@ -140,7 +130,8 @@ public class CurrencyManager : MonoBehaviour
         var data = new PunchCars.SaveData.PlayerCurrency()
         {
             gold = Gold,
-            cups = Cups
+            cups = Cups,
+            previousCups = _previousCups
         };
 
         return data;

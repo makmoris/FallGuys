@@ -7,5 +7,6 @@ namespace PunchCars.SaveData
     {
         public int gold;
         public int cups;
+        public int previousCups;
     }
 }

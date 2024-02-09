@@ -11,18 +11,18 @@ namespace PunchCars.CupRewards
         public bool UseLeagueSettings { get; private set; }
         public LeagueSO LeagueData { get; private set; }
         public int CupsForReward { get; private set; }
-        public int CoinsRewardNumber { get; private set; }
+        public int CoinsRewardValue { get; private set; }
         public PlayerItemSO PlayerItemData { get; private set; }
 
         public CustomCupReward(Sprite rewardIcon, CupRewardType rewardType, bool useLeagueSettings, LeagueSO leagueData,
-            int cupsForReward, int coinsRewardNumber, PlayerItemSO playerItemData)
+            int cupsForReward, int coinsRewardValue, PlayerItemSO playerItemData)
         {
             RewardIcon = rewardIcon;
             RewardType = rewardType;
             UseLeagueSettings = useLeagueSettings;
             LeagueData = leagueData;
             CupsForReward = cupsForReward;
-            CoinsRewardNumber = coinsRewardNumber;
+            CoinsRewardValue = coinsRewardValue;
             PlayerItemData = playerItemData;
         }
     }

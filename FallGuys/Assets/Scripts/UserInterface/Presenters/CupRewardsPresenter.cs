@@ -68,7 +68,7 @@ namespace PunchCars.UserInterface.Presenters
                     case CupRewardType.Coins:
 
                         rewardItem.SetCoinsIcon(reward.RewardIcon);
-                        rewardItem.SetCoinsText(reward.CoinsRewardNumber.ToString());
+                        rewardItem.SetCoinsText(reward.CoinsRewardValue.ToString());
                         
                         rewardItem.ShowCoinsReward();
 
@@ -155,11 +155,18 @@ namespace PunchCars.UserInterface.Presenters
                         switch (reward.RewardType)
                         {
                             case CupRewardType.PlayerItem:
+
                                 reward.PlayerItemData.SetIsAvailable(true);
+                                _cupRewardsView.ShowPlayerItemRewardCongratulations(reward.RewardIcon);
+
                                 Debug.LogError($"car available = {reward.PlayerItemData.GetPlayerItem().IsAvailable}");
+
                                 break;
                             case CupRewardType.Coins:
-                                _cupRewardsModel.AddCoinsFromReward(reward.CoinsRewardNumber);
+
+                                _cupRewardsModel.AddCoinsFromReward(reward.CoinsRewardValue);
+                                _cupRewardsView.ShowCoinsRewardCongratulations(reward.RewardIcon, reward.CoinsRewardValue.ToString());
+
                                 break;
                         }
 

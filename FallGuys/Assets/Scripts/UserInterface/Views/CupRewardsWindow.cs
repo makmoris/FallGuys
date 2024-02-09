@@ -7,16 +7,20 @@ namespace PunchCars.UserInterface.Views
 {
     public class CupRewardsWindow : BaseUiView<CupRewardsPresenter>
     {
+        [Header("Prefabs")]
         [SerializeField] private CupRewardItem _cupRewardItemPrefab;
         [SerializeField] private CupRewardProgressScale _cupRewardProgressScalePrefab;
         [Space]
         [SerializeField] private RectTransform _cupRewardsSectionParent;
+        [SerializeField] private CupRewardCongratulationsPanel _cupRewardCongratulationsPanel;
 
         private readonly List<CupRewardItem> _cupRewardItems = new List<CupRewardItem>();
         private CupRewardProgressScale _cupRewardProgressScale;
 
         public void OnCupRewardWindowShow()// кнопка в лобби
         {
+            _cupRewardCongratulationsPanel.gameObject.SetActive(false);
+
             if (!gameObject.activeSelf)
             {
                 Presenter.OnCupRewardsWindowShowed();
@@ -27,6 +31,8 @@ namespace PunchCars.UserInterface.Views
 
         public void OnCupRewardWindowShowAfterBattle()// кнопка "продолжить" на постбоевом экране
         {
+            _cupRewardCongratulationsPanel.gameObject.SetActive(false);
+
             if (!gameObject.activeSelf)
             {
                 Presenter.OnCupRewardsWindowShowedAfterBattle();
@@ -47,11 +53,22 @@ namespace PunchCars.UserInterface.Views
         public CupRewardProgressScale CreateCupRewardProgressScale()
         {
             _cupRewardProgressScale = Instantiate(_cupRewardProgressScalePrefab, _cupRewardsSectionParent);
+            _cupRewardProgressScale.transform.SetAsFirstSibling();
 
             return _cupRewardProgressScale;
         }
 
         public CupRewardProgressScale GetCupRewardProgressScale() => _cupRewardProgressScale;
+
+        public void ShowPlayerItemRewardCongratulations(Sprite playerItemRewardIcon)
+        {
+            _cupRewardCongratulationsPanel.ShowPlayerItemRewardCongratulations(playerItemRewardIcon);
+        }
+
+        public void ShowCoinsRewardCongratulations(Sprite coinsRewardIcon, string coinsRewardValueText)
+        {
+            _cupRewardCongratulationsPanel.ShowCoinsRewardCongratulations(coinsRewardIcon, coinsRewardValueText);
+        }
 
         private void ClearCupRewardItems()
         {

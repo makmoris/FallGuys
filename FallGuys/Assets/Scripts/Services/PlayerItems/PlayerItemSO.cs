@@ -9,21 +9,31 @@ namespace PunchCars.PlayerItems
     {
         [SerializeField] private PlayerItemType _playerItemType;
         [ShowIf("_playerItemType", PlayerItemType.Car)]
-        [Min(0)][SerializeField] private float _hp;
+        [Min(0)] [SerializeField] private float _hp;
         [ShowIfGroup("_playerItemType", PlayerItemType.Weapon)]
-        [Min(0)][SerializeField] private float _damage, _rechargeTime, _attackRange;
+        [Min(0)] [SerializeField] private float _damage, _rechargeTime, _attackRange;
         [Space]
         [SerializeField] private TierType _tierType;
         [SerializeField, PreviewField(75)] private Sprite _tierIcon;
         [Space]
         [SerializeField] private string _id;
         [SerializeField] private string _name;
-        [SerializeField] private bool _isAvailable;
         [SerializeField, PreviewField(75)] private Sprite _icon;
+        [SerializeField] private bool _isAlwaysAvailable;
+
+        private bool _isAvailable;
+        public void SetIsAvailable(bool isAvailable)
+        {
+            _isAvailable = isAvailable;
+
+            if (_isAlwaysAvailable) _isAvailable = true;
+
+            ElementsAvailableData.Instance.SaveElevemtAvailableStatus(_id, _isAvailable);// костыль
+        }
 
         public CustomPlayerItem GetPlayerItem()
         {
-            //if (!_isAvailable) _isAvailable = CheckIsAvailable();
+            if (_isAlwaysAvailable) _isAvailable = true;
 
             switch (_playerItemType)
             {

@@ -13,6 +13,9 @@ namespace PunchCars.PlayerItems
 
         // метод будет вызываться моделями, например CupRewardsModel или моделью для гаража, когда этот объект активируется (получает игрок)
         // та же модель будет обращаться в Памяти, чтобы установить новое значение по ID элемента
-        public void SetIsAvailable(bool isAvailable) => IsAvailable = isAvailable;
+        public bool CheckIsAvailable()
+        {
+            return false;
+        }
     }
 }

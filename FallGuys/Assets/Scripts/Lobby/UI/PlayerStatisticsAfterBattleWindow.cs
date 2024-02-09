@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using PunchCars.UserInterface.Views;
 
 public class PlayerStatisticsAfterBattleWindow : MonoBehaviour
 {
@@ -127,8 +128,9 @@ public class PlayerStatisticsAfterBattleWindow : MonoBehaviour
         //    leagueWindow.gameObject.SetActive(true);
         //    leagueWindow.ShowCupsProgressAnimation(previousCupValue);
         //}
-        leagueWindow.gameObject.SetActive(true);
-        leagueWindow.ShowCupsProgressAnimation(previousCupValue);
+        //leagueWindow.gameObject.SetActive(true);
+        //leagueWindow.ShowCupsProgressAnimation(previousCupValue);
+        leagueWindow.GetComponent<CupRewardsWindow>().OnCupRewardWindowShowAfterBattle();
 
         gameObject.SetActive(false);
     }

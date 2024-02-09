@@ -30,6 +30,8 @@ public class CupRewardProgressScale : MonoBehaviour
 
     private bool isInit;
 
+    private System.Action _progressFillingCompletedCallback;
+
     private void OnEnable()
     {
         if(_isShowFillingAnimationOnEnable) StartCoroutine(ShowProgressScaleAnimation(_targetScalePositionX));
@@ -83,7 +85,7 @@ public class CupRewardProgressScale : MonoBehaviour
         UpdateScrollPosition(currentScalePositionX);
     }
 
-    public void SetNewProgressScalePosition(int previousCupsValue, int currentCupsValue)
+    public void SetNewProgressScalePosition(int previousCupsValue, int currentCupsValue, System.Action progressFillingCompletedCallback)
     {
         float previousScalePositionX = GetProgressScalePosition(previousCupsValue);
         _targetScalePositionX = GetProgressScalePosition(currentCupsValue);
@@ -93,6 +95,8 @@ public class CupRewardProgressScale : MonoBehaviour
         _cupsText.text = currentCupsValue.ToString();
 
         _isShowFillingAnimationOnEnable = true;
+
+        _progressFillingCompletedCallback = progressFillingCompletedCallback;
     }
 
     private void UpdateScrollPosition(float currentScalePositionX)
@@ -170,6 +174,8 @@ public class CupRewardProgressScale : MonoBehaviour
         _cupsHolder.gameObject.SetActive(true);
 
         _isShowFillingAnimationOnEnable = false;
+
+        _progressFillingCompletedCallback?.Invoke();
 
         MusicManager.Instance.PlayLobbyMusic();
     }

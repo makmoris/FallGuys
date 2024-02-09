@@ -15,6 +15,8 @@ namespace PunchCars.UserInterface.Presenters
 
         private readonly ICupRewardsProvider _cupRewardsProvider;
 
+        private System.Action _progressScaleFillingCompletedCallback;
+
         [Inject]
         public CupRewardsPresenter(CupRewardsModel cupRewardsModel, IUiSystem uiSystem, ICupRewardsProvider cupRewardsProvider)
         {
@@ -34,8 +36,15 @@ namespace PunchCars.UserInterface.Presenters
         {
             FillCupRewardsSection(_cupRewardsModel.GetPreviousCupsValue());
 
-            _cupRewardsView.GetCupRewardProgressScale()
-                .SetNewProgressScalePosition(_cupRewardsModel.GetPreviousCupsValue(), _cupRewardsModel.GetCurrentCupsValue());
+            _progressScaleFillingCompletedCallback += CheckNeedToGiveReward;
+
+            _cupRewardsView.GetCupRewardProgressScale().SetNewProgressScalePosition(
+                _cupRewardsModel.GetPreviousCupsValue(), _cupRewardsModel.GetCurrentCupsValue(), _progressScaleFillingCompletedCallback);
+        }
+
+        public void OnCupRewardWindowClosed()
+        {
+            _cupRewardsModel.ClearReceivedCupRewardsData();
         }
 
         private void FillCupRewardsSection(int currentCupsValue)
@@ -59,8 +68,8 @@ namespace PunchCars.UserInterface.Presenters
                     case CupRewardType.Coins:
 
                         rewardItem.SetCoinsIcon(reward.RewardIcon);
-                        rewardItem.SetCoinsText(reward.CupsForReward.ToString());
-
+                        rewardItem.SetCoinsText(reward.CoinsRewardNumber.ToString());
+                        
                         rewardItem.ShowCoinsReward();
 
                         break;
@@ -87,8 +96,34 @@ namespace PunchCars.UserInterface.Presenters
 
                 rewardItem.SetCupValueForReward(reward.CupsForReward);
 
-                if(currentCupsValue > reward.CupsForReward) rewardItem.ShowThisRewardWasReceived();
-                else rewardItem.ShowThisRewardWasNotReceived();
+                if (currentCupsValue >= reward.CupsForReward)
+                {
+                    rewardItem.ShowThisRewardWasReceived();
+                    if (reward.RewardType == CupRewardType.PlayerItem) reward.PlayerItemData.SetIsAvailable(true);
+
+                    _cupRewardsModel.AddReceivedCupReward(reward);
+                }
+                else
+                {
+                    // if this reward has already been purchased in the store or is available by default from data file
+                    if (reward.RewardType == CupRewardType.PlayerItem)
+                    {
+                        if(_cupRewardsModel.CheckPlayerItemAvailability(reward.PlayerItemData.GetPlayerItem().ID))
+                        {
+                            rewardItem.ShowThisRewardWasReceived();
+                            _cupRewardsModel.AddReceivedCupReward(reward);
+                        }
+                        else rewardItem.ShowThisRewardWasNotReceived();
+
+                        //if (reward.PlayerItemData.GetPlayerItem().IsAvailable)
+                        //{
+                        //    rewardItem.ShowThisRewardWasReceived();
+                        //    _cupRewardsModel.AddReceivedCupReward(reward);
+                        //}
+                        //else rewardItem.ShowThisRewardWasNotReceived();
+                    }
+                    else rewardItem.ShowThisRewardWasNotReceived();
+                }
 
 
                 bool isFirstRewardItem = false;
@@ -98,6 +133,40 @@ namespace PunchCars.UserInterface.Presenters
                 else if (i == cupRewardItems.Count - 1) isLastRewardItem = true;
 
                 cupRewardProgressScale.AddCupReward(rewardItem, reward.CupsForReward, isFirstRewardItem, isLastRewardItem);
+            }
+        }
+
+        private void CheckNeedToGiveReward()
+        {
+            _progressScaleFillingCompletedCallback -= CheckNeedToGiveReward;
+
+            List<CupRewardItem> cupRewardItems = _cupRewardsView.GetCupRewardItems();
+            for (int i = 0; i < cupRewardItems.Count; i++)
+            {
+                CustomCupReward reward = _cupRewardsProvider.GetRewards[i];
+                CupRewardItem rewardItem = cupRewardItems[i];
+
+                if (_cupRewardsModel.GetCurrentCupsValue() >= reward.CupsForReward)
+                {
+                    if (_cupRewardsModel.AddReceivedCupReward(reward))
+                    {
+                        rewardItem.ShowThisRewardWasReceived();
+
+                        switch (reward.RewardType)
+                        {
+                            case CupRewardType.PlayerItem:
+                                reward.PlayerItemData.SetIsAvailable(true);
+                                Debug.LogError($"car available = {reward.PlayerItemData.GetPlayerItem().IsAvailable}");
+                                break;
+                            case CupRewardType.Coins:
+                                _cupRewardsModel.AddCoinsFromReward(reward.CoinsRewardNumber);
+                                break;
+                        }
+
+                        Debug.LogError($"Награды {reward.RewardType} (номер {i + 1}) не была получена. Выдаем ее игроку");
+                    }
+                }
+                else break;
             }
         }
     }

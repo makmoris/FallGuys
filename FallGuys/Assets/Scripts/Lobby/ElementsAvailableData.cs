@@ -44,12 +44,16 @@ public class ElementsAvailableData : MonoBehaviour
             Save();
         }
 
+        //Debug.LogError($"Get {saveName} is Available status = {isAvailable}");
+
         return isAvailable;
     }
 
     public void SaveElevemtAvailableStatus(string saveName, bool availableStatus)// вызывается при смене значения
     {
         _allAvailableElementsList[saveName] = availableStatus;
+
+        //Debug.LogError($"Save {saveName} is Available {availableStatus}");
 
         Save();
     }

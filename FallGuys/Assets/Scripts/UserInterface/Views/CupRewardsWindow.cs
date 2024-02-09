@@ -42,6 +42,7 @@ namespace PunchCars.UserInterface.Views
 
             return _cupRewardItems;
         }
+        public List<CupRewardItem> GetCupRewardItems() => _cupRewardItems;
 
         public CupRewardProgressScale CreateCupRewardProgressScale()
         {
@@ -65,6 +66,7 @@ namespace PunchCars.UserInterface.Views
         private void OnDisable()
         {
             ClearCupRewardItems();
+            Presenter.OnCupRewardWindowClosed();
         }
     }
 }

@@ -90,6 +90,8 @@ public class CupRewardProgressScale : MonoBehaviour
         float previousScalePositionX = GetProgressScalePosition(previousCupsValue);
         _targetScalePositionX = GetProgressScalePosition(currentCupsValue);
 
+        UpdateScrollPosition(previousScalePositionX);
+
         _progressScale.sizeDelta = new Vector2(previousScalePositionX, _progressScale.sizeDelta.y);
         _cupsHolder.gameObject.SetActive(false);
         _cupsText.text = currentCupsValue.ToString();

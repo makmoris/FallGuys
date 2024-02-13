@@ -23,7 +23,7 @@ public class GameInitializer : MonoBehaviour
     {
         networkChecker.Initialize();
         analyticsManager.Initialize();
-        adsInitializer.Initialize();
+        //adsInitializer.Initialize();
 
         sceneLoader.Initialize(networkChecker);
 

@@ -34,7 +34,7 @@ public class LoadingScene : MonoBehaviour
     [Space]
     [SerializeField] private bool internetConnectionIsActive;
     [SerializeField] private bool analyticsInitializeCompleted;
-    [SerializeField] private bool adsInitializeCompleted;
+    //[SerializeField] private bool adsInitializeCompleted;
 
     private AsyncOperation asyncOperation;
 
@@ -112,7 +112,7 @@ public class LoadingScene : MonoBehaviour
 
     private void AdsInitializeCompleted()
     {
-        adsInitializeCompleted = true;
+        //adsInitializeCompleted = true;
     }
 
     public void GoToLevel()// вызывается окном gameTutorialWindow
@@ -152,12 +152,12 @@ public class LoadingScene : MonoBehaviour
             if (asyncOperation.progress >= 0.9f)
             {
                 //if (!tutorialWindowWasShown) gameTutorialWindow.SetActive(true);// для показа окна тутора
-                if (!tutorialWindowWasShown && !analyticsEventWasSended && internetConnectionIsActive && analyticsInitializeCompleted && adsInitializeCompleted)
+                if (!tutorialWindowWasShown && !analyticsEventWasSended && internetConnectionIsActive && analyticsInitializeCompleted/* && adsInitializeCompleted*/)
                 {
                     analyticsEventWasSended = true;
                     SendUserAnalyticEvent();// analytics
                 }
-                else if (tutorialWindowWasShown && internetConnectionIsActive && analyticsInitializeCompleted && adsInitializeCompleted)
+                else if (tutorialWindowWasShown && internetConnectionIsActive && analyticsInitializeCompleted/* && adsInitializeCompleted*/)
                 {
                     Debug.Log("[TEST] Tutorial has been shown, Internet is active, Analytics has been initialized. Can go to the lobby");
                     asyncOperation.allowSceneActivation = true;

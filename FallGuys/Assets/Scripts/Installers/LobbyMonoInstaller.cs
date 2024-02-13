@@ -4,6 +4,7 @@ using UnityEngine;
 using PunchCars.UserInterface.Presenters;
 using PunchCars.UserInterface;
 using PunchCars.Models;
+using PunchCars.Advertisment;
 
 namespace PunchCars.Installers
 {
@@ -27,6 +28,7 @@ namespace PunchCars.Installers
             Container.Bind<IUiSystem>().FromInstance(_uiSystem).AsSingle();
             // нужен IInitializable чтобы инициализировать покупки
             Container.Bind(typeof(IIAPService), typeof(IInitializable)).To<IAPService>().AsSingle().NonLazy();
+            Container.Bind(typeof(IAdvertisementService), typeof(IInitializable)).To<AdvertisementService>().AsSingle().NonLazy();
         }
 
         private void BindModels()

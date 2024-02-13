@@ -11,6 +11,7 @@ namespace PunchCars.UserInterface
         [Header("Views")]
         public Views.ShopWindow shopView;
         public Views.CupRewardsWindow cupRewardsView;
+        public Views.AfterBattleStatisticsWindow afterBattleStatisticsView;
 
         public event Action<IUiView> OnViewShown;
         public event Action<IUiView> OnViewClosed;
@@ -26,6 +27,7 @@ namespace PunchCars.UserInterface
 
             _views.Add(shopView);
             _views.Add(cupRewardsView);
+            _views.Add(afterBattleStatisticsView);
         }
 
         public TView GetView<TView>() where TView : IUiView

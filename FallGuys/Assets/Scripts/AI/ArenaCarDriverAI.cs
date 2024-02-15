@@ -7,6 +7,8 @@ using ArcadeVP;
 
 public class ArenaCarDriverAI : DriverAI
 {
+    private const string arenaFightNumberKey = "ArenaFightNumber";
+
     [Header("DEBUG")]
     public List<Transform> targets;
 
@@ -280,6 +282,18 @@ public class ArenaCarDriverAI : DriverAI
             }
         }
 
+        if (PlayerPrefs.GetInt(arenaFightNumberKey) == 1 && playerTransform != null)
+        {
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (targets[i].gameObject == playerTransform.gameObject) // исключаем из целей игрока на первый бой
+                {
+                    targets.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
         foreach (var item in targets)
         {
             if (item.GetComponent<BonusBox>() != null)// пока так, потом, если понадобится, можно создать какой-нибудь скрипт и кинуть на бокс
@@ -333,7 +347,15 @@ public class ArenaCarDriverAI : DriverAI
 
         targetReached = true;
 
-        targetForDuelTransform = _targetDuelTransform;
+        if(PlayerPrefs.GetInt(arenaFightNumberKey) == 1 && playerTransform == _targetDuelTransform)
+        {
+            targetForDuelTransform = bonusBoxes[0];
+        }
+        else
+        {
+            targetForDuelTransform = _targetDuelTransform;
+        }
+        
         ChooseTargetPosition(targetForDuelTransform.position);
     }
 

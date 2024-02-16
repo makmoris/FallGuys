@@ -55,6 +55,10 @@ namespace PunchCars.Models
 
         private void BuyProductByRealMoney(string productID, float discount)
         {
+            #region Analytics
+            AnalyticsManager.Instance.LogTryBuyProduct(productID);
+            #endregion
+
             _iapService.BuyProduct(productID, OnPurchaseComplete, OnPurchaseFailed);
         }
         private void OnPurchaseComplete(string productID)
@@ -63,6 +67,10 @@ namespace PunchCars.Models
                 HandleMoneyPackPurchase(moneyPack);
 
             _onProductBought?.Invoke();
+
+            #region Analytics
+            AnalyticsManager.Instance.LogBuyProductDone(productID);
+            #endregion
         }
         private void HandleMoneyPackPurchase(CustomProduct moneyPack)
         {

@@ -24,6 +24,10 @@ namespace PunchCars.UserInterface.Views
             }
 
             Presenter.OnCoinsSectionShowBtnClick();
+
+            #region Analytics
+            AnalyticsManager.Instance.LogUserOpenShop();
+            #endregion
         }
 
         public List<CoinsShopItem> CreateCoinsItems(int count)

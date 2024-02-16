@@ -33,5 +33,13 @@ public interface IAnalytics
     public void PlayerChangedControls(string new_control_type, string old_control_type);
 
     public void PlayerInternetConnectionRestore();
+
+    public void PlayerGetCupsReward(string reward_name, int battle_id);
+
+    public void LogTryBuyProduct(string productID);
+
+    public void LogBuyProductDone(string productID);
+
+    public void LogUserOpenShop();
     #endregion
 }

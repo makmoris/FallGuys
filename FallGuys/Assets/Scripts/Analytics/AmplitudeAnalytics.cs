@@ -220,5 +220,35 @@ public class AmplitudeAnalytics : IAnalytics
     {
         amplitude.logEvent("Player_Internet_Connection_Restore");
     }
+
+    public void PlayerGetCupsReward(string reward_name, int battle_id)
+    {
+        var param = new Dictionary<string, object>();
+        param["reward_name"] = reward_name;
+        param["battle_id"] = battle_id;
+
+        amplitude.logEvent("Player_Get_Cups_Reward", param);
+    }
+
+    public void LogTryBuyProduct(string productID)
+    {
+        var param = new Dictionary<string, object>();
+        param["productID"] = productID;
+
+        amplitude.logEvent("Try_Buy_Product", param);
+    }
+
+    public void LogBuyProductDone(string productID)
+    {
+        var param = new Dictionary<string, object>();
+        param["productID"] = productID;
+
+        amplitude.logEvent("Buy_Product_Done", param);
+    }
+
+    public void LogUserOpenShop()
+    {
+        amplitude.logEvent("Player_Open_Shop");
+    }
     #endregion
 }

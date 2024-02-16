@@ -253,5 +253,35 @@ public class FacebookAnalytics : IAnalytics
     {
         FB.LogAppEvent("Player_Internet_Connection_Restore");
     }
+
+    public void PlayerGetCupsReward(string reward_name, int battle_id)
+    {
+        var param = new Dictionary<string, object>();
+        param["reward_name"] = reward_name;
+        param["battle_id"] = battle_id;
+
+        FB.LogAppEvent("Player_Get_Cups_Reward", parameters: param);
+    }
+
+    public void LogTryBuyProduct(string productID)
+    {
+        var param = new Dictionary<string, object>();
+        param["productID"] = productID;
+
+        FB.LogAppEvent("Try_Buy_Product", parameters: param);
+    }
+
+    public void LogBuyProductDone(string productID)
+    {
+        var param = new Dictionary<string, object>();
+        param["productID"] = productID;
+
+        FB.LogAppEvent("Buy_Product_Done", parameters: param);
+    }
+
+    public void LogUserOpenShop()
+    {
+        FB.LogAppEvent("Player_Open_Shop");
+    }
     #endregion
 }

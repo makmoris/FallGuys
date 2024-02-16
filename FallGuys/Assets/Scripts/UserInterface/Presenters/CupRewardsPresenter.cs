@@ -152,6 +152,10 @@ namespace PunchCars.UserInterface.Presenters
                     {
                         rewardItem.ShowThisRewardWasReceived();
 
+                        #region Analytics
+                        string rewardName = "";
+                        #endregion
+
                         switch (reward.RewardType)
                         {
                             case CupRewardType.PlayerItem:
@@ -159,7 +163,11 @@ namespace PunchCars.UserInterface.Presenters
                                 reward.PlayerItemData.SetIsAvailable(true);
                                 _cupRewardsView.ShowPlayerItemRewardCongratulations(reward.RewardIcon);
 
-                                Debug.LogError($"car available = {reward.PlayerItemData.GetPlayerItem().IsAvailable}");
+                                //Debug.LogError($"car available = {reward.PlayerItemData.GetPlayerItem().IsAvailable}");
+
+                                #region Analytics
+                                rewardName = $"Item {reward.PlayerItemData.GetPlayerItem().Name}";
+                                #endregion
 
                                 break;
                             case CupRewardType.Coins:
@@ -167,10 +175,18 @@ namespace PunchCars.UserInterface.Presenters
                                 _cupRewardsModel.AddCoinsFromReward(reward.CoinsRewardValue);
                                 _cupRewardsView.ShowCoinsRewardCongratulations(reward.RewardIcon, reward.CoinsRewardValue.ToString());
 
+                                #region Analytics
+                                rewardName = $"Coins {reward.CoinsRewardValue}";
+                                #endregion
+
                                 break;
                         }
 
-                        Debug.LogError($"Награды {reward.RewardType} (номер {i + 1}) не была получена. Выдаем ее игроку");
+                        #region Analytics
+                        AnalyticsManager.Instance.PlayerGetCupsReward(rewardName);
+                        #endregion
+
+                        //Debug.LogError($"Награды {reward.RewardType} (номер {i + 1}) не была получена. Выдаем ее игроку");
                     }
                 }
                 else break;

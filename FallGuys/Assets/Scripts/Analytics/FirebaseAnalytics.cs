@@ -270,5 +270,41 @@ public class FirebaseAnalytics : IAnalytics
     {
         Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Internet_Connection_Restore");
     }
+
+    public void PlayerGetCupsReward(string reward_name, int battle_id)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("reward_name", reward_name),
+            new Parameter("battle_id", battle_id)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Get_Cups_Reward", param.ToArray());
+    }
+
+    public void LogTryBuyProduct(string productID)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("productID", productID)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Try_Buy_Product", param.ToArray());
+    }
+
+    public void LogBuyProductDone(string productID)
+    {
+        var param = new List<Parameter>
+        {
+            new Parameter("productID", productID)
+        };
+
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Buy_Product_Done", param.ToArray());
+    }
+
+    public void LogUserOpenShop()
+    {
+        Firebase.Analytics.FirebaseAnalytics.LogEvent("Player_Open_Shop");
+    }
     #endregion
 }

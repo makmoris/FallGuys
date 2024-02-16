@@ -691,5 +691,76 @@ public class AnalyticsManager : MonoBehaviour
         }
     }
 
+    public void PlayerGetCupsReward(string rewardName)
+    {
+        string reward_Name = rewardName;
+        int battle_id = GetBattleId();
+
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.PlayerGetCupsReward(reward_Name, battle_id);
+
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player_Get_Cups_Reward");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player_Get_Cups_Reward Event. {ex.Message}");
+            }
+        }
+    }
+
+    public void LogTryBuyProduct(string productID)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.LogTryBuyProduct(productID);
+
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Try Buy Product");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Try Buy Product Event. {ex.Message}");
+            }
+        }
+    }
+
+    public void LogBuyProductDone(string productID)
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.LogBuyProductDone(productID);
+
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Buy Product Done");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Buy Product Done Event. {ex.Message}");
+            }
+        }
+    }
+
+    public void LogUserOpenShop()
+    {
+        foreach (var item in analytics)
+        {
+            try
+            {
+                item.LogUserOpenShop();
+
+                Debug.Log($"<color=green>[Analytics]</color> {item.GetName()} Player Open Shop");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"<color=red>[Analytics]</color> {item.GetName()} - Failed to Player Open Shop Event. {ex.Message}");
+            }
+        }
+    }
+
     #endregion
 }
